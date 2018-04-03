@@ -36,8 +36,6 @@ class MainView extends Component {
         var xhr = new XMLHttpRequest();
         xhr.open('POST', this.serviceKey.serviceUrl + '/chaincodes/' + chaincodeId + '/latest/invoke');
         xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-        xhr.setRequestHeader('withCredentials', 'include');
         xhr.setRequestHeader("Authorization", "Bearer " + this.accessToken);
         xhr.withCredentials = true; // CORS
         xhr.onload = function () {
