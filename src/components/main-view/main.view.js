@@ -34,7 +34,10 @@ class MainView extends Component {
         var chaincodeId = "1c306705-f53f-4dbb-aa05-acc057c9bf1b-com-sap-icn-blockchain-example-helloUniverse";
 
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', this.serviceKey.serviceUrl + '/chaincodes/' + chaincodeId + '/latest/invoke');
+        xhr.open('POST', this.serviceKey.serviceUrl + '/chaincodes/' + chaincodeId + '/latest');
+        xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+        xhr.setRequestHeader("Access-Control-Allow-Methods", "OPTIONS");
+        xhr.setRequestHeader('Access-Control-Allow-Credentials', 'true');
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.setRequestHeader("Authorization", "Bearer " + this.accessToken);
         xhr.withCredentials = true; // CORS
@@ -47,7 +50,6 @@ class MainView extends Component {
             function: 'write',
             arguments: [ this.state.id , this.state.text]
         }));
-        xhr.getAllResponseHeaders();
         event.preventDefault();
     }
 
@@ -61,8 +63,10 @@ class MainView extends Component {
             if (xhr.status === 200) {
                 var authData = JSON.parse(xhr.response);
                 this.accessToken = authData.access_token;
-                console.log(xhr.response);
-                console.log(this.accessToken);
+                console.log("Status Code:" + xhr.status);
+                console.log("Response Object:" + xhr.response);
+                console.log("Data:" + authData);
+                console.log("Access Token:" + this.accessToken);
                 return;
             }
             alert('Get oAuth token failed');
