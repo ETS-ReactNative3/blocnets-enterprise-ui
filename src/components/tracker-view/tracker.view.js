@@ -3,8 +3,7 @@ import RefreshIndicator from 'material-ui/RefreshIndicator';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
-
-class MainView extends Component {
+class TrackerView extends Component {
     constructor(props) {
         super(props);
         this.state = { id: '', text: '', token: '' };     //textarea content 
@@ -19,13 +18,8 @@ class MainView extends Component {
                 "url": "https://ebom.authentication.us10.hana.ondemand.com"
             }
         };
-        this.handleTextChange = this.handleTextChange.bind(this);
         this.handleIdChange = this.handleIdChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleTextChange(event) {
-        this.setState({ text: event.target.value });
     }
 
     handleIdChange(event) {
@@ -38,18 +32,9 @@ class MainView extends Component {
         event.preventDefault();
 
         var xhr = new XMLHttpRequest();
-
-        var urlEncodedData = "";
-        var urlEncodedDataPairs = [];
-        // Turn the data into an array of URL-encoded key/value pairs.
-        urlEncodedDataPairs.push(encodeURIComponent("text") + '=' + encodeURIComponent(this.state.text));
-        // Combine the pairs into a single string and replace all %-encoded spaces to 
-        // the '+' character; matches the behaviour of browser form submissions.
-        urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
-
-        // REST API - POST request
-        // POST request sent to https://hyperledger-fabric.cfapps.us10.hana.ondemand.com/api/v1/chaincodes/1c306705-f53f-4dbb-aa05-acc057c9bf1b-com-sap-icn-blockchain-example-helloUniverse/latest/{id}
-        xhr.open('POST', this.serviceKey.serviceUrl + '/chaincodes/' + chaincodeId + '/latest/' + this.state.id);
+        // REST API - GET request
+        // GET request sent to https://hyperledger-fabric.cfapps.us10.hana.ondemand.com/api/v1/chaincodes/1c306705-f53f-4dbb-aa05-acc057c9bf1b-com-sap-icn-blockchain-example-helloUniverse/latest/{id}
+        xhr.open('GET', this.serviceKey.serviceUrl + '/chaincodes/' + chaincodeId + '/latest/' + this.state.id);
         xhr.setRequestHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         xhr.setRequestHeader("Accept", "application/json")
         xhr.setRequestHeader("Access-Control-Allow-Methods", "OPTIONS");
@@ -63,8 +48,9 @@ class MainView extends Component {
                 alert("Sucessfully called the API!");
             }
         };
-        xhr.send(urlEncodedData);
+        xhr.send();
     }
+
 
     componentDidMount() {
         // Authentication
@@ -98,24 +84,12 @@ class MainView extends Component {
                     floatingLabelText="UserID"
                     floatingLabelFixed={true}
                     style={{ "float": "left", "marginLeft": "5%" }}
-                /><br />
-                <br />
-                <TextField
-                    type="text"
-                    value={this.state.text} onChange={this.handleTextChange}
-                    style={{ "marginLeft": "auto", "marginRight": "auto" }}
-                    hintText="Enter the context for this block..."
-                    floatingLabelFixed={true}
-                    fullWidth={true}
-                    multiLine={true}
-                    rows={4}
-                    rowsMax={4}
                 />
                 <br />
-                <RaisedButton type="submit" label="Create" style={style} value="Submit" />
+                <RaisedButton type="submit" label="Track" style={style} value="Submit" />
             </form>
         );
     }
 }
 
-export default MainView;
+export default TrackerView;
