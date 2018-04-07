@@ -6,7 +6,8 @@ import {
 import MainView from './components/main-view/main.view';
 import TrackerView from './components/tracker-view/tracker.view';
 import logo from './blocknetwhite-1.png';
-import barLogo from './blocnets-logo.png';
+import appBarLogo from './rsz_1blocknetwhite.png';
+import paperLogo from './blocnets-logo.png'
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
@@ -50,6 +51,11 @@ class App extends Component {
       paddingTop: 10
     }
 
+    const paperLogoStyle = {
+      maxHeight: 65,
+      paddingTop: 10
+    }
+
     switch (this.state.show) {
       case 'trackerview':
         content = (<TrackerView />);
@@ -64,29 +70,35 @@ class App extends Component {
             </div>
           </Router>);
     }
+
     return (
       <div className="App">
+        {/* Main navigation bar menu for components */}
         <AppBar
+          class="App-header"
           iconClassNameRight="muidocs-icon-navigation-expand-more"
           title={<img src={logo} className="App-logo" alt="logo" />}
           onLeftIconButtonClick={this.handleToggle}
         />
+        {/* Side Drawer's navigation bar menu for viewing content */}
         <Drawer
           docked={false}
           width={200}
           open={this.state.open}
           onRequestChange={(open) => this.setState({ open })}>
-
           <AppBar
-            title={<img src={barLogo} style={AppBarLogoStyle} />}
+            class="App-bar"
+            title={<img src={appBarLogo} style={AppBarLogoStyle} />}
           />
           <MenuItem id="showMainViewId" onClick={this.showMainView}>Create New Block</MenuItem>
+          <hr />
           <MenuItem id="showTrackerViewId" onClick={this.showTrackerView}>Track and Trace</MenuItem>
         </Drawer>
-        <Paper style={paperStyle} zDepth={5}>
+        {/* Page View with content loaded*/}
+        <Paper class="White-theme" style={paperStyle} zDepth={5}>
 
-          <Toolbar style={{ "justifyContent": "center" }}>
-            <ToolbarTitle text="Blocnets Demo" />
+          <Toolbar style={{ "justifyContent": "center", "height": 80 }}>
+            <ToolbarTitle text={<img src={paperLogo} style={paperLogoStyle} />} />
           </Toolbar>
           {content}
 
