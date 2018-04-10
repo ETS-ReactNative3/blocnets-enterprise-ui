@@ -62,6 +62,7 @@ class App extends Component {
         break;
       case 'home':
         content = (<MainView />);
+        break;
       default:
         content = (
           <Router>
@@ -75,7 +76,7 @@ class App extends Component {
       <div className="App">
         {/* Main navigation bar menu for components */}
         <AppBar
-          class="App-header"
+          className="App-header"
           iconClassNameRight="muidocs-icon-navigation-expand-more"
           title={<img src={logo} className="App-logo" alt="logo" />}
           onLeftIconButtonClick={this.handleToggle}
@@ -87,18 +88,18 @@ class App extends Component {
           open={this.state.open}
           onRequestChange={(open) => this.setState({ open })}>
           <AppBar
-            class="App-bar"
-            title={<img src={appBarLogo} style={AppBarLogoStyle} />}
+            className="App-bar"
+            title={<img src={appBarLogo} style={AppBarLogoStyle} alt="Blocnets" />}
           />
           <MenuItem id="showMainViewId" onClick={this.showMainView}>Create New Block</MenuItem>
           <hr />
           <MenuItem id="showTrackerViewId" onClick={this.showTrackerView}>Track and Trace</MenuItem>
         </Drawer>
         {/* Page View with content loaded*/}
-        <Paper class="White-theme" style={paperStyle} zDepth={5}>
+        <Paper className="White-theme" style={paperStyle} zDepth={5}>
 
           <Toolbar style={{ "justifyContent": "center", "height": 80 }}>
-            <ToolbarTitle text={<img src={paperLogo} style={paperLogoStyle} />} />
+            <ToolbarTitle text={<img src={paperLogo} style={paperLogoStyle} alt="Blocnets" />} />
           </Toolbar>
           {content}
 

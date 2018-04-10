@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import RefreshIndicator from 'material-ui/RefreshIndicator';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';

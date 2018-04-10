@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import RefreshIndicator from 'material-ui/RefreshIndicator';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import Toggle from 'material-ui/Toggle';
+import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import axios from 'axios';
+import Tree from 'react-d3-tree';
 
 
 class TrackerView extends Component {
@@ -19,6 +21,9 @@ class TrackerView extends Component {
             },
             dialog: {
                 open: false,
+            },
+            legacy: {
+                expanded: false,
             },
             id: '',                                         // REST API - ID
             text: '',                                       // REST API - ID
@@ -39,14 +44,30 @@ class TrackerView extends Component {
         this.handleIdChange = this.handleIdChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-    
-      handleDialogClose = () => {
+
+    handleExpandChange = (expanded) => {
+        this.setState({
+            legacy: {
+                expanded: expanded
+            }
+        });
+    };
+
+    handleLegacyToggle = (event, toggle) => {
+        this.setState({
+            legacy: {
+                expanded: toggle
+            }
+        });
+    };
+
+    handleDialogClose = () => {
         this.setState({
             dialog: {
                 open: false
             },
         });
-      };
+    };
 
     handleRequestClose = () => {
         this.setState({
@@ -85,8 +106,8 @@ class TrackerView extends Component {
                 })
                     .then((response) => {
                         // response is all ready a javascript object
-                        this.setState({ 
-                            dialogData: response.data.Text, 
+                        this.setState({
+                            dialogData: response.data.Text,
                         });
                         // Show Success Message
                         this.setState({
@@ -135,15 +156,59 @@ class TrackerView extends Component {
 
         const actions = [
             <FlatButton
-                label="Trace"
-                primary={true}
-                onClick={this.handleDialogClose}
-            />,
-            <FlatButton
                 label="Close"
-                primary={true}
+                default={true}
                 onClick={this.handleDialogClose}
             />,
+        ];
+
+        const myTreeData = [
+            {
+                name: 'Root',
+                attributes: {
+                    timestamp: 'Apr 7 07:34:11',
+                    block: 'Instantiated worldcrop',
+                },
+                children: [
+                    {
+                        name: 'Entity_1',
+                        attributes: {
+                            timestamp: 'Apr 7 07: 34: 40 ',
+                            block: 'Updated worldcorp',
+                        },
+                        children: [
+                            {
+                                name: 'Entity_3',
+                                attributes: {
+                                    timestamp: 'Apr 7 07:36:05',
+                                    block: 'Finalized worldcorp',
+                                }
+                            },
+                        ]
+                    },
+                    {
+                        name: 'Entity_2',
+                        attributes: {
+                            timestamp: 'Apr 7 07: 34: 40 ',
+                            block: 'Refactored worldcorp',
+                        },
+                        children: [
+                            {
+                                name: 'Entity_4',
+                                attributes: {
+                                    timestamp: 'Apr 7 07:36:05',
+                                    block: 'Finalized worldcorp',
+                                },
+                                name: 'null',
+                                attributes: {
+                                    timestamp: 'null',
+                                    block: 'null',
+                                },
+                            },
+                        ]
+                    },
+                ],
+            },
         ];
 
         return (
@@ -158,6 +223,7 @@ class TrackerView extends Component {
                 />
                 <br />
                 <RaisedButton type="submit" label="Track" style={style} value="Submit" />
+                < br />
                 <Snackbar
                     open={this.state.snackBar.open}
                     message={this.state.snackBar.message}
@@ -170,8 +236,25 @@ class TrackerView extends Component {
                     modal={false}
                     open={this.state.dialog.open}
                     onRequestClose={this.handleClose}
-                >{this.state.dialogData}</Dialog>
-            </form>
+                >
+                    <Card>
+                        <CardText>{this.state.dialogData}</CardText>
+                    </Card>
+                    < br />
+                    <Toggle
+                        toggled={this.state.legacy.expanded}
+                        onToggle={this.handleLegacyToggle}
+                        labelPosition="right"
+                        label="Show eBOM example"
+                    />
+                    <Card expanded={this.state.legacy.expanded} onExpandChange={this.handleExpandChange}>
+                        <CardTitle title="eBOM" subtitle="example" expandable={true} />
+                        <CardText expandable={true}>
+                            <Tree data={myTreeData} />
+                        </CardText>
+                    </Card>
+                </Dialog>
+            </form >
         );
     }
 }
