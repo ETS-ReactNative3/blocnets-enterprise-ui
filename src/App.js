@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom';
 import MainView from './components/main-view/main.view';
 import TrackerView from './components/tracker-view/tracker.view';
+import EBOMView from './components/eBOM-view/eBOM.view';
 import logo from './blocknetwhite-1.png';
 import appBarLogo from './rsz_1blocknetwhite.png';
 import paperLogo from './blocnets-logo.png'
@@ -42,6 +43,10 @@ class App extends Component {
     this.setState({ show: 'trackerview', open: false });
   };
 
+  showeBOMView = () => {
+    this.setState({ show: 'ebomview', open: false });
+  };
+
   render() {
     let content = null;
 
@@ -60,8 +65,11 @@ class App extends Component {
       case 'trackerview':
         content = (<TrackerView />);
         break;
-      case 'home':
+      case 'home':  
         content = (<MainView />);
+        break;
+      case 'ebomview':
+        content =(<eBOMView />);
         break;
       default:
         content = (
@@ -94,6 +102,8 @@ class App extends Component {
           <MenuItem id="showMainViewId" onClick={this.showMainView}>Create New Block</MenuItem>
           <hr />
           <MenuItem id="showTrackerViewId" onClick={this.showTrackerView}>Track and Trace</MenuItem>
+          <hr />
+          <MenuItem id="showeBOMViewId" onClick={this.showeBOMView}>eBOM</MenuItem>
         </Drawer>
         {/* Page View with content loaded*/}
         <Paper className="White-theme" style={paperStyle} zDepth={5}>
