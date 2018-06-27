@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import eBOMView from './eBOM.view';
+import EBOMView from './ebom.view';
 import * as actions from '../../redux/actions/eBOM.view.action';
 
-const mapStateToProps = ({ eBOMView }) => ({
-  error: eBOMView.error
+const mapStateToProps = ({ EBOMView }) => ({
+  error: EBOMView.error
 });
 
-export default connect(mapStateToProps, actions)(eBOMView);
+export default connect(mapStateToProps, actions)(EBOMView);

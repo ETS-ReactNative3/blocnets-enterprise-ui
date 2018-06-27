@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom';
 import MainView from './components/main-view/main.view';
 import TrackerView from './components/tracker-view/tracker.view';
-import EBOMView from './components/eBOM-view/eBOM.view';
+import EBOMView from './components/ebom-view/ebom.view';
 import logo from './blocknetwhite-1.png';
 import appBarLogo from './rsz_1blocknetwhite.png';
 import paperLogo from './blocnets-logo.png'
@@ -69,7 +69,7 @@ class App extends Component {
         content = (<MainView />);
         break;
       case 'ebomview':
-        content =(<eBOMView />);
+        content =(<EBOMView />);
         break;
       default:
         content = (

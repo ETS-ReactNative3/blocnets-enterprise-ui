@@ -1,172 +1,341 @@
-import React, { Component } from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-import Snackbar from 'material-ui/Snackbar';
-import axios from 'axios';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepButton from '@material-ui/core/StepButton';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import { Step, Stepper, StepLabel, StepContent } from 'material-ui/Stepper';
+import FlatButton from 'material-ui/FlatButton';
+import Paper from 'material-ui/Paper';
+import TextField from 'material-ui/TextField';
+import Checkbox from 'material-ui/Checkbox';
 
 
 
-class EBOMView extends Component {
-    constructor(props) {
-        super(props);
-
-        function getSteps() {
-            return ['Select campaign settings', 'Create an ad group', 'Create an ad'];
-        }
-
-        function getStepContent(step) {
-            switch (step) {
-                case 0:
-                    return 'Step 1: Select campaign settings...';
-                case 1:
-                    return 'Step 2: What is an ad group anyways?';
-                case 2:
-                    return 'Step 3: This is the bit I really care about!';
-                default:
-                    return 'Unknown step';
-            }
-        }
-
-        this.state = {
-            activeStep: 0,
-            completed: {},
-        };
-    }
-
-    completedSteps() {
-        return Object.keys(this.state.completed).length;
-    }
-
-    totalSteps = () => {
-        return getSteps().length;
-    };
-
-    isLastStep() {
-        return this.state.activeStep === this.totalSteps() - 1;
-    }
-
-    allStepsCompleted() {
-        return this.completedSteps() === this.totalSteps();
-    }
-
-    handleNext = () => {
-        let activeStep;
-
-        if (this.isLastStep() && !this.allStepsCompleted()) {
-            // It's the last step, but not all steps have been completed,
-            // find the first step that has been completed
-            const steps = getSteps();
-            activeStep = steps.findIndex((step, i) => !(i in this.state.completed));
-        } else {
-            activeStep = this.state.activeStep + 1;
-        }
-        this.setState({
-            activeStep,
-        });
-    };
-
-    handleBack = () => {
-        const { activeStep } = this.state;
-        this.setState({
-            activeStep: activeStep - 1,
-        });
-    };
-
-    handleStep = step => () => {
-        this.setState({
-            activeStep: step,
-        });
-    };
-
-    handleComplete = () => {
-        const { completed } = this.state;
-        completed[this.state.activeStep] = true;
-        this.setState({
-            completed,
-        });
-        this.handleNext();
-    };
-
-    handleReset = () => {
-        this.setState({
-            activeStep: 0,
-            completed: {},
-        });
-    };
-
-    render() {
-        const { classes } = this.props;
-        const steps = getSteps();
-        const { activeStep } = this.state;
-
-        return (
-            <div className={classes.root}>
-                <Stepper nonLinear activeStep={activeStep}>
-                    {steps.map((label, index) => {
-                        return (
-                            <Step key={label}>
-                                <StepButton
-                                    onClick={this.handleStep(index)}
-                                    completed={this.state.completed[index]}
-                                >
-                                    {label}
-                                </StepButton>
-                            </Step>
-                        );
-                    })}
-                </Stepper>
-                <div>
-                    {this.allStepsCompleted() ? (
-                        <div>
-                            <Typography className={classes.instructions}>
-                                All steps completed - you&quot;re finished
-              </Typography>
-                            <Button onClick={this.handleReset}>Reset</Button>
-                        </div>
-                    ) : (
-                            <div>
-                                <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
-                                <div>
-                                    <Button
-                                        disabled={activeStep === 0}
-                                        onClick={this.handleBack}
-                                        className={classes.button}
-                                    >
-                                        Back
-                </Button>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={this.handleNext}
-                                        className={classes.button}
-                                    >
-                                        Next
-                </Button>
-                                    {activeStep !== steps.length &&
-                                        (this.state.completed[this.state.activeStep] ? (
-                                            <Typography variant="caption" className={classes.completed}>
-                                                Step {activeStep + 1} already completed
-                    </Typography>
-                                        ) : (
-                                                <Button variant="contained" color="primary" onClick={this.handleComplete}>
-                                                    {this.completedSteps() === this.totalSteps() - 1 ? 'Finish' : 'Complete Step'}
-                                                </Button>
-                                            ))}
-                                </div>
-                            </div>
-                        )}
-                </div>
-            </div>
-        );
-    }
+function getSteps() {
+  return ['Material Dimensions',
+    'Material Handling Characteristics',
+    'Material Other',
+    'Material Quality Standards',
+    'Supplier Customer Definition',
+    'Supplier Payment Terms',
+    'Supplier Order Quantities Controls',
+    'Suppliers'];
 }
 
+function getStepContent(step) {
+  switch (step) {
+    case 0:
+      return (
+        <div><TextField
+          type="text"
+          hintText="Enter volume amount "
+          floatingLabelText="Volume"
+          floatingLabelFixed={true}
+          style={{ "float": "left", "marginLeft": "5%" }}
+        /> <br />
+          <TextField
+            type="text"
+            hintText="Enter weight amount "
+            floatingLabelText="Weight"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /> <br />
+          <TextField
+            type="text"
+            hintText="Enter length amount "
+            floatingLabelText="Length"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /> <br />
+          <TextField
+            type="text"
+            hintText="Enter width amount "
+            floatingLabelText="Width"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /> <br />
+          <TextField
+            type="text"
+            hintText="Enter heigth amount "
+            floatingLabelText="Height"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /></div>);
+    case 1:
+      return (
+        <div><TextField
+          type="text"
+          hintText="Enter the temperature limit"
+          floatingLabelText="Temp Limits"
+          floatingLabelFixed={true}
+          style={{ "float": "left", "marginLeft": "5%" }}
+        /> <br />
+          <TextField
+            type="text"
+            hintText="Enter shock/vibration limits"
+            floatingLabelText="Shock/Vibration"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /> <br />
+          <TextField
+            type="text"
+            hintText="Enter altitude restrictions"
+            floatingLabelText="Altitude Restrictions"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /> <br />
+          <TextField
+            type="text"
+            hintText="Enter compression restrictions"
+            floatingLabelText="Compression Restrictions"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /> <br />
+          <Checkbox
+            label="Always Upright"
+          /></div>);
+    case 2:
+      return (
+        <div>
+          <Checkbox
+            label="METALIC"
+          />
+          <Checkbox
+            label="HASMAT"
+          />
+          <Checkbox
+            label="MAGNETCI"
+          />
+        </div>
+      );
+    case 3:
+      return (
+        <div>
+          <TextField
+            type="text"
+            hintText="Enter Length Tolerance"
+            floatingLabelText="Length Tolerance"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /> <br />
+          <TextField
+            type="text"
+            hintText="Enter Round Tolerance"
+            floatingLabelText="Round Tolerance"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /> <br />
+          <TextField
+            type="text"
+            hintText="Enter Non-skid Tolerance"
+            floatingLabelText="Non-skid Tolerance"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /> <br />
+        </div>
+      );
+    case 4:
+      return (
+        <div>
+          <TextField
+            type="text"
+            hintText="Enter SHIP TO street address"
+            floatingLabelText="Street Address"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /> <br />
+          <TextField
+            type="text"
+            hintText="Enter SHIP TO IP address"
+            floatingLabelText="IP Address"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /> <br />
+          <TextField
+            type="text"
+            hintText="Enter BILL TO street address"
+            floatingLabelText="Street Address"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /> <br />
+          <TextField
+            type="text"
+            hintText="Enter BILL TO IP address"
+            floatingLabelText="IP Address"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /> <br />
+        </div>
+      );
+    case 5:
+      return (
+        <div>
+          <TextField
+            type="text"
+            hintText="Enter Payment Terms"
+            floatingLabelText="Payment Terms"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /> <br />
+        </div>);
+    case 6:
+      return (
+        <div>
+          <TextField
+            type="text"
+            hintText="Enter Minimum Economic Order Quantities"
+            floatingLabelText="Minimum Economic Order Quantities"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /> <br />
+          <TextField
+            type="text"
+            hintText="Enter Maximum Econimic Order Quantities"
+            floatingLabelText="Maximum Economic Order Quantities"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /> <br />
+          <TextField
+            type="text"
+            hintText="Enter Maximum Economic Product Withdraw Rate"
+            floatingLabelText="Maximum Economic Product Withdraw Rate"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /> <br />
+          <TextField
+            type="text"
+            hintText="Enter Minimum Order Lead Times"
+            floatingLabelText="Minimum Order Lead Times"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /> <br />
+        </div>
+      );
+    case 7:
+      return (
+        <div>
+          <TextField
+            type="text"
+            hintText="Enter IP Address / Street Address"
+            floatingLabelText="IP Address/Street Address"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /> <br />
+          <TextField
+            type="text"
+            hintText="Enter Material Supplied Per IP Address"
+            floatingLabelText="Material Supplied Per IP Address"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /> <br />
+          <TextField
+            type="text"
+            hintText="Enter Supplier Payment Terms"
+            floatingLabelText="Supplier Payment Terms"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /> <br />
+          <TextField
+            type="text"
+            hintText="Enter Supplier Order Policy"
+            floatingLabelText="Supplier Order Policy"
+            floatingLabelFixed={true}
+            style={{ "float": "left", "marginLeft": "5%" }}
+          /> <br />
+        </div>
+      );
+    default:
+      return 'Unknown step';
+  }
+}
+
+class EBOMView extends React.Component {
+  state = {
+    activeStep: 0,
+  };
+
+  handleNext = () => {
+    this.setState(state => ({
+      activeStep: state.activeStep + 1,
+    }));
+  };
+
+  handleBack = () => {
+    this.setState(state => ({
+      activeStep: state.activeStep - 1,
+    }));
+  };
+
+  handleReset = () => {
+    this.setState({
+      activeStep: 0,
+    });
+  };
+
+  render() {
+    const styles = theme => ({
+      root: {
+        width: '90%',
+      },
+      button: {
+        marginTop: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+      },
+      actionsContainer: {
+        marginBottom: theme.spacing.unit * 2,
+      },
+      resetContainer: {
+        padding: theme.spacing.unit * 3,
+      },
+    });
+    const steps = getSteps();
+    const { activeStep } = this.state;
+
+    return (
+      <div className={styles.root}>
+        <Stepper activeStep={activeStep} orientation="vertical">
+          {steps.map((label, index) => {
+            return (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+                <StepContent>
+                  <div>{getStepContent(index)}</div>
+                  <div className={styles.actionsContainer}>
+                    <div>
+                      <FlatButton
+                        disabled={activeStep === 0}
+                        onClick={this.handleBack}
+                        className={styles.button}
+                      >
+                        Back
+                      </FlatButton>
+                      <FlatButton
+                        variant="contained"
+                        color="primary"
+                        onClick={this.handleNext}
+                        className={styles.button}
+                      >
+                        {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                      </FlatButton>
+                    </div>
+                  </div>
+                </StepContent>
+              </Step>
+            );
+          })}
+        </Stepper>
+        {activeStep === steps.length && (
+          <Paper square elevation={0} className={styles.resetContainer}>
+            <div>All steps completed - you&quot;re finished</div>
+            <FlatButton onClick={this.handleReset} className={styles.button}>
+              Reset
+            </FlatButton>
+          </Paper>
+        )}
+      </div>
+    );
+  }
+}
+
+EBOMView.propTypes = {
+  classes: PropTypes.object,
+};
 
 export default EBOMView;

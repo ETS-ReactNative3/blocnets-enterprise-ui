@@ -5,7 +5,7 @@ import Snackbar from 'material-ui/Snackbar';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import Toggle from 'material-ui/Toggle';
-import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
+import { Card, CardTitle, CardText } from 'material-ui/Card';
 import axios from 'axios';
 import Tree from 'react-d3-tree';
 
@@ -198,12 +198,7 @@ class TrackerView extends Component {
                                 attributes: {
                                     timestamp: 'Apr 7 07:36:05',
                                     block: 'Finalized worldcorp',
-                                },
-                                name: 'null',
-                                attributes: {
-                                    timestamp: 'null',
-                                    block: 'null',
-                                },
+                                }
                             },
                         ]
                     },
