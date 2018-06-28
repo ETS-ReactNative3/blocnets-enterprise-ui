@@ -5,8 +5,8 @@ import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
-
-
+import Divider from 'material-ui/Divider';
+import axios from 'axios';
 
 function getSteps() {
   return ['Material Dimensions',
@@ -23,222 +23,91 @@ function getStepContent(step) {
   switch (step) {
     case 0:
       return (
-        <div><TextField
-          type="text"
-          hintText="Enter volume amount "
-          floatingLabelText="Volume"
-          floatingLabelFixed={true}
-          style={{ "float": "left", "marginLeft": "5%" }}
-        /> <br />
-          <TextField
-            type="text"
-            hintText="Enter weight amount "
-            floatingLabelText="Weight"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /> <br />
-          <TextField
-            type="text"
-            hintText="Enter length amount "
-            floatingLabelText="Length"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /> <br />
-          <TextField
-            type="text"
-            hintText="Enter width amount "
-            floatingLabelText="Width"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /> <br />
-          <TextField
-            type="text"
-            hintText="Enter heigth amount "
-            floatingLabelText="Height"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /></div>);
+        <div>
+          <TextField type="text" hintText="Enter volume amount " floatingLabelText="Volume" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
+          <Divider />
+          <TextField type="text" hintText="Enter weight amount " floatingLabelText="Weight" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
+          <Divider />
+          <TextField type="text" hintText="Enter length amount " floatingLabelText="Length" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
+          <Divider />
+          <TextField type="text" hintText="Enter width amount " floatingLabelText="Width" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
+          <Divider />
+          <TextField type="text" hintText="Enter heigth amount " floatingLabelText="Height" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
+        </div>);
     case 1:
       return (
-        <div><TextField
-          type="text"
-          hintText="Enter the temperature limit"
-          floatingLabelText="Temp Limits"
-          floatingLabelFixed={true}
-          style={{ "float": "left", "marginLeft": "5%" }}
-        /> <br />
-          <TextField
-            type="text"
-            hintText="Enter shock/vibration limits"
-            floatingLabelText="Shock/Vibration"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /> <br />
-          <TextField
-            type="text"
-            hintText="Enter altitude restrictions"
-            floatingLabelText="Altitude Restrictions"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /> <br />
-          <TextField
-            type="text"
-            hintText="Enter compression restrictions"
-            floatingLabelText="Compression Restrictions"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /> <br />
-          <Checkbox
-            label="Always Upright"
-          /></div>);
+        <div>
+          <TextField type="text" hintText="Enter the temperature limit" floatingLabelText="Temp Limits" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
+          <Divider />
+          <TextField type="text" hintText="Enter shock/vibration limits" floatingLabelText="Shock/Vibration" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
+          <Divider />
+          <TextField type="text" hintText="Enter altitude restrictions" floatingLabelText="Altitude Restrictions" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
+          <Divider />
+          <TextField type="text" hintText="Enter compression restrictions" floatingLabelText="Compression Restrictions" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
+          <Divider />
+          <Checkbox label="Always Upright" />
+        </div>);
     case 2:
       return (
         <div>
-          <Checkbox
-            label="METALIC"
-          />
-          <Checkbox
-            label="HASMAT"
-          />
-          <Checkbox
-            label="MAGNETCI"
-          />
+          <Checkbox label="METALIC" />
+          <Divider />
+          <Checkbox label="HASMAT" />
+          <Divider />
+          <Checkbox label="MAGNETCI" />
         </div>
       );
     case 3:
       return (
         <div>
-          <TextField
-            type="text"
-            hintText="Enter Length Tolerance"
-            floatingLabelText="Length Tolerance"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /> <br />
-          <TextField
-            type="text"
-            hintText="Enter Round Tolerance"
-            floatingLabelText="Round Tolerance"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /> <br />
-          <TextField
-            type="text"
-            hintText="Enter Non-skid Tolerance"
-            floatingLabelText="Non-skid Tolerance"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /> <br />
+          <TextField type="text" hintText="Enter Length Tolerance" floatingLabelText="Length Tolerance" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
+          <Divider />
+          <TextField type="text" hintText="Enter Round Tolerance" floatingLabelText="Round Tolerance" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
+          <Divider />
+          <TextField type="text" hintText="Enter Non-skid Tolerance" floatingLabelText="Non-skid Tolerance" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
+          <Divider />
         </div>
       );
     case 4:
       return (
         <div>
-          <TextField
-            type="text"
-            hintText="Enter SHIP TO street address"
-            floatingLabelText="Street Address"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /> <br />
-          <TextField
-            type="text"
-            hintText="Enter SHIP TO IP address"
-            floatingLabelText="IP Address"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /> <br />
-          <TextField
-            type="text"
-            hintText="Enter BILL TO street address"
-            floatingLabelText="Street Address"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /> <br />
-          <TextField
-            type="text"
-            hintText="Enter BILL TO IP address"
-            floatingLabelText="IP Address"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /> <br />
+          <TextField type="text" hintText="Enter SHIP TO street address" floatingLabelText="Street Address" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
+          <Divider />
+          <TextField type="text" hintText="Enter SHIP TO IP address" floatingLabelText="IP Address" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
+          <Divider />
+          <TextField type="text" hintText="Enter BILL TO street address" floatingLabelText="Street Address" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
+          <Divider />
+          <TextField type="text" hintText="Enter BILL TO IP address" floatingLabelText="IP Address" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
+          <Divider />
         </div>
       );
     case 5:
       return (
         <div>
-          <TextField
-            type="text"
-            hintText="Enter Payment Terms"
-            floatingLabelText="Payment Terms"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /> <br />
+          <TextField type="text" hintText="Enter Payment Terms" floatingLabelText="Payment Terms" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
         </div>);
     case 6:
       return (
         <div>
-          <TextField
-            type="text"
-            hintText="Enter Minimum Economic Order Quantities"
-            floatingLabelText="Minimum Economic Order Quantities"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /> <br />
-          <TextField
-            type="text"
-            hintText="Enter Maximum Econimic Order Quantities"
-            floatingLabelText="Maximum Economic Order Quantities"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /> <br />
-          <TextField
-            type="text"
-            hintText="Enter Maximum Economic Product Withdraw Rate"
-            floatingLabelText="Maximum Economic Product Withdraw Rate"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /> <br />
-          <TextField
-            type="text"
-            hintText="Enter Minimum Order Lead Times"
-            floatingLabelText="Minimum Order Lead Times"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /> <br />
+          <TextField type="text" hintText="Type here..." floatingLabelText="Minimum Economic Order Quantities" style={{ "float": "left", "marginLeft": "5%" }} />
+          <Divider />
+          <TextField type="text" hintText="Type here..." floatingLabelText="Maximum Economic Order Quantities" style={{ "float": "left", "marginLeft": "5%" }} />
+          <Divider />
+          <TextField type="text" hintText="Type here..." floatingLabelText="Maximum Economic Product Withdraw Rate" style={{ "float": "left", "marginLeft": "5%" }} />
+          <Divider />
+          <TextField type="text" hintText="Type here..." floatingLabelText="Minimum Order Lead Times" style={{ "float": "left", "marginLeft": "5%" }} />
         </div>
       );
     case 7:
       return (
         <div>
-          <TextField
-            type="text"
-            hintText="Enter IP Address / Street Address"
-            floatingLabelText="IP Address/Street Address"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /> <br />
-          <TextField
-            type="text"
-            hintText="Enter Material Supplied Per IP Address"
-            floatingLabelText="Material Supplied Per IP Address"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /> <br />
-          <TextField
-            type="text"
-            hintText="Enter Supplier Payment Terms"
-            floatingLabelText="Supplier Payment Terms"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /> <br />
-          <TextField
-            type="text"
-            hintText="Enter Supplier Order Policy"
-            floatingLabelText="Supplier Order Policy"
-            floatingLabelFixed={true}
-            style={{ "float": "left", "marginLeft": "5%" }}
-          /> <br />
+          <TextField type="text" hintText="Enter IP Address / Street Address" floatingLabelText="IP Address/Street Address" style={{ "float": "left", "marginLeft": "5%" }} />
+          <Divider />
+          <TextField type="text" hintText="Enter info here..." floatingLabelText="Material Supplied Per IP Address" style={{ "float": "left", "marginLeft": "5%" }} />
+          <Divider />
+          <TextField type="text" hintText="Enter Supplier Payment Terms" floatingLabelText="Supplier Payment Terms" style={{ "float": "left", "marginLeft": "5%" }} />
+          <Divider />
+          <TextField type="text" hintText="Enter Supplier Order Policy" floatingLabelText="Supplier Order Policy" style={{ "float": "left", "marginLeft": "5%" }} />
         </div>
       );
     default:
@@ -247,6 +116,34 @@ function getStepContent(step) {
 }
 
 class EBOMView extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: '',
+      text: '',
+      materialNumber: '',
+      materialSerialNumber: '',
+      materialDescription: '',
+      materialVolume: '',
+      materialWeight: '',
+      token: []
+    };
+    this.serviceKey = {
+      "type": "hyperledger-fabric",
+      "channelId": "dev1c306705-f53f-4dbb-aa05-acc057c9bf1bcore",
+      "serviceUrl": "https://hyperledger-fabric.cfapps.us10.hana.ondemand.com/api/v1",
+      "documentationUrl": "https://api.sap.com/shell/discover/contentpackage/SCPBlockchainTechnologies/api/hyperledger",
+      "oAuth": {
+        "clientId": "sb-2f1dce41-c872-48e8-8ee3-6d0dd7e2c2c2!b520|na-3a01f1e2-bc33-4e12-86a2-ffffaea79918!b33",
+        "clientSecret": "Yw+YrsdnLkUZbKtUbvf47Qk7pps=",
+        "url": "https://ebom.authentication.us10.hana.ondemand.com"
+      }
+    };
+    this.handleTextChange = this.handleTextChange.bind(this);
+    this.handleIdChange = this.handleIdChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
   state = {
     activeStep: 0,
   };
