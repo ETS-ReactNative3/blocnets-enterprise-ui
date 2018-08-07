@@ -50,11 +50,11 @@ function getStepContent(step) {
     case 2:
       return (
         <div>
-          <Checkbox label="METALIC" />
+          <Checkbox label="METALLIC" />
           <Divider />
           <Checkbox label="HASMAT" />
           <Divider />
-          <Checkbox label="MAGNETCI" />
+          <Checkbox label="MAGNETIC" />
         </div>
       );
     case 3:
@@ -116,33 +116,6 @@ function getStepContent(step) {
 }
 
 class EBOMView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      id: '',
-      text: '',
-      materialNumber: '',
-      materialSerialNumber: '',
-      materialDescription: '',
-      materialVolume: '',
-      materialWeight: '',
-      token: []
-    };
-    this.serviceKey = {
-      "type": "hyperledger-fabric",
-      "channelId": "dev1c306705-f53f-4dbb-aa05-acc057c9bf1bcore",
-      "serviceUrl": "https://hyperledger-fabric.cfapps.us10.hana.ondemand.com/api/v1",
-      "documentationUrl": "https://api.sap.com/shell/discover/contentpackage/SCPBlockchainTechnologies/api/hyperledger",
-      "oAuth": {
-        "clientId": "sb-2f1dce41-c872-48e8-8ee3-6d0dd7e2c2c2!b520|na-3a01f1e2-bc33-4e12-86a2-ffffaea79918!b33",
-        "clientSecret": "Yw+YrsdnLkUZbKtUbvf47Qk7pps=",
-        "url": "https://ebom.authentication.us10.hana.ondemand.com"
-      }
-    };
-    this.handleTextChange = this.handleTextChange.bind(this);
-    this.handleIdChange = this.handleIdChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
 
   state = {
     activeStep: 0,
