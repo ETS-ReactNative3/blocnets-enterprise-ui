@@ -3,8 +3,9 @@ import {
   BrowserRouter as Router,
   Route
 } from 'react-router-dom';
-import MainView from './components/main-view/main.view';
-import TrackerView from './components/tracker-view/tracker.view';
+import DocumentReviewEntryView from './components/document-review-and-entry-view/document.review.entry.view';
+import ShippingView from './components/shipping-view/shipping.view';
+import ReceivingView from './components/receiving-view/receiving.view';
 import EBOMView from './components/ebom-view/ebom.view';
 import logo from './blocknetwhite-1.png';
 import appBarLogo from './rsz_1blocknetwhite.png';
@@ -39,8 +40,12 @@ class App extends Component {
     this.setState({ show: 'home', open: false });
   };
 
-  showTrackerView = () => {
-    this.setState({ show: 'trackerview', open: false });
+  showShippingView = () => {
+    this.setState({ show: 'shippingview', open: false });
+  };
+
+  showReceivingView = () => {
+    this.setState({ show: 'receivingview', open: false });
   };
 
   showeBOMView = () => {
@@ -62,11 +67,11 @@ class App extends Component {
     }
 
     switch (this.state.show) {
-      case 'trackerview':
-        content = (<TrackerView />);
+      case 'shippingview':
+        content = (<ShippingView />);
         break;
-      case 'home':  
-        content = (<MainView />);
+      case 'receivingview':  
+        content = (<ReceivingView />);
         break;
       case 'ebomview':
         content =(<EBOMView />);
@@ -75,7 +80,7 @@ class App extends Component {
         content = (
           <Router>
             <div>
-              <Route exact path="/" component={MainView} />
+              <Route exact path="/" component={DocumentReviewEntryView} />
             </div>
           </Router>);
     }
@@ -99,9 +104,9 @@ class App extends Component {
             className="App-bar"
             title={<img src={appBarLogo} style={AppBarLogoStyle} alt="Blocnets" />}
           />
-          <MenuItem id="showMainViewId" onClick={this.showMainView}>Create New Block</MenuItem>
+          <MenuItem id="showShippingViewId" onClick={this.showShippingView}>Shipping</MenuItem>
           <hr />
-          <MenuItem id="showTrackerViewId" onClick={this.showTrackerView}>Track and Trace</MenuItem>
+          <MenuItem id="showReceivingViewId" onClick={this.showReceivingView}>Receiving</MenuItem>
           <hr />
           <MenuItem id="showeBOMViewId" onClick={this.showeBOMView}>eBOM</MenuItem>
         </Drawer>
