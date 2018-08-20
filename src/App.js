@@ -14,8 +14,17 @@ import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import Paper from 'material-ui/Paper';
+import Grid from '@material-ui/core/Grid';
 import { Toolbar, ToolbarTitle } from 'material-ui/Toolbar'
 import './App.css';
+import TextField from 'material-ui/TextField';
+import SearchIcon from '@material-ui/icons/Search';
+import { FormControl } from '@material-ui/core';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+
+
 
 const paperStyle = {
   height: '85%',
@@ -70,11 +79,11 @@ class App extends Component {
       case 'shippingview':
         content = (<ShippingView />);
         break;
-      case 'receivingview':  
+      case 'receivingview':
         content = (<ReceivingView />);
         break;
       case 'ebomview':
-        content =(<EBOMView />);
+        content = (<EBOMView />);
         break;
       default:
         content = (
@@ -88,12 +97,34 @@ class App extends Component {
     return (
       <div className="App">
         {/* Main navigation bar menu for components */}
-        <AppBar
+        <AppBar position="static"
           className="App-header"
           iconClassNameRight="muidocs-icon-navigation-expand-more"
-          title={<img src={logo} className="App-logo" alt="logo" />}
-          onLeftIconButtonClick={this.handleToggle}
-        />
+          onLeftIconButtonClick={this.handleToggle}>
+          <Grid container spacing={24}>
+            <Grid item xs>
+              <ToolbarTitle text={<img src={logo} className="App-logo" alt="logo" />} alt="Blocnets" />
+            </Grid>
+            <Grid item xs={6}>
+              <FormControl fullWidth>
+                <InputLabel htmlFor="search-with-icon-adornment">Search</InputLabel>
+                <Input
+                  id="search-with-icon-adornment"
+                  label="Search field"
+                  type="search"
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <SearchIcon />
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs>
+              User
+          </Grid>
+          </Grid>
+        </AppBar>
         {/* Side Drawer's navigation bar menu for viewing content */}
         <Drawer
           docked={false}
