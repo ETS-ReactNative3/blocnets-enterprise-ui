@@ -7,7 +7,10 @@ import FlatButton from 'material-ui/FlatButton';
 //import Toggle from 'material-ui/Toggle';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
 import axios from 'axios';
-
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import yellow from '@material-ui/core/colors/yellow';
 
 class ReceivingView extends Component {
     constructor(props) {
@@ -28,6 +31,8 @@ class ReceivingView extends Component {
             text: '',                                       // REST API - ID
             token: [],                                      // OAUTH 2.0 token
             dialogData: [],
+            materialID: '',
+            shipmentID: ''
         };
         this.serviceKey = {
             "type": "hyperledger-fabric",
@@ -40,7 +45,7 @@ class ReceivingView extends Component {
                 "url": "https://ebom.authentication.us10.hana.ondemand.com"
             }
         };
-        this.handleIdChange = this.handleIdChange.bind(this);
+        this.handleIDChange = this.handleIDChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -77,8 +82,8 @@ class ReceivingView extends Component {
         });
     };
 
-    handleIdChange(event) {
-        this.setState({ id: event.target.value });
+    handleIDChange(event) {
+        this.setState({ [event.target.name]: event.target.value });
     }
 
     handleSubmit(event) {
@@ -149,9 +154,6 @@ class ReceivingView extends Component {
     }
 
     render() {
-        const style = {
-            margin: 12,
-        };
 
         const actions = [
             <FlatButton
@@ -161,19 +163,45 @@ class ReceivingView extends Component {
             />,
         ];
 
+        const buttonTheme = createMuiTheme({
+            palette: {
+                primary: yellow,
+            },
+        });
+
         return (
-            <form onSubmit={this.handleSubmit} style={{ "marginTop": "5%" }}>
-                <TextField
-                    value={this.state.id} onChange={this.handleIdChange}
-                    type="text"
-                    hintText="Enter a material id here.."
-                    floatingLabelText="Material ID"
-                    floatingLabelFixed={true}
-                    style={{ "float": "left", "marginLeft": "5%" }}
-                />
-                <br />
-                <RaisedButton type="submit" label="Ship" style={style} value="Submit" />
-                < br />
+            <form onSubmit={this.handleSubmit}>
+                <div style={{padding: 24}}>
+                    <Grid container spacing={24}>
+                        <Grid item xs={3}>
+                            <TextField
+                                value={this.state.materialID} onChange={this.handleIDChange}
+                                type="text" name="materialID"
+                                floatingLabelText="Material ID"
+                                floatingLabelFixed={true}
+                                style={{ "float": "left" }}
+                            />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <TextField
+                                value={this.state.shipmentID} onChange={this.handleIDChange}
+                                type="text" name="shipmentID"
+                                floatingLabelText="Shipment ID"
+                                floatingLabelFixed={true}
+                                style={{ "float": "left" }}
+                            />
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={24}>
+                        <Grid item xs={12}>
+                            <MuiThemeProvider theme={buttonTheme}>
+                                <Button type="submit" label="Submit" value="Submit" variant="contained" color="primary" fullWidth={true} disabled={!this.state.materialID && !this.state.shipmentID}>
+                                    Submit
+                                </Button>
+                            </MuiThemeProvider>
+                        </Grid>
+                    </Grid>
+                </div>
                 <Snackbar
                     open={this.state.snackBar.open}
                     message={this.state.snackBar.message}
