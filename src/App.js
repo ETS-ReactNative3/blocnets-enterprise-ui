@@ -25,8 +25,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
-
-
 const theme = createMuiTheme({
   palette: {
       type: 'dark', // Switching the dark mode on is a single property value change.
