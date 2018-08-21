@@ -12,7 +12,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Snackbar from 'material-ui/Snackbar';
-import red from '@material-ui/core/colors/red';
 import axios from 'axios';
 
 class ReceivingView extends Component {
@@ -147,7 +146,7 @@ class ReceivingView extends Component {
                 </div>
                 <div style={{padding: 24}}>
                     <Grid container spacing={24}>
-                        <Grid item xs={3}>
+                        <Grid container item xs>
                             <TextField
                                 value={this.state.materialID} onChange={this.handleIDChange}
                                 type="text" name="materialID"
@@ -156,7 +155,7 @@ class ReceivingView extends Component {
                                 style={{ "float": "left" }}
                             />
                         </Grid>
-                        <Grid item xs={3}>
+                        <Grid container item xs>
                             <TextField
                                 value={this.state.shipmentID} onChange={this.handleIDChange}
                                 type="text" name="shipmentID"
@@ -167,9 +166,9 @@ class ReceivingView extends Component {
                         </Grid>
                     </Grid>
                     <Grid container spacing={24}>
-                        <Grid item xs={12}>
+                        <Grid container item xs>
                             <MuiThemeProvider theme={buttonTheme}>
-                                <Button type="submit" label="Submit" value="Submit" variant="contained" color="primary" fullWidth={true} disabled={!this.state.materialID && !this.state.shipmentID}>
+                                <Button type="submit" value="Submit" variant="contained" color="primary" fullWidth={true} disabled={!this.state.materialID && !this.state.shipmentID}>
                                     Submit
                                 </Button>
                             </MuiThemeProvider>
