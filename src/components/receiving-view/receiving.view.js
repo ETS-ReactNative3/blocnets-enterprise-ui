@@ -1,38 +1,35 @@
 import React, { Component } from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-import Snackbar from 'material-ui/Snackbar';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-//import Toggle from 'material-ui/Toggle';
-import { Card, CardTitle, CardText } from 'material-ui/Card';
-import axios from 'axios';
+import blocnetsLogo from "../../blocknetwhite-1.png";
 import Grid from '@material-ui/core/Grid';
+import TextField from 'material-ui/TextField';
 import Button from '@material-ui/core/Button';
 import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
+import Modal from '@material-ui/core/Modal';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Snackbar from 'material-ui/Snackbar';
+import red from '@material-ui/core/colors/red';
+import axios from 'axios';
 
 class ReceivingView extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
-            snackBar: {
+            showProgressLogo: false,
+            materialID: '',
+            shipmentID: '',
+            openModal: false,
+            count: 0,
+            snackbar: {
                 autoHideDuration: 2000,
                 message: '',
                 open: false,
             },
-            dialog: {
-                open: false,
-            },
-            legacy: {
-                expanded: false,
-            },
-            id: '',                                         // REST API - ID
-            text: '',                                       // REST API - ID
-            token: [],                                      // OAUTH 2.0 token
-            dialogData: [],
-            materialID: '',
-            shipmentID: ''
         };
         this.serviceKey = {
             "type": "hyperledger-fabric",
@@ -49,46 +46,13 @@ class ReceivingView extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleExpandChange = (expanded) => {
-        this.setState({
-            legacy: {
-                expanded: expanded
-            }
-        });
-    };
-
-    handleLegacyToggle = (event, toggle) => {
-        this.setState({
-            legacy: {
-                expanded: toggle
-            }
-        });
-    };
-
-    handleDialogClose = () => {
-        this.setState({
-            dialog: {
-                open: false
-            },
-        });
-    };
-
-    handleRequestClose = () => {
-        this.setState({
-            snackBar: {
-                open: false,
-                message: '',
-            },
-        });
-    };
-
     handleIDChange(event) {
         this.setState({ [event.target.name]: event.target.value });
     }
 
     handleSubmit(event) {
+        this.setState({ showProgressLogo: true });
         let chaincodeId = "1c306705-f53f-4dbb-aa05-acc057c9bf1b-com-sap-icn-blockchain-example-helloUniverse";
-
         // GET Authentication
         axios.get(this.serviceKey.oAuth.url + '/oauth/token?grant_type=client_credentials', {
             headers: {
@@ -98,7 +62,7 @@ class ReceivingView extends Component {
             }
         })
             .then((response) => {
-                this.setState({ token: response.data, });
+                this.setState({ token: response.data });
                 // GET the requested block
                 axios.get(this.serviceKey.serviceUrl + '/chaincodes/' + chaincodeId + '/latest/' + this.state.id, {
                     headers: {
@@ -111,27 +75,16 @@ class ReceivingView extends Component {
                     .then((response) => {
                         // response is all ready a javascript object
                         this.setState({
-                            dialogData: response.data.Text,
-                        });
-                        // Show Success Message
-                        this.setState({
-                            snackBar: {
-                                open: true,
-                                message: "Successfully received! Generated a new block!",
-                                autoHideDuration: 2000,
-                            }
-                        });
-                        // Show Data 
-                        this.setState({
-                            dialog: {
-                                open: true,
-                            }
+                            showProgressLogo: false,
+                            openModal: true
                         });
                     })
                     .catch((error) => {
                         console.log(error);
                         this.setState({
-                            snackBar: {
+                            showProgressLogo: false,
+                            openModal: false,
+                            snackbar: {
                                 open: true,
                                 message: 'Oh no! - ' + error,
                                 autoHideDuration: 2000,
@@ -141,36 +94,57 @@ class ReceivingView extends Component {
             })
             .catch((error) => {
                 this.setState({
-                    snackBar: {
+                    showProgressLogo: false,
+                    openModal: false,
+                    snackbar: {
                         open: true,
                         message: 'Oh no! - ' + error,
                         autoHideDuration: 2000,
                     }
                 });
             });
-
         event.preventDefault();
-
     }
+
+    createData(info1, info2) {
+        this.state.count += 1;
+        return { id: this.state.count, info1, info2 };
+    }
+
+    handleModalClose = () => {
+        this.setState({ openModal: false });
+    };
+
+    handleSnackbarClose = () => {
+        this.setState({
+            snackbar: {
+                open: false,
+                message: '',
+            },
+        });
+    };
 
     render() {
 
-        const actions = [
-            <FlatButton
-                label="Close"
-                default={true}
-                onClick={this.handleDialogClose}
-            />,
-        ];
-
         const buttonTheme = createMuiTheme({
             palette: {
-                primary: yellow,
+                primary: yellow
             },
         });
 
+        const rows = [
+            this.createData('Material ID', 'MAT0721'),
+            this.createData('Shipment ID', 'SHIP0112'),
+            this.createData('Address', '123 MAIN ST., ALPHARETTA, GA, 30041, US'),
+            this.createData('IP Address', '1.160.10.270'),
+            this.createData('Manual Shipping', 'YES'),
+        ];
+
         return (
             <form onSubmit={this.handleSubmit}>
+                <div>
+                    { this.state.showProgressLogo ? <img src={blocnetsLogo} className="App-logo-progress"/> : "" }
+                </div>
                 <div style={{padding: 24}}>
                     <Grid container spacing={24}>
                         <Grid item xs={3}>
@@ -202,27 +176,44 @@ class ReceivingView extends Component {
                         </Grid>
                     </Grid>
                 </div>
+                <Modal open={this.state.openModal} onClose={this.handleModalClose}>
+                    <div className="App-modal" style={{padding: 24}}>
+                        <Grid container justify="flex-end">
+                            <i className="material-icons" style={{ "cursor": "pointer" }} onClick={this.handleModalClose}>close</i>
+                        </Grid>
+                        <br/>
+                        <Grid container justify="center">
+                            <Paper>
+                                <Table>
+                                    <TableBody>
+                                        {rows.map(row => {
+                                            return (
+                                                <TableRow key={row.id}>
+                                                    <TableCell>
+                                                        {row.info1}
+                                                    </TableCell>
+                                                    <TableCell>{row.info2}</TableCell>
+                                                </TableRow>
+                                            );
+                                        })}
+                                    </TableBody>
+                                </Table>
+                            </Paper>
+                        </Grid>
+                    </div>
+                </Modal>
                 <Snackbar
-                    open={this.state.snackBar.open}
-                    message={this.state.snackBar.message}
-                    autoHideDuration={this.state.snackBar.autoHideDuration}
-                    onRequestClose={this.handleRequestClose}
+                    open={this.state.snackbar.open}
+                    message={this.state.snackbar.message}
+                    autoHideDuration={this.state.snackbar.autoHideDuration}
+                    onRequestClose={this.handleSnackbarClose}
+                    bodyStyle={{ backgroundColor: 'red' }}
                 />
-                <Dialog
-                    title="Block Information "
-                    actions={actions}
-                    modal={false}
-                    open={this.state.dialog.open}
-                    onRequestClose={this.handleClose}
-                >
-                    <Card>
-                        <CardText>{this.state.dialogData}</CardText>
-                    </Card>
-                    < br />
-                </Dialog>
             </form >
         );
+
     }
+
 }
 
 export default ReceivingView;

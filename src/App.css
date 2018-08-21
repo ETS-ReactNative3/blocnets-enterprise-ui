@@ -32,6 +32,17 @@ body {
   height: 65px;
 }
 
+.App-logo-progress {
+  animation: App-logo-spin infinite 5s linear;
+  height: 40px;
+  display: block;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+}
+
 .App-header {
   background-color: #222 !important;
   height: 115px;
@@ -60,4 +71,15 @@ body {
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.App-modal {
+  background-color: #FFFFFF !important;
+  border-color: #000000 !important;
+  height: 40%;
+  width: 40%;
+  position: absolute;
+  margin: 5% auto;
+  left: 0;
+  right: 0;
 }
