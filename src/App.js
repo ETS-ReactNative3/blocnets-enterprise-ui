@@ -17,14 +17,21 @@ import Paper from 'material-ui/Paper';
 import Grid from '@material-ui/core/Grid';
 import { Toolbar, ToolbarTitle } from 'material-ui/Toolbar'
 import './App.css';
-import TextField from 'material-ui/TextField';
 import SearchIcon from '@material-ui/icons/Search';
+import UserIcon from '@material-ui/icons/AccountCircleRounded';
 import { FormControl } from '@material-ui/core';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 
+
+const theme = createMuiTheme({
+  palette: {
+      type: 'dark', // Switching the dark mode on is a single property value change.
+  },
+});
 
 const paperStyle = {
   height: '85%',
@@ -33,6 +40,10 @@ const paperStyle = {
   textAlign: 'center',
   display: 'inline-block',
 };
+
+const userIconStyle = {
+  transform: "scale(2.1)"
+}
 
 class App extends Component {
   constructor(props) {
@@ -96,13 +107,14 @@ class App extends Component {
 
     return (
       <div className="App">
+      <MuiThemeProvider theme={theme}>
         {/* Main navigation bar menu for components */}
         <AppBar position="static"
           className="App-header"
           iconClassNameRight="muidocs-icon-navigation-expand-more"
           onLeftIconButtonClick={this.handleToggle}>
           <Grid container spacing={24}>
-            <Grid item xs>
+            <Grid item xs={3}>
               <ToolbarTitle text={<img src={logo} className="App-logo" alt="logo" />} alt="Blocnets" />
             </Grid>
             <Grid item xs={6}>
@@ -120,11 +132,12 @@ class App extends Component {
                 />
               </FormControl>
             </Grid>
-            <Grid item xs>
-              User
-          </Grid>
+            <Grid item xs={3}>
+              <UserIcon style={userIconStyle}/>
+            </Grid>
           </Grid>
         </AppBar>
+        </MuiThemeProvider>
         {/* Side Drawer's navigation bar menu for viewing content */}
         <Drawer
           docked={false}
