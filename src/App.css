@@ -72,14 +72,3 @@ body {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-
-.App-modal {
-  background-color: #FFFFFF !important;
-  border-color: #000000 !important;
-  height: 40%;
-  width: 40%;
-  position: absolute;
-  margin: 5% auto;
-  left: 0;
-  right: 0;
-}

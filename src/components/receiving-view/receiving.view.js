@@ -5,7 +5,7 @@ import TextField from 'material-ui/TextField';
 import Button from '@material-ui/core/Button';
 import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
-import Modal from '@material-ui/core/Modal';
+import Dialog from '@material-ui/core/Dialog';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -23,7 +23,7 @@ class ReceivingView extends Component {
             showProgressLogo: false,
             materialID: '',
             shipmentID: '',
-            openModal: false,
+            openDialog: false,
             count: 0,
             snackbar: {
                 autoHideDuration: 2000,
@@ -76,14 +76,14 @@ class ReceivingView extends Component {
                         // response is all ready a javascript object
                         this.setState({
                             showProgressLogo: false,
-                            openModal: true
+                            openDialog: true
                         });
                     })
                     .catch((error) => {
                         console.log(error);
                         this.setState({
                             showProgressLogo: false,
-                            openModal: false,
+                            openDialog: false,
                             snackbar: {
                                 open: true,
                                 message: 'Oh no! - ' + error,
@@ -95,7 +95,7 @@ class ReceivingView extends Component {
             .catch((error) => {
                 this.setState({
                     showProgressLogo: false,
-                    openModal: false,
+                    openDialog: false,
                     snackbar: {
                         open: true,
                         message: 'Oh no! - ' + error,
@@ -111,8 +111,8 @@ class ReceivingView extends Component {
         return { id: this.state.count, info1, info2 };
     }
 
-    handleModalClose = () => {
-        this.setState({ openModal: false });
+    handleDialogClose = () => {
+        this.setState({ openDialog: false });
     };
 
     handleSnackbarClose = () => {
@@ -176,32 +176,36 @@ class ReceivingView extends Component {
                         </Grid>
                     </Grid>
                 </div>
-                <Modal open={this.state.openModal} onClose={this.handleModalClose}>
-                    <div className="App-modal" style={{padding: 24}}>
+                <Dialog open={this.state.openDialog} onClose={this.handleDialogClose}>
+                    <div style={{padding: 24}}>
                         <Grid container justify="flex-end">
-                            <i className="material-icons" style={{ "cursor": "pointer" }} onClick={this.handleModalClose}>close</i>
+                            <Grid item>
+                                <i className="material-icons" style={{ "cursor": "pointer" }} onClick={this.handleDialogClose}>close</i>
+                            </Grid>
                         </Grid>
                         <br/>
                         <Grid container justify="center">
-                            <Paper>
-                                <Table>
-                                    <TableBody>
-                                        {rows.map(row => {
-                                            return (
-                                                <TableRow key={row.id}>
-                                                    <TableCell>
-                                                        {row.info1}
-                                                    </TableCell>
-                                                    <TableCell>{row.info2}</TableCell>
-                                                </TableRow>
-                                            );
-                                        })}
-                                    </TableBody>
-                                </Table>
-                            </Paper>
+                            <Grid item xs={12}>
+                                <Paper>
+                                    <Table>
+                                        <TableBody>
+                                            {rows.map(row => {
+                                                return (
+                                                    <TableRow key={row.id}>
+                                                        <TableCell>
+                                                            {row.info1}
+                                                        </TableCell>
+                                                        <TableCell>{row.info2}</TableCell>
+                                                    </TableRow>
+                                                );
+                                            })}
+                                        </TableBody>
+                                    </Table>
+                                </Paper>
+                            </Grid>
                         </Grid>
                     </div>
-                </Modal>
+                </Dialog>
                 <Snackbar
                     open={this.state.snackbar.open}
                     message={this.state.snackbar.message}
