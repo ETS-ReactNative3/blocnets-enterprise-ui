@@ -11,23 +11,26 @@ import logo from './blocknetwhite-1.png';
 import appBarLogo from './rsz_1blocknetwhite.png';
 import paperLogo from './blocnets-logo.png'
 import AppBar from 'material-ui/AppBar';
+import Badge from '@material-ui/core/Badge';
 import Drawer from 'material-ui/Drawer';
+import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
+import Input from '@material-ui/core/Input';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from 'material-ui/MenuItem';
 import Paper from 'material-ui/Paper';
-import Grid from '@material-ui/core/Grid';
 import { Toolbar, ToolbarTitle } from 'material-ui/Toolbar'
 import './App.css';
 import SearchIcon from '@material-ui/icons/Search';
 import UserIcon from '@material-ui/icons/AccountCircleRounded';
 import { FormControl } from '@material-ui/core';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import MailIcon from '@material-ui/icons/Mail';
 
 const theme = createMuiTheme({
   palette: {
-      type: 'dark', // Switching the dark mode on is a single property value change.
+    type: 'dark', // Switching the dark mode on is a single property value change.
   },
 });
 
@@ -41,6 +44,10 @@ const paperStyle = {
 
 const userIconStyle = {
   transform: "scale(2.1)"
+}
+
+const messageIconStyle= {
+  transform: "scale(1.0)"
 }
 
 class App extends Component {
@@ -105,36 +112,43 @@ class App extends Component {
 
     return (
       <div className="App">
-      <MuiThemeProvider theme={theme}>
-        {/* Main navigation bar menu for components */}
-        <AppBar position="static"
-          className="App-header"
-          iconClassNameRight="muidocs-icon-navigation-expand-more"
-          onLeftIconButtonClick={this.handleToggle}>
-          <Grid container spacing={24}>
-            <Grid item xs={3}>
-              <ToolbarTitle text={<img src={logo} className="App-logo" alt="logo" />} alt="Blocnets" />
+        <MuiThemeProvider theme={theme}>
+          {/* Main navigation bar menu for components */}
+          <AppBar position="static"
+            className="App-header"
+            iconClassNameRight="muidocs-icon-navigation-expand-more"
+            onLeftIconButtonClick={this.handleToggle}>
+            <Grid container spacing={24}>
+              <Grid item xs={3}>
+                <ToolbarTitle text={<img src={logo} className="App-logo" alt="logo" />} alt="Blocnets" />
+              </Grid>
+              <Grid item xs={4}>
+                <FormControl fullWidth>
+                  <InputLabel htmlFor="search-with-icon-adornment">Search</InputLabel>
+                  <Input
+                    id="search-with-icon-adornment"
+                    label="Search field"
+                    type="search"
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <SearchIcon />
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={3}>
+                <IconButton aria-label="4 pending messages">
+                  <Badge badgeContent={4} color="secondary" style={messageIconStyle}>
+                    <MailIcon />
+                  </Badge>
+                </IconButton>
+              </Grid>
+              <Grid item xs={2}>
+                <UserIcon style={userIconStyle} />
+              </Grid>
             </Grid>
-            <Grid item xs={6}>
-              <FormControl fullWidth>
-                <InputLabel htmlFor="search-with-icon-adornment">Search</InputLabel>
-                <Input
-                  id="search-with-icon-adornment"
-                  label="Search field"
-                  type="search"
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <SearchIcon />
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={3}>
-              <UserIcon style={userIconStyle}/>
-            </Grid>
-          </Grid>
-        </AppBar>
+          </AppBar>
         </MuiThemeProvider>
         {/* Side Drawer's navigation bar menu for viewing content */}
         <Drawer
