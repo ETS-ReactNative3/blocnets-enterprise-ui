@@ -146,7 +146,7 @@ class ReceivingView extends Component {
                 </div>
                 <div style={{padding: 24}}>
                     <Grid container spacing={24}>
-                        <Grid container item xs>
+                        <Grid container item xs={6} sm={3}>
                             <TextField
                                 value={this.state.materialID} onChange={this.handleIDChange}
                                 type="text" name="materialID"
@@ -155,7 +155,7 @@ class ReceivingView extends Component {
                                 style={{ "float": "left" }}
                             />
                         </Grid>
-                        <Grid container item xs>
+                        <Grid container item xs={6} sm={3}>
                             <TextField
                                 value={this.state.shipmentID} onChange={this.handleIDChange}
                                 type="text" name="shipmentID"
@@ -166,7 +166,7 @@ class ReceivingView extends Component {
                         </Grid>
                     </Grid>
                     <Grid container spacing={24}>
-                        <Grid container item xs>
+                        <Grid container item xs={12}>
                             <MuiThemeProvider theme={buttonTheme}>
                                 <Button type="submit" value="Submit" variant="contained" color="primary" fullWidth={true} disabled={!this.state.materialID && !this.state.shipmentID}>
                                     Submit
@@ -210,7 +210,7 @@ class ReceivingView extends Component {
                     message={this.state.snackbar.message}
                     autoHideDuration={this.state.snackbar.autoHideDuration}
                     onRequestClose={this.handleSnackbarClose}
-                    bodyStyle={{ backgroundColor: 'red' }}
+                    bodyStyle={{ backgroundColor: "red" }}
                 />
             </form >
         );
