@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import blocnetsLogo from "../../blocknetwhite-1.png";
 import Grid from '@material-ui/core/Grid';
 import TextField from 'material-ui/TextField';
 import Button from '@material-ui/core/Button';
-import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import {withStyles, MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
 import Dialog from '@material-ui/core/Dialog';
 import Table from '@material-ui/core/Table';
@@ -46,22 +46,23 @@ class ReceivingView extends Component {
     }
 
     handleIDChange(event) {
-        this.setState({ [event.target.name]: event.target.value });
+        this.setState({[event.target.name]: event.target.value});
     }
 
     handleSubmit(event) {
-        this.setState({ showProgressLogo: true });
+        this.setState({showProgressLogo: true});
         let chaincodeId = "1c306705-f53f-4dbb-aa05-acc057c9bf1b-com-sap-icn-blockchain-example-helloUniverse";
         // GET Authentication
         axios.get(this.serviceKey.oAuth.url + '/oauth/token?grant_type=client_credentials', {
             headers: {
-                'Authorization': 'Basic ' + btoa(this.serviceKey.oAuth.clientId + ":" + this.serviceKey.oAuth.clientSecret),
+                'Authorization': 'Basic ' + btoa(this.serviceKey.oAuth.clientId + ":"
+                    + this.serviceKey.oAuth.clientSecret),
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Accept': 'application/json'
             }
         })
             .then((response) => {
-                this.setState({ token: response.data });
+                this.setState({token: response.data});
                 // GET the requested block
                 axios.get(this.serviceKey.serviceUrl + '/chaincodes/' + chaincodeId + '/latest/' + this.state.id, {
                     headers: {
@@ -107,11 +108,11 @@ class ReceivingView extends Component {
 
     createData(info1, info2) {
         this.state.count += 1;
-        return { id: this.state.count, info1, info2 };
+        return {id: this.state.count, info1, info2};
     }
 
     handleDialogClose = () => {
-        this.setState({ openDialog: false });
+        this.setState({openDialog: false});
     };
 
     handleSnackbarClose = () => {
@@ -142,33 +143,30 @@ class ReceivingView extends Component {
         return (
             <form onSubmit={this.handleSubmit}>
                 <div>
-                    { this.state.showProgressLogo ? <img src={blocnetsLogo} className="App-logo-progress"/> : "" }
+                    {this.state.showProgressLogo ? <img src={blocnetsLogo} className="App-logo-progress"/> : ""}
                 </div>
                 <div style={{padding: 24}}>
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <TextField
-                                value={this.state.materialID} onChange={this.handleIDChange}
-                                type="text" name="materialID"
-                                floatingLabelText="Material ID"
-                                floatingLabelFixed={true}
-                                style={{ "float": "left" }}
+                                value={this.state.materialID} onChange={this.handleIDChange} type="text"
+                                name="materialID" floatingLabelText="Material ID" floatingLabelFixed={true}
+                                style={{"float": "left"}} hintText=""
                             />
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <TextField
-                                value={this.state.shipmentID} onChange={this.handleIDChange}
-                                type="text" name="shipmentID"
-                                floatingLabelText="Shipment ID"
-                                floatingLabelFixed={true}
-                                style={{ "float": "left" }}
+                                value={this.state.shipmentID} onChange={this.handleIDChange} type="text"
+                                name="shipmentID" floatingLabelText="Shipment ID" floatingLabelFixed={true}
+                                style={{"float": "left"}} hintText=""
                             />
                         </Grid>
                     </Grid>
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
                             <MuiThemeProvider theme={buttonTheme}>
-                                <Button type="submit" value="Submit" variant="contained" color="primary" fullWidth={true} disabled={!this.state.materialID && !this.state.shipmentID}>
+                                <Button type="submit" value="Submit" variant="contained" color="primary"
+                                        fullWidth={true} disabled={!this.state.materialID && !this.state.shipmentID}>
                                     Submit
                                 </Button>
                             </MuiThemeProvider>
@@ -179,7 +177,8 @@ class ReceivingView extends Component {
                     <div style={{padding: 24}}>
                         <Grid container justify="flex-end">
                             <Grid item>
-                                <i className="material-icons" style={{ "cursor": "pointer" }} onClick={this.handleDialogClose}>close</i>
+                                <i className="material-icons" style={{"cursor": "pointer"}}
+                                   onClick={this.handleDialogClose}>close</i>
                             </Grid>
                         </Grid>
                         <br/>
@@ -206,13 +205,11 @@ class ReceivingView extends Component {
                     </div>
                 </Dialog>
                 <Snackbar
-                    open={this.state.snackbar.open}
-                    message={this.state.snackbar.message}
-                    autoHideDuration={this.state.snackbar.autoHideDuration}
-                    onRequestClose={this.handleSnackbarClose}
-                    bodyStyle={{ backgroundColor: "red" }}
+                    open={this.state.snackbar.open} message={this.state.snackbar.message}
+                    autoHideDuration={this.state.snackbar.autoHideDuration} onRequestClose={this.handleSnackbarClose}
+                    bodyStyle={{backgroundColor: "red"}}
                 />
-            </form >
+            </form>
         );
 
     }
