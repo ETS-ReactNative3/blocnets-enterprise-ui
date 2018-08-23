@@ -1,211 +1,536 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Step, Stepper, StepLabel, StepContent } from 'material-ui/Stepper';
+import {Step, Stepper, StepLabel, StepContent} from 'material-ui/Stepper';
 import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
-import Checkbox from 'material-ui/Checkbox';
+
 import Divider from 'material-ui/Divider';
 import axios from 'axios';
 
+import Grid from '@material-ui/core/Grid';
+import {withStyles, MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import yellow from '@material-ui/core/colors/yellow';
+import Button from '@material-ui/core/Button';
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from 'material-ui/Checkbox';
+
 function getSteps() {
-  return ['Material Dimensions',
-    'Material Handling Characteristics',
-    'Material Other',
-    'Material Quality Standards',
-    'Supplier Customer Definition',
-    'Supplier Payment Terms',
-    'Supplier Order Quantities Controls',
-    'Suppliers'];
+    return ['Material Dimensions',
+        'Material Handling Characteristics',
+        'Material Other',
+        'Material Quality Standards',
+        'Supplier Customer Definition',
+        'Supplier Payment Terms',
+        'Supplier Order Quantities Controls',
+        'Suppliers'];
 }
 
 function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return (
-        <div>
-          <TextField type="text" hintText="Enter volume amount " floatingLabelText="Volume" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter weight amount " floatingLabelText="Weight" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter length amount " floatingLabelText="Length" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter width amount " floatingLabelText="Width" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter heigth amount " floatingLabelText="Height" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-        </div>);
-    case 1:
-      return (
-        <div>
-          <TextField type="text" hintText="Enter the temperature limit" floatingLabelText="Temp Limits" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter shock/vibration limits" floatingLabelText="Shock/Vibration" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter altitude restrictions" floatingLabelText="Altitude Restrictions" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter compression restrictions" floatingLabelText="Compression Restrictions" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <Checkbox label="Always Upright" />
-        </div>);
-    case 2:
-      return (
-        <div>
-          <Checkbox label="METALLIC" />
-          <Divider />
-          <Checkbox label="HASMAT" />
-          <Divider />
-          <Checkbox label="MAGNETIC" />
-        </div>
-      );
-    case 3:
-      return (
-        <div>
-          <TextField type="text" hintText="Enter Length Tolerance" floatingLabelText="Length Tolerance" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter Round Tolerance" floatingLabelText="Round Tolerance" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter Non-skid Tolerance" floatingLabelText="Non-skid Tolerance" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-        </div>
-      );
-    case 4:
-      return (
-        <div>
-          <TextField type="text" hintText="Enter SHIP TO street address" floatingLabelText="Street Address" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter SHIP TO IP address" floatingLabelText="IP Address" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter BILL TO street address" floatingLabelText="Street Address" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter BILL TO IP address" floatingLabelText="IP Address" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-        </div>
-      );
-    case 5:
-      return (
-        <div>
-          <TextField type="text" hintText="Enter Payment Terms" floatingLabelText="Payment Terms" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-        </div>);
-    case 6:
-      return (
-        <div>
-          <TextField type="text" hintText="Type here..." floatingLabelText="Minimum Economic Order Quantities" style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Type here..." floatingLabelText="Maximum Economic Order Quantities" style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Type here..." floatingLabelText="Maximum Economic Product Withdraw Rate" style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Type here..." floatingLabelText="Minimum Order Lead Times" style={{ "float": "left", "marginLeft": "5%" }} />
-        </div>
-      );
-    case 7:
-      return (
-        <div>
-          <TextField type="text" hintText="Enter IP Address / Street Address" floatingLabelText="IP Address/Street Address" style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter info here..." floatingLabelText="Material Supplied Per IP Address" style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter Supplier Payment Terms" floatingLabelText="Supplier Payment Terms" style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter Supplier Order Policy" floatingLabelText="Supplier Order Policy" style={{ "float": "left", "marginLeft": "5%" }} />
-        </div>
-      );
-    default:
-      return 'Unknown step';
-  }
+    switch (step) {
+        case 0:
+            return (
+                <div>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="volume" floatingLabelText="Volume" floatingLabelFixed={true}
+                                style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="weight" floatingLabelText="Weight" floatingLabelFixed={true}
+                                style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="length" floatingLabelText="Length" floatingLabelFixed={true}
+                                style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="width" floatingLabelText="Width" floatingLabelFixed={true}
+                                style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="height" floatingLabelText="Height" floatingLabelFixed={true}
+                                style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                    </Grid>
+                </div>
+            );
+        case 1:
+            return (
+                <div>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="temperatureLimits" floatingLabelText="Temperature Limits"
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="shockVibration" floatingLabelText="Shock/Vibration"
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="altitudeRestrictions" floatingLabelText="Altitude Restrictions"
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="compressionRestrictions"
+                                floatingLabelText="Compression Restrictions" floatingLabelFixed={true}
+                                style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <FormGroup row>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            name="alwaysUpright" color="default"
+                                        />
+                                    }
+                                />
+                            </FormGroup>
+                            Always Upright
+                        </Grid>
+                    </Grid>
+                </div>
+            );
+        case 2:
+            return (
+                <div>
+                    <br/>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <FormGroup row>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            name="metallic" color="default"
+                                        />
+                                    }
+                                />
+                            </FormGroup>
+                            Metallic
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <FormGroup row>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            name="hazmat" color="default"
+                                        />
+                                    }
+                                />
+                            </FormGroup>
+                            Hazmat
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <FormGroup row>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            name="magnetic" color="default"
+                                        />
+                                    }
+                                />
+                            </FormGroup>
+                            Magnetic
+                        </Grid>
+                    </Grid>
+                </div>
+            );
+        case 3:
+            return (
+                <div>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="lengthTolerance" floatingLabelText="Length Tolerance"
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="roundTolerance" floatingLabelText="Round Tolerance"
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="nonSkidTolerance" floatingLabelText="Non-Skid Tolerance"
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                    </Grid>
+                </div>
+            );
+        case 4:
+            return (
+                <div>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="shipAddressLine1" floatingLabelText="Ship To Address"
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="shipAddressLine2" floatingLabelText=" "
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText="Address Line 2"
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="shipCity" floatingLabelText=" "
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText="City"
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="shipAddressState" floatingLabelText=" "
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText="State"
+                            />
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="shipPostalCode" floatingLabelText=" "
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText="Postal Code"
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="shipCountry" floatingLabelText=" "
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText="Country"
+                            />
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="shipIPAddress" floatingLabelText="Ship To IP Address"
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="billAddressLine1" floatingLabelText="Bill To Address"
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="billAddressLine2" floatingLabelText=" "
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText="Address Line 2"
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="billCity" floatingLabelText=" "
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText="City"
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="billAddressState" floatingLabelText=" "
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText="State"
+                            />
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="billPostalCode" floatingLabelText=" "
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText="Postal Code"
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="billCountry" floatingLabelText=" "
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText="Country"
+                            />
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="billIPAddress" floatingLabelText="Bill To IP Address"
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                    </Grid>
+
+
+                </div>
+            );
+        case 5:
+            return (
+                <div>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="paymentTerms" floatingLabelText="Payment Terms"
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                    </Grid>
+                </div>);
+        case 6:
+            return (
+                <div>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={12} sm={6}>
+                            <TextField
+                                type="text" name="minEOQuantities" floatingLabelText="Minimum Economic Order Quantities"
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText="" fullWidth={true}
+                            />
+                        </Grid>
+                        <Grid container item xs={12} sm={6}>
+                            <TextField
+                                type="text" name="maxEOQuantities" floatingLabelText="Maximum Economic Order Quantities"
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText="" fullWidth={true}
+                            />
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={12} sm={6}>
+                            <TextField
+                                type="text" name="maxEPWithdrawRate" floatingLabelText="Maximum Economic Product Withdraw Rate"
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText="" fullWidth={true}
+                            />
+                        </Grid>
+                        <Grid container item xs={12} sm={6}>
+                            <TextField
+                                type="text" name="minOrderLeadTimes" floatingLabelText="Minimum Order Lead Times"
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                    </Grid>
+                </div>
+            );
+        case 7:
+            return (
+                <div>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="addressLine1" floatingLabelText="Address"
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="addressLine2" floatingLabelText=" "
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText="Address Line 2"
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="city" floatingLabelText=" "
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText="City"
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="addressState" floatingLabelText=" "
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText="State"
+                            />
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="postalCode" floatingLabelText=" "
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText="Postal Code"
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="country" floatingLabelText=" "
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText="Country"
+                            />
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="ipAddress" floatingLabelText="IP Address"
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="matSupPerIPAddress" floatingLabelText="Material Supplied Per IP Address"
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="supPaymentTerms" floatingLabelText="Supplier Payment Terms"
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text" name="supOrderPolicy" floatingLabelText="Supplier Order Policy"
+                                floatingLabelFixed={true} style={{"float": "left"}} hintText=""
+                            />
+                        </Grid>
+                    </Grid>
+                </div>
+            );
+        default:
+            return 'Unknown step';
+    }
 }
 
 class EBOMView extends React.Component {
 
-  state = {
-    activeStep: 0,
-  };
+    state = {
+        activeStep: 0,
+        volume: '',
+        weight: '',
+        length: '',
+        width: '',
+        height: ''
+    };
 
-  handleNext = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep + 1,
-    }));
-  };
+    handleNext = () => {
+        this.setState(state => ({
+            activeStep: state.activeStep + 1,
+        }));
+    };
 
-  handleBack = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep - 1,
-    }));
-  };
+    handleBack = () => {
+        this.setState(state => ({
+            activeStep: state.activeStep - 1,
+        }));
+    };
 
-  handleReset = () => {
-    this.setState({
-      activeStep: 0,
-    });
-  };
+    handleReset = () => {
+        this.setState({
+            activeStep: 0,
+        });
+    };
 
-  render() {
-    const styles = theme => ({
-      root: {
-        width: '90%',
-      },
-      button: {
-        marginTop: theme.spacing.unit,
-        marginRight: theme.spacing.unit,
-      },
-      actionsContainer: {
-        marginBottom: theme.spacing.unit * 2,
-      },
-      resetContainer: {
-        padding: theme.spacing.unit * 3,
-      },
-    });
-    const steps = getSteps();
-    const { activeStep } = this.state;
+    render() {
+        const styles = theme => ({
+            root: {
+                width: '90%',
+            },
+            button: {
+                marginTop: theme.spacing.unit,
+                marginRight: theme.spacing.unit,
+            },
+            actionsContainer: {
+                marginBottom: theme.spacing.unit * 2,
+            },
+            resetContainer: {
+                padding: theme.spacing.unit * 3,
+            },
+        });
+        const steps = getSteps();
+        const {activeStep} = this.state;
 
-    return (
-      <div className={styles.root}>
-        <Stepper activeStep={activeStep} orientation="vertical">
-          {steps.map((label, index) => {
-            return (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-                <StepContent>
-                  <div>{getStepContent(index)}</div>
-                  <div className={styles.actionsContainer}>
-                    <div>
-                      <FlatButton
-                        disabled={activeStep === 0}
-                        onClick={this.handleBack}
-                        className={styles.button}
-                      >
-                        Back
-                      </FlatButton>
-                      <FlatButton
-                        variant="contained"
-                        color="primary"
-                        onClick={this.handleNext}
-                        className={styles.button}
-                      >
-                        {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                      </FlatButton>
-                    </div>
-                  </div>
-                </StepContent>
-              </Step>
-            );
-          })}
-        </Stepper>
-        {activeStep === steps.length && (
-          <Paper square elevation={0} className={styles.resetContainer}>
-            <div>All steps completed - you&quot;re finished</div>
-            <FlatButton onClick={this.handleReset} className={styles.button}>
-              Reset
-            </FlatButton>
-          </Paper>
-        )}
-      </div>
-    );
-  }
+        const buttonTheme = createMuiTheme({
+            palette: {
+                primary: yellow
+            },
+        });
+
+        return (
+            <div className={styles.root}>
+                <div style={{padding: 24}}>
+                    <Grid container spacing={24}>
+                        <Grid container item xs>
+                            <TextField
+                                type="text" name="materialID" floatingLabelText="Material ID"
+                                floatingLabelFixed={true} style={{"float": "left"}}
+                            />
+                        </Grid>
+                    </Grid>
+                </div>
+                <Stepper activeStep={activeStep} orientation="vertical">
+                    {steps.map((label, index) => {
+                        return (
+                            <Step key={label}>
+                                <StepLabel>{label}</StepLabel>
+                                <StepContent>
+                                    <div>{getStepContent(index)}</div>
+                                    <div className={styles.actionsContainer}>
+                                        <div>
+                                            <br/>
+                                            <Grid container spacing={24}>
+                                                <Grid container item xs={12} sm={3}>
+                                                    <Grid container xs>
+                                                        <MuiThemeProvider theme={buttonTheme}>
+                                                            <Button type="submit" value="Submit" variant="contained"
+                                                                    color="primary" disabled={activeStep === 0}
+                                                                    onClick={this.handleBack} className={styles.button}>
+                                                                Back
+                                                            </Button>
+                                                        </MuiThemeProvider>
+                                                    </Grid>
+                                                    <Grid container xs>
+                                                        <MuiThemeProvider theme={buttonTheme}>
+                                                            <Button type="submit" value="Submit" variant="contained"
+                                                                    color="primary"
+                                                                    onClick={this.handleNext} className={styles.button}>
+                                                                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                                                            </Button>
+                                                        </MuiThemeProvider>
+                                                    </Grid>
+                                                </Grid>
+                                            </Grid>
+                                            <br/>
+                                            <br/>
+                                        </div>
+                                    </div>
+                                </StepContent>
+                            </Step>
+                        );
+                    })}
+                </Stepper>
+                {activeStep === steps.length && (
+                    <Paper square elevation={0} className={styles.resetContainer}>
+                        <div>All steps completed - you&quot;re finished</div>
+                        <FlatButton onClick={this.handleReset} className={styles.button}>
+                            Reset
+                        </FlatButton>
+                    </Paper>
+                )}
+            </div>
+        );
+    }
 }
 
 EBOMView.propTypes = {
-  classes: PropTypes.object,
+    classes: PropTypes.object,
 };
 
 export default EBOMView;
