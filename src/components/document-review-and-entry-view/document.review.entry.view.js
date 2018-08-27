@@ -6,138 +6,59 @@ import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import Checkbox from 'material-ui/Checkbox';
 import Divider from 'material-ui/Divider';
+import Dialog from '@material-ui/core/Dialog';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
+import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
 
-function getSteps() {
-  return ['Material Dimensions',
-    'Material Handling Characteristics',
-    'Material Other',
-    'Material Quality Standards',
-    'Supplier Customer Definition',
-    'Supplier Payment Terms',
-    'Supplier Order Quantities Controls',
-    'Suppliers'];
-}
-
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return (
-        <div>
-          <TextField type="text" hintText="Enter volume amount " floatingLabelText="Volume" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter weight amount " floatingLabelText="Weight" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter length amount " floatingLabelText="Length" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter width amount " floatingLabelText="Width" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter heigth amount " floatingLabelText="Height" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-        </div>);
-    case 1:
-      return (
-        <div>
-          <TextField type="text" hintText="Enter the temperature limit" floatingLabelText="Temp Limits" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter shock/vibration limits" floatingLabelText="Shock/Vibration" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter altitude restrictions" floatingLabelText="Altitude Restrictions" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter compression restrictions" floatingLabelText="Compression Restrictions" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <Checkbox label="Always Upright" />
-        </div>);
-    case 2:
-      return (
-        <div>
-          <Checkbox label="METALLIC" />
-          <Divider />
-          <Checkbox label="HASMAT" />
-          <Divider />
-          <Checkbox label="MAGNETIC" />
-        </div>
-      );
-    case 3:
-      return (
-        <div>
-          <TextField type="text" hintText="Enter Length Tolerance" floatingLabelText="Length Tolerance" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter Round Tolerance" floatingLabelText="Round Tolerance" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter Non-skid Tolerance" floatingLabelText="Non-skid Tolerance" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-        </div>
-      );
-    case 4:
-      return (
-        <div>
-          <TextField type="text" hintText="Enter SHIP TO street address" floatingLabelText="Street Address" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter SHIP TO IP address" floatingLabelText="IP Address" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter BILL TO street address" floatingLabelText="Street Address" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter BILL TO IP address" floatingLabelText="IP Address" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-        </div>
-      );
-    case 5:
-      return (
-        <div>
-          <TextField type="text" hintText="Enter Payment Terms" floatingLabelText="Payment Terms" floatingLabelFixed={true} style={{ "float": "left", "marginLeft": "5%" }} />
-        </div>);
-    case 6:
-      return (
-        <div>
-          <TextField type="text" hintText="Type here..." floatingLabelText="Minimum Economic Order Quantities" style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Type here..." floatingLabelText="Maximum Economic Order Quantities" style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Type here..." floatingLabelText="Maximum Economic Product Withdraw Rate" style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Type here..." floatingLabelText="Minimum Order Lead Times" style={{ "float": "left", "marginLeft": "5%" }} />
-        </div>
-      );
-    case 7:
-      return (
-        <div>
-          <TextField type="text" hintText="Enter IP Address / Street Address" floatingLabelText="IP Address/Street Address" style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter info here..." floatingLabelText="Material Supplied Per IP Address" style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter Supplier Payment Terms" floatingLabelText="Supplier Payment Terms" style={{ "float": "left", "marginLeft": "5%" }} />
-          <Divider />
-          <TextField type="text" hintText="Enter Supplier Order Policy" floatingLabelText="Supplier Order Policy" style={{ "float": "left", "marginLeft": "5%" }} />
-        </div>
-      );
-    default:
-      return 'Unknown step';
-  }
-}
 
 class DocumentReviewEntryView extends React.Component {
 
-  state = {
-    activeStep: 0,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      showProgressLogo: false,
+      materialID: '',
+      addressLine1: '',
+      addressLine2: '',
+      city: '',
+      addressState: '',
+      postalCode: '',
+      country: '',
+      ipAddress: '',
+      manualShipping: '',
+      manualShipping2: 'NO',
+      formComplete: '',
+      openDialog: false,
+      count: 0,
+      doNotAskAgain: '',
+      snackbar: {
+        autoHideDuration: 2000,
+        message: '',
+        open: false,
+        sbColor: 'black'
+      },
+    };
+    this.serviceKey = {
+      "type": "hyperledger-fabric",
+      "channelId": "dev1c306705-f53f-4dbb-aa05-acc057c9bf1bcore",
+      "serviceUrl": "https://hyperledger-fabric.cfapps.us10.hana.ondemand.com/api/v1",
+      "documentationUrl": "https://api.sap.com/shell/discover/contentpackage/SCPBlockchainTechnologies/api/hyperledger",
+      "oAuth": {
+        "clientId": "sb-2f1dce41-c872-48e8-8ee3-6d0dd7e2c2c2!b520|na-3a01f1e2-bc33-4e12-86a2-ffffaea79918!b33",
+        "clientSecret": "Yw+YrsdnLkUZbKtUbvf47Qk7pps=",
+        "url": "https://ebom.authentication.us10.hana.ondemand.com"
+      }
+    };
+  }
 
-  handleNext = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep + 1,
-    }));
-  };
-
-  handleBack = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep - 1,
-    }));
-  };
-
-  handleReset = () => {
-    this.setState({
-      activeStep: 0,
-    });
-  };
+  createData(info1, info2) {
+    this.state.count += 1;
+    return { id: this.state.count, info1, info2 };
+  }
 
   render() {
     const styles = theme => ({
@@ -155,50 +76,38 @@ class DocumentReviewEntryView extends React.Component {
         padding: theme.spacing.unit * 3,
       },
     });
-    const steps = getSteps();
-    const { activeStep } = this.state;
+
+    const rows = [
+      this.createData('Material ID', this.state.materialID),
+      this.createData('Address', this.state.addressLine1 + ' ' + this.state.addressLine2 + ' '
+        + this.state.city + ' ' + this.state.addressState + ' ' + this.state.postalCode + ' '
+        + this.state.country),
+      this.createData('IP Address', this.state.ipAddress),
+      this.createData('Manual Shipping', this.state.manualShipping2),
+    ];
 
     return (
       <div className={styles.root}>
-        <Stepper activeStep={activeStep} orientation="vertical">
-          {steps.map((label, index) => {
-            return (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-                <StepContent>
-                  <div>{getStepContent(index)}</div>
-                  <div className={styles.actionsContainer}>
-                    <div>
-                      <FlatButton
-                        disabled={activeStep === 0}
-                        onClick={this.handleBack}
-                        className={styles.button}
-                      >
-                        Back
-                      </FlatButton>
-                      <FlatButton
-                        variant="contained"
-                        color="primary"
-                        onClick={this.handleNext}
-                        className={styles.button}
-                      >
-                        {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                      </FlatButton>
-                    </div>
-                  </div>
-                </StepContent>
-              </Step>
-            );
-          })}
-        </Stepper>
-        {activeStep === steps.length && (
-          <Paper square elevation={0} className={styles.resetContainer}>
-            <div>All steps completed - you&quot;re finished</div>
-            <FlatButton onClick={this.handleReset} className={styles.button}>
-              Reset
-            </FlatButton>
-          </Paper>
-        )}
+        <Grid container justify="center">
+          <Grid container item xs={12}>
+            <Paper>
+              <Table>
+                <TableBody>
+                  {rows.map(row => {
+                    return (
+                      <TableRow key={row.id}>
+                        <TableCell>
+                          {row.info1}
+                        </TableCell>
+                        <TableCell>{row.info2}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </Paper>
+          </Grid>
+        </Grid>
       </div>
     );
   }

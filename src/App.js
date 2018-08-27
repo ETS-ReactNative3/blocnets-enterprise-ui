@@ -6,7 +6,7 @@ import {
 import DocumentReviewEntryView from './components/document-review-and-entry-view/document.review.entry.view';
 import ShippingView from './components/shipping-view/shipping.view';
 import ReceivingView from './components/receiving-view/receiving.view';
-import EBOMView from './components/ebom-view/ebom.view';
+import BillOfMaterials from './components/bill-of-materials/bill-of-materials';
 import logo from './blocknetwhite-1.png';
 import appBarLogo from './rsz_1blocknetwhite.png';
 import paperLogo from './blocnets-logo.png'
@@ -73,8 +73,8 @@ class App extends Component {
     this.setState({ show: 'receivingview', open: false });
   };
 
-  showeBOMView = () => {
-    this.setState({ show: 'ebomview', open: false });
+  showBillOfMaterials = () => {
+    this.setState({ show: 'billofmaterials', open: false });
   };
 
   render() {
@@ -98,8 +98,8 @@ class App extends Component {
       case 'receivingview':
         content = (<ReceivingView />);
         break;
-      case 'ebomview':
-        content = (<EBOMView />);
+      case 'billofmaterials':
+        content = (<BillOfMaterials />);
         break;
       default:
         content = (
@@ -164,7 +164,7 @@ class App extends Component {
           <hr />
           <MenuItem id="showReceivingViewId" onClick={this.showReceivingView}>Receiving</MenuItem>
           <hr />
-          <MenuItem id="showeBOMViewId" onClick={this.showeBOMView}>eBOM</MenuItem>
+          <MenuItem id="showBillOfMaterialsId" onClick={this.showBillOfMaterials}>Bill of Materials</MenuItem>
         </Drawer>
         {/* Page View with content loaded*/}
         <Paper className="White-theme" style={paperStyle} zDepth={5}>

@@ -2,11 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Step, Stepper, StepLabel, StepContent} from 'material-ui/Stepper';
 import TextField from 'material-ui/TextField';
-
-
 import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
-
 import Divider from 'material-ui/Divider';
 import axios from 'axios';
 import Grid from '@material-ui/core/Grid';
@@ -16,7 +13,7 @@ import Button from '@material-ui/core/Button';
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from 'material-ui/Checkbox';
-import EBOMView from './ebom.view';
+import BillOfMaterials from '../bill-of-materials';
 
 
 function getSteps() {
@@ -412,15 +409,15 @@ function getStepContent(step) {
     }
 }
 
-class EBOMMain extends React.Component {
+class BillOfMaterialsForm extends React.Component {
 
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
         this.handleNext = this.handleNext.bind(this);
         this.state = {
-            showEBOMMain: false,
-            showEBOMReview: true,
+            showBillOfMaterialsForm: false,
+            showBillOfMaterialsReview: true,
             activeStep: 0,
             materialID: ''
         };
@@ -558,4 +555,4 @@ class EBOMMain extends React.Component {
 
 
 
-export default EBOMMain;
+export default BillOfMaterialsForm;

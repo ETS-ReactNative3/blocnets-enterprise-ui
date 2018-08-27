@@ -14,16 +14,14 @@ import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from 'material-ui/Checkbox';
 import Dialog from "@material-ui/core/Dialog";
-import EBOMMain from './ebom.main.view';
-import EBOMView from './ebom.view';
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import red from "../../../node_modules/@material-ui/core/colors/red";
+import red from "@material-ui/core/colors/red";
 
 
-class EBOMReview extends React.Component {
+class BillOfMaterialsReview extends React.Component {
 
     constructor(props) {
         super(props);
@@ -128,8 +126,8 @@ class EBOMReview extends React.Component {
     }
 }
 
-EBOMReview.propTypes = {
+BillOfMaterialsReview.propTypes = {
     classes: PropTypes.object,
 };
 
-export default EBOMReview; 
+export default BillOfMaterialsReview; 
