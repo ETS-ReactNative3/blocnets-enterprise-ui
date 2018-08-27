@@ -13,6 +13,16 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Snackbar from 'material-ui/Snackbar';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { itemsFetchData } from '../../redux/actions/main.actions';
+
+const mapStateToProps = (state) => {
+    return {
+        items: state.items,
+        hasError: state.itemsHaveError,
+        isLoading: state.itemsAreLoading
+    };
+};
 
 class ReceivingView extends Component {
 
@@ -215,5 +225,11 @@ class ReceivingView extends Component {
     }
 
 }
+// This way, we can call our action creator by doing this.props.fetchData(url);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchData: (url) => dispatch(itemsFetchData(url))
+    };
+};
 
-export default ReceivingView;
+export default connect(mapStateToProps, mapDispatchToProps)(ReceivingView);

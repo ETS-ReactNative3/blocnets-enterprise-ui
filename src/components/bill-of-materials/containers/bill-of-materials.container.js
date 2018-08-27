@@ -11,8 +11,8 @@ ReactDOM.render(
     document.getElementById('billOfMaterials')
 );
 
-const mapStateToProps = ({ BillOfMaterials}) => ({
-    error: BillOfMaterials.error
+const mapStateToProps = ({ billOfMaterials}) => ({
+    error: billOfMaterials.error
 });
 
 export default connect(mapStateToProps, actions)(BillOfMaterials);
