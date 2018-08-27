@@ -1,7 +1,7 @@
 import React from 'react';
-//import BillOfMaterialsContainer from './containers/bill-of-materials.container'
 import BillOfMaterialsForm from './views/bill-of-materials.form.view';
 import BillOfMaterialsReview from './views/bill-of-materials.review.view';
+import BillOfMaterialsTree from './views/bill-of-materials.tree.view';
 
 class BillOfMaterials extends React.Component {
 
@@ -10,6 +10,7 @@ class BillOfMaterials extends React.Component {
         this.state = {
             showBillOfMaterialsForm: true,
             showBillOfMaterialsReview: false,
+            showBillOfMaterialsTree: false,
             data: ''
         };
         this.handleData = this.handleData.bind(this);
@@ -17,8 +18,9 @@ class BillOfMaterials extends React.Component {
 
     handleData(data) {
         this.setState({
-            showBillOfMaterialsForm: data.showBillOfMaterialsMain,
+            showBillOfMaterialsForm: data.showBillOfMaterialsForm,
             showBillOfMaterialsReview: data.showBillOfMaterialsReview,
+            showBillOfMaterialsTree: data.showBillOfMaterialsTree,
             data: data
         });
     }
@@ -27,9 +29,11 @@ class BillOfMaterials extends React.Component {
         return (
             <div id="billOfMaterials">
                 {this.state.showBillOfMaterialsForm === true ? 
-                <BillOfMaterialsForm show={this.state.showBillOfMaterialsForm === true} viewHandler={this.handleData}/> : ""}
+                <BillOfMaterialsForm show={this.state.showBillOfMaterialsForm === true} viewHandler={this.handleData} /> : ""}
                 {this.state.showBillOfMaterialsReview === true ? 
-                <BillOfMaterialsReview data={this.state} show={this.state.showBillOfMaterialsReview === true}  /> : ""}
+                <BillOfMaterialsReview data={this.state} show={this.state.showBillOfMaterialsReview === true} viewHandler={this.handleData}/> : ""}
+                {this.state.showBillOfMaterialsTree === true ?
+                    <BillOfMaterialsTree data={this.state} show={this.state.showBillOfMaterialsTree === true} viewHandler={this.handleData}/> : ""}
             </div>
         )
     }
