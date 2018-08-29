@@ -27,6 +27,9 @@ import UserIcon from '@material-ui/icons/AccountCircleRounded';
 import { FormControl } from '@material-ui/core';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import MailIcon from '@material-ui/icons/Mail';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { authenticate } from './redux/actions/main.actions';
 
 const theme = createMuiTheme({
   palette: {
@@ -46,11 +49,16 @@ const userIconStyle = {
   transform: "scale(2.1)"
 }
 
-const messageIconStyle= {
+const messageIconStyle = {
   transform: "scale(1.0)"
 }
 
 class App extends Component {
+  /* Dev Note: Will automatically fire the prop actions, or http request, once component mounts */
+  componentDidMount() {
+    this.props.authenticate();
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -180,4 +188,21 @@ class App extends Component {
   }
 }
 
-export default App;
+App.propTypes = {
+  authenticate: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => {
+  return {
+    state
+  };
+};
+
+// This way, we can call our action creator by doing this.props.fetchData(url);
+const mapDispatchToProps = (dispatch) => {
+  return {
+      authenticate: () => dispatch(authenticate())
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

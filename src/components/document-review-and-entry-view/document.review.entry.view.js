@@ -1,18 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Step, Stepper, StepLabel, StepContent } from 'material-ui/Stepper';
-import FlatButton from 'material-ui/FlatButton';
 import Paper from 'material-ui/Paper';
-import TextField from 'material-ui/TextField';
-import Checkbox from 'material-ui/Checkbox';
-import Divider from 'material-ui/Divider';
-import Dialog from '@material-ui/core/Dialog';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Grid from '@material-ui/core/Grid';
-import axios from 'axios';
 
 
 class DocumentReviewEntryView extends React.Component {
@@ -41,17 +34,6 @@ class DocumentReviewEntryView extends React.Component {
         open: false,
         sbColor: 'black'
       },
-    };
-    this.serviceKey = {
-      "type": "hyperledger-fabric",
-      "channelId": "dev1c306705-f53f-4dbb-aa05-acc057c9bf1bcore",
-      "serviceUrl": "https://hyperledger-fabric.cfapps.us10.hana.ondemand.com/api/v1",
-      "documentationUrl": "https://api.sap.com/shell/discover/contentpackage/SCPBlockchainTechnologies/api/hyperledger",
-      "oAuth": {
-        "clientId": "sb-2f1dce41-c872-48e8-8ee3-6d0dd7e2c2c2!b520|na-3a01f1e2-bc33-4e12-86a2-ffffaea79918!b33",
-        "clientSecret": "Yw+YrsdnLkUZbKtUbvf47Qk7pps=",
-        "url": "https://ebom.authentication.us10.hana.ondemand.com"
-      }
     };
   }
 

@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import blocnetsLogo from "../../blocknetwhite-1.png";
 import Grid from '@material-ui/core/Grid';
 import TextField from 'material-ui/TextField';
 import Button from '@material-ui/core/Button';
-import {withStyles, MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
 import Dialog from '@material-ui/core/Dialog';
 import Table from '@material-ui/core/Table';
@@ -12,17 +12,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Snackbar from 'material-ui/Snackbar';
-import axios from 'axios';
 import { connect } from 'react-redux';
-import { itemsFetchData } from '../../redux/actions/main.actions';
-
-const mapStateToProps = (state) => {
-    return {
-        items: state.items,
-        hasError: state.itemsHaveError,
-        isLoading: state.itemsAreLoading
-    };
-};
+import PropTypes from 'prop-types';
+import { getData } from '../../redux/actions/main.actions';
 
 class ReceivingView extends Component {
 
@@ -32,6 +24,7 @@ class ReceivingView extends Component {
             showProgressLogo: false,
             materialID: '',
             shipmentID: '',
+            data: '',
             openDialog: false,
             count: 0,
             snackbar: {
@@ -40,89 +33,30 @@ class ReceivingView extends Component {
                 open: false,
             },
         };
-        this.serviceKey = {
-            "type": "hyperledger-fabric",
-            "channelId": "dev1c306705-f53f-4dbb-aa05-acc057c9bf1bcore",
-            "serviceUrl": "https://hyperledger-fabric.cfapps.us10.hana.ondemand.com/api/v1",
-            "documentationUrl": "https://api.sap.com/shell/discover/contentpackage/SCPBlockchainTechnologies/api/hyperledger",
-            "oAuth": {
-                "clientId": "sb-2f1dce41-c872-48e8-8ee3-6d0dd7e2c2c2!b520|na-3a01f1e2-bc33-4e12-86a2-ffffaea79918!b33",
-                "clientSecret": "Yw+YrsdnLkUZbKtUbvf47Qk7pps=",
-                "url": "https://ebom.authentication.us10.hana.ondemand.com"
-            }
-        };
         this.handleIDChange = this.handleIDChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleIDChange(event) {
-        this.setState({[event.target.name]: event.target.value});
+        this.setState({ [event.target.name]: event.target.value });
     }
 
     handleSubmit(event) {
-        this.setState({showProgressLogo: true});
-        let chaincodeId = "1c306705-f53f-4dbb-aa05-acc057c9bf1b-com-sap-icn-blockchain-example-helloUniverse";
-        // GET Authentication
-        axios.get(this.serviceKey.oAuth.url + '/oauth/token?grant_type=client_credentials', {
-            headers: {
-                'Authorization': 'Basic ' + btoa(this.serviceKey.oAuth.clientId + ":"
-                    + this.serviceKey.oAuth.clientSecret),
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Accept': 'application/json'
-            }
-        })
-            .then((response) => {
-                this.setState({token: response.data});
-                // GET the requested block
-                axios.get(this.serviceKey.serviceUrl + '/chaincodes/' + chaincodeId + '/latest/' + this.state.id, {
-                    headers: {
-                        'Authorization': 'Bearer ' + this.state.token.access_token,
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'Accept': 'application/json',
-                        'withCredentials': true
-                    }
-                })
-                    .then((response) => {
-                        // response is all ready a javascript object
-                        this.setState({
-                            showProgressLogo: false,
-                            openDialog: true
-                        });
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        this.setState({
-                            showProgressLogo: false,
-                            openDialog: false,
-                            snackbar: {
-                                open: true,
-                                message: 'Oh no! - ' + error,
-                                autoHideDuration: 2000,
-                            }
-                        });
-                    });
-            })
-            .catch((error) => {
-                this.setState({
-                    showProgressLogo: false,
-                    openDialog: false,
-                    snackbar: {
-                        open: true,
-                        message: 'Oh no! - ' + error,
-                        autoHideDuration: 2000,
-                    }
-                });
-            });
+        this.state.showProgressLogo = true;
+        this.props.getData(this.state.materialID);
         event.preventDefault();
+        this.state.showProgressLogo = false;
+        this.state.data = this.props.getData(this.state.materialID);
+        this.state.openDialog = true;
     }
 
     createData(info1, info2) {
         this.state.count += 1;
-        return {id: this.state.count, info1, info2};
+        return { id: this.state.count, info1, info2 };
     }
 
     handleDialogClose = () => {
-        this.setState({openDialog: false});
+        this.setState({ openDialog: false });
     };
 
     handleSnackbarClose = () => {
@@ -135,6 +69,10 @@ class ReceivingView extends Component {
     };
 
     render() {
+
+        if (this.props.requestError) {
+            return <p>Oh No! Something went unexpected..</p>;
+        }
 
         const buttonTheme = createMuiTheme({
             palette: {
@@ -153,22 +91,22 @@ class ReceivingView extends Component {
         return (
             <form onSubmit={this.handleSubmit}>
                 <div>
-                    {this.state.showProgressLogo ? <img src={blocnetsLogo} className="App-logo-progress"/> : ""}
+                    {this.state.showProgressLogo ? <img src={blocnetsLogo} className="App-logo-progress" /> : ""}
                 </div>
-                <div style={{padding: 24}}>
+                <div style={{ padding: 24 }}>
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 value={this.state.materialID} onChange={this.handleIDChange} type="text"
                                 name="materialID" floatingLabelText="Material ID" floatingLabelFixed={true}
-                                style={{"float": "left"}} hintText=""
+                                style={{ "float": "left" }} hintText=""
                             />
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 value={this.state.shipmentID} onChange={this.handleIDChange} type="text"
                                 name="shipmentID" floatingLabelText="Shipment ID" floatingLabelFixed={true}
-                                style={{"float": "left"}} hintText=""
+                                style={{ "float": "left" }} hintText=""
                             />
                         </Grid>
                     </Grid>
@@ -176,7 +114,7 @@ class ReceivingView extends Component {
                         <Grid container item xs={12}>
                             <MuiThemeProvider theme={buttonTheme}>
                                 <Button type="submit" value="Submit" variant="contained" color="primary"
-                                        fullWidth={true} disabled={!this.state.materialID && !this.state.shipmentID}>
+                                    fullWidth={true} disabled={!this.state.materialID && !this.state.shipmentID}>
                                     Submit
                                 </Button>
                             </MuiThemeProvider>
@@ -184,14 +122,14 @@ class ReceivingView extends Component {
                     </Grid>
                 </div>
                 <Dialog open={this.state.openDialog} onClose={this.handleDialogClose}>
-                    <div style={{padding: 24}}>
+                    <div style={{ padding: 24 }}>
                         <Grid container justify="flex-end">
                             <Grid item>
-                                <i className="material-icons" style={{"cursor": "pointer"}}
-                                   onClick={this.handleDialogClose}>close</i>
+                                <i className="material-icons" style={{ "cursor": "pointer" }}
+                                    onClick={this.handleDialogClose}>close</i>
                             </Grid>
                         </Grid>
-                        <br/>
+                        <br />
                         <Grid container justify="center">
                             <Grid item xs={12}>
                                 <Paper>
@@ -217,7 +155,7 @@ class ReceivingView extends Component {
                 <Snackbar
                     open={this.state.snackbar.open} message={this.state.snackbar.message}
                     autoHideDuration={this.state.snackbar.autoHideDuration} onRequestClose={this.handleSnackbarClose}
-                    bodyStyle={{backgroundColor: "red"}}
+                    bodyStyle={{ backgroundColor: "red" }}
                 />
             </form>
         );
@@ -225,10 +163,25 @@ class ReceivingView extends Component {
     }
 
 }
+
+ReceivingView.propTypes = {
+    getData: PropTypes.func.isRequired,
+    loadingView: PropTypes.bool.isRequired,
+    requestFailed: PropTypes.bool.isRequired,
+};
+
+const mapStateToProps = (state) => {
+    return {
+        loadingView: state.loadingView,
+        getData: state.getData,
+        requestFailed: state.requestFailed
+    };
+};
+
 // This way, we can call our action creator by doing this.props.fetchData(url);
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchData: (url) => dispatch(itemsFetchData(url))
+        getData: (value) => dispatch(getData(value))
     };
 };
 

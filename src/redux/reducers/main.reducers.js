@@ -1,26 +1,40 @@
-export function itemsHaveError(state = false, action) {
+export function authenticate(state = false, action) {
     switch (action.type) {
-        case 'ITEMS_HAVE_ERROR':
-            return action.hasError;
+        case 'ACCESS_GRANTED':
+            return action.token;
         default:
             return state;
     }
 }
 
-export function itemsAreLoading(state = false, action) {
+export function loadingView(state = false, action) {
     switch (action.type) {
-        case 'ITEMS_ARE_LOADING':
-            return action.isLoading;
+        case 'VIEW_IS_LOADING':
+            return action.loadingView
         default:
             return state;
     }
 }
 
-export function items(state = [], action) {
+export function getData(state = [], action) {
     switch (action.type) {
-        case 'ITEMS_FETCH_DATA_SUCCESS':
-            return action.items;
+        case 'REQUESTED_DATA_SUCCESSFULLY':
+            return action.getData;
         default:
             return state;
     }
 }
+
+export function requestFailed(state = false, action) {
+    switch (action.type) {
+        case 'REQUESTED_DATA_FAILED':
+            return action.requestFailed;
+        default:
+            return state;
+    }
+}
+
+
+export default (state = {}, action) => {
+    return state;
+};
