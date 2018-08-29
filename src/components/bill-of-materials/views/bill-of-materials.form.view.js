@@ -603,7 +603,7 @@ class BillOfMaterialsForm extends React.Component {
                                 value={this.state.materialID} onChange={this.handleChange}
                             />
                         </Grid>
-                        <Grid container item xs={12} sm={3}>
+                        <Grid container item xs={12} sm={3} justify="flex-end">
                             <Grid>
                                 <MuiThemeProvider theme={buttonTheme}>
                                     <Button type="submit" value="Upload" variant="contained"
