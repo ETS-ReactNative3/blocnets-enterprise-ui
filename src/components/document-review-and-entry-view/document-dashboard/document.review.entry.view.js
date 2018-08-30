@@ -257,68 +257,70 @@ class DocumentReviewEntryView extends React.Component {
                     <Grid container justify="center">
                         <Grid container item xs={12}>
                             <Paper style={{"width": "100%"}}>
-                                <Table style={{"overflowX": "auto"}}>
-                                    <TableHeader
-                                        numSelected={selected.length}
-                                        onSelectAllClick={this.handleSelectAllClick}
-                                        rowCount={data.length}
+                                <div style={{"overflowX": "auto"}}>
+                                    <Table >
+                                        <TableHeader
+                                            numSelected={selected.length}
+                                            onSelectAllClick={this.handleSelectAllClick}
+                                            rowCount={data.length}
+                                        />
+                                        <TableBody>
+                                            {data
+                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                                .map(n => {
+                                                    const isSelected = this.isSelected(n.id);
+                                                    return (
+                                                        <TableRow
+                                                            hover
+                                                            aria-checked={isSelected}
+                                                            tabIndex={-1}
+                                                            key={n.id}
+                                                        >
+                                                            <TableCell padding="checkbox">
+                                                                <Checkbox
+                                                                    onClick={event => this.handleClickCheckbox(event, n.id)}
+                                                                    checked={isSelected}/>
+                                                            </TableCell>
+                                                            <TableCell
+                                                                onClick={event => this.handleClickMessages(event, n.messageType, n.messageDescription, n.messageDate)}
+                                                                style={{"cursor": "pointer"}}>
+                                                                {n.messageType}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                onClick={event => this.handleClickMessages(event, n.messageType, n.messageDescription, n.messageDate)}
+                                                                style={{"cursor": "pointer"}}>
+                                                                {n.messageDescription}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                onClick={event => this.handleClickMessages(event, n.messageType, n.messageDescription, n.messageDate)}
+                                                                style={{"cursor": "pointer"}}>
+                                                                {n.messageDate}
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    );
+                                                })}
+                                            {emptyRows > 0 && (
+                                                <TableRow style={{height: 49 * emptyRows}}>
+                                                    <TableCell colSpan={6}/>
+                                                </TableRow>
+                                            )}
+                                        </TableBody>
+                                    </Table>
+                                    <TablePagination
+                                        component="div"
+                                        count={data.length}
+                                        rowsPerPage={rowsPerPage}
+                                        page={page}
+                                        backIconButtonProps={{
+                                            'aria-label': 'Previous Page',
+                                        }}
+                                        nextIconButtonProps={{
+                                            'aria-label': 'Next Page',
+                                        }}
+                                        onChangePage={this.handleChangePage}
+                                        onChangeRowsPerPage={this.handleChangeRowsPerPage}
                                     />
-                                    <TableBody>
-                                        {data
-                                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                            .map(n => {
-                                                const isSelected = this.isSelected(n.id);
-                                                return (
-                                                    <TableRow
-                                                        hover
-                                                        aria-checked={isSelected}
-                                                        tabIndex={-1}
-                                                        key={n.id}
-                                                    >
-                                                        <TableCell padding="checkbox">
-                                                            <Checkbox
-                                                                onClick={event => this.handleClickCheckbox(event, n.id)}
-                                                                checked={isSelected}/>
-                                                        </TableCell>
-                                                        <TableCell
-                                                            onClick={event => this.handleClickMessages(event, n.messageType, n.messageDescription, n.messageDate)}
-                                                            style={{"cursor": "pointer"}}>
-                                                            {n.messageType}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            onClick={event => this.handleClickMessages(event, n.messageType, n.messageDescription, n.messageDate)}
-                                                            style={{"cursor": "pointer"}}>
-                                                            {n.messageDescription}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            onClick={event => this.handleClickMessages(event, n.messageType, n.messageDescription, n.messageDate)}
-                                                            style={{"cursor": "pointer"}}>
-                                                            {n.messageDate}
-                                                        </TableCell>
-                                                    </TableRow>
-                                                );
-                                            })}
-                                        {emptyRows > 0 && (
-                                            <TableRow style={{height: 49 * emptyRows}}>
-                                                <TableCell colSpan={6}/>
-                                            </TableRow>
-                                        )}
-                                    </TableBody>
-                                </Table>
-                                <TablePagination
-                                    component="div"
-                                    count={data.length}
-                                    rowsPerPage={rowsPerPage}
-                                    page={page}
-                                    backIconButtonProps={{
-                                        'aria-label': 'Previous Page',
-                                    }}
-                                    nextIconButtonProps={{
-                                        'aria-label': 'Next Page',
-                                    }}
-                                    onChangePage={this.handleChangePage}
-                                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                                />
+                                </div>
                             </Paper>
                         </Grid>
                     </Grid>
