@@ -146,7 +146,7 @@ class DocumentReviewEntryView extends React.Component {
             snackbar: {
                 autoHideDuration: 2000,
                 message: 'Success',
-                open: false,
+                open: true,
                 sbColor: 'black'
             }
         }); to show success message */
@@ -154,7 +154,7 @@ class DocumentReviewEntryView extends React.Component {
             snackbar: {
                 autoHideDuration: 2000,
                 message: 'Error',
-                open: false,
+                open: true,
                 sbColor: 'red'
             }
         }); to show error message */
@@ -168,7 +168,7 @@ class DocumentReviewEntryView extends React.Component {
             snackbar: {
                 autoHideDuration: 2000,
                 message: 'Success',
-                open: false,
+                open: true,
                 sbColor: 'black'
             }
         }); to show success message */
@@ -176,7 +176,7 @@ class DocumentReviewEntryView extends React.Component {
             snackbar: {
                 autoHideDuration: 2000,
                 message: 'Error',
-                open: false,
+                open: true,
                 sbColor: 'red'
             }
         }); to show error message */
@@ -194,7 +194,7 @@ class DocumentReviewEntryView extends React.Component {
             snackbar: {
                 autoHideDuration: 2000,
                 message: 'Success',
-                open: false,
+                open: true,
                 sbColor: 'black'
             }
         }); to show success message */
@@ -202,7 +202,7 @@ class DocumentReviewEntryView extends React.Component {
             snackbar: {
                 autoHideDuration: 2000,
                 message: 'Error',
-                open: false,
+                open: true,
                 sbColor: 'red'
             }
         }); to show error message */
@@ -217,7 +217,7 @@ class DocumentReviewEntryView extends React.Component {
             snackbar: {
                 autoHideDuration: 2000,
                 message: 'Success',
-                open: false,
+                open: true,
                 sbColor: 'black'
             }
         }); to show success message */
@@ -225,7 +225,7 @@ class DocumentReviewEntryView extends React.Component {
             snackbar: {
                 autoHideDuration: 2000,
                 message: 'Error',
-                open: false,
+                open: true,
                 sbColor: 'red'
             }
         }); to show error message */
