@@ -31,6 +31,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { authenticate } from './redux/actions/main.actions';
+import TrackAndTraceResultsView from './components/track-and-trace/views/track-and-trace.results.view';
 
 const theme = createMuiTheme({
   palette: {
@@ -90,6 +91,12 @@ class App extends Component {
     this.setState({ show: 'documentsendview', open: false });
   };
 
+  showTrackAndTraceResultsView = () => {
+      //this.setState({showProgressLogo: true}); to show blocnetsLogo before submit
+      //this.setState({showProgressLogo: false}); to show blocnetsLogo after receiving response
+      this.setState({ show: 'trackandtraceresultsview', open: false });
+  };
+
   render() {
     let content = null;
 
@@ -117,6 +124,9 @@ class App extends Component {
       case 'documentsendview':
         content = (<DocumentSendView />); 
         break;
+      case 'trackandtraceresultsview':
+          content = (<TrackAndTraceResultsView />);
+          break;
       default:
         content = (
           <Router>
@@ -147,7 +157,7 @@ class App extends Component {
                     type="search"
                     endAdornment={
                       <InputAdornment position="end">
-                        <SearchIcon />
+                        <SearchIcon onClick={this.showTrackAndTraceResultsView} style={{"cursor": "pointer"}}/>
                       </InputAdornment>
                     }
                   />
