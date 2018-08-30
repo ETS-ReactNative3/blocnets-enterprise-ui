@@ -49,10 +49,9 @@ export function getData(url) {
             }
         })
             .then((response) => {
-                dispatch(loadingView(false));
-                return response;
+                dispatch(requestSuccess(response.data))
+                dispatch(loadingView(false))
             })
-            .then((response) => dispatch(requestSuccess(response.data)))
             .catch(() => dispatch(requestFailed(true)));
     };
 }
@@ -75,7 +74,7 @@ export function loadingView(bool) {
 export function requestSuccess(data) {
     return {
         type: 'REQUESTED_DATA_SUCCESSFULLY',
-        data
+        data: data
     };
 }
 

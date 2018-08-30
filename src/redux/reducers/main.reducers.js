@@ -19,7 +19,7 @@ export function loadingView(state = false, action) {
 export function getData(state = [], action) {
     switch (action.type) {
         case 'REQUESTED_DATA_SUCCESSFULLY':
-            return action.getData;
+            return action.Data;
         default:
             return state;
     }

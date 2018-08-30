@@ -3,10 +3,11 @@ import {
   BrowserRouter as Router,
   Route
 } from 'react-router-dom';
-import DocumentReviewEntryView from './components/document-review-and-entry-view/document.review.entry.view';
+import DocumentReviewEntryView from './components/document-review-and-entry-view/document-dashboard/document.review.entry.view';
 import ShippingView from './components/shipping-view/shipping.view';
 import ReceivingView from './components/receiving-view/receiving.view';
 import BillOfMaterials from './components/bill-of-materials/bill-of-materials';
+import DocumentSendView from './components/document-review-and-entry-view/document-send/document.send.view';
 import logo from './blocknetwhite-1.png';
 import appBarLogo from './rsz_1blocknetwhite.png';
 import paperLogo from './blocnets-logo.png'
@@ -85,6 +86,10 @@ class App extends Component {
     this.setState({ show: 'billofmaterials', open: false });
   };
 
+  showDocumentSendView = () => {
+    this.setState({ show: 'documentsendview', open: false });
+  };
+
   render() {
     let content = null;
 
@@ -108,6 +113,9 @@ class App extends Component {
         break;
       case 'billofmaterials':
         content = (<BillOfMaterials />);
+        break;
+      case 'documentsendview':
+        content = (<DocumentSendView />); 
         break;
       default:
         content = (
@@ -146,8 +154,8 @@ class App extends Component {
                 </FormControl>
               </Grid>
               <Grid item xs={3}>
-                <IconButton aria-label="4 pending messages">
-                  <Badge badgeContent={4} color="secondary" style={messageIconStyle}>
+                <IconButton aria-label="pending messages" onClick={this.showMainView}>
+                  <Badge badgeContent={12} color="secondary" style={messageIconStyle}>
                     <MailIcon />
                   </Badge>
                 </IconButton>
@@ -173,6 +181,8 @@ class App extends Component {
           <MenuItem id="showReceivingViewId" onClick={this.showReceivingView}>Receiving</MenuItem>
           <hr />
           <MenuItem id="showBillOfMaterialsId" onClick={this.showBillOfMaterials}>Bill of Materials</MenuItem>
+          <hr />
+          <MenuItem id="showDocumentSendViewId" onClick={this.showDocumentSendView}>Document Review/Entry</MenuItem>
         </Drawer>
         {/* Page View with content loaded*/}
         <Paper className="White-theme" style={paperStyle} zDepth={5}>
@@ -187,11 +197,11 @@ class App extends Component {
     );
   }
 }
-
+/* 
 App.propTypes = {
   authenticate: PropTypes.func.isRequired,
 };
-
+ */
 const mapStateToProps = (state) => {
   return {
     state
@@ -201,7 +211,7 @@ const mapStateToProps = (state) => {
 // This way, we can call our action creator by doing this.props.fetchData(url);
 const mapDispatchToProps = (dispatch) => {
   return {
-      authenticate: () => dispatch(authenticate())
+    authenticate: () => dispatch(authenticate())
   };
 };
 

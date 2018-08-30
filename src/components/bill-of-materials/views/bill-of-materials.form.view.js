@@ -2,7 +2,7 @@ import React from 'react';
 import {Step, Stepper, StepLabel, StepContent} from 'material-ui/Stepper';
 import TextField from 'material-ui/TextField';
 import Grid from '@material-ui/core/Grid';
-import {withStyles, MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import { MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
 import Button from '@material-ui/core/Button';
 import FormGroup from "@material-ui/core/FormGroup";

@@ -15,6 +15,7 @@ import Snackbar from 'material-ui/Snackbar';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getData } from '../../redux/actions/main.actions';
+import axios from 'axios';
 
 class ReceivingView extends Component {
 
@@ -24,7 +25,9 @@ class ReceivingView extends Component {
             showProgressLogo: false,
             materialID: '',
             shipmentID: '',
-            data: '',
+            address: '',
+            ipAddress: '',
+            manualShipping: '',
             openDialog: false,
             count: 0,
             snackbar: {
@@ -43,11 +46,18 @@ class ReceivingView extends Component {
 
     handleSubmit(event) {
         this.state.showProgressLogo = true;
-        this.props.getData(this.state.materialID);
+        //this.props.getData(this.state.materialID);
         event.preventDefault();
         this.state.showProgressLogo = false;
-        this.state.data = this.props.getData(this.state.materialID);
+        /* 
+        if (this.state.shipmentID == '') {
+            this.props.getData(this.state.materialID);
+        } else {
+            this.props.getData(this.state.shipmentID);
+        } */
+        this.props.getData(this.state.materialID)
         this.state.openDialog = true;
+        console.log(this.state.data);
     }
 
     createData(info1, info2) {
@@ -81,11 +91,11 @@ class ReceivingView extends Component {
         });
 
         const rows = [
-            this.createData('Material ID', 'MAT0721'),
-            this.createData('Shipment ID', 'SHIP0112'),
-            this.createData('Address', '123 MAIN ST., ALPHARETTA, GA, 30041, US'),
-            this.createData('IP Address', '1.160.10.270'),
-            this.createData('Manual Shipping', 'YES'),
+            this.createData('Material ID', this.state.materialID),
+            this.createData('Shipment ID', this.state.shipmentID),
+            this.createData('Address', this.state.data),
+            this.createData('IP Address', this.state.ipAddress),
+            this.createData('Manual Shipping', this.state.manualShipping),
         ];
 
         return (
@@ -174,7 +184,8 @@ const mapStateToProps = (state) => {
     return {
         loadingView: state.loadingView,
         getData: state.getData,
-        requestFailed: state.requestFailed
+        requestFailed: state.requestFailed,
+        data: state.data
     };
 };
 

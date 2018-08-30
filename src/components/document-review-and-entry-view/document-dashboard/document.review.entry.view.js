@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import blocnetsLogo from "../../blocknetwhite-1.png";
+import blocnetsLogo from "../../../blocknetwhite-1.png";
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
