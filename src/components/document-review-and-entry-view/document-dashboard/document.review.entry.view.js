@@ -56,9 +56,7 @@ class TableHeader extends React.Component {
                     </TableCell>
                     {rows.map(row => {
                         return (
-                            <TableCell
-                                key={row.id}
-                            >
+                            <TableCell key={row.id}>
                                 {row.label}
                             </TableCell>
                         );
@@ -270,12 +268,8 @@ class DocumentReviewEntryView extends React.Component {
                                                 .map(n => {
                                                     const isSelected = this.isSelected(n.id);
                                                     return (
-                                                        <TableRow
-                                                            hover
-                                                            aria-checked={isSelected}
-                                                            tabIndex={-1}
-                                                            key={n.id}
-                                                        >
+                                                        <TableRow hover aria-checked={isSelected}
+                                                                  tabIndex={-1} key={n.id}>
                                                             <TableCell padding="checkbox">
                                                                 <Checkbox
                                                                     onClick={event => this.handleClickCheckbox(event, n.id)}
@@ -386,7 +380,8 @@ class DocumentReviewEntryView extends React.Component {
                             </Grid>
                             <Grid container item xs={4} sm={4}>
                                 <MuiThemeProvider theme={buttonThemeRed}>
-                                    <Button type="ok" value="OK" variant="flat" color="primary" fullWidth={true}
+                                    <Button type="submit" value="Approve" variant="flat" color="primary"
+                                            fullWidth={true}
                                             onClick={event => this.handleDialogApprove(event)}>
                                         Approve
                                     </Button>
@@ -394,7 +389,7 @@ class DocumentReviewEntryView extends React.Component {
                             </Grid>
                             <Grid container item xs={4} sm={4}>
                                 <MuiThemeProvider theme={buttonThemeRed}>
-                                    <Button type="cancel" value="Cancel" variant="flat" color="primary" fullWidth={true}
+                                    <Button type="submit" value="Reject" variant="flat" color="primary" fullWidth={true}
                                             onClick={event => this.handleDialogReject(event)}>
                                         Reject
                                     </Button>
