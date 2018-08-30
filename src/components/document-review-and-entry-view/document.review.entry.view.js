@@ -281,15 +281,18 @@ class DocumentReviewEntryView extends React.Component {
                                                                 checked={isSelected}/>
                                                         </TableCell>
                                                         <TableCell
-                                                            onClick={event => this.handleClickMessages(event, n.messageType, n.messageDescription, n.messageDate)}>
+                                                            onClick={event => this.handleClickMessages(event, n.messageType, n.messageDescription, n.messageDate)}
+                                                            style={{"cursor": "pointer"}}>
                                                             {n.messageType}
                                                         </TableCell>
                                                         <TableCell
-                                                            onClick={event => this.handleClickMessages(event, n.messageType, n.messageDescription, n.messageDate)}>
+                                                            onClick={event => this.handleClickMessages(event, n.messageType, n.messageDescription, n.messageDate)}
+                                                            style={{"cursor": "pointer"}}>
                                                             {n.messageDescription}
                                                         </TableCell>
                                                         <TableCell
-                                                            onClick={event => this.handleClickMessages(event, n.messageType, n.messageDescription, n.messageDate)}>
+                                                            onClick={event => this.handleClickMessages(event, n.messageType, n.messageDescription, n.messageDate)}
+                                                            style={{"cursor": "pointer"}}>
                                                             {n.messageDate}
                                                         </TableCell>
                                                     </TableRow>
