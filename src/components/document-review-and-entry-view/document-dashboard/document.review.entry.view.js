@@ -258,7 +258,7 @@ class DocumentReviewEntryView extends React.Component {
                         <Grid container item xs={12}>
                             <Paper style={{"width": "100%"}}>
                                 <div style={{"overflowX": "auto"}}>
-                                    <Table >
+                                    <Table>
                                         <TableHeader
                                             numSelected={selected.length}
                                             onSelectAllClick={this.handleSelectAllClick}

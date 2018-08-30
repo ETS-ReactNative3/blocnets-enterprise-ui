@@ -6,7 +6,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
 import Dialog from '@material-ui/core/Dialog';
 import Table from '@material-ui/core/Table';
@@ -67,7 +67,7 @@ class ShippingView extends Component {
 
     handleSubmit(event) {
         this.setState({showProgressLogo: true, openDialog: false});
-        
+
         event.preventDefault();
     }
 
@@ -220,21 +220,23 @@ class ShippingView extends Component {
                         <br/>
                         <Grid container justify="center">
                             <Grid container item xs={12}>
-                                <Paper>
-                                    <Table>
-                                        <TableBody>
-                                            {rows.map(row => {
-                                                return (
-                                                    <TableRow key={row.id}>
-                                                        <TableCell>
-                                                            {row.info1}
-                                                        </TableCell>
-                                                        <TableCell>{row.info2}</TableCell>
-                                                    </TableRow>
-                                                );
-                                            })}
-                                        </TableBody>
-                                    </Table>
+                                <Paper style={{"width": "100%"}}>
+                                    <div style={{"overflowX": "auto"}}>
+                                        <Table>
+                                            <TableBody>
+                                                {rows.map(row => {
+                                                    return (
+                                                        <TableRow key={row.id}>
+                                                            <TableCell>
+                                                                {row.info1}
+                                                            </TableCell>
+                                                            <TableCell>{row.info2}</TableCell>
+                                                        </TableRow>
+                                                    );
+                                                })}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
                                 </Paper>
                             </Grid>
                         </Grid>

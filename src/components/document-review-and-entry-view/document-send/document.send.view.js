@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import blocnetsLogo from "../../../blocknetwhite-1.png";
 import Grid from '@material-ui/core/Grid';
 import TextField from 'material-ui/TextField';
@@ -6,7 +6,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
 import Dialog from '@material-ui/core/Dialog';
 import Table from '@material-ui/core/Table';
@@ -17,7 +17,6 @@ import Paper from '@material-ui/core/Paper';
 import red from '@material-ui/core/colors/red';
 import Snackbar from 'material-ui/Snackbar';
 import response from './messageData.json';
-
 
 
 class DocumentSendView extends React.Component {
@@ -47,20 +46,20 @@ class DocumentSendView extends React.Component {
 
     createData(info1, info2) {
         this.state.count += 1;
-        return { id: this.state.count, info1, info2 };
+        return {id: this.state.count, info1, info2};
     }
 
     handleChange(event) {
-        this.setState({ [event.target.name]: event.target.value, formComplete: true });
+        this.setState({[event.target.name]: event.target.value, formComplete: true});
     }
 
     handleConfirmation(event) {
-        this.setState({ openDialog: true });
+        this.setState({openDialog: true});
         event.preventDefault();
     }
 
     handleSubmit(event) {
-        this.setState({ showProgressLogo: true, openDialog: false });
+        this.setState({showProgressLogo: true, openDialog: false});
 
         event.preventDefault();
     }
@@ -70,7 +69,7 @@ class DocumentSendView extends React.Component {
 
 
     handleDialogClose = () => {
-        this.setState({ openDialog: false });
+        this.setState({openDialog: false});
     };
 
     handleSnackbarClose = () => {
@@ -105,31 +104,31 @@ class DocumentSendView extends React.Component {
         return (
             <form onSubmit={this.handleConfirmation}>
                 <div>
-                    {this.state.showProgressLogo ? <img src={blocnetsLogo} className="App-logo-progress" /> : ""}
+                    {this.state.showProgressLogo ? <img src={blocnetsLogo} className="App-logo-progress"/> : ""}
                 </div>
-                <div style={{ padding: 24 }}>
+                <div style={{padding: 24}}>
                     <Grid container spacing={24}>
                         <Grid container item xs>
                             <TextField required
-                                value={this.state.sendToUser} onChange={this.handleChange} type="text"
-                                name="userID" floatingLabelText="Receipient's username" floatingLabelFixed={true}
-                                style={{ "float": "left" }} hintText="username"
+                                       value={this.state.sendToUser} onChange={this.handleChange} type="text"
+                                       name="userID" floatingLabelText="Receipient's username" floatingLabelFixed={true}
+                                       style={{"float": "left"}} hintText="username"
                             />
                         </Grid>
                     </Grid>
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <TextField required
-                                value={this.state.messageType} onChange={this.handleChange} type="text"
-                                name="messageType" floatingLabelText=" " floatingLabelFixed={true}
-                                style={{ "float": "left" }} hintText="Message Type"
+                                       value={this.state.messageType} onChange={this.handleChange} type="text"
+                                       name="messageType" floatingLabelText=" " floatingLabelFixed={true}
+                                       style={{"float": "left"}} hintText="Message Type"
                             />
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <TextField required
-                                value={this.state.dataType} onChange={this.handleChange} type="text"
-                                name="dataType" floatingLabelText=" " floatingLabelFixed={true}
-                                style={{ "float": "left" }} hintText="Data Type"
+                                       value={this.state.dataType} onChange={this.handleChange} type="text"
+                                       name="dataType" floatingLabelText=" " floatingLabelFixed={true}
+                                       style={{"float": "left"}} hintText="Data Type"
                             />
                         </Grid>
                     </Grid>
@@ -137,7 +136,7 @@ class DocumentSendView extends React.Component {
                         <Grid container item xs={12}>
                             <MuiThemeProvider theme={buttonTheme}>
                                 <Button type="submit" value="Submit" variant="contained" color="primary"
-                                    fullWidth={true} disabled={!this.state.formComplete}>
+                                        fullWidth={true} disabled={!this.state.formComplete}>
                                     Send Document for Review
                                 </Button>
                             </MuiThemeProvider>
@@ -145,30 +144,32 @@ class DocumentSendView extends React.Component {
                     </Grid>
                 </div>
                 <Dialog open={this.state.openDialog} onClose={this.handleDialogClose}>
-                    <div style={{ padding: 24 }}>
+                    <div style={{padding: 24}}>
                         <Grid container>
                             <Grid container item xs={12}>
                                 Please confirm information.
                             </Grid>
                         </Grid>
-                        <br />
+                        <br/>
                         <Grid container justify="center">
                             <Grid container item xs={12}>
-                                <Paper>
-                                    <Table>
-                                        <TableBody>
-                                            {rows.map(row => {
-                                                return (
-                                                    <TableRow key={row.id}>
-                                                        <TableCell>
-                                                            {row.info1}
-                                                        </TableCell>
-                                                        <TableCell>{row.info2}</TableCell>
-                                                    </TableRow>
-                                                );
-                                            })}
-                                        </TableBody>
-                                    </Table>
+                                <Paper style={{"width": "100%"}}>
+                                    <div style={{"overflowX": "auto"}}>
+                                        <Table>
+                                            <TableBody>
+                                                {rows.map(row => {
+                                                    return (
+                                                        <TableRow key={row.id}>
+                                                            <TableCell>
+                                                                {row.info1}
+                                                            </TableCell>
+                                                            <TableCell>{row.info2}</TableCell>
+                                                        </TableRow>
+                                                    );
+                                                })}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
                                 </Paper>
                             </Grid>
                         </Grid>
@@ -191,7 +192,7 @@ class DocumentSendView extends React.Component {
                             <Grid container item xs={4} sm={4}>
                                 <MuiThemeProvider theme={button2Theme}>
                                     <Button type="print" value="Print" variant="flat" color="primary" fullWidth={true}
-                                        onClick={this.handlePrint}>
+                                            onClick={this.handlePrint}>
                                         Print...
                                     </Button>
                                 </MuiThemeProvider>
@@ -199,7 +200,7 @@ class DocumentSendView extends React.Component {
                             <Grid container item xs={4} sm={4}>
                                 <MuiThemeProvider theme={button2Theme}>
                                     <Button type="ok" value="OK" variant="flat" color="primary" fullWidth={true}
-                                        onClick={this.handleSubmit}>
+                                            onClick={this.handleSubmit}>
                                         OK
                                     </Button>
                                 </MuiThemeProvider>
@@ -207,7 +208,7 @@ class DocumentSendView extends React.Component {
                             <Grid container item xs={4} sm={4}>
                                 <MuiThemeProvider theme={button2Theme}>
                                     <Button type="cancel" value="Cancel" variant="flat" color="primary" fullWidth={true}
-                                        onClick={this.handleDialogClose}>
+                                            onClick={this.handleDialogClose}>
                                         Cancel
                                     </Button>
                                 </MuiThemeProvider>
@@ -219,7 +220,7 @@ class DocumentSendView extends React.Component {
                     open={this.state.snackbar.open} message={this.state.snackbar.message}
                     autoHideDuration={this.state.snackbar.autoHideDuration}
                     onRequestClose={this.handleSnackbarClose}
-                    bodyStyle={{ backgroundColor: this.state.snackbar.sbColor }}
+                    bodyStyle={{backgroundColor: this.state.snackbar.sbColor}}
                 />
             </form>
 
