@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 import rootReducer from './redux/index';
 
 export default function configureStore(initialState) {
+
   const composeEnhancers =
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
       window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
@@ -13,9 +14,15 @@ export default function configureStore(initialState) {
     applyMiddleware(thunk)
   );
 
-  return createStore(
+  const store = createStore(
     rootReducer,
     initialState,
     enhancer
   );
+
+  store.subscribe(() => {
+    console.log("STORE CHANGED: ", store.getState());
+  })
+
+  return store
 }

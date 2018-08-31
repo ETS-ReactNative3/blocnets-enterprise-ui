@@ -1,40 +1,28 @@
-export function authenticate(state = false, action) {
+export function checkAuthReducer(state = {}, action) {
     switch (action.type) {
-        case 'ACCESS_GRANTED':
-            return action.token;
+        case "LOADING_VIEW": {
+            state = { ...state, loadView: action.payload }
+            break;
+        }
+        case "ACCESS_GRANTED": {
+            state = { ...state, accessGranted: action.payload }
+            break;
+        }
+        case "ACCESS_REQUEST_FAILED": {
+            state = { ...state, requestedDataFailed: action.payload }
+            break;
+        }
+    }
+    return state
+}
+
+export function requestSucceededReducer(state = {}, action) {
+    switch (action.type) {
+        case "REQUESTED_DATA_SUCCESSFULLY": {
+            state = { ...state, address1: action.payload.address1 }
+            break;
+        }
         default:
             return state;
     }
 }
-
-export function loadingView(state = false, action) {
-    switch (action.type) {
-        case 'VIEW_IS_LOADING':
-            return action.loadingView
-        default:
-            return state;
-    }
-}
-
-export function getData(state = [], action) {
-    switch (action.type) {
-        case 'REQUESTED_DATA_SUCCESSFULLY':
-            return action.Data;
-        default:
-            return state;
-    }
-}
-
-export function requestFailed(state = false, action) {
-    switch (action.type) {
-        case 'REQUESTED_DATA_FAILED':
-            return action.requestFailed;
-        default:
-            return state;
-    }
-}
-
-
-export default (state = {}, action) => {
-    return state;
-};

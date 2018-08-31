@@ -8,11 +8,6 @@ import Button from '@material-ui/core/Button';
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from 'material-ui/Checkbox';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-
-
-
 
 class BillOfMaterialsForm extends React.Component {
 

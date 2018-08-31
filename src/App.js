@@ -258,7 +258,7 @@ const mapStateToProps = (state) => {
     };
 };
 
-// This way, we can call our action creator by doing this.props.fetchData(url);
+// This way, we can call our action creator by doing this.props.authenticate();
 const mapDispatchToProps = (dispatch) => {
     return {
         authenticate: () => dispatch(authenticate())
