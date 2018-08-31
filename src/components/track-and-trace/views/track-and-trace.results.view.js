@@ -34,7 +34,10 @@ class TrackAndTraceResultsView extends Component {
     handleSnackbarClose = () => {
         this.setState({
             snackbar: {
-                open: false
+                autoHideDuration: 2000,
+                message: '',
+                open: false,
+                sbColor: 'black'
             },
         });
     };
