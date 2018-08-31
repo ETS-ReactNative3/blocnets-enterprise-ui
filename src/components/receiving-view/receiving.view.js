@@ -39,7 +39,9 @@ class ReceivingView extends Component {
         this.state = {
             showProgressLogo: false,
             materialID: '',
+            materialIDInformed: false,
             shipmentID: '',
+            shipmentIDInformed: false,
             openDialog: false,
             received: false,
             snackbar: {
@@ -53,10 +55,20 @@ class ReceivingView extends Component {
 
     handleIDChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
+        if ([event.target.name].toString() === 'materialID' && event.target.value !== '') {
+            this.setState({ materialIDInformed: true });
+        } else if ([event.target.name].toString() === 'materialID' && event.target.value === '') {
+            this.setState({ materialIDInformed: false });
+        }
+        if ([event.target.name].toString() === 'shipmentID'&& event.target.value !== '') {
+            this.setState({ shipmentIDInformed: true });
+        } else if ([event.target.name].toString() === 'shipmentID' && event.target.value === '') {
+            this.setState({ shipmentIDInformed: false });
+        }
     };
 
-    handleSubmit(event) {
-        this.state.showProgressLogo = true;
+    handleSubmit = (event) => {
+        this.setState({showProgressLogo: true});
         if (this.state.materialID === '') {
             this.props.getShippingDataByShipmentID(this.state.shipmentID);
         } else if (this.state.shipmentID === '') {
@@ -154,7 +166,7 @@ class ReceivingView extends Component {
                                 floatingLabelFixed={true}
                                 style={{"float": "left"}}
                                 hintText=""
-                                disabled={this.state.shipmentID}
+                                disabled={this.state.shipmentIDInformed}
                             />
                         </Grid>
                         <Grid container item xs={6} sm={3}>
@@ -167,7 +179,7 @@ class ReceivingView extends Component {
                                 floatingLabelFixed={true}
                                 style={{"float": "left"}}
                                 hintText=""
-                                disabled={this.state.materialID}
+                                disabled={this.state.materialIDInformed}
                             />
                         </Grid>
                     </Grid>
@@ -175,7 +187,7 @@ class ReceivingView extends Component {
                         <Grid container item xs={12}>
                             <MuiThemeProvider theme={buttonThemeYellow}>
                                 <Button type="submit" value="Submit" variant="contained" color="primary"
-                                        fullWidth={true} disabled={!this.state.materialID && !this.state.shipmentID}>
+                                        fullWidth={true} disabled={!this.state.materialIDInformed && !this.state.shipmentIDInformed}>
                                     Submit
                                 </Button>
                             </MuiThemeProvider>
