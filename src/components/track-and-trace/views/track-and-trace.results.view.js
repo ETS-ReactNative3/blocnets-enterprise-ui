@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Grid from "@material-ui/core/Grid/Grid";
 import Paper from "material-ui/Paper";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core";
@@ -58,10 +58,10 @@ class TrackAndTraceResultsView extends Component {
         });
 
         return (
-            <form >
+            <form>
                 {this.state.showBillOfMaterialsTree === false ?
                     <div>
-                        <div style={{padding: 24}} >
+                        <div style={{padding: 24}}>
                             <Grid container>
                                 <Grid container item xs={12}>
                                     Block Information
@@ -107,7 +107,7 @@ class TrackAndTraceResultsView extends Component {
                             bodyStyle={{backgroundColor: this.state.snackbar.sbColor}}
                         />
                     </div>
-                : ''}
+                    : ''}
                 {this.state.showBillOfMaterialsTree === true ?
                     <div><BillOfMaterialsTree/></div> : ""}
             </form>
