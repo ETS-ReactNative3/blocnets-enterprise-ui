@@ -14,9 +14,18 @@ import Paper from '@material-ui/core/Paper';
 import Snackbar from 'material-ui/Snackbar';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getSARData } from '../../redux/actions/main.actions';
+import {
+    getShippingDataByShipmentID,
+    getShippingDataByMaterialID
+}
+    from '../../redux/actions/shipping.and.receiving.actions';
 
-let data = JSON.parse(localStorage.getItem('SAR'));
+    let data = JSON.parse(sessionStorage.getItem('DataByShipmentID'));
+
+    if (data === null) {
+        data = ''
+    }
+    console.log(data);
 
 class ReceivingView extends Component {
 
@@ -45,8 +54,8 @@ class ReceivingView extends Component {
 
     handleSubmit(event) {
         this.state.showProgressLogo = true;
-        console.log("REQUEST_SUCCEEDED: " + JSON.stringify(this.props.state));
-        this.props.getSARData(this.state.shipmentID);
+        this.props.getShippingDataByShipmentID(this.state.shipmentID);
+        this.props.getShippingDataByMaterialID(this.state.materialID);
         console.log("Global Variable: " + data);
         //this.setState({ ipAddress: data.ipAddress });
         this.state.showProgressLogo = false;
@@ -182,7 +191,8 @@ const mapStateToProps = (state) => {
 // This way, we can call our action creator by doing this.props.fetchData(url);
 const mapDispatchToProps = (dispatch) => {
     return {
-        getSARData: (val) => dispatch(getSARData(val))
+        getShippingDataByShipmentID: (val) => dispatch(getShippingDataByShipmentID(val)),
+        getShippingDataByMaterialID: (val) => dispatch(getShippingDataByMaterialID(val)),
     };
 };
 
