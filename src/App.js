@@ -72,9 +72,7 @@ class App extends Component {
     componentDidMount() {
         this.props.authenticate();
         setInterval(() => {
-            this.setState({
-                currentDateAndTime: new Date().toUTCString()
-            })
+            this.setState({currentDateAndTime: new Date().toUTCString()})
         }, 1000)
     }
 

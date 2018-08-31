@@ -2,20 +2,28 @@ import React, {Component} from 'react';
 import blocnetsLogo from "../../blocknetwhite-1.png";
 import Grid from '@material-ui/core/Grid';
 import TextField from 'material-ui/TextField';
+import Typography from "@material-ui/core/Typography/Typography";
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
+import red from '@material-ui/core/colors/red';
 import Dialog from '@material-ui/core/Dialog';
+import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import red from '@material-ui/core/colors/red';
+import TableCell from '@material-ui/core/TableCell';
 import Snackbar from 'material-ui/Snackbar';
+
+let counter = 0;
+
+function createData(info1, info2) {
+    counter += 1;
+    return {id: counter, info1, info2};
+}
 
 class ShippingView extends Component {
 
@@ -24,6 +32,7 @@ class ShippingView extends Component {
         this.state = {
             showProgressLogo: false,
             materialID: '',
+            shipmentID: '',
             addressLine1: '',
             addressLine2: '',
             city: '',
@@ -31,63 +40,124 @@ class ShippingView extends Component {
             postalCode: '',
             country: '',
             ipAddress: '',
+            ipAddressLength: '',
+            counter: '001',
             manualShipping: '',
             manualShipping2: 'NO',
-            formComplete: '',
             openDialog: false,
-            count: 0,
             doNotAskAgain: '',
+            doNotAskAgain2: false,
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
                 open: false,
                 sbColor: 'black'
-            },
+            }
         };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
-        this.handleConfirmation = this.handleConfirmation.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange(event) {
-        this.setState({[event.target.name]: event.target.value, formComplete: true});
-    }
+    handleChange = (event) => {
+        this.setState({[event.target.name]: event.target.value});
+        let shipmentID = '';
+        let ipAddress2 = '';
+        let ipAddressLength = '';
+        if ([event.target.name].toString() === 'ipAddress') {
+            ipAddress2 = event.target.value.replace(/\D/g, "").substring(0, 6);
+            ipAddressLength = ipAddress2.length;
+            shipmentID = ipAddress2 + '-' + this.state.counter;
+            this.setState({shipmentID: shipmentID, ipAddressLength: ipAddressLength});
+        }
+    };
 
-    handleCheckboxChange(event) {
-        this.setState({[event.target.name]: event.target.checked, formComplete: true});
-        [event.target.name].toString() === 'manualShipping' && event.target.checked === true
-            ? this.state.manualShipping2 = 'YES' : this.state.manualShipping2 = 'NO'
-    }
+    handleCheckboxChange = (event) => {
+        this.setState({[event.target.name]: event.target.checked});
+        if ([event.target.name].toString() === 'manualShipping' && event.target.checked === true) {
+            this.setState({manualShipping2: 'YES'});
+        } else if ([event.target.name].toString() === 'manualShipping' && event.target.checked === false) {
+            this.setState({manualShipping2: 'NO'});
+        }
+        if ([event.target.name].toString() === 'doNotAskAgain' && event.target.checked === true) {
+            this.setState({doNotAskAgain2: true});
+        } else if ([event.target.name].toString() === 'doNotAskAgain' && event.target.checked === false) {
+            this.setState({doNotAskAgain2: false});
+        }
+    };
 
-    handleConfirmation(event) {
-        this.setState({openDialog: true});
+    handleConfirmation = (event) => {
+        if (this.state.doNotAskAgain2 === true) {
+            this.setState({openDialog: false});
+        } else {
+            this.setState({openDialog: true});
+        }
         event.preventDefault();
-    }
-
-    handleSubmit(event) {
-        this.setState({showProgressLogo: true, openDialog: false});
-
-        event.preventDefault();
-    }
-
-    createData(info1, info2) {
-        this.state.count += 1;
-        return {id: this.state.count, info1, info2};
-    }
+    };
 
     handlePrint = () => {
     };
 
+    handleSubmit = (event) => {
+        //this.setState({showProgressLogo: true}); to show blocnetsLogo before submit
+        //this.setState({showProgressLogo: false}); to show blocnetsLogo after receiving response
+        /*this.setState({
+            snackbar: {
+                autoHideDuration: 2000,
+                message: 'Success',
+                open: true,
+                sbColor: 'black'
+            }
+        }); to show success message */
+        /*this.setState({
+            snackbar: {
+                autoHideDuration: 2000,
+                message: 'Error',
+                open: true,
+                sbColor: 'red'
+            }
+        }); to show error message */
+        /*
+        this.setState({
+            materialID: '',
+            shipmentID: '',
+            addressLine1: '',
+            addressLine2: '',
+            city: '',
+            addressState: '',
+            postalCode: '',
+            country: '',
+            ipAddress: '',
+            ipAddressLength: '',
+            counter: '001',
+            manualShipping: '',
+            manualShipping2: 'NO',
+            openDialog: false,
+            doNotAskAgain: '',
+            doNotAskAgain2: false,
+            snackbar: {
+                autoHideDuration: 2000,
+                message: '',
+                open: false,
+                sbColor: 'black'
+            }
+        }); to initialize all fields if successful */
+        /* let shipmentID = this.state.shipmentID;
+        let newShipmentID = this.state.shipmentID;
+        let countString = '';
+        let countInteger = '';
+        countInteger = parseInt(shipmentID.substring(7, 10))+1;
+        countString = countInteger.toString().padStart(3,'0');
+        newShipmentID = shipmentID.substring(0, 6) + '-' + countString;
+        this.setState({shipmentID: newShipmentID}); modify Shipment ID if it exists */
+        this.setState({openDialog: false});
+        event.preventDefault();
+    };
 
     handleDialogClose = () => {
-        this.setState({openDialog: false});
+        this.setState({openDialog: false, doNotAskAgain2: false});
     };
 
     handleSnackbarClose = () => {
         this.setState({
             snackbar: {
-                message: '',
                 open: false
             },
         });
@@ -95,68 +165,102 @@ class ShippingView extends Component {
 
     render() {
 
-        const buttonTheme = createMuiTheme({
+        const buttonThemeYellow = createMuiTheme({
             palette: {
                 primary: yellow
             },
         });
 
-        const button2Theme = createMuiTheme({
+        const buttonThemeRed = createMuiTheme({
             palette: {
                 primary: red
             },
         });
 
+        const formComplete = this.state.materialID && this.state.ipAddressLength === 6;
+
         const rows = [
-            this.createData('Material ID', this.state.materialID),
-            this.createData('Address', this.state.addressLine1 + ' ' + this.state.addressLine2 + ' '
+            createData('Material ID', this.state.materialID),
+            createData('Shipment ID', this.state.shipmentID),
+            createData('Address', this.state.addressLine1 + ' ' + this.state.addressLine2 + ' '
                 + this.state.city + ' ' + this.state.addressState + ' ' + this.state.postalCode + ' '
                 + this.state.country),
-            this.createData('IP Address', this.state.ipAddress),
-            this.createData('Manual Shipping', this.state.manualShipping2),
+            createData('IP Address', this.state.ipAddress),
+            createData('Manual Shipping', this.state.manualShipping2),
         ];
 
         return (
             <form onSubmit={this.handleConfirmation}>
                 <div>
-                    {this.state.showProgressLogo ? <img src={blocnetsLogo} className="App-logo-progress"/> : ""}
+                    {this.state.showProgressLogo ? <img src={blocnetsLogo} className="App-logo-progress" alt=""/> : ""}
                 </div>
                 <div style={{padding: 24}}>
                     <Grid container spacing={24}>
                         <Grid container item xs>
                             <TextField
-                                value={this.state.materialID} onChange={this.handleChange} type="text"
-                                name="materialID" floatingLabelText="Material ID" floatingLabelFixed={true}
-                                style={{"float": "left"}} hintText=""
+                                value={this.state.materialID}
+                                onChange={this.handleChange}
+                                type="text"
+                                name="materialID"
+                                floatingLabelText="Material ID"
+                                floatingLabelFixed={true}
+                                style={{"float": "left"}}
+                                hintText=""
                             />
                         </Grid>
+                        {this.state.ipAddressLength === 6 ?
+                            <Grid container item xs>
+                                <Typography variant="subheading" align="right" style={{"width": "100%"}}>
+                                    Shipment ID: {this.state.shipmentID}
+                                </Typography>
+                            </Grid>
+                            : ""}
                     </Grid>
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <TextField
-                                value={this.state.addressLine1} onChange={this.handleChange} type="text"
-                                name="addressLine1" floatingLabelText="Address" floatingLabelFixed={true}
-                                style={{"float": "left"}} hintText=""
+                                value={this.state.addressLine1}
+                                onChange={this.handleChange}
+                                type="text"
+                                name="addressLine1"
+                                floatingLabelText="Address"
+                                floatingLabelFixed={true}
+                                style={{"float": "left"}}
+                                hintText=""
                             />
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <TextField
-                                value={this.state.addressLine2} onChange={this.handleChange} type="text"
-                                name="addressLine2" floatingLabelText=" " floatingLabelFixed={true}
-                                style={{"float": "left"}} hintText="Address Line 2"
+                                value={this.state.addressLine2}
+                                onChange={this.handleChange}
+                                type="text"
+                                name="addressLine2"
+                                floatingLabelText=" "
+                                floatingLabelFixed={true}
+                                style={{"float": "left"}}
+                                hintText="Address Line 2"
                             />
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <TextField
-                                value={this.state.city} onChange={this.handleChange} type="text"
-                                name="city" floatingLabelText=" " floatingLabelFixed={true}
-                                style={{"float": "left"}} hintText="City"
+                                value={this.state.city}
+                                onChange={this.handleChange}
+                                type="text"
+                                name="city"
+                                floatingLabelText=" "
+                                floatingLabelFixed={true}
+                                style={{"float": "left"}}
+                                hintText="City"
                             />
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <TextField
-                                value={this.state.addressState} onChange={this.handleChange} type="text"
-                                name="addressState" floatingLabelText=" " floatingLabelFixed={true}
+                                value={this.state.addressState}
+                                onChange={this.handleChange}
+                                type="text"
+                                name="addressState"
+                                floatingLabelText=" "
+                                floatingLabelFixed={true}
                                 style={{"float": "left"}} hintText="State"
                             />
                         </Grid>
@@ -164,25 +268,40 @@ class ShippingView extends Component {
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <TextField
-                                value={this.state.postalCode} onChange={this.handleChange} type="text"
-                                name="postalCode" floatingLabelText=" " floatingLabelFixed={true}
-                                style={{"float": "left"}} hintText="Postal Code"
+                                value={this.state.postalCode}
+                                onChange={this.handleChange}
+                                type="text"
+                                name="postalCode"
+                                floatingLabelText=" "
+                                floatingLabelFixed={true}
+                                style={{"float": "left"}}
+                                hintText="Postal Code"
                             />
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <TextField
-                                value={this.state.country} onChange={this.handleChange} type="text"
-                                name="country" floatingLabelText=" " floatingLabelFixed={true}
-                                style={{"float": "left"}} hintText="Country"
+                                value={this.state.country}
+                                onChange={this.handleChange}
+                                type="text"
+                                name="country"
+                                floatingLabelText=" "
+                                floatingLabelFixed={true}
+                                style={{"float": "left"}}
+                                hintText="Country"
                             />
                         </Grid>
                     </Grid>
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <TextField
-                                value={this.state.ipAddress} onChange={this.handleChange} type="text"
-                                name="ipAddress" floatingLabelText="IP Address" floatingLabelFixed={true}
-                                style={{"float": "left"}} hintText=""
+                                value={this.state.ipAddress}
+                                onChange={this.handleChange}
+                                type="text"
+                                name="ipAddress"
+                                floatingLabelText="IP Address"
+                                floatingLabelFixed={true}
+                                style={{"float": "left"}}
+                                hintText=""
                             />
                         </Grid>
                         <Grid container item xs={6} sm={6}>
@@ -191,7 +310,8 @@ class ShippingView extends Component {
                                     control={
                                         <Checkbox
                                             onChange={this.handleCheckboxChange}
-                                            name="manualShipping" color="default"
+                                            name="manualShipping"
+                                            color="default"
                                         />
                                     }
                                     label="Manual Shipping"
@@ -201,9 +321,9 @@ class ShippingView extends Component {
                     </Grid>
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
-                            <MuiThemeProvider theme={buttonTheme}>
+                            <MuiThemeProvider theme={buttonThemeYellow}>
                                 <Button type="submit" value="Submit" variant="contained" color="primary"
-                                        fullWidth={true} disabled={!this.state.formComplete}>
+                                        fullWidth={true} disabled={!formComplete}>
                                     Submit
                                 </Button>
                             </MuiThemeProvider>
@@ -227,9 +347,7 @@ class ShippingView extends Component {
                                                 {rows.map(row => {
                                                     return (
                                                         <TableRow key={row.id}>
-                                                            <TableCell>
-                                                                {row.info1}
-                                                            </TableCell>
+                                                            <TableCell>{row.info1}</TableCell>
                                                             <TableCell>{row.info2}</TableCell>
                                                         </TableRow>
                                                     );
@@ -246,8 +364,9 @@ class ShippingView extends Component {
                                     <FormControlLabel
                                         control={
                                             <Checkbox
-                                                value={this.state.doNotAskAgain} onChange={this.handleCheckboxChange}
-                                                name="doNotAskAgain" color="default"
+                                                onChange={this.handleCheckboxChange}
+                                                name="doNotAskAgain"
+                                                color="default"
                                             />
                                         }
                                         label="Do not ask again."
@@ -257,24 +376,24 @@ class ShippingView extends Component {
                         </Grid>
                         <Grid container spacing={24}>
                             <Grid container item xs={4} sm={4}>
-                                <MuiThemeProvider theme={button2Theme}>
-                                    <Button type="print" value="Print" variant="flat" color="primary" fullWidth={true}
-                                            onClick={this.handlePrint}>
+                                <MuiThemeProvider theme={buttonThemeRed}>
+                                    <Button type="submit" value="Print" variant="flat" color="primary" fullWidth={true}
+                                            onClick={this.handlePrint} disabled>
                                         Print...
                                     </Button>
                                 </MuiThemeProvider>
                             </Grid>
                             <Grid container item xs={4} sm={4}>
-                                <MuiThemeProvider theme={button2Theme}>
-                                    <Button type="ok" value="OK" variant="flat" color="primary" fullWidth={true}
+                                <MuiThemeProvider theme={buttonThemeRed}>
+                                    <Button type="submit" value="OK" variant="flat" color="primary" fullWidth={true}
                                             onClick={this.handleSubmit}>
                                         OK
                                     </Button>
                                 </MuiThemeProvider>
                             </Grid>
                             <Grid container item xs={4} sm={4}>
-                                <MuiThemeProvider theme={button2Theme}>
-                                    <Button type="cancel" value="Cancel" variant="flat" color="primary" fullWidth={true}
+                                <MuiThemeProvider theme={buttonThemeRed}>
+                                    <Button type="submit" value="Cancel" variant="flat" color="primary" fullWidth={true}
                                             onClick={this.handleDialogClose}>
                                         Cancel
                                     </Button>
@@ -284,7 +403,8 @@ class ShippingView extends Component {
                     </div>
                 </Dialog>
                 <Snackbar
-                    open={this.state.snackbar.open} message={this.state.snackbar.message}
+                    open={this.state.snackbar.open}
+                    message={this.state.snackbar.message}
                     autoHideDuration={this.state.snackbar.autoHideDuration}
                     onRequestClose={this.handleSnackbarClose}
                     bodyStyle={{backgroundColor: this.state.snackbar.sbColor}}

@@ -51,7 +51,7 @@ class TableHeader extends React.Component {
                     <TableCell padding="checkbox">
                         <Checkbox
                             checked={numSelected === rowCount}
-                            onChange={onSelectAllClick}
+                            onChange={onSelectAllClick} color="default"
                         />
                     </TableCell>
                     {rows.map(row => {
@@ -273,7 +273,7 @@ class DocumentReviewEntryView extends React.Component {
                                                             <TableCell padding="checkbox">
                                                                 <Checkbox
                                                                     onClick={event => this.handleClickCheckbox(event, n.id)}
-                                                                    checked={isSelected}/>
+                                                                    checked={isSelected} color="default"/>
                                                             </TableCell>
                                                             <TableCell
                                                                 onClick={event => this.handleClickMessages(event, n.messageType, n.messageDescription, n.messageDate)}
