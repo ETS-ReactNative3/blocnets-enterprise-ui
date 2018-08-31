@@ -319,7 +319,6 @@ class ShippingView extends Component {
                                 floatingLabelFixed={true}
                                 style={{"float": "left"}}
                                 hintText=""
-                                required
                                 errorText={this.state.errorText2}
                                 errorStyle={{"float": "left"}}
                             />
@@ -379,6 +378,7 @@ class ShippingView extends Component {
                                 </Paper>
                             </Grid>
                         </Grid>
+                        <br/>
                         <Grid container spacing={24}>
                             <Grid container item xs={12}>
                                 <FormGroup row>
@@ -395,6 +395,7 @@ class ShippingView extends Component {
                                 </FormGroup>
                             </Grid>
                         </Grid>
+                        <br/>
                         <Grid container spacing={24}>
                             <Grid container item xs={4} sm={4}>
                                 <MuiThemeProvider theme={buttonThemeRed}>

@@ -13,27 +13,26 @@ class BillOfMaterials extends React.Component {
             showBillOfMaterialsTree: false,
             data: ''
         };
-        this.handleData = this.handleData.bind(this);
     }
 
-    handleData(data) {
+    handleData = (data) => {
         this.setState({
             showBillOfMaterialsForm: data.showBillOfMaterialsForm,
             showBillOfMaterialsReview: data.showBillOfMaterialsReview,
             showBillOfMaterialsTree: data.showBillOfMaterialsTree,
             data: data
         });
-    }
+    };
 
     render() {
         return (
             <div id="billOfMaterials">
-                {this.state.showBillOfMaterialsForm === true ? 
-                <BillOfMaterialsForm show={this.state.showBillOfMaterialsForm === true} viewHandler={this.handleData} /> : ""}
-                {this.state.showBillOfMaterialsReview === true ? 
-                <BillOfMaterialsReview data={this.state} show={this.state.showBillOfMaterialsReview === true} viewHandler={this.handleData}/> : ""}
+                {this.state.showBillOfMaterialsForm === true ?
+                    <BillOfMaterialsForm viewHandler={this.handleData}/> : ""}
+                {this.state.showBillOfMaterialsReview === true ?
+                    <BillOfMaterialsReview data={this.state} viewHandler={this.handleData}/> : ""}
                 {this.state.showBillOfMaterialsTree === true ?
-                    <BillOfMaterialsTree data={this.state} show={this.state.showBillOfMaterialsTree === true} viewHandler={this.handleData}/> : ""}
+                    <BillOfMaterialsTree data={this.state} viewHandler={this.handleData}/> : ""}
             </div>
         )
     }
