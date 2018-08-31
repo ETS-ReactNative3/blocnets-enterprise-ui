@@ -1,16 +1,16 @@
 [
     {
         "userID": "Guest",
-        "status": "pending",
+        "status": "Pending",
         "messageType": [
-            "Notifcations",
+            "Notifications",
             "Approval",
             "Veto"
         ],
         "dataType": [
             "Purchase Order",
-            "Manufacturing bill of materials",
-            "engineering bill of materials",
+            "Manufacturing Bill of Materials",
+            "Engineering Bill of Materials",
             "Shipping Document",
             "Requirements Document",
             "Material Manufacturing Details",

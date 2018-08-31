@@ -1,23 +1,21 @@
 import React from 'react';
 import blocnetsLogo from "../../../blocknetwhite-1.png";
 import Grid from '@material-ui/core/Grid';
-import TextField from 'material-ui/TextField';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import FormControl from "@material-ui/core/FormControl/FormControl";
+import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import Select from "@material-ui/core/Select/Select";
+import Input from "@material-ui/core/Input/Input";
+import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import Button from '@material-ui/core/Button';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
-import Dialog from '@material-ui/core/Dialog';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import red from '@material-ui/core/colors/red';
 import Snackbar from 'material-ui/Snackbar';
+//Temporary Only
 import response from './messageData.json';
 
+let userIDMenuItems = response[0].userID;
+let messageTypeMenuItems = response[0].messageType;
+let dataTypeMenuItems = response[0].dataType;
 
 class DocumentSendView extends React.Component {
 
@@ -25,202 +23,147 @@ class DocumentSendView extends React.Component {
         super(props);
         this.state = {
             showProgressLogo: false,
-            sendToUser: '',
+            recipientUserName: '',
             messageType: '',
             dataType: '',
-            openDialog: false,
-            formComplete: '',
-            count: 0,
-            doNotAskAgain: '',
+            snackbar: {
+                autoHideDuration: 2000,
+                message: '',
+                open: false,
+                sbColor: 'black'
+            }
+        };
+    }
+
+    handleChange = (event) => {
+        this.setState({[event.target.name]: event.target.value});
+    };
+
+    handleUpload = (event) => {
+    };
+
+    handleSubmit = (event) => {
+        //this.setState({showProgressLogo: true}); to show blocnetsLogo before submit
+        //this.setState({showProgressLogo: false}); to show blocnetsLogo after receiving response
+        /*this.setState({
+            snackbar: {
+                autoHideDuration: 2000,
+                message: 'Success',
+                open: true,
+                sbColor: 'black'
+            }
+        }); to show success message */
+        /*this.setState({
+            snackbar: {
+                autoHideDuration: 2000,
+                message: 'Error',
+                open: true,
+                sbColor: 'red'
+            }
+        }); to show error message */
+        event.preventDefault();
+    };
+
+    handleSnackbarClose = () => {
+        this.setState({
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
                 open: false,
                 sbColor: 'black'
             },
-        };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleConfirmation = this.handleConfirmation.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    createData(info1, info2) {
-        this.state.count += 1;
-        return { id: this.state.count, info1, info2 };
-    }
-
-    handleChange(event) {
-        this.setState({ [event.target.name]: event.target.value, formComplete: true });
-    }
-
-    handleConfirmation(event) {
-        this.setState({ openDialog: true });
-        event.preventDefault();
-    }
-
-    handleSubmit(event) {
-        this.setState({ showProgressLogo: true, openDialog: false });
-
-        event.preventDefault();
-    }
-
-    handlePrint = () => {
-    };
-
-
-    handleDialogClose = () => {
-        this.setState({ openDialog: false });
-    };
-
-    handleSnackbarClose = () => {
-        this.setState({
-            snackbar: {
-                message: '',
-                open: false
-            },
         });
     };
 
     render() {
 
-        const buttonTheme = createMuiTheme({
+        const buttonThemeYellow = createMuiTheme({
             palette: {
                 primary: yellow
             },
         });
 
-        const button2Theme = createMuiTheme({
-            palette: {
-                primary: red
-            },
-        });
-
-        const rows = [
-            this.createData('userID', response.userID),
-            this.createData('messageType', response.messageType),
-            this.createData('dataType', response.dataType),
-        ];
+        const formComplete = this.state.recipientUserName && this.state.messageType && this.state.dataType;
 
         return (
-            <form onSubmit={this.handleConfirmation}>
+            <form onSubmit={this.handleSubmit}>
                 <div>
-                    {this.state.showProgressLogo ? <img src={blocnetsLogo} className="App-logo-progress" /> : ""}
+                    {this.state.showProgressLogo ? <img src={blocnetsLogo} className="App-logo-progress" alt=""/> : ""}
                 </div>
-                <div style={{ padding: 24 }}>
-                    <Grid container spacing={24}>
-                        <Grid container item xs>
-                            <TextField required
-                                value={this.state.sendToUser} onChange={this.handleChange} type="text"
-                                name="userID" floatingLabelText="Receipient's username" floatingLabelFixed={true}
-                                style={{ "float": "left" }} hintText="username"
-                            />
-                        </Grid>
-                    </Grid>
+                <div style={{padding: 24}}>
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
-                            <TextField required
-                                value={this.state.messageType} onChange={this.handleChange} type="text"
-                                name="messageType" floatingLabelText=" " floatingLabelFixed={true}
-                                style={{ "float": "left" }} hintText="Message Type"
-                            />
+                            <FormControl fullWidth={true}>
+                                <InputLabel>
+                                    Recipient User Name
+                                </InputLabel>
+                                <Select value={this.state.recipientUserName} onChange={this.handleChange}
+                                        input={<Input name="recipientUserName" style={{"textAlign": "left"}}/>}
+                                        displayEmpty>
+                                    <MenuItem value={userIDMenuItems}>{userIDMenuItems}</MenuItem>
+                                </Select>
+                            </FormControl>
                         </Grid>
                         <Grid container item xs={6} sm={3}>
-                            <TextField required
-                                value={this.state.dataType} onChange={this.handleChange} type="text"
-                                name="dataType" floatingLabelText=" " floatingLabelFixed={true}
-                                style={{ "float": "left" }} hintText="Data Type"
-                            />
+                            <FormControl fullWidth={true}>
+                                <InputLabel>
+                                    Message Type
+                                </InputLabel>
+                                <Select value={this.state.messageType} onChange={this.handleChange}
+                                        input={<Input name="messageType" style={{"textAlign": "left"}}/>}
+                                        displayEmpty>
+                                    {messageTypeMenuItems.map((menuItem, i) => {
+                                        return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
+                                    })}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid container item xs={12} sm={6} justify="flex-end">
+                            <Grid>
+                                <MuiThemeProvider theme={buttonThemeYellow}>
+                                    <Button type="submit" value="Upload" variant="contained"
+                                            color="primary" onClick={this.handleUpload()} disabled>
+                                        Upload...
+                                    </Button>
+                                </MuiThemeProvider>
+                            </Grid>
                         </Grid>
                     </Grid>
+                    <br/>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6}>
+                            <FormControl fullWidth={true}>
+                                <InputLabel>
+                                    Data Type
+                                </InputLabel>
+                                <Select value={this.state.dataType} onChange={this.handleChange}
+                                        input={<Input name="dataType" style={{"textAlign": "left"}}/>}
+                                        displayEmpty>
+                                    {dataTypeMenuItems.map((menuItem, i) => {
+                                        return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
+                                    })}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                    </Grid>
+                    <br/>
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
-                            <MuiThemeProvider theme={buttonTheme}>
+                            <MuiThemeProvider theme={buttonThemeYellow}>
                                 <Button type="submit" value="Submit" variant="contained" color="primary"
-                                    fullWidth={true} disabled={!this.state.formComplete}>
+                                        fullWidth={true} disabled={!formComplete}>
                                     Send Document for Review
                                 </Button>
                             </MuiThemeProvider>
                         </Grid>
                     </Grid>
                 </div>
-                <Dialog open={this.state.openDialog} onClose={this.handleDialogClose}>
-                    <div style={{ padding: 24 }}>
-                        <Grid container>
-                            <Grid container item xs={12}>
-                                Please confirm information.
-                            </Grid>
-                        </Grid>
-                        <br />
-                        <Grid container justify="center">
-                            <Grid container item xs={12}>
-                                <Paper style={{ "width": "100%" }}>
-                                    <div style={{ "overflowX": "auto" }}>
-                                        <Table>
-                                            <TableBody>
-                                                {rows.map(row => {
-                                                    return (
-                                                        <TableRow key={row.id}>
-                                                            <TableCell>
-                                                                {row.info1}
-                                                            </TableCell>
-                                                            <TableCell>{row.info2}</TableCell>
-                                                        </TableRow>
-                                                    );
-                                                })}
-                                            </TableBody>
-                                        </Table>
-                                    </div>
-                                </Paper>
-                            </Grid>
-                        </Grid>
-                        <Grid container spacing={24}>
-                            <Grid container item xs={12}>
-                                <FormGroup row>
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox
-                                                value={this.state.doNotAskAgain} onChange={this.handleCheckboxChange}
-                                                name="doNotAskAgain" color="default"
-                                            />
-                                        }
-                                        label="Do not ask again."
-                                    />
-                                </FormGroup>
-                            </Grid>
-                        </Grid>
-                        <Grid container spacing={24}>
-                            <Grid container item xs={4} sm={4}>
-                                <MuiThemeProvider theme={button2Theme}>
-                                    <Button type="print" value="Print" variant="flat" color="primary" fullWidth={true}
-                                        onClick={this.handlePrint}>
-                                        Print...
-                                    </Button>
-                                </MuiThemeProvider>
-                            </Grid>
-                            <Grid container item xs={4} sm={4}>
-                                <MuiThemeProvider theme={button2Theme}>
-                                    <Button type="ok" value="OK" variant="flat" color="primary" fullWidth={true}
-                                        onClick={this.handleSubmit}>
-                                        OK
-                                    </Button>
-                                </MuiThemeProvider>
-                            </Grid>
-                            <Grid container item xs={4} sm={4}>
-                                <MuiThemeProvider theme={button2Theme}>
-                                    <Button type="cancel" value="Cancel" variant="flat" color="primary" fullWidth={true}
-                                        onClick={this.handleDialogClose}>
-                                        Cancel
-                                    </Button>
-                                </MuiThemeProvider>
-                            </Grid>
-                        </Grid>
-                    </div>
-                </Dialog>
                 <Snackbar
-                    open={this.state.snackbar.open} message={this.state.snackbar.message}
+                    open={this.state.snackbar.open}
+                    message={this.state.snackbar.message}
                     autoHideDuration={this.state.snackbar.autoHideDuration}
                     onRequestClose={this.handleSnackbarClose}
-                    bodyStyle={{ backgroundColor: this.state.snackbar.sbColor }}
+                    bodyStyle={{backgroundColor: this.state.snackbar.sbColor}}
                 />
             </form>
 
