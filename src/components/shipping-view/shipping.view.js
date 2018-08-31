@@ -32,6 +32,7 @@ class ShippingView extends Component {
         this.state = {
             showProgressLogo: false,
             materialID: '',
+            errorText1: 'This is a required field.',
             shipmentID: '',
             addressLine1: '',
             addressLine2: '',
@@ -40,6 +41,7 @@ class ShippingView extends Component {
             postalCode: '',
             country: '',
             ipAddress: '',
+            errorText2: 'This is a required field.',
             ipAddressLength: '',
             counter: '001',
             manualShipping: '',
@@ -58,6 +60,16 @@ class ShippingView extends Component {
 
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
+        if ([event.target.name].toString() === 'materialID' && event.target.value) {
+            this.setState({errorText1: ''});
+        } else if ([event.target.name].toString() === 'materialID' && !event.target.value) {
+            this.setState({errorText1: 'This is a required field.'});
+        }
+        if ([event.target.name].toString() === 'ipAddress' && event.target.value) {
+            this.setState({errorText2: ''});
+        } else if ([event.target.name].toString() === 'ipAddress' && !event.target.value) {
+            this.setState({errorText2: 'This is a required field.'});
+        }
         let shipmentID = '';
         let ipAddress2 = '';
         let ipAddressLength = '';
@@ -209,6 +221,8 @@ class ShippingView extends Component {
                                 floatingLabelFixed={true}
                                 style={{"float": "left"}}
                                 hintText=""
+                                errorText={this.state.errorText1}
+                                errorStyle={{"float": "left"}}
                             />
                         </Grid>
                         {this.state.ipAddressLength === 6 ?
@@ -305,6 +319,9 @@ class ShippingView extends Component {
                                 floatingLabelFixed={true}
                                 style={{"float": "left"}}
                                 hintText=""
+                                required
+                                errorText={this.state.errorText2}
+                                errorStyle={{"float": "left"}}
                             />
                         </Grid>
                         <Grid container item xs={6} sm={6}>
@@ -322,6 +339,7 @@ class ShippingView extends Component {
                             </FormGroup>
                         </Grid>
                     </Grid>
+                    <br/><br/>
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
                             <MuiThemeProvider theme={buttonThemeYellow}>
