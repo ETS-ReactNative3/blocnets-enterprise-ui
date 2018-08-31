@@ -1,5 +1,21 @@
 import axios from 'axios';
 
+
+const token = localStorage.getItem('Guest');
+
+const chaincodes = {
+    "BOM": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-supplychain",
+    "SAR": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-sar",
+    "DRE": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-dre"
+};
+
+const headers = {
+    'Authorization': 'Bearer ' + token,
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Accept': 'application/json',
+    'withCredentials': true
+}
+
 const serviceKey = {
     "type": "hyperledger-fabric",
     "channelId": "dev4f374fb9-1164-4c22-876e-8fe13ab5def6channel1",
@@ -11,9 +27,6 @@ const serviceKey = {
         "url": "https://development.authentication.us10.hana.ondemand.com",
         "identityZone": "development"
     }
-};
-const chaincodes = {
-    "supplychain": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-supplychain"
 };
 
 export function authenticate() {
@@ -28,61 +41,62 @@ export function authenticate() {
             }
         })
             .then((response) => {
-                localStorage.setItem('Guest', response.data.access_token)
-                return dispatch({ type: 'GET_AUTH_TOKEN', response })
+                localStorage.setItem('Guest', response.data.access_token);
+                dispatch(checkAuthorization(true))
             })
-            .catch(() => dispatch(requestFailed(true)));
+            .catch(() => dispatch(authRequestFailed(true)));
     }
 }
 
-export function getData(url) {
+export function getSARData(url) {
     return (dispatch) => {
-
         dispatch(loadingView(true));
-        const token = localStorage.getItem('Guest');
-        axios.get(serviceKey.serviceUrl + '/chaincodes/' + chaincodes.supplychain + '/latest/' + url, {
-            headers: {
-                'Authorization': 'Bearer ' + token,
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Accept': 'application/json',
-                'withCredentials': true
-            }
-        })
+
+        axios.get(serviceKey.serviceUrl + '/chaincodes/' + chaincodes.SAR + '/latest/' + url, { headers })
             .then((response) => {
-                dispatch(requestSuccess(response.data))
-                dispatch(loadingView(false))
+                let data = JSON.stringify(response.data);
+                localStorage.setItem('SAR', data);
+                console.log("getSARData: " + response.data);
+                return dispatch(requestSucceeded(data))
             })
             .catch(() => dispatch(requestFailed(true)));
     };
 }
 
-export function getAuthorization(bool, token) {
+export function checkAuthorization(bool) {
     return {
         type: "ACCESS_GRANTED",
-        isAuthenticated: bool,
-        token
+        payload: bool,
     };
 }
 
 export function loadingView(bool) {
     return {
-        type: 'VIEW_IS_LOADING',
-        loadingView: bool
+        type: 'LOADING_VIEW',
+        payload: bool
     };
 }
 
-export function requestSuccess(data) {
+export function requestSucceeded(response) {
     return {
         type: 'REQUESTED_DATA_SUCCESSFULLY',
-        data: data
-    };
+        payload: response.data
+    }
+
 }
 
 export function requestFailed(bool) {
     return {
         type: 'REQUESTED_DATA_FAILED',
-        requestFailed: bool
+        payload: bool
     };
+}
+
+export function authRequestFailed(bool) {
+    return {
+        type: 'ACCESS_REQUEST_FAILED',
+        payload: bool
+    }
 }
 
 

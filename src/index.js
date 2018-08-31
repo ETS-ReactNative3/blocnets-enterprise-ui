@@ -7,11 +7,12 @@ import App from './App';
 import configureStore from './configureStore';
 import registerServiceWorker from './registerServiceWorker';
 
-const root = <Provider store={configureStore()}>
-  <MuiThemeProvider>
-    <App />
-  </MuiThemeProvider>
-</Provider>;
+const root =
+  <Provider store={configureStore()}>
+    <MuiThemeProvider>
+      <App />
+    </MuiThemeProvider>
+  </Provider>;
 
 ReactDOM.render(root, document.getElementById('root'));
 registerServiceWorker();

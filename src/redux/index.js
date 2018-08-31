@@ -1,13 +1,11 @@
 import { combineReducers } from 'redux';
 import {
-  getData,
-  loadingView,
-  requestFailed
+  requestSucceededReducer,
+  checkAuthReducer
 }
   from './reducers/main.reducers';
 
 export default combineReducers({
-  getData,
-  loadingView,
-  requestFailed
+  checkAuthReducer,
+  requestSucceededReducer,
 });
