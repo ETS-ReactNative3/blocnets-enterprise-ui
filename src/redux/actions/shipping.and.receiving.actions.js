@@ -26,7 +26,7 @@ export function getShippingDataByShipmentID(url) {
         axios.get(chaincodes.Default + chaincodes.SAR + '/latest/' + url, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data);
-                localStorage.setItem('SAR', data);
+                sessionStorage.setItem('DataByShipmentID', data);
                 console.log("getShippingDataByShipmentID: " + response.data);
                 return dispatch({
                     type: "GET_SHIPPING_DATA_SUCCESS",
@@ -49,7 +49,7 @@ export function getShippingDataByMaterialID(url) {
         axios.get(chaincodes.Default + chaincodes.SAR + '/latest/' + url, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data);
-                localStorage.setItem('SAR', data);
+                sessionStorage.setItem('DataByMaterialID', data);
                 console.log("getShippingDataByMaterialID: " + response.data);
                 return dispatch({
                     type: "GET_SHIPPING_DATA_SUCCESS",
@@ -71,7 +71,52 @@ export function updateShippingDataByMaterialID(url, body) {
         });
         axios.put(chaincodes.Default + chaincodes.SAR + '/latest/' + url,{ body }, { headers })
             .then((response) => {
-                resolve(response.data.content)
+                console.log("updateShipingDataByMaterialID: " + response);
+                //resolve(response.data.content)
+                return dispatch({
+                    type: "UPDATE_SHIPPING_DATA_SUCCESS",
+                    payload: true
+                });
+            })
+            .catch(() => dispatch({
+                type: "UPDATED_DATA_FAILED",
+                payload: true
+            }));
+    };
+}
+
+export function createShippingDataByShipmentID(url, body) {
+    return (dispatch) => {
+        dispatch({
+            type: "LOADING_VIEW",
+            payload: true
+        });
+        axios.post(chaincodes.Default + chaincodes.SAR + '/latest/' + url,{ body }, { headers })
+            .then((response) => {
+                console.log("createShippingDataByShipmentID" + response);
+                //resolve(response.data.content)
+                return dispatch({
+                    type: "UPDATE_SHIPPING_DATA_SUCCESS",
+                    payload: true
+                });
+            })
+            .catch(() => dispatch({
+                type: "UPDATED_DATA_FAILED",
+                payload: true
+            }));
+    };
+}
+
+export function createShippingDataByMaterialID(url, body) {
+    return (dispatch) => {
+        dispatch({
+            type: "LOADING_VIEW",
+            payload: true
+        });
+        axios.post(chaincodes.Default + chaincodes.SAR + '/latest/' + url,{ body }, { headers })
+            .then((response) => {
+                console.log("createShippingDataByMaterialID" + response);
+                //resolve(response.data.content)
                 return dispatch({
                     type: "UPDATE_SHIPPING_DATA_SUCCESS",
                     payload: true
