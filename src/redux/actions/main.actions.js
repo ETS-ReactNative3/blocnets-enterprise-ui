@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-const token = localStorage.getItem('Guest');
+const token = localStorage.getItem('Token');
 
 const chaincodes = {
     "BOM": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-supplychain",
@@ -41,7 +41,7 @@ export function authenticate() {
             }
         })
             .then((response) => {
-                localStorage.setItem('Guest', response.data.access_token);
+                localStorage.setItem('Token', response.data.access_token);
                 dispatch(checkAuthorization(true))
             })
             .catch(() => dispatch(authRequestFailed(true)));
