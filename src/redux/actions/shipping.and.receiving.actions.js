@@ -5,14 +5,14 @@ const token = localStorage.getItem('Token');
 
 const chaincodes = {
     "Default": "https://hyperledger-fabric.cfapps.us10.hana.ondemand.com/api/v1/chaincodes/",
-    "BOM": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-supplychain",
-    "SAR": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-sar",
-    "DRE": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-dre"
+    "BOM": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-supplychain/latest/",
+    "SAR": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-sar/latest/",
+    "DRE": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-dre/latest/"
 };
 
 const headers = {
     'Authorization': 'Bearer ' + token,
-    'Content-Type': 'application/x-www-form-urlencoded',
+    'Content-Type': 'application/json',
     'Accept': 'application/json',
     'withCredentials': true
 }
@@ -23,7 +23,7 @@ export function getShippingDataByShipmentID(url) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.get(chaincodes.Default + chaincodes.SAR + '/latest/' + url, { headers })
+        axios.get(chaincodes.Default + chaincodes.SAR + url, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('DataByShipmentID', data);
@@ -46,7 +46,7 @@ export function getShippingDataByMaterialID(url) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.get(chaincodes.Default + chaincodes.SAR + '/latest/' + url, { headers })
+        axios.get(chaincodes.Default + chaincodes.SAR + url, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('DataByMaterialID', data);
@@ -69,7 +69,7 @@ export function updateShippingDataByMaterialID(url, body) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.put(chaincodes.Default + chaincodes.SAR + '/latest/' + url,{ body }, { headers })
+        axios.put(chaincodes.Default + chaincodes.SAR + url, body, { headers })
             .then((response) => {
                 console.log("updateShipingDataByMaterialID: " + response);
                 //resolve(response.data.content)
@@ -91,7 +91,7 @@ export function createShippingDataByShipmentID(url, body) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.post(chaincodes.Default + chaincodes.SAR + '/latest/' + url,{ body }, { headers })
+        axios.post(chaincodes.Default + chaincodes.SAR + url, body, { headers })
             .then((response) => {
                 console.log("createShippingDataByShipmentID" + response);
                 //resolve(response.data.content)
@@ -113,7 +113,7 @@ export function createShippingDataByMaterialID(url, body) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.post(chaincodes.Default + chaincodes.SAR + '/latest/' + url,{ body }, { headers })
+        axios.post(chaincodes.Default + chaincodes.SAR + url, body, { headers })
             .then((response) => {
                 console.log("createShippingDataByMaterialID" + response);
                 //resolve(response.data.content)

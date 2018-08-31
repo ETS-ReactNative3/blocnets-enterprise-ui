@@ -32,19 +32,6 @@ function createData(info1, info2) {
     return { id: counter, info1, info2 };
 }
 
-var data = {
-    shipped: '',
-    manuallyShipped: '',
-    address1: '',
-    address2: '',
-    city: '',
-    state: '',
-    country: '',
-    postalCode: '',
-    ipAddress: '',
-    received: false
-  };
-
 class ShippingView extends Component {
 
     constructor(props) {
@@ -97,16 +84,6 @@ class ShippingView extends Component {
             ipAddress2 = event.target.value.replace(/\D/g, "").substring(0, 6);
             ipAddressLength = ipAddress2.length;
             shipmentID = ipAddress2 + '-' + this.state.counter;
-            
-            //Set Data
-            data.manuallyShipped = this.state.manualShipping;
-            data.address1 = this.state.addressLine1;
-            data.city = this.state.city;
-            data.state = this.state.addressState;
-            data.country = this.state.country;
-            data.postalCode = this.state.postalCode;
-            data.ipAddress = this.state.ipAddress;
-
             this.setState({ 
                 shipmentID: shipmentID, 
                 ipAddressLength: ipAddressLength });
@@ -140,19 +117,31 @@ class ShippingView extends Component {
     };
 
     handleSubmit = (event) => {
-        data.shipped = true;
+        this.setState({showProgressLogo: true});
+        var data = {
+            shipped: true,
+            manuallyShipped: this.state.manualShipping,
+            address1: this.state.addressLine1,
+            address2: this.state.addressLine2,
+            city: this.state.city,
+            state: this.state.addressState,
+            country: this.state.country,
+            postalCode: this.state.postalCode,
+            ipAddress: this.state.ipAddress,
+            received: false
+          };
         this.props.createShippingDataByShipmentID(this.state.shipmentID, data);
         this.props.createShippingDataByMaterialID(this.state.materialID, data);
-        //this.setState({showProgressLogo: true}); to show blocnetsLogo before submit
-        //this.setState({showProgressLogo: false}); to show blocnetsLogo after receiving response
-        /*this.setState({
+        
+        this.setState({
+            showProgressLogo: false,
             snackbar: {
                 autoHideDuration: 2000,
                 message: 'Success',
                 open: true,
                 sbColor: 'black'
             }
-        }); to show success message */
+        });
         /*this.setState({
             snackbar: {
                 autoHideDuration: 2000,

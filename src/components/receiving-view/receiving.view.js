@@ -55,10 +55,16 @@ class ReceivingView extends Component {
         this.setState({[event.target.name]: event.target.value});
     };
 
-    handleSubmit = (event) => {
-        this.setState({showProgressLogo: true});
+    handleSubmit(event) {
+        this.state.showProgressLogo = true;
+        if (this.state.materialID === '') {
+            this.props.getShippingDataByShipmentID(this.state.shipmentID);
+        } else if (this.state.shipmentID === '') {
+            this.props.getShippingDataByMaterialID(this.state.materialID);
+        } else if (this.state.shipmentID === '' && this.state.materialID === '') {
+            alert("Enter a value");
+        }
         this.props.getShippingDataByMaterialID(this.state.materialID);
-        this.props.getShippingDataByShipmentID(this.state.shipmentID);
         console.log("Global Variable: " + data);
         this.setState({showProgressLogo: false});
         this.setState({openDialog: true});
