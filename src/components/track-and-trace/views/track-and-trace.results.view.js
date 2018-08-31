@@ -18,7 +18,8 @@ class TrackAndTraceResultsView extends Component {
                 open: true,
                 sbColor: 'black'
             },
-            showBillOfMaterialsTree: false
+            showBillOfMaterialsTree: false,
+            blockInformation: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisinuli.'
         };
         /*this.setState({
             snackbar: {
@@ -29,6 +30,14 @@ class TrackAndTraceResultsView extends Component {
             }
         }); to show error message */
     }
+
+    handleSnackbarClose = () => {
+        this.setState({
+            snackbar: {
+                open: false
+            },
+        });
+    };
 
     handleEBOM = (event) => {
         this.setState({showBillOfMaterialsTree: true});
@@ -63,7 +72,7 @@ class TrackAndTraceResultsView extends Component {
                                 <Grid container item xs={12}>
                                     <Paper style={{"width": "100%", "height": "50vh"}}>
                                         <div style={{"overflowX": "auto"}}>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisinuli.
+                                            {this.state.blockInformation}
                                         </div>
                                     </Paper>
                                 </Grid>
@@ -91,7 +100,8 @@ class TrackAndTraceResultsView extends Component {
                             </Grid>
                         </div>
                         <Snackbar
-                            open={this.state.snackbar.open} message={this.state.snackbar.message}
+                            open={this.state.snackbar.open}
+                            message={this.state.snackbar.message}
                             autoHideDuration={this.state.snackbar.autoHideDuration}
                             onRequestClose={this.handleSnackbarClose}
                             bodyStyle={{backgroundColor: this.state.snackbar.sbColor}}
