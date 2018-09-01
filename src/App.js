@@ -23,6 +23,10 @@ import {FormControl} from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import Popper from '@material-ui/core/Popper';
+import Grow from '@material-ui/core/Grow';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import MenuList from '@material-ui/core/MenuList';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import Drawer from 'material-ui/Drawer';
@@ -81,7 +85,10 @@ class App extends Component {
         this.state = {
             "open": false,
             "show": null,
-            transactionCode: 'DRE01'
+            transactionCode: 'DRE01',
+            searchKey: '',
+            openSearch: false,
+            searchCriteria: ''
         };
     }
 
@@ -92,6 +99,8 @@ class App extends Component {
     };
 
     showTrackAndTraceResultsView = () => {
+        console.log("searchCriteria", this.state.searchCriteria);
+        console.log("searchKey", this.state.searchKey);
         //this.setState({showProgressLogo: true}); to show blocnetsLogo before submit
         //this.setState({showProgressLogo: false}); to show blocnetsLogo after receiving response
         this.setState({show: 'trackandtraceresultsview', open: false, transactionCode: 'TT01'});
@@ -111,6 +120,23 @@ class App extends Component {
 
     showDocumentSendView = () => {
         this.setState({show: 'documentsendview', open: false, transactionCode: 'DSR01'});
+    };
+
+    handleSearchKey = (event) => {
+        this.setState({searchKey: event.target.value, searchCriteria: ''});
+        if (event.target.value === '') {
+            this.setState({openSearch: false});
+        } else {
+            this.setState({openSearch: true});
+        }
+    };
+
+    handleSearchClose = (event) => {
+        this.setState({openSearch: false});
+    };
+
+    handleSearch = (event, searchCriteria) => {
+        this.setState({searchCriteria: searchCriteria, openSearch: false});
     };
 
     render() {
@@ -160,8 +186,17 @@ class App extends Component {
                                 <FormControl fullWidth={true}>
                                     <InputLabel htmlFor="search-with-icon-adornment">Search</InputLabel>
                                     <Input
+                                        value={this.state.searchKey}
+                                        name="searchKey"
                                         id="search-with-icon-adornment"
                                         type="search"
+                                        startAdornment={
+                                            this.state.searchCriteria ?
+                                                <InputAdornment position="start">
+                                                    {this.state.searchCriteria}:
+                                                </InputAdornment>
+                                                : ''
+                                        }
                                         endAdornment={
                                             <InputAdornment position="end">
                                                 <SearchIcon
@@ -170,7 +205,43 @@ class App extends Component {
                                                 />
                                             </InputAdornment>
                                         }
+                                        onChange={this.handleSearchKey}
                                     />
+                                    <Popper open={this.state.openSearch} transition disablePortal
+                                            style={{"position": "relative"}}>
+                                        {({TransitionProps, placement}) => (
+                                            <Grow
+                                                {...TransitionProps}
+                                                id="menu-list-grow"
+                                                style={{transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'}}
+                                            >
+                                                <Paper>
+                                                    <ClickAwayListener onClickAway={this.handleSearchClose}>
+                                                        <MenuList style={{"textAlign": "left"}}>
+                                                            <MenuItem
+                                                                onClick={event => this.handleSearch(event, "Material ID")}>Material
+                                                                ID: {this.state.searchKey}</MenuItem>
+                                                            <MenuItem
+                                                                onClick={event => this.handleSearch(event, "Material Name")}>Material
+                                                                Name: {this.state.searchKey}</MenuItem>
+                                                            <MenuItem
+                                                                onClick={event => this.handleSearch(event, "Material Description")}>Material
+                                                                Description: {this.state.searchKey}</MenuItem>
+                                                            <MenuItem
+                                                                onClick={event => this.handleSearch(event, "Part No.")}>Part
+                                                                No.: {this.state.searchKey}</MenuItem>
+                                                            <MenuItem
+                                                                onClick={event => this.handleSearch(event, "Part Name")}>Part
+                                                                Name: {this.state.searchKey}</MenuItem>
+                                                            <MenuItem
+                                                                onClick={event => this.handleSearch(event, "Part Description")}>Part
+                                                                Description: {this.state.searchKey}</MenuItem>
+                                                        </MenuList>
+                                                    </ClickAwayListener>
+                                                </Paper>
+                                            </Grow>
+                                        )}
+                                    </Popper>
                                 </FormControl>
                             </Grid>
                             <Grid item xs={3}>
