@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import blocnetsLogo from "../../blocknetwhite-1.png";
 import Grid from '@material-ui/core/Grid';
 import TextField from 'material-ui/TextField';
 import Button from '@material-ui/core/Button';
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
 import Dialog from '@material-ui/core/Dialog';
 import Paper from '@material-ui/core/Paper';
@@ -12,24 +12,42 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Snackbar from 'material-ui/Snackbar';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import {
     getShippingDataByShipmentID,
     getShippingDataByMaterialID
 } from '../../redux/actions/shipping.and.receiving.actions';
 
-let data = JSON.parse(sessionStorage.getItem('DataByShipmentID'));
+let dataByShipmentID = JSON.parse(sessionStorage.getItem('DataByShipmentID'));
+let dataByMaterialID = JSON.parse(sessionStorage.getItem('DataByMaterialID'));
+var dialogBoxData = () => {
 
-if (data === null) {
-    data = ''
-}
-console.log(data);
+    let data = '';
+
+    if (dataByMaterialID) {
+        data = JSON.parse(sessionStorage.getItem('DataByMaterialID'));
+        if (dataByMaterialID.manuallyShipped === false) {
+            data.manuallyShipped = "NO";
+        } else {
+            data.manuallyShipped = "YES";
+        }
+    } else if (dataByShipmentID) {
+        data = JSON.parse(sessionStorage.getItem('DataByShipmentID'));
+        if (dataByShipmentID.manuallyShipped === false) {
+            dialogBoxData.manuallyShipped = "NO";
+        } else {
+            dialogBoxData.manuallyShipped = "YES";
+        }
+    }
+    console.log(data);
+    return data;
+};
 
 let counter = 0;
 
 function createData(info1, info2) {
     counter += 1;
-    return {id: counter, info1, info2};
+    return { id: counter, info1, info2 };
 }
 
 class ReceivingView extends Component {
@@ -49,18 +67,18 @@ class ReceivingView extends Component {
                 message: '',
                 open: false,
                 sbColor: 'black'
-            },
+            }
         };
     }
 
     handleIDChange = (event) => {
-        this.setState({[event.target.name]: event.target.value});
+        this.setState({ [event.target.name]: event.target.value });
         if ([event.target.name].toString() === 'materialID' && event.target.value !== '') {
             this.setState({ materialIDInformed: true });
         } else if ([event.target.name].toString() === 'materialID' && event.target.value === '') {
             this.setState({ materialIDInformed: false });
         }
-        if ([event.target.name].toString() === 'shipmentID'&& event.target.value !== '') {
+        if ([event.target.name].toString() === 'shipmentID' && event.target.value !== '') {
             this.setState({ shipmentIDInformed: true });
         } else if ([event.target.name].toString() === 'shipmentID' && event.target.value === '') {
             this.setState({ shipmentIDInformed: false });
@@ -68,18 +86,22 @@ class ReceivingView extends Component {
     };
 
     handleSubmit = (event) => {
-        this.setState({showProgressLogo: true});
-        if (this.state.materialID === '') {
-            this.props.getShippingDataByShipmentID(this.state.shipmentID);
-        } else if (this.state.shipmentID === '') {
-            this.props.getShippingDataByMaterialID(this.state.materialID);
-        } else if (this.state.shipmentID === '' && this.state.materialID === '') {
-            alert("Enter a value");
+
+        this.setState({ showProgressLogo: true });
+        if (this.state.shipmentIDInformed === false) {
+            let val = this.state.materialID;
+            this.props.getShippingDataByMaterialID(val);
+        } else {
+            let val = this.state.shipmentID;
+            this.props.getShippingDataByShipmentID(val);
         }
-        this.props.getShippingDataByMaterialID(this.state.materialID);
-        console.log("Global Variable: " + data);
-        this.setState({showProgressLogo: false});
-        this.setState({openDialog: true});
+
+        console.log(dialogBoxData);
+
+        this.setState({ showProgressLogo: false });
+
+        this.setState({ openDialog: true });
+
         /*this.setState({
             snackbar: {
                 autoHideDuration: 2000,
@@ -88,12 +110,12 @@ class ReceivingView extends Component {
                 sbColor: 'red'
             },
             openDialog: false
-        }); to show error message */
+        }); */
         event.preventDefault();
     };
 
     handleDialogClose = () => {
-        this.setState({openDialog: false});
+        this.setState({ openDialog: false });
     };
 
     handleDialogReceiveShipment = (event) => {
@@ -115,7 +137,7 @@ class ReceivingView extends Component {
                 sbColor: 'red'
             }
         }); to show error message */
-        this.setState({openDialog: false});
+        this.setState({ openDialog: false });
     };
 
     handleSnackbarClose = () => {
@@ -141,20 +163,22 @@ class ReceivingView extends Component {
             },
         });
 
-        const rows = [
+
+        var rows = [
             createData('Material ID', this.state.materialID),
             createData('Shipment ID', this.state.shipmentID),
-            createData('Address', data.address1 + ' ' + data.city + ' ' + data.state + ' ' + data.country + ' ' + data.postalCode),
-            createData('IP Address', data.ipAddress),
-            createData('Manual Shipping', data.manualShipping),
+            createData('Address', dialogBoxData.address1 + ' ' + dialogBoxData.city + ' ' + dialogBoxData.state + ' ' + dialogBoxData.country + ' ' + dialogBoxData.postalCode),
+            createData('IP Address', dialogBoxData.ipAddress),
+            createData('Manual Shipping', dialogBoxData.manualShipping),
         ];
+
 
         return (
             <form onSubmit={this.handleSubmit}>
                 <div>
-                    {this.state.showProgressLogo ? <img src={blocnetsLogo} className="App-logo-progress" alt=""/> : ""}
+                    {this.state.showProgressLogo ? <img src={blocnetsLogo} className="App-logo-progress" alt="" /> : ""}
                 </div>
-                <div style={{padding: 24}}>
+                <div style={{ padding: 24 }}>
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <TextField
@@ -164,7 +188,7 @@ class ReceivingView extends Component {
                                 name="materialID"
                                 floatingLabelText="Material ID"
                                 floatingLabelFixed={true}
-                                style={{"float": "left"}}
+                                style={{ "float": "left" }}
                                 hintText=""
                                 disabled={this.state.shipmentIDInformed}
                             />
@@ -177,7 +201,7 @@ class ReceivingView extends Component {
                                 name="shipmentID"
                                 floatingLabelText="Shipment ID"
                                 floatingLabelFixed={true}
-                                style={{"float": "left"}}
+                                style={{ "float": "left" }}
                                 hintText=""
                                 disabled={this.state.materialIDInformed}
                             />
@@ -187,7 +211,7 @@ class ReceivingView extends Component {
                         <Grid container item xs={12}>
                             <MuiThemeProvider theme={buttonThemeYellow}>
                                 <Button type="submit" value="Submit" variant="contained" color="primary"
-                                        fullWidth={true} disabled={!this.state.materialIDInformed && !this.state.shipmentIDInformed}>
+                                    fullWidth={true} disabled={!this.state.materialIDInformed && !this.state.shipmentIDInformed}>
                                     Submit
                                 </Button>
                             </MuiThemeProvider>
@@ -195,18 +219,18 @@ class ReceivingView extends Component {
                     </Grid>
                 </div>
                 <Dialog open={this.state.openDialog} onClose={this.handleDialogClose}>
-                    <div style={{padding: 24}}>
+                    <div style={{ padding: 24 }}>
                         <Grid container justify="flex-end">
                             <Grid item>
-                                <i className="material-icons" style={{"cursor": "pointer"}}
-                                   onClick={this.handleDialogClose}>close</i>
+                                <i className="material-icons" style={{ "cursor": "pointer" }}
+                                    onClick={this.handleDialogClose}>close</i>
                             </Grid>
                         </Grid>
-                        <br/>
+                        <br />
                         <Grid container justify="center">
                             <Grid item xs={12}>
-                                <Paper style={{"width": "100%"}}>
-                                    <div style={{"overflowX": "auto"}}>
+                                <Paper style={{ "width": "100%" }}>
+                                    <div style={{ "overflowX": "auto" }}>
                                         <Table>
                                             <TableBody>
                                                 {rows.map(row => {
@@ -223,12 +247,12 @@ class ReceivingView extends Component {
                                 </Paper>
                             </Grid>
                         </Grid>
-                        <br/>
+                        <br />
                         <Grid container justify="center">
                             <Grid container item xs={12}>
                                 <MuiThemeProvider theme={buttonThemeYellow}>
                                     <Button type="submit" value="Receive" variant="contained"
-                                            color="primary" fullWidth={true} onClick={this.handleDialogReceiveShipment}>
+                                        color="primary" fullWidth={true} onClick={this.handleDialogReceiveShipment}>
                                         Receive Shipment
                                     </Button>
                                 </MuiThemeProvider>
@@ -241,7 +265,7 @@ class ReceivingView extends Component {
                     message={this.state.snackbar.message}
                     autoHideDuration={this.state.snackbar.autoHideDuration}
                     onRequestClose={this.handleSnackbarClose}
-                    bodyStyle={{backgroundColor: this.state.snackbar.sbColor}}
+                    bodyStyle={{ backgroundColor: this.state.snackbar.sbColor }}
                 />
             </form>
         );

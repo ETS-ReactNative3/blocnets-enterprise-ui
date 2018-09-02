@@ -118,6 +118,8 @@ class ShippingView extends Component {
 
     handleSubmit = (event) => {
         this.setState({showProgressLogo: true});
+        var shipmentUrl = this.state.shipmentID;
+        var materialUrl = this.state.materialID;
         var data = {
             shipped: true,
             manuallyShipped: this.state.manualShipping,
@@ -130,18 +132,9 @@ class ShippingView extends Component {
             ipAddress: this.state.ipAddress,
             received: false
           };
-        this.props.createShippingDataByShipmentID(this.state.shipmentID, data);
-        this.props.createShippingDataByMaterialID(this.state.materialID, data);
+        this.props.createShippingDataByShipmentID(shipmentUrl, data);
+        this.props.createShippingDataByMaterialID(materialUrl, data);
         
-        this.setState({
-            showProgressLogo: false,
-            snackbar: {
-                autoHideDuration: 2000,
-                message: 'Success',
-                open: true,
-                sbColor: 'black'
-            }
-        });
         /*this.setState({
             snackbar: {
                 autoHideDuration: 2000,
@@ -150,7 +143,7 @@ class ShippingView extends Component {
                 sbColor: 'red'
             }
         }); to show error message */
-        /*
+        
         this.setState({
             materialID: '',
             shipmentID: '',
@@ -174,7 +167,7 @@ class ShippingView extends Component {
                 open: false,
                 sbColor: 'black'
             }
-        }); to initialize all fields if successful */
+        });
         /* let shipmentID = this.state.shipmentID;
         let newShipmentID = this.state.shipmentID;
         let countString = '';
@@ -182,7 +175,7 @@ class ShippingView extends Component {
         countInteger = parseInt(shipmentID.substring(7, 10))+1;
         countString = countInteger.toString().padStart(3,'0');
         newShipmentID = shipmentID.substring(0, 6) + '-' + countString;
-        this.setState({shipmentID: newShipmentID}); modify Shipment ID if it exists */
+        this.setState({shipmentID: newShipmentID}); */
         this.setState({ openDialog: false });
         event.preventDefault();
     };

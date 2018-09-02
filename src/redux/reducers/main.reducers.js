@@ -1,26 +1,33 @@
 export function checkAuthReducer(state = {}, action) {
     switch (action.type) {
         case "LOADING_VIEW": {
-            state = { ...state, loadView: action.payload }
-            break;
+            return state = { ...state, loadView: action.payload }
         }
         case "ACCESS_GRANTED": {
-            state = { ...state, accessGranted: action.payload }
-            break;
+            return state = { ...state, accessGranted: action.payload }
         }
         case "ACCESS_REQUEST_FAILED": {
-            state = { ...state, requestedDataFailed: action.payload }
-            break;
+            return state = { ...state, requestedDataFailed: action.payload }
         }
+        default:
+            return state;
     }
-    return state
 }
 
 export function requestSucceededReducer(state = {}, action) {
     switch (action.type) {
         case "REQUESTED_DATA_SUCCESSFULLY": {
-            state = { ...state, address1: action.payload.address1 }
-            break;
+            return state = { ...state, address1: action.payload.address1 }
+        }
+        default:
+            return state;
+    }
+}
+
+export function loadingViewReducer(state = {}, action) {
+    switch (action.type) {
+        case "LOADING_VIEW": {
+            return state = { ...state, loadView: action.payload }
         }
         default:
             return state;

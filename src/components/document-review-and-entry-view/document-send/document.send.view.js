@@ -10,6 +10,8 @@ import Button from '@material-ui/core/Button';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
 import Snackbar from 'material-ui/Snackbar';
+import { connect } from 'react-redux';
+import { createDocumentEntryByUserID } from '../../../redux/actions/document.review.entry.actions';
 //Temporary Only
 import response from './messageData.json';
 
@@ -172,4 +174,17 @@ class DocumentSendView extends React.Component {
 
 }
 
-export default DocumentSendView;
+const mapStateToProps = (state) => {
+    return {
+        state,
+    };
+};
+
+// This way, we can call our action creator by doing this.props.fetchData(url);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        createDocumentEntryByUserID: (url, body) => dispatch(createDocumentEntryByUserID(url, body))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DocumentSendView);

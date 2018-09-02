@@ -4,7 +4,7 @@ import {
     BrowserRouter as Router,
     Route
 } from 'react-router-dom';
-import {authenticate} from './redux/actions/main.actions';
+import {authenticate} from './redux/actions/authentication.action';
 import {connect} from 'react-redux';
 import DocumentReviewEntryView
     from './components/document-review-and-entry-view/document-dashboard/document.review.entry.view';
