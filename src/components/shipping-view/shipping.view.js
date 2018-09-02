@@ -66,16 +66,16 @@ class ShippingView extends Component {
     }
 
     handleChange = (event) => {
-        this.setState({[event.target.name]: event.target.value});
+        this.setState({ [event.target.name]: event.target.value });
         if ([event.target.name].toString() === 'materialID' && event.target.value) {
-            this.setState({errorText1: ''});
+            this.setState({ errorText1: '' });
         } else if ([event.target.name].toString() === 'materialID' && !event.target.value) {
-            this.setState({errorText1: 'This is a required field.'});
+            this.setState({ errorText1: 'This is a required field.' });
         }
         if ([event.target.name].toString() === 'ipAddress' && event.target.value) {
-            this.setState({errorText2: ''});
+            this.setState({ errorText2: '' });
         } else if ([event.target.name].toString() === 'ipAddress' && !event.target.value) {
-            this.setState({errorText2: 'This is a required field.'});
+            this.setState({ errorText2: 'This is a required field.' });
         }
         let shipmentID = '';
         let ipAddress2 = '';
@@ -84,9 +84,10 @@ class ShippingView extends Component {
             ipAddress2 = event.target.value.replace(/\D/g, "").substring(0, 6);
             ipAddressLength = ipAddress2.length;
             shipmentID = ipAddress2 + '-' + this.state.counter;
-            this.setState({ 
-                shipmentID: shipmentID, 
-                ipAddressLength: ipAddressLength });
+            this.setState({
+                shipmentID: shipmentID,
+                ipAddressLength: ipAddressLength
+            });
         }
     };
 
@@ -117,7 +118,7 @@ class ShippingView extends Component {
     };
 
     handleSubmit = (event) => {
-        this.setState({showProgressLogo: true});
+        this.setState({ showProgressLogo: true });
         var shipmentUrl = this.state.shipmentID;
         var materialUrl = this.state.materialID;
         var data = {
@@ -131,10 +132,10 @@ class ShippingView extends Component {
             postalCode: this.state.postalCode,
             ipAddress: this.state.ipAddress,
             received: false
-          };
+        };
         this.props.createShippingDataByShipmentID(shipmentUrl, data);
         this.props.createShippingDataByMaterialID(materialUrl, data);
-        
+
         /*this.setState({
             snackbar: {
                 autoHideDuration: 2000,
@@ -143,7 +144,7 @@ class ShippingView extends Component {
                 sbColor: 'red'
             }
         }); to show error message */
-        
+
         this.setState({
             materialID: '',
             shipmentID: '',
@@ -176,6 +177,7 @@ class ShippingView extends Component {
         countString = countInteger.toString().padStart(3,'0');
         newShipmentID = shipmentID.substring(0, 6) + '-' + countString;
         this.setState({shipmentID: newShipmentID}); */
+        this.setState({ showProgressLogo: false });
         this.setState({ openDialog: false });
         event.preventDefault();
     };
@@ -239,7 +241,7 @@ class ShippingView extends Component {
                                 style={{ "float": "left" }}
                                 hintText=""
                                 errorText={this.state.errorText1}
-                                errorStyle={{"float": "left"}}
+                                errorStyle={{ "float": "left" }}
                             />
                         </Grid>
                         <Fade in={this.state.ipAddressLength === 6}>
@@ -338,7 +340,7 @@ class ShippingView extends Component {
                                 style={{ "float": "left" }}
                                 hintText=""
                                 errorText={this.state.errorText2}
-                                errorStyle={{"float": "left"}}
+                                errorStyle={{ "float": "left" }}
                             />
                         </Grid>
                         <Grid container item xs={6} sm={6}>
@@ -356,7 +358,7 @@ class ShippingView extends Component {
                             </FormGroup>
                         </Grid>
                     </Grid>
-                    <br/><br/>
+                    <br /><br />
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
                             <MuiThemeProvider theme={buttonThemeYellow}>
@@ -396,7 +398,7 @@ class ShippingView extends Component {
                                 </Paper>
                             </Grid>
                         </Grid>
-                        <br/>
+                        <br />
                         <Grid container spacing={24}>
                             <Grid container item xs={12}>
                                 <FormGroup row>
@@ -413,7 +415,7 @@ class ShippingView extends Component {
                                 </FormGroup>
                             </Grid>
                         </Grid>
-                        <br/>
+                        <br />
                         <Grid container spacing={24}>
                             <Grid container item xs={4} sm={4}>
                                 <MuiThemeProvider theme={buttonThemeRed}>
