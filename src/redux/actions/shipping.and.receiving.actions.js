@@ -38,7 +38,6 @@ export function createShippingDataByShipmentID(url, body) {
 }
 
 export function getShippingDataByShipmentID(url) {
-    console.log("This is was being sent to get request path: "+url);
     return (dispatch) => {
         dispatch({
             type: "LOADING_VIEW",
@@ -46,7 +45,6 @@ export function getShippingDataByShipmentID(url) {
         });
         axios.get(chaincodes.Default + chaincodes.SAR + url, { headers })
             .then((response) => {
-                console.log("This is was being sent to get request path: "+url);
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('DataByShipmentID', data);
                 return dispatch({

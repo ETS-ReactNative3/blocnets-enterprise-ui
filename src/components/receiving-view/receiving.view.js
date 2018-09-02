@@ -20,28 +20,13 @@ import {
 
 let dataByShipmentID = JSON.parse(sessionStorage.getItem('DataByShipmentID'));
 let dataByMaterialID = JSON.parse(sessionStorage.getItem('DataByMaterialID'));
-var dialogBoxData = () => {
 
-    let data = '';
-
-    if (dataByMaterialID) {
-        data = JSON.parse(sessionStorage.getItem('DataByMaterialID'));
-        if (dataByMaterialID.manuallyShipped === false) {
-            data.manuallyShipped = "NO";
-        } else {
-            data.manuallyShipped = "YES";
-        }
-    } else if (dataByShipmentID) {
-        data = JSON.parse(sessionStorage.getItem('DataByShipmentID'));
-        if (dataByShipmentID.manuallyShipped === false) {
-            dialogBoxData.manuallyShipped = "NO";
-        } else {
-            dialogBoxData.manuallyShipped = "YES";
-        }
-    }
-    console.log(data);
-    return data;
-};
+if (!dataByMaterialID) {
+    dataByMaterialID = '';
+}
+if (!dataByShipmentID) {
+    dataByShipmentID = '';
+}
 
 let counter = 0;
 
@@ -60,7 +45,8 @@ class ReceivingView extends Component {
             materialIDInformed: false,
             shipmentID: '',
             shipmentIDInformed: false,
-            openDialog: false,
+            openMaterialDialog: false,
+            openShipmentDialog: false,
             received: false,
             snackbar: {
                 autoHideDuration: 2000,
@@ -91,16 +77,18 @@ class ReceivingView extends Component {
         if (this.state.shipmentIDInformed === false) {
             let val = this.state.materialID;
             this.props.getShippingDataByMaterialID(val);
-        } else {
+            if (dataByMaterialID) {
+                this.setState({ openMaterialDialog: true });
+            }
+        } else if (this.state.materialIDInformed === false){
             let val = this.state.shipmentID;
             this.props.getShippingDataByShipmentID(val);
+            if (dataByShipmentID) {
+                this.setState({ openShipmentDialog: true });
+            }
         }
 
-        console.log(dialogBoxData);
-
         this.setState({ showProgressLogo: false });
-
-        this.setState({ openDialog: true });
 
         /*this.setState({
             snackbar: {
@@ -115,7 +103,10 @@ class ReceivingView extends Component {
     };
 
     handleDialogClose = () => {
-        this.setState({ openDialog: false });
+        this.setState({
+            openMaterialDialog: false,
+            openShipmentDialog: false
+        });
     };
 
     handleDialogReceiveShipment = (event) => {
@@ -164,12 +155,18 @@ class ReceivingView extends Component {
         });
 
 
-        var rows = [
+        var materialRows = [
             createData('Material ID', this.state.materialID),
+            createData('Address', dataByMaterialID.address1 + ' ' + dataByMaterialID.city + ' ' + dataByMaterialID.state + ' ' + dataByMaterialID.country + ' ' + dataByMaterialID.postalCode),
+            createData('IP Address', dataByMaterialID.ipAddress),
+            createData('Manual Shipping', dataByMaterialID.manuallyShipped),
+        ];
+
+        var shipmentRows = [
             createData('Shipment ID', this.state.shipmentID),
-            createData('Address', dialogBoxData.address1 + ' ' + dialogBoxData.city + ' ' + dialogBoxData.state + ' ' + dialogBoxData.country + ' ' + dialogBoxData.postalCode),
-            createData('IP Address', dialogBoxData.ipAddress),
-            createData('Manual Shipping', dialogBoxData.manualShipping),
+            createData('Address', dataByShipmentID.address1 + ' ' + dataByShipmentID.city + ' ' + dataByShipmentID.state + ' ' + dataByShipmentID.country + ' ' + dataByShipmentID.postalCode),
+            createData('IP Address', dataByShipmentID.ipAddress),
+            createData('Manual Shipping', dataByShipmentID.manuallyShipped),
         ];
 
 
@@ -218,7 +215,7 @@ class ReceivingView extends Component {
                         </Grid>
                     </Grid>
                 </div>
-                <Dialog open={this.state.openDialog} onClose={this.handleDialogClose}>
+                <Dialog open={this.state.openShipmentDialog} onClose={this.handleDialogClose}>
                     <div style={{ padding: 24 }}>
                         <Grid container justify="flex-end">
                             <Grid item>
@@ -233,7 +230,49 @@ class ReceivingView extends Component {
                                     <div style={{ "overflowX": "auto" }}>
                                         <Table>
                                             <TableBody>
-                                                {rows.map(row => {
+                                                {shipmentRows.map(row => {
+                                                    return (
+                                                        <TableRow key={row.id}>
+                                                            <TableCell>{row.info1}</TableCell>
+                                                            <TableCell>{row.info2}</TableCell>
+                                                        </TableRow>
+                                                    );
+                                                })}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
+                                </Paper>
+                            </Grid>
+                        </Grid>
+                        <br />
+                        <Grid container justify="center">
+                            <Grid container item xs={12}>
+                                <MuiThemeProvider theme={buttonThemeYellow}>
+                                    <Button type="submit" value="Receive" variant="contained"
+                                        color="primary" fullWidth={true} onClick={this.handleDialogReceiveShipment}>
+                                        Receive Shipment
+                                    </Button>
+                                </MuiThemeProvider>
+                            </Grid>
+                        </Grid>
+                    </div>
+                </Dialog>
+                <Dialog open={this.state.openMaterialDialog} onClose={this.handleDialogClose}>
+                    <div style={{ padding: 24 }}>
+                        <Grid container justify="flex-end">
+                            <Grid item>
+                                <i className="material-icons" style={{ "cursor": "pointer" }}
+                                    onClick={this.handleDialogClose}>close</i>
+                            </Grid>
+                        </Grid>
+                        <br />
+                        <Grid container justify="center">
+                            <Grid item xs={12}>
+                                <Paper style={{ "width": "100%" }}>
+                                    <div style={{ "overflowX": "auto" }}>
+                                        <Table>
+                                            <TableBody>
+                                                {materialRows.map(row => {
                                                     return (
                                                         <TableRow key={row.id}>
                                                             <TableCell>{row.info1}</TableCell>
