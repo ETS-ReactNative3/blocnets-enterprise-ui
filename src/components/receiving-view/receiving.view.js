@@ -15,18 +15,19 @@ import Snackbar from 'material-ui/Snackbar';
 import { connect } from 'react-redux';
 import {
     getShippingDataByShipmentID,
-    getShippingDataByMaterialID
+    getShippingDataByMaterialID,
+    updateShippingDataByMaterialID,
+    updateShippingDataByShipmentID
 } from '../../redux/actions/shipping.and.receiving.actions';
 
-let dataByShipmentID = JSON.parse(sessionStorage.getItem('DataByShipmentID'));
-let dataByMaterialID = JSON.parse(sessionStorage.getItem('DataByMaterialID'));
+let dataByShipmentID = [];
+let dataByMaterialID = [];
 
-if (!dataByMaterialID) {
-    dataByMaterialID = '';
-}
-if (!dataByShipmentID) {
-    dataByShipmentID = '';
-}
+var materialRows = [];
+var shipmentRows = [];
+
+let dataByMaterialIDManuallyShipped = 'NO';
+let dataByShipmentIDManuallyShipped = 'NO';
 
 let counter = 0;
 
@@ -53,7 +54,8 @@ class ReceivingView extends Component {
                 message: '',
                 open: false,
                 sbColor: 'black'
-            }
+            },
+            counter: 0
         };
     }
 
@@ -72,20 +74,58 @@ class ReceivingView extends Component {
     };
 
     handleSubmit = (event) => {
-
         this.setState({ showProgressLogo: true });
         if (this.state.shipmentIDInformed === false) {
             let val = this.state.materialID;
             this.props.getShippingDataByMaterialID(val);
-            if (dataByMaterialID) {
-                this.setState({ openMaterialDialog: true });
-            }
+            setTimeout(
+                function() {
+                    this.setState({counter: 1});
+                    if (this.state.counter === 1) {
+                        dataByMaterialID = JSON.parse(sessionStorage.getItem('DataByMaterialID'));
+                        if (dataByMaterialID) {
+                            materialRows = [
+                                createData('Material ID', this.state.materialID),
+                                createData('Address', dataByMaterialID.address1 + ' ' + dataByMaterialID.city + ' ' + dataByMaterialID.state + ' ' + dataByMaterialID.country + ' ' + dataByMaterialID.postalCode),
+                                createData('IP Address', dataByMaterialID.ipAddress),
+                                createData('Manual Shipping', dataByMaterialIDManuallyShipped),
+                            ];
+                            this.setState({ openMaterialDialog: true });
+                            if(dataByMaterialID.manuallyShipped === true) {
+                                dataByMaterialIDManuallyShipped = 'YES'
+                            }
+                        }
+                    }
+                }
+                    .bind(this),
+                1000
+            );
         } else if (this.state.materialIDInformed === false){
+            this.setState({counter: 0});
             let val = this.state.shipmentID;
             this.props.getShippingDataByShipmentID(val);
-            if (dataByShipmentID) {
-                this.setState({ openShipmentDialog: true });
-            }
+            setTimeout(
+                function() {
+                    this.setState({counter: 1});
+                    if (this.state.counter === 1) {
+                        dataByShipmentID = JSON.parse(sessionStorage.getItem('DataByShipmentID'));
+                        if (dataByMaterialID) {
+                            shipmentRows = [
+                                createData('Shipment ID', this.state.shipmentID),
+                                createData('Address', dataByShipmentID.address1 + ' ' + dataByShipmentID.city + ' ' + dataByShipmentID.state + ' ' + dataByShipmentID.country + ' ' + dataByShipmentID.postalCode),
+                                createData('IP Address', dataByShipmentID.ipAddress),
+                                createData('Manual Shipping', dataByShipmentIDManuallyShipped),
+                            ];
+                            this.setState({ openShipmentDialog: true });
+                            if(dataByShipmentID.manuallyShipped === true) {
+                                dataByShipmentIDManuallyShipped = 'YES'
+                            }
+                        }
+                    }
+                }
+                    .bind(this),
+                1000
+            );
         }
 
         this.setState({ showProgressLogo: false });
@@ -154,20 +194,6 @@ class ReceivingView extends Component {
             },
         });
 
-
-        var materialRows = [
-            createData('Material ID', this.state.materialID),
-            createData('Address', dataByMaterialID.address1 + ' ' + dataByMaterialID.city + ' ' + dataByMaterialID.state + ' ' + dataByMaterialID.country + ' ' + dataByMaterialID.postalCode),
-            createData('IP Address', dataByMaterialID.ipAddress),
-            createData('Manual Shipping', dataByMaterialID.manuallyShipped),
-        ];
-
-        var shipmentRows = [
-            createData('Shipment ID', this.state.shipmentID),
-            createData('Address', dataByShipmentID.address1 + ' ' + dataByShipmentID.city + ' ' + dataByShipmentID.state + ' ' + dataByShipmentID.country + ' ' + dataByShipmentID.postalCode),
-            createData('IP Address', dataByShipmentID.ipAddress),
-            createData('Manual Shipping', dataByShipmentID.manuallyShipped),
-        ];
 
 
         return (
@@ -326,6 +352,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getShippingDataByShipmentID: (val) => dispatch(getShippingDataByShipmentID(val)),
         getShippingDataByMaterialID: (val) => dispatch(getShippingDataByMaterialID(val)),
+        updateShippingDataByMaterialID: (url, body) => dispatch(updateShippingDataByMaterialID(url, body)),
+        updateShippingDataByShipmentID: (url, body) => dispatch(updateShippingDataByShipmentID(url, body))
     };
 };
 
