@@ -24,5 +24,5 @@ export default function configureStore(initialState) {
     console.log("STORE CHANGED: ", store.getState());
   })
 
-  return store
+  return store;
 }

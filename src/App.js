@@ -36,6 +36,14 @@ import Typography from '@material-ui/core/Typography';
 import SearchIcon from '@material-ui/icons/Search';
 import MailIcon from '@material-ui/icons/Mail';
 import UserIcon from '@material-ui/icons/AccountCircleRounded';
+import {
+    getBillOfMaterialsByMaterialID,
+    getBillOfMaterialsByMaterialName,
+    getBillOfMaterialsByMaterialDesc,
+    getBillOfMaterialsByPartNumber,
+    getBillOfMaterialsByPartName,
+    getBillOfMaterialsByPartDesc
+} from './redux/actions/bill-of-materials.actions';
 
 const theme = createMuiTheme({
     palette: {
@@ -99,6 +107,19 @@ class App extends Component {
     };
 
     showTrackAndTraceResultsView = () => {
+        if (this.state.searchCriteria === 'Material ID') {
+        this.props.getBillOfMaterialsByMaterialID(this.state.searchKey);
+        } else if (this.state.searchCriteria === 'Material Name') {
+            this.props.getBillOfMaterialsByMaterialName(this.state.searchKey);
+        } else if (this.state.searchCriteria === 'Material Description') {
+        this.props.getBillOfMaterialsByMaterialDesc(this.state.searchKey);
+        } else if (this.state.searchCriteria === 'Part No.') {
+            this.props.getBillOfMaterialsByPartNumber(this.state.searchKey);
+        } else if (this.state.searchCriteria === 'Part Name') {
+            this.props.getBillOfMaterialsByPartName(this.state.searchKey);
+        } else if (this.state.searchCriteria === 'Part Description') {
+            this.props.getBillOfMaterialsByPartDesc(this.state.searchKey);
+        }
         console.log("searchCriteria", this.state.searchCriteria);
         console.log("searchKey", this.state.searchKey);
         //this.setState({showProgressLogo: true}); to show blocnetsLogo before submit
@@ -332,7 +353,14 @@ const mapStateToProps = (state) => {
 // This way, we can call our action creator by doing this.props.authenticate();
 const mapDispatchToProps = (dispatch) => {
     return {
-        authenticate: () => dispatch(authenticate())
+        authenticate: () => dispatch(authenticate()),
+        getBillOfMaterialsByMaterialID: (url) => dispatch(getBillOfMaterialsByMaterialID(url)),
+        getBillOfMaterialsByMaterialName: (url) => dispatch(getBillOfMaterialsByMaterialName(url)),
+        getBillOfMaterialsByMaterialDesc: (url) => dispatch(getBillOfMaterialsByMaterialDesc(url)),
+        getBillOfMaterialsByPartNumber: (url) => dispatch(getBillOfMaterialsByPartNumber(url)),
+        getBillOfMaterialsByPartName: (url) => dispatch(getBillOfMaterialsByPartName(url)),
+        getBillOfMaterialsByPartDesc: (url) => dispatch(getBillOfMaterialsByPartDesc(url))
+
     };
 };
 

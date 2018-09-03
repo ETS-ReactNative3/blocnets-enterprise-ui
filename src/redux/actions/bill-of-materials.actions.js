@@ -47,7 +47,7 @@ export function getBillOfMaterialsByMaterialID(url) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.get(chaincodes.Default + chaincodes.SAR + url, { headers })
+        axios.get(chaincodes.Default + chaincodes.BOM + url, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('BOMDataByShipmentID', data);
@@ -113,7 +113,7 @@ export function getBillOfMaterialsByMaterialName(url) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.get(chaincodes.Default + chaincodes.SAR + "materialName=" + url, { headers })
+        axios.get(chaincodes.Default + chaincodes.BOM + "materialName=" + url, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('BOMDataByMaterialName', data);
@@ -178,7 +178,7 @@ export function getBillOfMaterialsByMaterialDesc(url) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.get(chaincodes.Default + chaincodes.SAR + "materialDesc=" + url, { headers })
+        axios.get(chaincodes.Default + chaincodes.BOM + "materialDesc=" + url, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('BOMDataByMaterialName', data);
@@ -311,7 +311,7 @@ export function getBillOfMaterialsByPartName(url) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.get(chaincodes.Default + chaincodes.SAR + "partName=" + url, { headers })
+        axios.get(chaincodes.Default + chaincodes.BOM + "partName=" + url, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('BOMDataByPartName', data);
@@ -378,7 +378,7 @@ export function getBillOfMaterialsByPartDesc(url) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.get(chaincodes.Default + chaincodes.SAR + "partDesc=" + url, { headers })
+        axios.get(chaincodes.Default + chaincodes.BOM + "partDesc=" + url, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('BOMDataByPartDesc', data);

@@ -343,6 +343,7 @@ ReceivingView.propTypes = {};
 
 const mapStateToProps = (state) => {
     return {
+        //updateShippingDataByShipmentIDReducer: this.state.updateShippingDataByShipmentIDReducer,
         state,
     };
 };

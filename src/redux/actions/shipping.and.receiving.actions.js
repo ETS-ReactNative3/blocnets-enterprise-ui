@@ -20,7 +20,7 @@ const headers = {
 export function createShippingDataByShipmentID(url, body) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_SAR_VIEW",
             payload: true
         });
         axios.post(chaincodes.Default + chaincodes.SAR + url, body, { headers })
@@ -40,7 +40,7 @@ export function createShippingDataByShipmentID(url, body) {
 export function getShippingDataByShipmentID(url) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_SAR_VIEW",
             payload: true
         });
         axios.get(chaincodes.Default + chaincodes.SAR + url, { headers })
@@ -62,7 +62,7 @@ export function getShippingDataByShipmentID(url) {
 export function updateShippingDataByShipmentID(url, body) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_SAR_VIEW",
             payload: true
         });
         axios.put(chaincodes.Default + chaincodes.SAR + url, body, { headers })
@@ -82,7 +82,7 @@ export function updateShippingDataByShipmentID(url, body) {
 export function createShippingDataByMaterialID(url, body) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_SAR_VIEW",
             payload: true
         });
         axios.post(chaincodes.Default + chaincodes.SAR + url, body, { headers })
@@ -102,7 +102,7 @@ export function createShippingDataByMaterialID(url, body) {
 export function getShippingDataByMaterialID(url) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_SAR_VIEW",
             payload: true
         });
         axios.get(chaincodes.Default + chaincodes.SAR + url, { headers })
@@ -124,7 +124,7 @@ export function getShippingDataByMaterialID(url) {
 export function updateShippingDataByMaterialID(url, body) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_SAR_VIEW",
             payload: true
         });
         axios.put(chaincodes.Default + chaincodes.SAR + url, body, { headers })
