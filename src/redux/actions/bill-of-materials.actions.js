@@ -239,19 +239,19 @@ export function createBillOfMaterialsByPartNumber(url, body) {
     };
 }
 
-export function getBillOfMaterialsByPartNumber(url, body) {
+export function getBillOfMaterialsByPartNumber(url) {
     return (dispatch) => {
         dispatch({
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.get(chaincodes.Default + chaincodes.BOM + "partNumber=" + url, body, { headers })
+        axios.get(chaincodes.Default + chaincodes.BOM + "partNumber=" + url, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('BOMDataByPartNumber', data);
                 return dispatch({
                     type: "GET_BILL_OF_MATERIALS_DATA_SUCCESS",
-                    payload: true
+                    payload: response.data
                 });
             })
             .catch(() => dispatch({
