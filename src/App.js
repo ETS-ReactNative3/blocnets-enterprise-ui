@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
+import blocnetsLogo from "./blocknetwhite-1.png";
 import {
     BrowserRouter as Router,
     Route
@@ -94,9 +95,18 @@ class App extends Component {
             "open": false,
             "show": null,
             transactionCode: 'DRE01',
+            showProgressLogo: false,
             searchKey: '',
             openSearch: false,
-            searchCriteria: ''
+            searchCriteria: '',
+            counter: 0,
+            billOfMaterialsData: [],
+            snackbar: {
+                autoHideDuration: 2000,
+                message: '',
+                open: false,
+                sbColor: ''
+            }
         };
     }
 
@@ -107,23 +117,27 @@ class App extends Component {
     };
 
     showTrackAndTraceResultsView = () => {
+        sessionStorage.clear();
+        this.setState({billOfMaterialsData: []});
         if (this.state.searchCriteria === 'Material ID') {
-        this.props.getBillOfMaterialsByMaterialID(this.state.searchKey);
+            this.props.getBillOfMaterialsByMaterialID(this.state.searchKey);
+            this.handleSearchData('Material ID');
         } else if (this.state.searchCriteria === 'Material Name') {
             this.props.getBillOfMaterialsByMaterialName(this.state.searchKey);
+            this.handleSearchData('Material Name');
         } else if (this.state.searchCriteria === 'Material Description') {
-        this.props.getBillOfMaterialsByMaterialDesc(this.state.searchKey);
+            this.props.getBillOfMaterialsByMaterialDesc(this.state.searchKey);
+            this.handleSearchData('Material Description');
         } else if (this.state.searchCriteria === 'Part No.') {
             this.props.getBillOfMaterialsByPartNumber(this.state.searchKey);
+            this.handleSearchData('Part No.');
         } else if (this.state.searchCriteria === 'Part Name') {
             this.props.getBillOfMaterialsByPartName(this.state.searchKey);
+            this.handleSearchData('Part Name');
         } else if (this.state.searchCriteria === 'Part Description') {
             this.props.getBillOfMaterialsByPartDesc(this.state.searchKey);
+            this.handleSearchData('Part Description');
         }
-        console.log("searchCriteria", this.state.searchCriteria);
-        console.log("searchKey", this.state.searchKey);
-        //this.setState({showProgressLogo: true}); to show blocnetsLogo before submit
-        //this.setState({showProgressLogo: false}); to show blocnetsLogo after receiving response
         this.setState({show: 'trackandtraceresultsview', open: false, transactionCode: 'TT01'});
     };
 
@@ -160,13 +174,120 @@ class App extends Component {
         this.setState({searchCriteria: searchCriteria, openSearch: false});
     };
 
+    handleSearchData = (searchCriteria) => {
+        let bomData = [];
+        this.setState({
+            showProgressLogo: true,
+            counter: 0
+        });
+        if (searchCriteria === 'Material ID') {
+            setTimeout(
+                function () {
+                    this.setState({counter: 1});
+                    if (this.state.counter === 1) {
+                        bomData = sessionStorage.getItem('BOMDataByMaterialID');
+                        this.handleBOMData(bomData);
+                    }
+                }
+                    .bind(this),
+                3000
+            );
+        } else if (searchCriteria === 'Material Name') {
+            setTimeout(
+                function () {
+                    this.setState({counter: 1});
+                    if (this.state.counter === 1) {
+                        bomData = sessionStorage.getItem('BOMDataByMaterialName');
+                        this.handleBOMData(bomData);
+                    }
+                }
+                    .bind(this),
+                3000
+            );
+        } else if (searchCriteria === 'Material Description') {
+            setTimeout(
+                function () {
+                    this.setState({counter: 1});
+                    if (this.state.counter === 1) {
+                        bomData = sessionStorage.getItem('BOMDataByMaterialDesc');
+                        this.handleBOMData(bomData);
+                    }
+                }
+                    .bind(this),
+                3000
+            );
+        } else if (searchCriteria === 'Part No.') {
+            setTimeout(
+                function () {
+                    this.setState({counter: 1});
+                    if (this.state.counter === 1) {
+                        bomData = sessionStorage.getItem('BOMDataByPartNumber');
+                        this.handleBOMData(bomData);
+                    }
+                }
+                    .bind(this),
+                3000
+            );
+        } else if (searchCriteria === 'Part Name') {
+            setTimeout(
+                function () {
+                    this.setState({counter: 1});
+                    if (this.state.counter === 1) {
+                        bomData = sessionStorage.getItem('BOMDataByPartName');
+                        this.handleBOMData(bomData);
+                    }
+                }
+                    .bind(this),
+                3000
+            );
+        } else if (searchCriteria === 'Part Description') {
+            setTimeout(
+                function () {
+                    this.setState({counter: 1});
+                    if (this.state.counter === 1) {
+                        bomData = sessionStorage.getItem('BOMDataByPartDesc');
+                        this.handleBOMData(bomData);
+                    }
+                }
+                    .bind(this),
+                3000
+            );
+        }
+    }
+
+    handleBOMData = (bomData) => {
+        if (bomData) {
+            this.setState({
+                showProgressLogo: false,
+                billOfMaterialsData: bomData,
+                snackbar: {
+                    autoHideDuration: 2000,
+                    message: 'Successfully tracked a block!',
+                    open: true,
+                    sbColor: 'black'
+                }
+            })
+        } else {
+            this.setState({
+                showProgressLogo: false,
+                billOfMaterialsData: '',
+                snackbar: {
+                    autoHideDuration: 2000,
+                    message: 'Error tracking a block!',
+                    open: true,
+                    sbColor: 'red'
+                }
+            })
+        }
+    }
+
     render() {
 
         let content = null;
 
         switch (this.state.show) {
             case 'trackandtraceresultsview':
-                content = (<TrackAndTraceResultsView/>);
+                content = (<TrackAndTraceResultsView data={this.state}/>);
                 break;
             case 'shippingview':
                 content = (<ShippingView/>);
@@ -219,12 +340,18 @@ class App extends Component {
                                                 : ''
                                         }
                                         endAdornment={
-                                            <InputAdornment position="end">
-                                                <SearchIcon
-                                                    onClick={this.showTrackAndTraceResultsView}
-                                                    style={{"cursor": "pointer"}}
-                                                />
-                                            </InputAdornment>
+                                            this.state.searchCriteria && this.state.searchKey ?
+                                                <InputAdornment position="end">
+                                                    <SearchIcon
+                                                        onClick={this.showTrackAndTraceResultsView}
+                                                        style={{"cursor": "pointer"}}
+                                                    />
+                                                </InputAdornment> :
+                                                <InputAdornment position="end">
+                                                    <SearchIcon
+                                                        style={{"fill": "black"}}
+                                                    />
+                                                </InputAdornment>
                                         }
                                         onChange={this.handleSearchKey}
                                     />
@@ -306,6 +433,11 @@ class App extends Component {
                     </Toolbar>
                     {content}
                 </Paper>
+                <div>
+                    {this.state.showProgressLogo ?
+                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt=""/>
+                        </div> : ""}
+                </div>
                 <div style={{padding: 24}}>
                     <Grid container spacing={24}>
                         <MuiThemeProvider theme={theme}>
