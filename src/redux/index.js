@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux';
 import {
-  requestSucceededReducer,
   checkAuthReducer,
-    updateShippingDataReducer
+  updateShippingDataReducer,
+  billOfMaterialsReducer
 }
   from './reducers/main.reducers';
 
 export default combineReducers({
-    updateShippingDataReducer,
+  updateShippingDataReducer,
   checkAuthReducer,
-  requestSucceededReducer,
+  billOfMaterialsReducer
 });

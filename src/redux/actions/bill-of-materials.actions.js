@@ -30,12 +30,12 @@ export function createBillOfMaterialsByMaterialID(url, body) {
         axios.post(chaincodes.Default + chaincodes.BOM + url, body, { headers })
             .then(() => {
                 return dispatch({
-                    type: "CREATE_BILL_OF_MATERIALS_DATA_SUCCESS",
+                    type: "CREATE_BOM_DATA_BY_MATERIAL_ID_SUCCESS",
                     payload: true
                 });
             })
             .catch(() => dispatch({
-                type: "CREATE_BILL_OF_MATERIALS_DATA_FAILED",
+                type: "CREATE_BOM_DATA_BY_MATERIAL_ID_FAILED",
                 payload: true
             }));
     };
@@ -52,12 +52,12 @@ export function getBillOfMaterialsByMaterialID(url) {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('BOMDataByShipmentID', data);
                 return dispatch({
-                    type: "GET_SHIPPING_DATA_SUCCESS",
+                    type: "GET_BOM_DATA_BY_MATERIAL_ID_SUCCESS",
                     payload: response.data
                 });
             })
             .catch(() => dispatch({
-                type: "GET_SHIPPING_DATA_FAILED",
+                type: "GET_BOM_DATA_BY_MATERIAL_ID_FAILED",
                 payload: true
             }));
     };
