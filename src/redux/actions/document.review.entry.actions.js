@@ -23,7 +23,7 @@ export function createDocumentEntryByUserID(url, body) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.post(chaincodes.Default + chaincodes.DRE + url, body, { headers })
+        axios.post(chaincodes.Default + chaincodes.DRE + "userid=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_DRE_DATA_SUCCESS",

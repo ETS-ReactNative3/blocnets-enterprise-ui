@@ -45,16 +45,25 @@ class DocumentSendView extends React.Component {
     };
 
     handleSubmit = (event) => {
+
+        let data = {
+            status: "pending",
+            type: this.state.messageType,
+            desc: this.state.dataType,
+            fileId: ''
+        };
+
+        this.props.createDocumentEntryByUserID(this.state.recipientUserName, data);
         //this.setState({showProgressLogo: true}); to show blocnetsLogo before submit
         //this.setState({showProgressLogo: false}); to show blocnetsLogo after receiving response
-        /*this.setState({
+        this.setState({
             snackbar: {
                 autoHideDuration: 2000,
                 message: 'Success',
                 open: true,
                 sbColor: 'black'
             }
-        }); to show success message */
+        });
         /*this.setState({
             snackbar: {
                 autoHideDuration: 2000,
