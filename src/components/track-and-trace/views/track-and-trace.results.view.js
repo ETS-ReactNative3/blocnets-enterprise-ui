@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Grid from "@material-ui/core/Grid/Grid";
 import Paper from "material-ui/Paper";
+import Typography from '@material-ui/core/Typography';
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core";
 import Button from "@material-ui/core/Button/Button";
 import yellow from "@material-ui/core/colors/yellow";
@@ -61,7 +62,9 @@ class TrackAndTraceResultsView extends Component {
                                 <Grid container item xs={12}>
                                     <Paper style={{"width": "100%", "height": "50vh"}}>
                                         <div style={{"overflowX": "auto"}}>
-                                            {this.props.data.billOfMaterialsData}
+                                            <Typography align="left">
+                                                {this.props.data.billOfMaterialsData}
+                                            </Typography>
                                         </div>
                                     </Paper>
                                 </Grid>
