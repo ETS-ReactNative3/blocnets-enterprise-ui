@@ -50,7 +50,7 @@ export function getBillOfMaterialsByMaterialID(url) {
         axios.get(chaincodes.Default + chaincodes.BOM + url, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data);
-                sessionStorage.setItem('BOMDataByShipmentID', data);
+                sessionStorage.setItem('BOMDataByMaterialID', data);
                 return dispatch({
                     type: "GET_BOM_DATA_BY_MATERIAL_ID_SUCCESS",
                     payload: response.data
@@ -181,7 +181,7 @@ export function getBillOfMaterialsByMaterialDesc(url) {
         axios.get(chaincodes.Default + chaincodes.BOM + "materialDesc=" + url, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data);
-                sessionStorage.setItem('BOMDataByMaterialName', data);
+                sessionStorage.setItem('BOMDataByMaterialDesc', data);
                 return dispatch({
                     type: "GET_BILL_OF_MATERIALS_DATA_SUCCESS",
                     payload: response.data
