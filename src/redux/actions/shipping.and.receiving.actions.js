@@ -65,15 +65,15 @@ export function updateShippingDataByShipmentID(url, body) {
             type: "LOADING_SAR_VIEW",
             payload: true
         });
-        axios.put(chaincodes.Default + chaincodes.SAR + url, body, { headers })
+        axios.put(chaincodes.Default + chaincodes.SAR + url, body, {headers})
             .then(() => {
                 return dispatch({
-                    type: "UPDATE_SHIPPING_DATA_SUCCESS",
+                    type: "UPDATE_SHIPPING_DATA_BY_SHIPMENT_ID_SUCCESS",
                     payload: true
                 });
             })
             .catch(() => dispatch({
-                type: "UPDATE_SHIPPING_DATA_FAILED",
+                type: "UPDATE_SHIPPING_DATA_BY_SHIPMENT_ID_FAILED",
                 payload: true
             }));
     };
@@ -127,15 +127,15 @@ export function updateShippingDataByMaterialID(url, body) {
             type: "LOADING_SAR_VIEW",
             payload: true
         });
-        axios.put(chaincodes.Default + chaincodes.SAR + url, body, { headers })
+        axios.put(chaincodes.Default + chaincodes.SAR + url, body, {headers})
             .then(() => {
                 return dispatch({
-                    type: "UPDATE_SHIPPING_DATA_SUCCESS",
+                    type: "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
                     payload: true
                 });
             })
             .catch(() => dispatch({
-                type: "UPDATED_SHIPPING_DATA_FAILED",
+                type: "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
                 payload: true
             }));
     };

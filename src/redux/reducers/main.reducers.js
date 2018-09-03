@@ -14,16 +14,22 @@ export function checkAuthReducer(state = {}, action) {
     }
 }
 
-export function updateShippingDataByShipmentIDReducer(state = {}, action) {
+export function updateShippingDataReducer(state = {}, action) {
     switch (action.type) {
         case "LOADING_SAR_VIEW": {
-            return state = { ...state, loadView: action.payload }
+            return state = {...state, loadView: action.payload}
         }
-        case "UPDATE_SHIPPING_DATA_SUCCESS": {
-            return state = { ...state, updateShippingDataSuccess: action.payload }
+        case "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS": {
+            return state = {...state, updateShippingDataByMaterialIDSuccess: action.payload}
         }
-        case "UPDATE_SHIPPING_DATA_FAILED": {
-            return state = { ...state, updateShippingDataFail: action.payload }
+        case "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_FAILED": {
+            return state = {...state, updateShippingDataByMaterialIDFail: action.payload}
+        }
+        case "UPDATE_SHIPPING_DATA_BY_SHIPMENT_ID_SUCCESS": {
+            return state = {...state, updateShippingDataByShipmentIDSuccess: action.payload}
+        }
+        case "UPDATE_SHIPPING_DATA_BY_SHIPMENT_ID_FAILED": {
+            return state = {...state, updateShippingDataByShipmentIDFail: action.payload}
         }
         default:
             return state;
