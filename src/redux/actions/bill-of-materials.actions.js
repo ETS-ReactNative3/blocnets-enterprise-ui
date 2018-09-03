@@ -225,7 +225,7 @@ export function createBillOfMaterialsByPartNumber(url, body) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.post(chaincodes.Default + chaincodes.BOM + url, body, { headers })
+        axios.post(chaincodes.Default + chaincodes.BOM + "partNumber=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_BILL_OF_MATERIALS_DATA_SUCCESS",
@@ -245,7 +245,7 @@ export function getBillOfMaterialsByPartNumber(url, body) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.get(chaincodes.Default + chaincodes.BOM + url, body, { headers })
+        axios.get(chaincodes.Default + chaincodes.BOM + "partNumber=" + url, body, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('BOMDataByPartNumber', data);
@@ -267,7 +267,7 @@ export function updateBillOfMaterialsByPartNumber(url, body) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.put(chaincodes.Default + chaincodes.BOM + url, body, { headers })
+        axios.put(chaincodes.Default + chaincodes.BOM + "partNumber=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_BILL_OF_MATERIALS_DATA_SUCCESS",
