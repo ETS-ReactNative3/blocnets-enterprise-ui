@@ -1,14 +1,7 @@
 import axios from 'axios';
-
+import config from '../config.json';
 
 const token = localStorage.getItem('Token');
-
-const chaincodes = {
-    "Default": "https://hyperledger-fabric.cfapps.us10.hana.ondemand.com/api/v1/chaincodes/", // API path
-    "BOM": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-supplychain/latest/",
-    "SAR": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-sar/latest/",
-    "DRE": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-dre/latest/"
-};
 
 const headers = {
     'Authorization': 'Bearer ' + token,
@@ -23,7 +16,7 @@ export function createDocumentEntryByUserID(url, body) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.post(chaincodes.Default + chaincodes.DRE + "userid=" + url, body, { headers })
+        axios.post(config.chaincodes.Default + config.chaincodes.DRE + "userid=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_DRE_DATA_SUCCESS",
@@ -43,7 +36,7 @@ export function getDocumentEntryByUserID(url) {
             type: "LOADING VIEW",
             payload: true
         });
-        axios.get(chaincodes.Default + chaincodes.DRE + url, { headers })
+        axios.get(config.chaincodes.Default + config.chaincodes.DRE + url, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data)
                 console.log("DRE data:" + data);

@@ -1,14 +1,7 @@
 import axios from 'axios';
-
+import config from '../config.json';
 
 const token = localStorage.getItem('Token');
-
-const chaincodes = {
-    "Default": "https://hyperledger-fabric.cfapps.us10.hana.ondemand.com/api/v1/chaincodes/", // API path
-    "BOM": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-supplychain/latest/",
-    "SAR": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-sar/latest/",
-    "DRE": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-dre/latest/"
-};
 
 const headers = {
     'Authorization': 'Bearer ' + token,
@@ -27,7 +20,7 @@ export function createBillOfMaterialsByMaterialID(url, body) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.post(chaincodes.Default + chaincodes.BOM + url, body, { headers })
+        axios.post(config.chaincodes.Default + config.chaincodes.BOM + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_BOM_DATA_BY_MATERIAL_ID_SUCCESS",
@@ -47,7 +40,7 @@ export function getBillOfMaterialsByMaterialID(url) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.get(chaincodes.Default + chaincodes.BOM + url, { headers })
+        axios.get(config.chaincodes.Default + config.chaincodes.BOM + url, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('BOMDataByMaterialID', data);
@@ -69,7 +62,7 @@ export function updateBillOfMaterialsByMaterialID(url, body) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.put(chaincodes.Default + chaincodes.BOM + url, body, { headers })
+        axios.put(config.chaincodes.Default + config.chaincodes.BOM + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_BILL_OF_MATERIALS_DATA_SUCCESS",
@@ -93,7 +86,7 @@ export function createBillOfMaterialsByMaterialName(url, body) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.post(chaincodes.Default + chaincodes.BOM + "materialName=" + url, body, { headers })
+        axios.post(config.chaincodes.Default + config.chaincodes.BOM + "materialName=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_BILL_OF_MATERIALS_DATA_SUCCESS",
@@ -113,7 +106,7 @@ export function getBillOfMaterialsByMaterialName(url) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.get(chaincodes.Default + chaincodes.BOM + "materialName=" + url, { headers })
+        axios.get(config.chaincodes.Default + config.chaincodes.BOM + "materialName=" + url, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('BOMDataByMaterialName', data);
@@ -135,8 +128,7 @@ export function updateBillOfMaterialsByMaterialName(url, body) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.put(
-            chaincodes.Default + chaincodes.BOM + "materialName=" + url, body, { headers })
+        axios.put(config.chaincodes.Default + config.chaincodes.BOM + "materialName=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_BILL_OF_MATERIALS_DATA_SUCCESS",
@@ -158,7 +150,7 @@ export function createBillOfMaterialsByMaterialDesc(url, body) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.post(chaincodes.Default + chaincodes.BOM + "materialDesc=" + url, body, { headers })
+        axios.post(config.chaincodes.Default + config.chaincodes.BOM + "materialDesc=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_BILL_OF_MATERIALS_DATA_SUCCESS",
@@ -178,7 +170,7 @@ export function getBillOfMaterialsByMaterialDesc(url) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.get(chaincodes.Default + chaincodes.BOM + "materialDesc=" + url, { headers })
+        axios.get(config.chaincodes.Default + config.chaincodes.BOM + "materialDesc=" + url, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('BOMDataByMaterialDesc', data);
@@ -200,8 +192,7 @@ export function updateBillOfMaterialsByMaterialDesc(url, body) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.put(
-            chaincodes.Default + chaincodes.BOM + "materialDesc=" + url, body, { headers })
+        axios.put(config.chaincodes.Default + config.chaincodes.BOM + "materialDesc=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_BILL_OF_MATERIALS_DATA_SUCCESS",
@@ -225,7 +216,7 @@ export function createBillOfMaterialsByPartNumber(url, body) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.post(chaincodes.Default + chaincodes.BOM + "partNumber=" + url, body, { headers })
+        axios.post(config.chaincodes.Default + config.chaincodes.BOM + "partNumber=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_BILL_OF_MATERIALS_DATA_SUCCESS",
@@ -245,7 +236,7 @@ export function getBillOfMaterialsByPartNumber(url) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.get(chaincodes.Default + chaincodes.BOM + "partNumber=" + url, { headers })
+        axios.get(config.chaincodes.Default + config.chaincodes.BOM + "partNumber=" + url, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('BOMDataByPartNumber', data);
@@ -267,7 +258,7 @@ export function updateBillOfMaterialsByPartNumber(url, body) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.put(chaincodes.Default + chaincodes.BOM + "partNumber=" + url, body, { headers })
+        axios.put(config.chaincodes.Default + config.chaincodes.BOM + "partNumber=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_BILL_OF_MATERIALS_DATA_SUCCESS",
@@ -291,7 +282,7 @@ export function createBillOfMaterialsByPartName(url, body) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.post(chaincodes.Default + chaincodes.BOM + "partName=" + url, body, { headers })
+        axios.post(config.chaincodes.Default + config.chaincodes.BOM + "partName=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_BILL_OF_MATERIALS_DATA_SUCCESS",
@@ -311,7 +302,7 @@ export function getBillOfMaterialsByPartName(url) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.get(chaincodes.Default + chaincodes.BOM + "partName=" + url, { headers })
+        axios.get(config.chaincodes.Default + config.chaincodes.BOM + "partName=" + url, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('BOMDataByPartName', data);
@@ -334,7 +325,7 @@ export function updateBillOfMaterialsByPartName(url, body) {
             payload: true
         });
         axios.put(
-            chaincodes.Default + chaincodes.BOM + "partName=" + url, body, { headers })
+            config.chaincodes.Default + config.chaincodes.BOM + "partName=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_BILL_OF_MATERIALS_DATA_SUCCESS",
@@ -358,7 +349,7 @@ export function createBillOfMaterialsByPartDesc(url, body) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.post(chaincodes.Default + chaincodes.BOM + "partDesc=" + url, body, { headers })
+        axios.post(config.chaincodes.Default + config.chaincodes.BOM + "partDesc=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_BILL_OF_MATERIALS_DATA_SUCCESS",
@@ -378,7 +369,7 @@ export function getBillOfMaterialsByPartDesc(url) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.get(chaincodes.Default + chaincodes.BOM + "partDesc=" + url, { headers })
+        axios.get(config.chaincodes.Default + config.chaincodes.BOM + "partDesc=" + url, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('BOMDataByPartDesc', data);
@@ -400,8 +391,7 @@ export function updateBillOfMaterialsByPartDesc(url, body) {
             type: "LOADING_VIEW",
             payload: true
         });
-        axios.put(
-            chaincodes.Default + chaincodes.BOM + "partDesc=" + url, body, { headers })
+        axios.put(config.chaincodes.Default + config.chaincodes.BOM + "partDesc=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_BILL_OF_MATERIALS_DATA_SUCCESS",

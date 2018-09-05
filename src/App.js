@@ -12,6 +12,7 @@ import DocumentReviewEntryView
 import TrackAndTraceResultsView from './components/track-and-trace/views/track-and-trace.results.view';
 import ShippingView from './components/shipping-view/shipping.view';
 import ReceivingView from './components/receiving-view/receiving.view';
+import ProductionView from './components/production-view/production.view';
 import BillOfMaterials from './components/bill-of-materials/bill-of-materials';
 import DocumentSendView from './components/document-review-and-entry-view/document-send/document.send.view';
 import logo from './blocknetwhite-1.png';
@@ -149,6 +150,10 @@ class App extends Component {
     showReceivingView = () => {
         this.setState({ show: 'receivingview', open: false, transactionCode: 'REC01' });
     };
+
+    showProductionView = () => {
+        this.setState({ show: 'productionview', open: false, transactionCode: 'PRO01' });
+    }
 
     showBillOfMaterials = () => {
         this.setState({ show: 'billofmaterials', open: false, transactionCode: 'BOM01' });
@@ -296,6 +301,9 @@ class App extends Component {
             case 'receivingview':
                 content = (<ReceivingView />);
                 break;
+            case 'productionview':
+                content = (<ProductionView />);
+                break;
             case 'billofmaterials':
                 content = (<BillOfMaterials />);
                 break;
@@ -422,10 +430,11 @@ class App extends Component {
                     <hr />
                     <MenuItem id="showReceivingViewId" onClick={this.showReceivingView}>Receiving</MenuItem>
                     <hr />
+                    <MenuItem id="showProductionViewId" onClick={this.showProductionView}>Production</MenuItem>
+                    <hr />
                     <MenuItem id="showBillOfMaterialsId" onClick={this.showBillOfMaterials}>Bill of Materials</MenuItem>
                     <hr />
-                    <MenuItem id="showDocumentSendViewId" onClick={this.showDocumentSendView}>Document
-                        Review and Entry</MenuItem>
+                    <MenuItem id="showDocumentSendViewId" onClick={this.showDocumentSendView}>Document Review and Entry</MenuItem>
                 </Drawer>
                 {/* Page View with content loaded */}
                 <Paper className="White-theme" style={paperStyle} zDepth={5}>
