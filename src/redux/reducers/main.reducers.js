@@ -1,4 +1,4 @@
-export function checkAuthReducer(state = {}, action) {
+export function authReducer(state = {}, action) {
     switch (action.type) {
         case "LOADING_VIEW": {
             return state = { ...state, loadView: action.payload }
@@ -14,16 +14,22 @@ export function checkAuthReducer(state = {}, action) {
     }
 }
 
-export function updateShippingDataReducer(state = {}, action) {
+export function sarReducer(state = {}, action) {
     switch (action.type) {
         case "LOADING_SAR_VIEW": {
             return state = { ...state, loadView: action.payload }
         }
-        case "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS": {
-            return state = { ...state, updateShippingDataByMaterialIDSuccess: action.payload }
+        case "CREATE_SHIPPING_DATA_BY_SHIPMENT_ID_SUCCESS": {
+            return state = { ...state, createShippingDataByShipmentIDSuccess: action.payload }
         }
-        case "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_FAILED": {
-            return state = { ...state, updateShippingDataByMaterialIDFail: action.payload }
+        case "CREATE_SHIPPING_DATA_BY_SHIPMENT_ID_FAILED": {
+            return state = { ...state, createShippingDataByShipmentIDFail: action.payload }
+        }
+        case "GET_SHIPPING_DATA_BY_SHIPMENT_ID_SUCCESS": {
+            return state = { ...state, getShippingDataByShipmentIDSuccess: action.payload }
+        }
+        case "GET_SHIPPING_DATA_BY_SHIPMENT_ID_FAILED": {
+            return state = { ...state, getShippingDataByShipmentIDFail: action.payload }
         }
         case "UPDATE_SHIPPING_DATA_BY_SHIPMENT_ID_SUCCESS": {
             return state = { ...state, updateShippingDataByShipmentIDSuccess: action.payload }
@@ -31,12 +37,30 @@ export function updateShippingDataReducer(state = {}, action) {
         case "UPDATE_SHIPPING_DATA_BY_SHIPMENT_ID_FAILED": {
             return state = { ...state, updateShippingDataByShipmentIDFail: action.payload }
         }
+        case "CREATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS": {
+            return state = { ...state, createShippingDataByMaterialIDSuccess: action.payload }
+        }
+        case "CREATE_SHIPPING_DATA_BY_MATERIAL_ID_FAILED": {
+            return state = { ...state, createShippingDataByMaterialIDFail: action.payload }
+        }
+        case "GET_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS": {
+            return state = { ...state, getShippingDataByMaterialIDSucess: action.payload }
+        }
+        case "GET_SHIPPING_DATA_BY_MATERIAL_ID_FAILED": {
+            return state = { ...state, getShippingDataByMaterialIDFail: action.payload }
+        }
+        case "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS": {
+            return state = { ...state, updateShippingDataByMaterialIDSuccess: action.payload }
+        }
+        case "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_FAILED": {
+            return state = { ...state, updateShippingDataByMaterialIDFail: action.payload }
+        }
         default:
             return state;
     }
 }
 
-export function billOfMaterialsReducer(state = { items: [] }, action) {
+export function bomReducer(state = { items: [] }, action) {
     switch (action.type) {
         case "LOADING_VIEW": {
             return state = { ...state, loadView: action.payload }

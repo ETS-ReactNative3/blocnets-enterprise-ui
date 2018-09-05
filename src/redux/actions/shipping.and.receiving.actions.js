@@ -24,14 +24,14 @@ export function createShippingDataByShipmentID(url, body) {
             payload: true
         });
         axios.post(chaincodes.Default + chaincodes.SAR + url, body, { headers })
-            .then((response) => {
+            .then(() => {
                 return dispatch({
-                    type: "CREATE_SHIPPING_DATA_SUCCESS",
+                    type: "CREATE_SHIPPING_DATA_BY_SHIPMENT_ID_SUCCESS",
                     payload: true
                 });
             })
             .catch(() => dispatch({
-                type: "CREATE_SHIPPING_DATA_FAILED",
+                type: "CREATE_SHIPPING_DATA_BY_SHIPMENT_ID_FAILED",
                 payload: true
             }));
     };
@@ -48,12 +48,12 @@ export function getShippingDataByShipmentID(url) {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('DataByShipmentID', data);
                 return dispatch({
-                    type: "GET_SHIPPING_DATA_SUCCESS",
+                    type: "GET_SHIPPING_DATA_BY_SHIPMENT_ID_SUCCESS",
                     payload: response.data
                 });
             })
             .catch(() => dispatch({
-                type: "GET_SHIPPING_DATA_FAILED",
+                type: "GET_SHIPPING_DATA_BY_SHIPMENT_ID_FAILED",
                 payload: true
             }));
     };
@@ -88,12 +88,12 @@ export function createShippingDataByMaterialID(url, body) {
         axios.post(chaincodes.Default + chaincodes.SAR + url, body, { headers })
             .then(() => {
                 return dispatch({
-                    type: "CREATE_SHIPPING_DATA_SUCCESS",
+                    type: "CREATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
                     payload: true
                 });
             })
             .catch(() => dispatch({
-                type: "CREATE_SHIPPING_DATA_FAILED",
+                type: "CREATE_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
                 payload: true
             }));
     };
@@ -110,12 +110,12 @@ export function getShippingDataByMaterialID(url) {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('DataByMaterialID', data);
                 return dispatch({
-                    type: "GET_SHIPPING_DATA_SUCCESS",
+                    type: "GET_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
                     payload: response.data
                 });
             })
             .catch(() => dispatch({
-                type: "GET_SHIPPING_DATA_FAILED",
+                type: "GET_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
                 payload: true
             }));
     };
