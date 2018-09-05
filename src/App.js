@@ -161,7 +161,7 @@ class App extends Component {
     handleSearchKey = (event) => {
         this.setState({ searchKey: event.target.value, searchCriteria: '' });
         if (event.target.value === '') {
-            this.setState({ openSearch: false });
+            this.setState({ show: 'home', openSearch: false });
         } else {
             this.setState({ openSearch: true });
         }
@@ -254,7 +254,7 @@ class App extends Component {
                 3000
             );
         }
-    }
+    };
 
     handleBOMData = (bomData) => {
         if (bomData) {
@@ -280,7 +280,7 @@ class App extends Component {
                 }
             })
         }
-    }
+    };
 
     render() {
 

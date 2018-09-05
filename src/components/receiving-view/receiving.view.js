@@ -193,7 +193,7 @@ class ReceivingView extends Component {
             received: true,
             shipped: dataByMaterialID.shipped,
             state: dataByMaterialID.state
-        }
+        };
         this.props.updateShippingDataByMaterialID(url, body);
         setTimeout(
             function () {
@@ -208,7 +208,11 @@ class ReceivingView extends Component {
                                 open: true,
                                 sbColor: 'black'
                             },
-                            openMaterialIDDialog: false
+                            openMaterialIDDialog: false,
+                            materialID: '',
+                            materialIDInformed: false,
+                            shipmentID: '',
+                            shipmentIDInformed: false
                         });
                     } else {
                         this.setState({
@@ -245,7 +249,7 @@ class ReceivingView extends Component {
             received: true,
             shipped: dataByShipmentID.shipped,
             state: dataByShipmentID.state
-        }
+        };
         this.props.updateShippingDataByShipmentID(url, body);
         setTimeout(
             function () {
@@ -260,7 +264,11 @@ class ReceivingView extends Component {
                                 open: true,
                                 sbColor: 'black'
                             },
-                            openShipmentIDDialog: false
+                            openShipmentIDDialog: false,
+                            materialID: '',
+                            materialIDInformed: false,
+                            shipmentID: '',
+                            shipmentIDInformed: false
                         });
                     } else {
                         this.setState({
