@@ -8,14 +8,14 @@ import {
 import { authenticate } from './redux/actions/authentication.action';
 import { connect } from 'react-redux';
 import DocumentDashboardView
-    from './components/document-review-and-entry-view/document-dashboard/document.dashboard.view';
+    from './components/document-review-and-entry/document-dashboard/document.dashboard.view';
 import TrackAndTraceResultsView from './components/track-and-trace/views/track-and-trace.results.view';
 import ShippingView from './components/shipping-view/shipping.view';
 import ReceivingView from './components/receiving-view/receiving.view';
 import ProductionView from './components/production-view/production.view';
 import TrackerView from './components/track-and-trace/track-and-trace';
 import BillOfMaterials from './components/bill-of-materials/bill-of-materials';
-import DocumentSendView from './components/document-review-and-entry-view/document-send/document.send.view';
+import DocumentSendView from './components/document-review-and-entry/document-send/document.send.view';
 import logo from './blocknetwhite-1.png';
 import paperLogo from './blocnets-logo.png'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';

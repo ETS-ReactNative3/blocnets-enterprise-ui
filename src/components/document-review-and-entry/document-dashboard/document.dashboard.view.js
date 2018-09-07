@@ -17,7 +17,7 @@ import red from "@material-ui/core/colors/red";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import Snackbar from "material-ui/Snackbar";
 //Temporary Only
-import response from './sample.json';
+import response from './dashboardData.json';
 
 let counter = 0;
 
