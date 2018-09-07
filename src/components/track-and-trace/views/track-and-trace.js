@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import blocnetsLogo from "../../blocknetwhite-1.png";
+import blocnetsLogo from "../../../blocknetwhite-1.png";
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from 'material-ui/TextField';
@@ -12,7 +12,7 @@ import yellow from '@material-ui/core/colors/yellow';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
 import Tree from 'react-d3-tree';
 import { connect } from 'react-redux';
-import { getShippingDataByMaterialID } from '../../redux/actions/shipping.and.receiving.actions';
+import { getShippingDataByMaterialID } from '../../../redux/actions/shipping.and.receiving.actions';
 
 class TrackerView extends Component {
     constructor(props) {
