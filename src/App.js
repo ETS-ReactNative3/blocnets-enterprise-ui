@@ -13,7 +13,7 @@ import TrackAndTraceResultsView from './components/track-and-trace/views/track-a
 import ShippingView from './components/shipping-view/shipping.view';
 import ReceivingView from './components/receiving-view/receiving.view';
 import ProductionView from './components/production-view/production.view';
-import TrackerView from './components/track-and-trace/views/track-and-trace';
+import TrackerView from './components/track-and-trace/views/track-and-trace.view';
 import BillOfMaterials from './components/bill-of-materials/bill-of-materials';
 import DocumentSendView from './components/document-review-and-entry/document-send/document.send.view';
 import logo from './blocknetwhite-1.png';
