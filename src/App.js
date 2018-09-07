@@ -7,8 +7,8 @@ import {
 } from 'react-router-dom';
 import { authenticate } from './redux/actions/authentication.action';
 import { connect } from 'react-redux';
-import DocumentReviewEntryView
-    from './components/document-review-and-entry-view/document-dashboard/document.review.entry.view';
+import DocumentDashboardView
+    from './components/document-review-and-entry-view/document-dashboard/document.dashboard.view';
 import TrackAndTraceResultsView from './components/track-and-trace/views/track-and-trace.results.view';
 import ShippingView from './components/shipping-view/shipping.view';
 import ReceivingView from './components/receiving-view/receiving.view';
@@ -322,7 +322,7 @@ class App extends Component {
                 content = (
                     <Router>
                         <div>
-                            <Route exact path="/" component={DocumentReviewEntryView} />
+                            <Route exact path="/" component={DocumentDashboardView} />
                         </div>
                     </Router>);
         }

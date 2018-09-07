@@ -73,7 +73,7 @@ TableHeader.propTypes = {
     rowCount: PropTypes.number.isRequired,
 };
 
-class DocumentReviewEntryView extends React.Component {
+class DocumentDashboardView extends React.Component {
 
     state = {
         showProgressLogo: false,
@@ -412,8 +412,8 @@ class DocumentReviewEntryView extends React.Component {
 
 }
 
-DocumentReviewEntryView.propTypes = {
+DocumentDashboardView.propTypes = {
     classes: PropTypes.object,
 };
 
-export default DocumentReviewEntryView;
+export default DocumentDashboardView;
