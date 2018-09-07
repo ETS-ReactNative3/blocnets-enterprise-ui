@@ -25,6 +25,7 @@ class DocumentSendView extends React.Component {
         super(props);
         this.state = {
             showProgressLogo: false,
+            textArea: '',
             recipientUserName: '',
             messageType: '',
             dataType: '',
@@ -47,6 +48,7 @@ class DocumentSendView extends React.Component {
     handleSubmit = (event) => {
 
         let data = {
+            text: this.state.textArea,
             status: "pending",
             type: this.state.messageType,
             desc: this.state.dataType,

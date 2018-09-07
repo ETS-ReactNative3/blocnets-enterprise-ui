@@ -23,6 +23,7 @@ class TrackerView extends Component {
                 autoHideDuration: 2000,
                 message: '',
                 open: false,
+                sbColor: ''
             },
             dialog: {
                 open: false,
