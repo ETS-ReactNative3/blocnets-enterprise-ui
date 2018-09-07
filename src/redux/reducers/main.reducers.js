@@ -44,7 +44,7 @@ export function sarReducer(state = {}, action) {
             return state = { ...state, createShippingDataByMaterialIDFail: action.payload }
         }
         case "GET_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS": {
-            return state = { ...state, getShippingDataByMaterialIDSucess: action.payload }
+            return state = { ...state, getShippingDataByMaterialIDSuccess: action.payload }
         }
         case "GET_SHIPPING_DATA_BY_MATERIAL_ID_FAILED": {
             return state = { ...state, getShippingDataByMaterialIDFail: action.payload }

@@ -13,6 +13,7 @@ import TrackAndTraceResultsView from './components/track-and-trace/views/track-a
 import ShippingView from './components/shipping-view/shipping.view';
 import ReceivingView from './components/receiving-view/receiving.view';
 import ProductionView from './components/production-view/production.view';
+import TrackerView from './components/track-and-trace/track-and-trace';
 import BillOfMaterials from './components/bill-of-materials/bill-of-materials';
 import DocumentSendView from './components/document-review-and-entry-view/document-send/document.send.view';
 import logo from './blocknetwhite-1.png';
@@ -140,7 +141,7 @@ class App extends Component {
             this.props.getBillOfMaterialsByPartDesc(this.state.searchKey);
             this.handleSearchData('Part Description');
         }
-        this.setState({ show: 'trackandtraceresultsview', open: false, transactionCode: 'TT01' });
+        this.setState({ show: 'trackandtraceresultsview', open: false, transactionCode: 'TT02' });
     };
 
     showShippingView = () => {
@@ -153,6 +154,10 @@ class App extends Component {
 
     showProductionView = () => {
         this.setState({ show: 'productionview', open: false, transactionCode: 'PRO01' });
+    }
+
+    showTrackerView = () => {
+        this.setState({ show: 'trackerview', open: false, transactionCode: 'TT01' });
     }
 
     showBillOfMaterials = () => {
@@ -307,6 +312,9 @@ class App extends Component {
             case 'billofmaterials':
                 content = (<BillOfMaterials />);
                 break;
+            case 'trackerview':
+                content = (<TrackerView />);
+                break;
             case 'documentsendview':
                 content = (<DocumentSendView />);
                 break;
@@ -431,6 +439,8 @@ class App extends Component {
                     <MenuItem id="showReceivingViewId" onClick={this.showReceivingView}>Receiving</MenuItem>
                     <hr />
                     <MenuItem id="showProductionViewId" onClick={this.showProductionView}>Production</MenuItem>
+                    <hr />
+                    <MenuItem id="showTrackerViewId" onClick={this.showTrackerView}>Track and Trace</MenuItem>
                     <hr />
                     <MenuItem id="showBillOfMaterialsId" onClick={this.showBillOfMaterials}>Bill of Materials</MenuItem>
                     <hr />
