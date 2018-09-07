@@ -17,7 +17,7 @@ const headers = {
 export function createBillOfMaterialsByMaterialID(url, body) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_BOM_VIEW",
             payload: true
         });
         axios.post(config.chaincodes.Default + config.chaincodes.BOM + url, body, { headers })
@@ -37,7 +37,7 @@ export function createBillOfMaterialsByMaterialID(url, body) {
 export function getBillOfMaterialsByMaterialID(url) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_BOM_VIEW",
             payload: true
         });
         axios.get(config.chaincodes.Default + config.chaincodes.BOM + url, { headers })
@@ -59,18 +59,18 @@ export function getBillOfMaterialsByMaterialID(url) {
 export function updateBillOfMaterialsByMaterialID(url, body) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_BOM_VIEW",
             payload: true
         });
         axios.put(config.chaincodes.Default + config.chaincodes.BOM + url, body, { headers })
             .then(() => {
                 return dispatch({
-                    type: "UPDATE_BILL_OF_MATERIALS_DATA_SUCCESS",
+                    type: "UPDATE_BOM_DATA_BY_MATERIAL_ID_SUCCESS",
                     payload: true
                 });
             })
             .catch(() => dispatch({
-                type: "UPDATE_BILL_OF_MATERIALS_DATA_FAILED",
+                type: "UPDATE_BOM_DATA_BY_MATERIAL_ID_FAILED",
                 payload: true
             }));
     };
@@ -83,18 +83,18 @@ export function updateBillOfMaterialsByMaterialID(url, body) {
 export function createBillOfMaterialsByMaterialName(url, body) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_BOM_VIEW",
             payload: true
         });
         axios.post(config.chaincodes.Default + config.chaincodes.BOM + "materialName=" + url, body, { headers })
             .then(() => {
                 return dispatch({
-                    type: "CREATE_BILL_OF_MATERIALS_DATA_SUCCESS",
+                    type: "CREATE_BOM_DATA_MATERIAL_NAME_SUCCESS",
                     payload: true
                 });
             })
             .catch(() => dispatch({
-                type: "CREATE_BILL_OF_MATERIALS_DATA_FAILED",
+                type: "CREATE_BOM_DATA_MATERIAL_NAME_FAILED",
                 payload: true
             }));
     };
@@ -103,7 +103,7 @@ export function createBillOfMaterialsByMaterialName(url, body) {
 export function getBillOfMaterialsByMaterialName(url) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_BOM_VIEW",
             payload: true
         });
         axios.get(config.chaincodes.Default + config.chaincodes.BOM + "materialName=" + url, { headers })
@@ -111,12 +111,12 @@ export function getBillOfMaterialsByMaterialName(url) {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('BOMDataByMaterialName', data);
                 return dispatch({
-                    type: "GET_BILL_OF_MATERIALS_DATA_SUCCESS",
+                    type: "GET_BOM_DATA_BY_MATERIAL_NAME_SUCCESS",
                     payload: response.data
                 });
             })
             .catch(() => dispatch({
-                type: "GET_BILL_OF_MATERIALS_DATA_FAILED",
+                type: "GET_BOM_DATA_BY_MATERIAL_NAME_FAILED",
                 payload: true
             }));
     };
@@ -125,18 +125,18 @@ export function getBillOfMaterialsByMaterialName(url) {
 export function updateBillOfMaterialsByMaterialName(url, body) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_BOM_VIEW",
             payload: true
         });
         axios.put(config.chaincodes.Default + config.chaincodes.BOM + "materialName=" + url, body, { headers })
             .then(() => {
                 return dispatch({
-                    type: "UPDATE_BILL_OF_MATERIALS_DATA_SUCCESS",
+                    type: "UPDATE_BOM_DATA_BY_MATERIAL_NAME_SUCCESS",
                     payload: true
                 });
             })
             .catch(() => dispatch({
-                type: "UPDATE_BILL_OF_MATERIALS_DATA_FAILED",
+                type: "UPDATE_BOM_DATA_BY_MATERIAL_NAME_FAILED",
                 payload: true
             }));
     };
@@ -147,18 +147,18 @@ export function updateBillOfMaterialsByMaterialName(url, body) {
 export function createBillOfMaterialsByMaterialDesc(url, body) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_BOM_VIEW",
             payload: true
         });
         axios.post(config.chaincodes.Default + config.chaincodes.BOM + "materialDesc=" + url, body, { headers })
             .then(() => {
                 return dispatch({
-                    type: "CREATE_BILL_OF_MATERIALS_DATA_SUCCESS",
+                    type: "CREATE_BOM_DATA_BY_MATERIAL_DESC_SUCCESS",
                     payload: true
                 });
             })
             .catch(() => dispatch({
-                type: "CREATE_BILL_OF_MATERIALS_DATA_FAILED",
+                type: "CREATE_BOM_DATA_BY_MATERIAL_DESC_FAILED",
                 payload: true
             }));
     };
@@ -167,7 +167,7 @@ export function createBillOfMaterialsByMaterialDesc(url, body) {
 export function getBillOfMaterialsByMaterialDesc(url) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_BOM_VIEW",
             payload: true
         });
         axios.get(config.chaincodes.Default + config.chaincodes.BOM + "materialDesc=" + url, { headers })
@@ -175,12 +175,12 @@ export function getBillOfMaterialsByMaterialDesc(url) {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('BOMDataByMaterialDesc', data);
                 return dispatch({
-                    type: "GET_BILL_OF_MATERIALS_DATA_SUCCESS",
+                    type: "GET_BOM_DATA_BY_MATERIAL_DESC_SUCCESS",
                     payload: response.data
                 });
             })
             .catch(() => dispatch({
-                type: "GET_BILL_OF_MATERIALS_DATA_FAILED",
+                type: "GET_BOM_DATA_BY_MATERIAL_DESC_FAILED",
                 payload: true
             }));
     };
@@ -189,18 +189,18 @@ export function getBillOfMaterialsByMaterialDesc(url) {
 export function updateBillOfMaterialsByMaterialDesc(url, body) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_BOM_VIEW",
             payload: true
         });
         axios.put(config.chaincodes.Default + config.chaincodes.BOM + "materialDesc=" + url, body, { headers })
             .then(() => {
                 return dispatch({
-                    type: "UPDATE_BILL_OF_MATERIALS_DATA_SUCCESS",
+                    type: "UPDATE_BOM_DATA_BY_MATERIAL_DESC_SUCCESS",
                     payload: true
                 });
             })
             .catch(() => dispatch({
-                type: "UPDATE_BILL_OF_MATERIALS_DATA_FAILED",
+                type: "UPDATE_BOM_DATA_BY_MATERIAL_DESC_FAILED",
                 payload: true
             }));
     };
@@ -213,18 +213,18 @@ export function updateBillOfMaterialsByMaterialDesc(url, body) {
 export function createBillOfMaterialsByPartNumber(url, body) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_BOM_VIEW",
             payload: true
         });
         axios.post(config.chaincodes.Default + config.chaincodes.BOM + "partNumber=" + url, body, { headers })
             .then(() => {
                 return dispatch({
-                    type: "CREATE_BILL_OF_MATERIALS_DATA_SUCCESS",
+                    type: "CREATE_BOM_DATA_BY_PART_NUMBER_SUCCESS",
                     payload: true
                 });
             })
             .catch(() => dispatch({
-                type: "CREATE_BILL_OF_MATERIALS_DATA_FAILED",
+                type: "CREATE_BOM_DATA_BY_PART_NUMBER_FAILED",
                 payload: true
             }));
     };
@@ -233,7 +233,7 @@ export function createBillOfMaterialsByPartNumber(url, body) {
 export function getBillOfMaterialsByPartNumber(url) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_BOM_VIEW",
             payload: true
         });
         axios.get(config.chaincodes.Default + config.chaincodes.BOM + "partNumber=" + url, { headers })
@@ -241,12 +241,12 @@ export function getBillOfMaterialsByPartNumber(url) {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('BOMDataByPartNumber', data);
                 return dispatch({
-                    type: "GET_BILL_OF_MATERIALS_DATA_SUCCESS",
+                    type: "GET_BOM_DATA_BY_PART_NUMBER_SUCCESS",
                     payload: response.data
                 });
             })
             .catch(() => dispatch({
-                type: "GET_BILL_OF_MATERIALS_DATA_FAILED",
+                type: "GET_BOM_DATA_BY_PART_NUMBER_FAILED",
                 payload: true
             }));
     };
@@ -255,18 +255,18 @@ export function getBillOfMaterialsByPartNumber(url) {
 export function updateBillOfMaterialsByPartNumber(url, body) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_BOM_VIEW",
             payload: true
         });
         axios.put(config.chaincodes.Default + config.chaincodes.BOM + "partNumber=" + url, body, { headers })
             .then(() => {
                 return dispatch({
-                    type: "UPDATE_BILL_OF_MATERIALS_DATA_SUCCESS",
+                    type: "UPDATE_BOM_DATA_BY_PART_NUMBER_SUCCESS",
                     payload: true
                 });
             })
             .catch(() => dispatch({
-                type: "UPDATE_BILL_OF_MATERIALS_DATA_FAILED",
+                type: "UPDATE_BOM_DATA_BY_PART_NUMBER_FAILED",
                 payload: true
             }));
     };
@@ -279,18 +279,18 @@ export function updateBillOfMaterialsByPartNumber(url, body) {
 export function createBillOfMaterialsByPartName(url, body) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_BOM_VIEW",
             payload: true
         });
         axios.post(config.chaincodes.Default + config.chaincodes.BOM + "partName=" + url, body, { headers })
             .then(() => {
                 return dispatch({
-                    type: "CREATE_BILL_OF_MATERIALS_DATA_SUCCESS",
+                    type: "CREATE_BOM_DATA_BY_PART_NAME_SUCCESS",
                     payload: true
                 });
             })
             .catch(() => dispatch({
-                type: "CREATE_BILL_OF_MATERIALS_DATA_FAILED",
+                type: "CREATE_BOM_DATA_BY_PART_NAME_FAILED",
                 payload: true
             }));
     };
@@ -299,7 +299,7 @@ export function createBillOfMaterialsByPartName(url, body) {
 export function getBillOfMaterialsByPartName(url) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_BOM_VIEW",
             payload: true
         });
         axios.get(config.chaincodes.Default + config.chaincodes.BOM + "partName=" + url, { headers })
@@ -307,12 +307,12 @@ export function getBillOfMaterialsByPartName(url) {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('BOMDataByPartName', data);
                 return dispatch({
-                    type: "GET_BILL_OF_MATERIALS_DATA_SUCCESS",
+                    type: "GET_BOM_DATA_BY_PART_NAME_SUCCESS",
                     payload: response.data
                 });
             })
             .catch(() => dispatch({
-                type: "GET_BILL_OF_MATERIALS_DATA_FAILED",
+                type: "GET_BOM_DATA_BY_PART_NAME_FAILED",
                 payload: true
             }));
     };
@@ -321,19 +321,19 @@ export function getBillOfMaterialsByPartName(url) {
 export function updateBillOfMaterialsByPartName(url, body) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_BOM_VIEW",
             payload: true
         });
         axios.put(
             config.chaincodes.Default + config.chaincodes.BOM + "partName=" + url, body, { headers })
             .then(() => {
                 return dispatch({
-                    type: "UPDATE_BILL_OF_MATERIALS_DATA_SUCCESS",
+                    type: "UPDATE_BOM_DATA_BY_PART_NAME_SUCCESS",
                     payload: true
                 });
             })
             .catch(() => dispatch({
-                type: "UPDATE_BILL_OF_MATERIALS_DATA_FAILED",
+                type: "UPDATE_BOM_DATA_BY_PART_NAME_FAILED",
                 payload: true
             }));
     };
@@ -346,18 +346,18 @@ export function updateBillOfMaterialsByPartName(url, body) {
 export function createBillOfMaterialsByPartDesc(url, body) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_BOM_VIEW",
             payload: true
         });
         axios.post(config.chaincodes.Default + config.chaincodes.BOM + "partDesc=" + url, body, { headers })
             .then(() => {
                 return dispatch({
-                    type: "CREATE_BILL_OF_MATERIALS_DATA_SUCCESS",
+                    type: "CREATE_BOM_DATA_BY_PART_DESC_SUCCESS",
                     payload: true
                 });
             })
             .catch(() => dispatch({
-                type: "CREATE_BILL_OF_MATERIALS_DATA_FAILED",
+                type: "CREATE_BOM_DATA_BY_PART_DESC_FAILED",
                 payload: true
             }));
     };
@@ -366,7 +366,7 @@ export function createBillOfMaterialsByPartDesc(url, body) {
 export function getBillOfMaterialsByPartDesc(url) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_BOM_VIEW",
             payload: true
         });
         axios.get(config.chaincodes.Default + config.chaincodes.BOM + "partDesc=" + url, { headers })
@@ -374,12 +374,12 @@ export function getBillOfMaterialsByPartDesc(url) {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('BOMDataByPartDesc', data);
                 return dispatch({
-                    type: "GET_BILL_OF_MATERIALS_DATA_SUCCESS",
+                    type: "GET_BOM_DATA_BY_PART_DESC_SUCCESS",
                     payload: response.data
                 });
             })
             .catch(() => dispatch({
-                type: "GET_BILL_OF_MATERIALS_DATA_FAILED",
+                type: "GET_BOM_DATA_BY_PART_DESC_FAILED",
                 payload: true
             }));
     };
@@ -388,18 +388,18 @@ export function getBillOfMaterialsByPartDesc(url) {
 export function updateBillOfMaterialsByPartDesc(url, body) {
     return (dispatch) => {
         dispatch({
-            type: "LOADING_VIEW",
+            type: "LOADING_BOM_VIEW",
             payload: true
         });
         axios.put(config.chaincodes.Default + config.chaincodes.BOM + "partDesc=" + url, body, { headers })
             .then(() => {
                 return dispatch({
-                    type: "UPDATE_BILL_OF_MATERIALS_DATA_SUCCESS",
+                    type: "UPDATE_BOM_DATA_BY_PART_DESC_SUCCESS",
                     payload: true
                 });
             })
             .catch(() => dispatch({
-                type: "UPDATE_BILL_OF_MATERIALS_DATA_FAILED",
+                type: "UPDATE_BOM_DATA_BY_PART_DESC_FAILED",
                 payload: true
             }));
     };
