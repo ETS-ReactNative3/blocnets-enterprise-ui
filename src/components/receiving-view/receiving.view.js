@@ -26,8 +26,8 @@ let dataByShipmentID = [];
 let dataByMaterialIDManuallyShipped = 'NO';
 let dataByShipmentIDManuallyShipped = 'NO';
 
-var materialIDRows = [];
-var shipmentIDRows = [];
+let materialIDRows = [];
+let shipmentIDRows = [];
 
 let counter = 0;
 
@@ -49,14 +49,15 @@ class ReceivingView extends Component {
             openMaterialIDDialog: false,
             openShipmentIDDialog: false,
             showProgressLogoDialog: false,
-            received: false,
+            receivedShipment: false,
+            counter: 0,
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
                 open: false,
                 sbColor: 'black'
             },
-            counter: 0
+
         };
     }
 
@@ -101,7 +102,7 @@ class ReceivingView extends Component {
                             this.setState({
                                 showProgressLogo: false,
                                 openMaterialIDDialog: true,
-                                received: dataByMaterialID.received
+                                receivedShipment: dataByMaterialID.receivedShipment
                             });
                             if (dataByMaterialID.manuallyShipped === true) {
                                 dataByMaterialIDManuallyShipped = 'YES'
@@ -141,7 +142,7 @@ class ReceivingView extends Component {
                             this.setState({
                                 showProgressLogo: false,
                                 openShipmentIDDialog: true,
-                                received: dataByShipmentID.received
+                                receivedShipment: dataByShipmentID.receivedShipment
                             });
                             if (dataByShipmentID.manuallyShipped === true) {
                                 dataByShipmentIDManuallyShipped = 'YES'
@@ -190,7 +191,7 @@ class ReceivingView extends Component {
             ipAddress: dataByMaterialID.ipAddress,
             manuallyShipped: dataByMaterialID.manuallyShipped,
             postalCode: dataByMaterialID.postalCode,
-            received: true,
+            receivedShipment: true,
             shipped: dataByMaterialID.shipped,
             state: dataByMaterialID.state
         };
@@ -199,14 +200,14 @@ class ReceivingView extends Component {
             function () {
                 this.setState({counter: 1});
                 if (this.state.counter === 1) {
-                    if (this.props.data.updateShippingDataReducer.updateShippingDataByMaterialIDSuccess === true) {
+                    if (this.props.data.sarReducer.updateShippingDataByMaterialIDSuccess === true) {
                         this.setState({
                             showProgressLogoDialog: false,
                             snackbar: {
                                 autoHideDuration: 2000,
                                 message: 'Receive Shipment Success!',
                                 open: true,
-                                sbColor: 'black'
+                                sbColor: '#23CE6B'
                             },
                             openMaterialIDDialog: false,
                             materialID: '',
@@ -216,8 +217,8 @@ class ReceivingView extends Component {
                         });
                     } else {
                         this.setState({
+                            showProgressLogoDialog: false,
                             snackbar: {
-                                showProgressLogoDialog: false,
                                 autoHideDuration: 2000,
                                 message: 'Receive Shipment Error! Please try again.',
                                 open: true,
@@ -246,7 +247,7 @@ class ReceivingView extends Component {
             ipAddress: dataByShipmentID.ipAddress,
             manuallyShipped: dataByShipmentID.manuallyShipped,
             postalCode: dataByShipmentID.postalCode,
-            received: true,
+            receivedShipment: true,
             shipped: dataByShipmentID.shipped,
             state: dataByShipmentID.state
         };
@@ -255,14 +256,14 @@ class ReceivingView extends Component {
             function () {
                 this.setState({counter: 1});
                 if (this.state.counter === 1) {
-                    if (this.props.data.updateShippingDataReducer.updateShippingDataByShipmentIDSuccess === true) {
+                    if (this.props.data.sarReducer.updateShippingDataByShipmentIDSuccess === true) {
                         this.setState({
                             snackbar: {
                                 showProgressLogoDialog: false,
                                 autoHideDuration: 2000,
                                 message: 'Receive Shipment Success!',
                                 open: true,
-                                sbColor: 'black'
+                                sbColor: '#23CE6B'
                             },
                             openShipmentIDDialog: false,
                             materialID: '',
@@ -311,7 +312,7 @@ class ReceivingView extends Component {
             },
         });
 
-        let formComplete = this.state.materialIDInformed || this.state.shipmentIDInformed;
+        const formComplete = this.state.materialIDInformed || this.state.shipmentIDInformed;
 
         return (
             <form>
@@ -403,7 +404,7 @@ class ReceivingView extends Component {
                                     <Button type="submit" value="ReceiveShipmentMI" variant="contained"
                                             color="primary" fullWidth={true}
                                             onClick={this.handleMIDialogReceiveShipment}
-                                            disabled={this.state.received === true}>
+                                            disabled={this.state.receivedShipment === true}>
                                         Receive Shipment
                                     </Button>
                                 </MuiThemeProvider>
@@ -453,7 +454,7 @@ class ReceivingView extends Component {
                                     <Button type="submit" value="ReceiveShipmentSI" variant="contained"
                                             color="primary" fullWidth={true}
                                             onClick={this.handleSIDialogReceiveShipment}
-                                            disabled={this.state.received === true}>
+                                            disabled={this.state.receivedShipment === true}>
                                         Receive Shipment
                                     </Button>
                                 </MuiThemeProvider>

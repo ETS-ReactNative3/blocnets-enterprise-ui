@@ -145,7 +145,7 @@ class DocumentDashboardView extends React.Component {
                 autoHideDuration: 2000,
                 message: 'Success',
                 open: true,
-                sbColor: 'black'
+                sbColor: '#23CE6B'
             }
         }); to show success message */
         /*this.setState({
@@ -167,7 +167,7 @@ class DocumentDashboardView extends React.Component {
                 autoHideDuration: 2000,
                 message: 'Success',
                 open: true,
-                sbColor: 'black'
+                sbColor: '#23CE6B'
             }
         }); to show success message */
         /*this.setState({
@@ -193,7 +193,7 @@ class DocumentDashboardView extends React.Component {
                 autoHideDuration: 2000,
                 message: 'Success',
                 open: true,
-                sbColor: 'black'
+                sbColor: '#23CE6B'
             }
         }); to show success message */
         /*this.setState({
@@ -216,7 +216,7 @@ class DocumentDashboardView extends React.Component {
                 autoHideDuration: 2000,
                 message: 'Success',
                 open: true,
-                sbColor: 'black'
+                sbColor: '#23CE6B'
             }
         }); to show success message */
         /*this.setState({
@@ -234,7 +234,9 @@ class DocumentDashboardView extends React.Component {
     render() {
 
         const {data, selected, rowsPerPage, page} = this.state;
+
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+
         const buttonThemeYellow = createMuiTheme({
             palette: {
                 primary: yellow
@@ -249,7 +251,9 @@ class DocumentDashboardView extends React.Component {
         return (
             <div>
                 <div>
-                    {this.state.showProgressLogo ? <img src={blocnetsLogo} alt="" className="App-logo-progress"/> : ""}
+                    {this.state.showProgressLogo ?
+                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt=""/>
+                        </div> : ""}
                 </div>
                 <div style={{padding: 24}}>
                     <Grid container justify="center">

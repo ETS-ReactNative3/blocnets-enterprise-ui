@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './App.css';
 import blocnetsLogo from "./blocknetwhite-1.png";
 import {
     BrowserRouter as Router,
     Route
 } from 'react-router-dom';
-import { authenticate } from './redux/actions/authentication.action';
-import { connect } from 'react-redux';
+import {authenticate} from './redux/actions/authentication.action';
+import {connect} from 'react-redux';
 import DocumentDashboardView
     from './components/document-review-and-entry/document-dashboard/document.dashboard.view';
 import TrackAndTraceResultsView from './components/track-and-trace/views/track-and-trace.results.view';
@@ -18,11 +18,11 @@ import BillOfMaterials from './components/bill-of-materials/bill-of-materials';
 import DocumentSendView from './components/document-review-and-entry/document-send/document.send.view';
 import logo from './blocknetwhite-1.png';
 import paperLogo from './blocnets-logo.png'
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import AppBar from 'material-ui/AppBar';
 import Grid from '@material-ui/core/Grid';
-import { Toolbar, ToolbarTitle } from 'material-ui/Toolbar'
-import { FormControl } from '@material-ui/core';
+import {Toolbar, ToolbarTitle} from 'material-ui/Toolbar'
+import {FormControl} from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -88,7 +88,7 @@ class App extends Component {
     componentDidMount() {
         this.props.authenticate();
         setInterval(() => {
-            this.setState({ currentDateAndTime: new Date().toUTCString() })
+            this.setState({currentDateAndTime: new Date().toUTCString()})
         }, 1000)
     }
 
@@ -108,20 +108,24 @@ class App extends Component {
                 autoHideDuration: 2000,
                 message: '',
                 open: false,
-                sbColor: ''
+                sbColor: 'black'
             }
         };
     }
 
-    handleToggle = () => this.setState({ open: !this.state.open });
+    handleToggle = () => this.setState({open: !this.state.open});
 
     showMainView = () => {
-        this.setState({ show: 'home', open: false, transactionCode: 'DRE01' });
+        this.setState({
+            show: 'home',
+            open: false,
+            transactionCode: 'DRE01'
+        });
     };
 
     showTrackAndTraceResultsView = () => {
         sessionStorage.clear();
-        this.setState({ billOfMaterialsData: [] });
+        this.setState({billOfMaterialsData: []});
         if (this.state.searchCriteria === 'Material ID') {
             this.props.getBillOfMaterialsByMaterialID(this.state.searchKey);
             this.handleSearchData('Material ID');
@@ -141,48 +145,81 @@ class App extends Component {
             this.props.getBillOfMaterialsByPartDesc(this.state.searchKey);
             this.handleSearchData('Part Description');
         }
-        this.setState({ show: 'trackandtraceresultsview', open: false, transactionCode: 'TT02' });
+        this.setState({
+            show: 'trackandtraceresultsview',
+            open: false,
+            transactionCode: 'TAT02'
+        });
     };
 
     showShippingView = () => {
-        this.setState({ show: 'shippingview', open: false, transactionCode: 'SHP01' });
+        this.setState({
+            show: 'shippingview',
+            open: false,
+            transactionCode: 'SHP01'});
     };
 
     showReceivingView = () => {
-        this.setState({ show: 'receivingview', open: false, transactionCode: 'REC01' });
+        this.setState({
+            show: 'receivingview',
+            open: false,
+            transactionCode: 'REC01'});
     };
 
     showProductionView = () => {
-        this.setState({ show: 'productionview', open: false, transactionCode: 'PRO01' });
-    }
+        this.setState({
+            show: 'productionview',
+            open: false,
+            transactionCode: 'PRO01'});
+    };
 
     showTrackerView = () => {
-        this.setState({ show: 'trackerview', open: false, transactionCode: 'TT01' });
-    }
+        this.setState({
+            show: 'trackerview',
+            open: false,
+            transactionCode: 'TAT01'});
+    };
 
     showBillOfMaterials = () => {
-        this.setState({ show: 'billofmaterials', open: false, transactionCode: 'BOM01' });
+        this.setState({
+            show: 'billofmaterials',
+            open: false,
+            transactionCode: 'eBOM01'
+        });
     };
 
     showDocumentSendView = () => {
-        this.setState({ show: 'documentsendview', open: false, transactionCode: 'DSR01' });
+        this.setState({
+            show: 'documentsendview',
+            open: false,
+            transactionCode: 'DSR01'
+        });
     };
 
     handleSearchKey = (event) => {
-        this.setState({ searchKey: event.target.value, searchCriteria: '' });
+        this.setState({
+            searchKey: event.target.value,
+            searchCriteria: ''
+        });
         if (event.target.value === '') {
-            this.setState({ show: 'home', openSearch: false });
+            this.setState({
+                show: 'home',
+                openSearch: false
+            });
         } else {
-            this.setState({ openSearch: true });
+            this.setState({openSearch: true});
         }
     };
 
     handleSearchClose = (event) => {
-        this.setState({ openSearch: false });
+        this.setState({openSearch: false});
     };
 
     handleSearch = (event, searchCriteria) => {
-        this.setState({ searchCriteria: searchCriteria, openSearch: false });
+        this.setState({
+            searchCriteria: searchCriteria,
+            openSearch: false
+        });
     };
 
     handleSearchData = (searchCriteria) => {
@@ -194,7 +231,7 @@ class App extends Component {
         if (searchCriteria === 'Material ID') {
             setTimeout(
                 function () {
-                    this.setState({ counter: 1 });
+                    this.setState({counter: 1});
                     if (this.state.counter === 1) {
                         bomData = sessionStorage.getItem('BOMDataByMaterialID');
                         this.handleBOMData(bomData);
@@ -206,7 +243,7 @@ class App extends Component {
         } else if (searchCriteria === 'Material Name') {
             setTimeout(
                 function () {
-                    this.setState({ counter: 1 });
+                    this.setState({counter: 1});
                     if (this.state.counter === 1) {
                         bomData = sessionStorage.getItem('BOMDataByMaterialName');
                         this.handleBOMData(bomData);
@@ -218,7 +255,7 @@ class App extends Component {
         } else if (searchCriteria === 'Material Description') {
             setTimeout(
                 function () {
-                    this.setState({ counter: 1 });
+                    this.setState({counter: 1});
                     if (this.state.counter === 1) {
                         bomData = sessionStorage.getItem('BOMDataByMaterialDesc');
                         this.handleBOMData(bomData);
@@ -230,7 +267,7 @@ class App extends Component {
         } else if (searchCriteria === 'Part No.') {
             setTimeout(
                 function () {
-                    this.setState({ counter: 1 });
+                    this.setState({counter: 1});
                     if (this.state.counter === 1) {
                         bomData = sessionStorage.getItem('BOMDataByPartNumber');
                         this.handleBOMData(bomData);
@@ -242,7 +279,7 @@ class App extends Component {
         } else if (searchCriteria === 'Part Name') {
             setTimeout(
                 function () {
-                    this.setState({ counter: 1 });
+                    this.setState({counter: 1});
                     if (this.state.counter === 1) {
                         bomData = sessionStorage.getItem('BOMDataByPartName');
                         this.handleBOMData(bomData);
@@ -254,7 +291,7 @@ class App extends Component {
         } else if (searchCriteria === 'Part Description') {
             setTimeout(
                 function () {
-                    this.setState({ counter: 1 });
+                    this.setState({counter: 1});
                     if (this.state.counter === 1) {
                         bomData = sessionStorage.getItem('BOMDataByPartDesc');
                         this.handleBOMData(bomData);
@@ -275,7 +312,7 @@ class App extends Component {
                     autoHideDuration: 2000,
                     message: 'Successfully tracked a block!',
                     open: true,
-                    sbColor: 'black'
+                    sbColor: '#23CE6B'
                 }
             })
         } else {
@@ -298,31 +335,31 @@ class App extends Component {
 
         switch (this.state.show) {
             case 'trackandtraceresultsview':
-                content = (<TrackAndTraceResultsView data={this.state} />);
+                content = (<TrackAndTraceResultsView data={this.state}/>);
                 break;
             case 'shippingview':
-                content = (<ShippingView />);
+                content = (<ShippingView/>);
                 break;
             case 'receivingview':
-                content = (<ReceivingView />);
+                content = (<ReceivingView/>);
                 break;
             case 'productionview':
-                content = (<ProductionView />);
+                content = (<ProductionView/>);
                 break;
             case 'billofmaterials':
-                content = (<BillOfMaterials />);
+                content = (<BillOfMaterials/>);
                 break;
             case 'trackerview':
-                content = (<TrackerView />);
+                content = (<TrackerView/>);
                 break;
             case 'documentsendview':
-                content = (<DocumentSendView />);
+                content = (<DocumentSendView/>);
                 break;
             default:
                 content = (
                     <Router>
                         <div>
-                            <Route exact path="/" component={DocumentDashboardView} />
+                            <Route exact path="/" component={DocumentDashboardView}/>
                         </div>
                     </Router>);
         }
@@ -332,12 +369,12 @@ class App extends Component {
                 <MuiThemeProvider theme={theme}>
                     {/* Main navigation bar menu for components */}
                     <AppBar position="static" className="App-header"
-                        iconClassNameRight="muidocs-icon-navigation-expand-more"
-                        onLeftIconButtonClick={this.handleToggle}>
+                            iconClassNameRight="muidocs-icon-navigation-expand-more"
+                            onLeftIconButtonClick={this.handleToggle}>
                         <Grid container spacing={24}>
                             <Grid item xs={3}>
                                 <ToolbarTitle
-                                    text={<img src={logo} className="App-logo" alt="logo" />}
+                                    text={<img src={logo} className="App-logo" alt="logo"/>}
                                     alt="Blocnets"
                                 />
                             </Grid>
@@ -361,28 +398,28 @@ class App extends Component {
                                                 <InputAdornment position="end">
                                                     <SearchIcon
                                                         onClick={this.showTrackAndTraceResultsView}
-                                                        style={{ "cursor": "pointer" }}
+                                                        style={{"cursor": "pointer"}}
                                                     />
                                                 </InputAdornment> :
                                                 <InputAdornment position="end">
                                                     <SearchIcon
-                                                        style={{ "fill": "black" }}
+                                                        style={{"fill": "black"}}
                                                     />
                                                 </InputAdornment>
                                         }
                                         onChange={this.handleSearchKey}
                                     />
                                     <Popper open={this.state.openSearch} transition disablePortal
-                                        style={{ "position": "relative" }}>
-                                        {({ TransitionProps, placement }) => (
+                                            style={{"position": "relative"}}>
+                                        {({TransitionProps, placement}) => (
                                             <Grow
                                                 {...TransitionProps}
                                                 id="menu-list-grow"
-                                                style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                                                style={{transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'}}
                                             >
                                                 <Paper>
                                                     <ClickAwayListener onClickAway={this.handleSearchClose}>
-                                                        <MenuList style={{ "textAlign": "left" }}>
+                                                        <MenuList style={{"textAlign": "left"}}>
                                                             <MenuItem
                                                                 onClick={event => this.handleSearch(event, "Material ID")}>Material
                                                                 ID: {this.state.searchKey}</MenuItem>
@@ -412,13 +449,13 @@ class App extends Component {
                             <Grid item xs={3}>
                                 <IconButton aria-label="pending messages" onClick={this.showMainView}>
                                     <Badge badgeContent={12} color="secondary" style={messageIconStyle}>
-                                        <MailIcon />
+                                        <MailIcon/>
                                     </Badge>
                                 </IconButton>
                             </Grid>
                             <Grid item xs={2}>
                                 <IconButton aria-label="User Account" onClick={this.showMainView}>
-                                <UserIcon
+                                    <UserIcon
                                         style={userIconStyle}
                                     />
                                 </IconButton>
@@ -428,56 +465,57 @@ class App extends Component {
                 </MuiThemeProvider>
                 {/* Side Drawer's navigation bar menu for viewing content */}
                 <Drawer docked={false} width={250} open={this.state.open}
-                    onRequestChange={(open) => this.setState({ open })}>
+                        onRequestChange={(open) => this.setState({open})}>
                     <AppBar
                         className="App-bar"
                         onClick={this.handleToggle}
-                        title={<img src={logo} style={appBarLogoStyle} alt="Blocnets" />}
+                        title={<img src={logo} style={appBarLogoStyle} alt="Blocnets"/>}
                     />
                     <MenuItem id="showShippingViewId" onClick={this.showShippingView}>Shipping</MenuItem>
-                    <hr />
+                    <hr/>
                     <MenuItem id="showReceivingViewId" onClick={this.showReceivingView}>Receiving</MenuItem>
-                    <hr />
+                    <hr/>
                     <MenuItem id="showProductionViewId" onClick={this.showProductionView}>Production</MenuItem>
-                    <hr />
+                    <hr/>
                     <MenuItem id="showTrackerViewId" onClick={this.showTrackerView}>Track and Trace</MenuItem>
-                    <hr />
+                    <hr/>
                     <MenuItem id="showBillOfMaterialsId" onClick={this.showBillOfMaterials}>Bill of Materials</MenuItem>
-                    <hr />
-                    <MenuItem id="showDocumentSendViewId" onClick={this.showDocumentSendView}>Document Review and Entry</MenuItem>
+                    <hr/>
+                    <MenuItem id="showDocumentSendViewId" onClick={this.showDocumentSendView}>Document Review and
+                        Entry</MenuItem>
                 </Drawer>
                 {/* Page View with content loaded */}
                 <Paper className="White-theme" style={paperStyle} zDepth={5}>
-                    <Toolbar style={{ "justifyContent": "center", "height": 80 }}>
+                    <Toolbar style={{"justifyContent": "center", "height": 80}}>
                         <ToolbarTitle
-                            text={<img src={paperLogo} style={paperLogoStyle} alt="Blocnets" />}
+                            text={<img src={paperLogo} style={paperLogoStyle} alt="Blocnets"/>}
                         />
                     </Toolbar>
                     {content}
                 </Paper>
                 <div>
                     {this.state.showProgressLogo ?
-                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt="" />
+                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt=""/>
                         </div> : ""}
                 </div>
-                <div style={{ padding: 24 }}>
+                <div style={{padding: 24}}>
                     <Grid container spacing={24}>
                         <MuiThemeProvider theme={theme}>
                             <Grid container item xs={12}>
                                 <Grid container item xs>
-                                    <Typography align="right" style={{ "width": "100%" }}>
+                                    <Typography align="right" style={{"width": "100%"}}>
                                         {this.state.transactionCode} | System Number
                                     </Typography>
                                 </Grid>
                             </Grid>
                             <Grid container item xs={12}>
                                 <Grid container item xs>
-                                    <Typography align="left" style={{ "width": "100%" }}>
+                                    <Typography align="left" style={{"width": "100%"}}>
                                         © 2018 ALL RIGHTS RESERVED.
                                     </Typography>
                                 </Grid>
                                 <Grid container item xs>
-                                    <Typography align="right" style={{ "width": "100%" }}>
+                                    <Typography align="right" style={{"width": "100%"}}>
                                         {this.state.currentDateAndTime}
                                     </Typography>
                                 </Grid>

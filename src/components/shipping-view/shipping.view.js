@@ -128,9 +128,9 @@ class ShippingView extends Component {
             showProgressLogoDialog: true,
             counter: 0
         });
-        var shipmentUrl = this.state.shipmentID;
-        var materialUrl = this.state.materialID;
-        var data = {
+        let shipmentUrl = this.state.shipmentID;
+        let materialUrl = this.state.materialID;
+        let data = {
             address1: this.state.addressLine1,
             address2: this.state.addressLine2,
             city: this.state.city,
@@ -157,7 +157,7 @@ class ShippingView extends Component {
                                 autoHideDuration: 2000,
                                 message: 'Shipping Successful!',
                                 open: true,
-                                sbColor: 'black'
+                                sbColor: '#23CE6B'
                             },
                             openDialog: false,
                             materialID: '',

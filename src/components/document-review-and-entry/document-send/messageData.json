@@ -1,14 +1,14 @@
 [
     {
         "userID": ["Guest",
-            "tester1", 
-            "tester2", 
-            "tester3", 
-            "tester4",
-            "tester5",
-            "tester6",
-            "tester7",
-            "tester8"],
+            "Tester1",
+            "Tester2",
+            "Tester3",
+            "Tester4",
+            "Tester5",
+            "Tester6",
+            "Tester7",
+            "Tester8"],
         "status": "Pending",
         "messageType": [
             "Notifications",
