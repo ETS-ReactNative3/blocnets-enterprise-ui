@@ -156,28 +156,32 @@ class App extends Component {
         this.setState({
             show: 'shippingview',
             open: false,
-            transactionCode: 'SHP01'});
+            transactionCode: 'SHP01'
+        });
     };
 
     showReceivingView = () => {
         this.setState({
             show: 'receivingview',
             open: false,
-            transactionCode: 'REC01'});
+            transactionCode: 'REC01'
+        });
     };
 
     showProductionView = () => {
         this.setState({
             show: 'productionview',
             open: false,
-            transactionCode: 'PRO01'});
+            transactionCode: 'PRO01'
+        });
     };
 
     showTrackerView = () => {
         this.setState({
             show: 'trackerview',
             open: false,
-            transactionCode: 'TAT01'});
+            transactionCode: 'TAT01'
+        });
     };
 
     showBillOfMaterials = () => {
