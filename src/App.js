@@ -12,7 +12,8 @@ import DocumentDashboardView
 import TrackAndTraceResultsView from './components/track-and-trace/views/track-and-trace.results.view';
 import ShippingView from './components/shipping-view/shipping.view';
 import ReceivingView from './components/receiving-view/receiving.view';
-import ProductionView from './components/production-view/production.view';
+import StartProductionView from './components/production/views/start.production.view';
+import CompleteProductionView from './components/production/views/complete.production.view';
 import TrackerView from './components/track-and-trace/views/track-and-trace.view';
 import BillOfMaterials from './components/bill-of-materials/bill-of-materials';
 import DocumentSendView from './components/document-review-and-entry/document-send/document.send.view';
@@ -168,13 +169,21 @@ class App extends Component {
         });
     };
 
-    showProductionView = () => {
+    showStartProductionView = () => {
         this.setState({
-            show: 'productionview',
+            show: 'startproductionview',
             open: false,
-            transactionCode: 'PRO01'
+            transactionCode: 'PRD01'
         });
     };
+
+    showCompleteProductionView = () => {
+        this.setState({
+            show: 'completeproductionview',
+            open: false,
+            transactionCode: 'PRD02'
+        })
+    }
 
     showTrackerView = () => {
         this.setState({
@@ -347,8 +356,11 @@ class App extends Component {
             case 'receivingview':
                 content = (<ReceivingView/>);
                 break;
-            case 'productionview':
-                content = (<ProductionView/>);
+            case 'startproductionview':
+                content = (<StartProductionView/>);
+                break;
+            case 'completeproductionview':
+                content = (<CompleteProductionView />);
                 break;
             case 'billofmaterials':
                 content = (<BillOfMaterials/>);
@@ -475,15 +487,17 @@ class App extends Component {
                         onClick={this.handleToggle}
                         title={<img src={logo} style={appBarLogoStyle} alt="Blocnets"/>}
                     />
+                    <MenuItem id="showBillOfMaterialsId" onClick={this.showBillOfMaterials}>Engineering Bill of Materials</MenuItem>
+                    <hr/>
                     <MenuItem id="showShippingViewId" onClick={this.showShippingView}>Shipping</MenuItem>
                     <hr/>
                     <MenuItem id="showReceivingViewId" onClick={this.showReceivingView}>Receiving</MenuItem>
                     <hr/>
-                    <MenuItem id="showProductionViewId" onClick={this.showProductionView}>Production</MenuItem>
+                    <MenuItem id="showStartProductionViewId" onClick={this.showStartProductionView}>Start Production</MenuItem>
+                    <hr/>
+                    <MenuItem id="showCompleteProductionViewId" onClick={this.showCompleteProductionView}>Complete Production</MenuItem>
                     <hr/>
                     <MenuItem id="showTrackerViewId" onClick={this.showTrackerView}>Track and Trace</MenuItem>
-                    <hr/>
-                    <MenuItem id="showBillOfMaterialsId" onClick={this.showBillOfMaterials}>Bill of Materials</MenuItem>
                     <hr/>
                     <MenuItem id="showDocumentSendViewId" onClick={this.showDocumentSendView}>Document Review and
                         Entry</MenuItem>

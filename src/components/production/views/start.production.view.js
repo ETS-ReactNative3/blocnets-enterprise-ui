@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Production extends Component {
+class StartProduction extends Component {
 
     constructor(props) {
         super(props);
@@ -22,9 +22,9 @@ class Production extends Component {
     }
 
     render() {
-        return <p>Production View</p>
+        return <p>Start Production View</p>
     }
 
 }
 
-export default Production;
+export default StartProduction;
