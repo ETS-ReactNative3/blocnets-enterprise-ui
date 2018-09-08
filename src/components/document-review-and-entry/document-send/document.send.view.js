@@ -11,7 +11,7 @@ import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
 import Snackbar from 'material-ui/Snackbar';
 import { connect } from 'react-redux';
-import { createDocumentEntryByUserID } from '../../../redux/actions/document.review.entry.actions';
+import { createDocumentEntryByUniqueID } from '../../../redux/actions/document.review.entry.actions';
 //Temporary Only
 import response from './messageData.json';
 
@@ -55,7 +55,7 @@ class DocumentSendView extends React.Component {
             fileId: ''
         };
 
-        this.props.createDocumentEntryByUserID(this.state.recipientUserName, data);
+        this.props.createDocumentEntryByUniqueID(this.state.recipientUserName, data);
         //this.setState({showProgressLogo: true}); to show blocnetsLogo before submit
         //this.setState({showProgressLogo: false}); to show blocnetsLogo after receiving response
         this.setState({
@@ -194,7 +194,7 @@ const mapStateToProps = (state) => {
 // This way, we can call our action creator by doing this.props.fetchData(url);
 const mapDispatchToProps = (dispatch) => {
     return {
-        createDocumentEntryByUserID: (url, body) => dispatch(createDocumentEntryByUserID(url, body))
+        createDocumentEntryByUniqueID: (url, body) => dispatch(createDocumentEntryByUniqueID(url, body))
     };
 };
 

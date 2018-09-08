@@ -211,23 +211,48 @@ export function dreReducer(state = {}, action) {
         case "LOADING_DRE_VIEW": {
             return state = { ...state, loadingDREView: action.payload }
         }
-        case "CREATE_DRE_DATA_BY_USER_ID_SUCCESS": {
-            return state = { ...state, createDocumentEntryByUserIDSuccess: action.payload }
+        case "CREATE_DRE_DATA_BY_UNIQUE_ID_SUCCESS": {
+            return state = { ...state, createDocumentEntryByUniqueIDSuccess: action.payload }
         }
-        case "CREATE_DRE_DATA_BY_USER_ID_FAILED": {
-            return state = { ...state, createDocumentEntryByUserIDError: action.payload }
+        case "CREATE_DRE_DATA_BY_UNIQUE_ID_FAILED": {
+            return state = { ...state, createDocumentEntryByUniqueIDError: action.payload }
         }
-        case "GET_DRE_DATA_BY_USER_ID_SUCCESS": {
-            return state = { ...state, getDocumentEntryByUserIDSuccess: action.payload }
+        case "GET_DRE_DATA_BY_UNIQUE_ID_SUCCESS": {
+            return state = { ...state, getDocumentEntryByUniqueIDSuccess: action.payload }
         }
-        case "GET_DRE_DATA_BY_USER_ID_FAILED": {
-            return state = { ...state, getDocumentEntryByUserIDError: action.payload }
+        case "GET_DRE_DATA_BY_UNIQUE_ID_FAILED": {
+            return state = { ...state, getDocumentEntryByUniqueIDError: action.payload }
         }
-        case "UPDATE_DRE_DATA_BY_USER_ID_SUCCESS": {
-            return state = { ...state, updateDocumentEntryByUserIDSuccess: action.payload }
+        case "UPDATE_DRE_DATA_BY_UNIQUE_ID_SUCCESS": {
+            return state = { ...state, updateDocumentEntryByUniqueIDSuccess: action.payload }
         }
-        case "UPDATE_DRE_DATA_BY_USER_ID_FAILED": {
-            return state = { ...state, updateDocumentEntryByUserIDError: action.payload }
+        case "UPDATE_DRE_DATA_BY_UNIQUE_ID_FAILED": {
+            return state = { ...state, updateDocumentEntryByUniqueIDError: action.payload }
+        }
+        default:
+            return state;
+    }
+}
+
+export function umaReducer(state = {}, action) {
+    switch (action.type) {
+        case "LOADING_UMA_VIEW": {
+            return state = { ...state, loadingUMAView: action.payload }
+        }
+        case "CREATE_UMA_DATA_BY_USER_ID_SUCCESS": {
+            return state = { ...state, createUserMessageDataByUserIDSuccess: action.payload }
+        }
+        case "CREATE_UMA_DATA_BY_USER_ID_FAILED": {
+            return state = { ...state, createUserMessageDataByUserIDError: action.payload }
+        }
+        case "GET_UMA_DATA_BY_USER_ID_SUCCESS": {
+            return state = { ...state, getUserMessageDataByUserIDSuccess: action.payload }
+        }
+        case "GET_UMA_DATA_BY_USER_ID_FAILED": {
+            return state = { ...state, getUserMessageDataByUserIDError: action.payload }
+        }
+        case "UPDATE_UMA_DATA_BY_USER_ID_SUCCESS": {
+            return state = { ...state, updateUserMessageDataByUserIDSuccess: action.payload }
         }
         default:
             return state;
