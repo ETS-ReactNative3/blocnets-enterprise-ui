@@ -4,7 +4,8 @@ import {
   bomReducer,
   sarReducer,
   prdReducer,
-  dreReducer
+  dreReducer,
+  umaReducer
 }
   from './reducers/main.reducers';
 
@@ -13,5 +14,6 @@ export default combineReducers({
   bomReducer,
   sarReducer,
   prdReducer,
-  dreReducer
+  dreReducer,
+  umaReducer
 });

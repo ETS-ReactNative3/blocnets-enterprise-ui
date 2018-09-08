@@ -10,64 +10,64 @@ const headers = {
     'withCredentials': true
 }
 
-export function createDocumentEntryByUserID(url, body) {
+export function createDocumentEntryByUniqueID(url, body) {
     return (dispatch) => {
         dispatch({
             type: "LOADING_DRE_VIEW",
             payload: true
         });
-        axios.post(config.chaincodes.Default + config.chaincodes.DRE + "userid=" + url, body, { headers })
+        axios.post(config.chaincodes.Default + config.chaincodes.DRE + url, body, { headers })
             .then(() => {
                 return dispatch({
-                    type: "CREATE_DRE_DATA_BY_USER_ID_SUCCESS",
+                    type: "CREATE_DRE_DATA_BY_UNIQUE_ID_SUCCESS",
                     payload: true
                 });
             })
             .catch(() => dispatch({
-                type: "CREATE_DRE_DATA_BY_USER_ID_FAILED",
+                type: "CREATE_DRE_DATA_BY_UNIQUE_ID_FAILED",
                 payload: true
             }));
     };
 }
 
-export function getDocumentEntryByUserID(url) {
+export function getDocumentEntryByUniqueID(url) {
     return (dispatch) => {
         dispatch({
             type: "LOADING_DRE_VIEW",
             payload: true
         });
-        axios.get(config.chaincodes.Default + config.chaincodes.DRE + "userid=" + url, { headers })
+        axios.get(config.chaincodes.Default + config.chaincodes.DRE + url, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data)
                 sessionStorage.setItem('messages', data);
                 return dispatch({
-                    type: "GET_DRE_DATA_BY_USER_ID_SUCCESS",
+                    type: "GET_DRE_DATA_BY_UNIQUE_ID_SUCCESS",
                     payload: true + response
                 });
             })
             .catch((error) => dispatch({
-                type: "GET_DRE_DATA_BY_USER_ID_FAILED",
+                type: "GET_DRE_DATA_BY_UNIQUE_ID_FAILED",
                 payload: true + error
             })
             )
     };
 }
 
-export function updateDocumentEntryByUserID(url, body) {
+export function updateDocumentEntryByUniqueID(url, body) {
     return (dispatch) => {
         dispatch({
             type: "LOADING_DRE_VIEW",
             payload: true
         });
-        axios.put(config.chaincodes.Default + config.chaincodes.SAR + "userid=" + url, body, {headers})
+        axios.put(config.chaincodes.Default + config.chaincodes.SAR + url, body, {headers})
             .then(() => {
                 return dispatch({
-                    type: "UPDATE_DRE_DATA_BY_USER_ID_SUCCESS",
+                    type: "UPDATE_DRE_DATA_BY_UNIQUE_ID_SUCCESS",
                     payload: true
                 });
             })
             .catch(() => dispatch({
-                type: "UPDATE_DRE_DATA_BY_USER_ID_FAILED",
+                type: "UPDATE_DRE_DATA_BY_UNIQUE_ID_FAILED",
                 payload: true
             }));
     };
