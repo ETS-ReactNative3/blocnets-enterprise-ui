@@ -10,7 +10,7 @@ const headers = {
     'withCredentials': true
 }
 
-export function createUserMessageDataUserID(url, body) {
+export function createUserMessageDataByUserID(url, body) {
     return (dispatch) => {
         dispatch({
             type: "LOADING_UMA_VIEW",
@@ -30,7 +30,7 @@ export function createUserMessageDataUserID(url, body) {
     };
 }
 
-export function getUserMessageDataUserID(url) {
+export function getUserMessageDataByUserID(url) {
     return (dispatch) => {
         dispatch({
             type: "LOADING_UMA_VIEW",
