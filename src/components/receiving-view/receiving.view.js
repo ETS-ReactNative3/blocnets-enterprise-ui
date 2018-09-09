@@ -181,6 +181,7 @@ class ReceivingView extends Component {
         this.setState({showProgressLogoDialog: true});
         let urlMaterialID = this.state.materialID;
         let bodyMaterialID = {
+            materialID: this.state.materialID,
             shipmentID: dataByMaterialID.shipmentID,
             address1: dataByMaterialID.address1,
             address2: dataByMaterialID.address2,
@@ -201,6 +202,7 @@ class ReceivingView extends Component {
         let urlShipmentID = dataByMaterialID.shipmentID;
         let bodyShipmentID = {
             materialID: this.state.materialID,
+            shipmentID: dataByMaterialID.shipmentID,
             address1: dataByMaterialID.address1,
             address2: dataByMaterialID.address2,
             city: dataByMaterialID.city,
@@ -260,6 +262,7 @@ class ReceivingView extends Component {
         this.setState({showProgressLogoDialog: true});
         let urlMaterialID = dataByShipmentID.materialID;
         let bodyMaterialID = {
+            materialID: dataByShipmentID.materialID,
             shipmentID: this.state.shipmentID,
             address1: dataByShipmentID.address1,
             address2: dataByShipmentID.address2,
@@ -281,6 +284,7 @@ class ReceivingView extends Component {
         let urlShipmentID = this.state.shipmentID;
         let bodyShipmentID = {
             materialID: dataByShipmentID.materialID,
+            shipmentID: this.state.shipmentID,
             address1: dataByShipmentID.address1,
             address2: dataByShipmentID.address2,
             city: dataByShipmentID.city,
