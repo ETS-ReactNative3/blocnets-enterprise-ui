@@ -6,12 +6,15 @@ import InputLabel from "@material-ui/core/InputLabel/InputLabel";
 import Select from "@material-ui/core/Select/Select";
 import Input from "@material-ui/core/Input/Input";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
+import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
+import TextField from "material-ui/TextField";
 import Button from '@material-ui/core/Button';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
 import Snackbar from 'material-ui/Snackbar';
-import { connect } from 'react-redux';
-import { createDocumentEntryByUniqueID } from '../../../redux/actions/document.review.entry.actions';
+import {connect} from 'react-redux';
+import {createDocumentEntryByUniqueID} from '../../../redux/actions/document.review.entry.actions';
+import {createUserMessageDataByUserID} from '../../../redux/actions/user.message.array.action';
 //Temporary Only
 import response from './messageData.json';
 
@@ -25,10 +28,15 @@ class DocumentSendView extends React.Component {
         super(props);
         this.state = {
             showProgressLogo: false,
-            textArea: '',
             recipientUserName: '',
+            errorText1: 'This is a required field.',
             messageType: '',
+            errorText2: 'This is a required field.',
             dataType: '',
+            errorText3: 'This is a required field.',
+            message: '',
+            errorText4: 'This is a required field.',
+            counter: 0,
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
@@ -40,41 +48,100 @@ class DocumentSendView extends React.Component {
 
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
+        if ([event.target.name].toString() === 'recipientUserName' && event.target.value) {
+            this.setState({errorText1: ''});
+        } else if ([event.target.name].toString() === 'recipientUserName' && !event.target.value) {
+            this.setState({errorText1: 'This is a required field.'});
+        }
+        if ([event.target.name].toString() === 'messageType' && event.target.value) {
+            this.setState({errorText2: ''});
+        } else if ([event.target.name].toString() === 'messageType' && !event.target.value) {
+            this.setState({errorText2: 'This is a required field.'});
+        }
+        if ([event.target.name].toString() === 'dataType' && event.target.value) {
+            this.setState({errorText3: ''});
+        } else if ([event.target.name].toString() === 'dataType' && !event.target.value) {
+            this.setState({errorText3: 'This is a required field.'});
+        }
+        if ([event.target.name].toString() === 'message' && event.target.value) {
+            this.setState({errorText4: ''});
+        } else if ([event.target.name].toString() === 'message' && !event.target.value) {
+            this.setState({errorText4: 'This is a required field.'});
+        }
     };
 
     handleUpload = (event) => {
     };
 
     handleSubmit = (event) => {
-
-        let data = {
-            text: this.state.textArea,
+        this.setState({
+            showProgressLogo: true,
+            counter: 0
+        });
+        let uniqueID = this.guid();
+        let dreURL = uniqueID;
+        let dreBody = {
+            text: this.state.message,
             status: "pending",
             type: this.state.messageType,
             desc: this.state.dataType,
-            fileId: ''
+            fileId: "string"
         };
+        this.props.createDocumentEntryByUniqueID(dreURL, dreBody);
+        let umaURL = this.state.recipientUserName;
+        let umaBody = {
+            userMessages: uniqueID,
+            archivedMessages: "string"
+        };
+        this.props.createUserMessageDataByUserID(umaURL, umaBody);
+        setTimeout(
+            function () {
+                this.setState({counter: 1});
+                if (this.state.counter === 1) {
+                    if (this.props.data.dreReducer.createDocumentEntryByUniqueIDSuccess === true
+                        && this.props.data.umaReducer.createUserMessageDataByUserIDSuccess === true) {
+                        this.setState({
+                            showProgressLogo: false,
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Document Sent Successfully!',
+                                open: true,
+                                sbColor: '#23CE6B'
+                            },
+                            recipientUserName: '',
+                            messageType: '',
+                            dataType: '',
+                            message: '',
+                            counter: 0
+                        });
+                    } else {
+                        this.setState({
+                            showProgressLogo: false,
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Error sending document! Please try again.',
+                                open: true,
+                                sbColor: 'red'
+                            }
+                        })
+                    }
+                }
+            }
+                .bind(this),
+            3000
+        );
+    };
 
-        this.props.createDocumentEntryByUniqueID(this.state.recipientUserName, data);
-        //this.setState({showProgressLogo: true}); to show blocnetsLogo before submit
-        //this.setState({showProgressLogo: false}); to show blocnetsLogo after receiving response
-        this.setState({
-            snackbar: {
-                autoHideDuration: 2000,
-                message: 'Success',
-                open: true,
-                sbColor: 'black'
-            }
-        });
-        /*this.setState({
-            snackbar: {
-                autoHideDuration: 2000,
-                message: 'Error',
-                open: true,
-                sbColor: 'red'
-            }
-        }); to show error message */
-        event.preventDefault();
+    guid = () => {
+        return this.generateUniqueID() + this.generateUniqueID() + '-' + this.generateUniqueID() + '-'
+            + this.generateUniqueID() + '-' + this.generateUniqueID() + '-' + this.generateUniqueID()
+            + this.generateUniqueID() + this.generateUniqueID();
+    };
+
+    generateUniqueID = () => {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
     };
 
     handleSnackbarClose = () => {
@@ -96,30 +163,36 @@ class DocumentSendView extends React.Component {
             },
         });
 
-        const formComplete = this.state.recipientUserName && this.state.messageType && this.state.dataType;
+        const formComplete = this.state.recipientUserName && this.state.messageType
+            && this.state.dataType && this.state.message;
 
         return (
             <form onSubmit={this.handleSubmit}>
                 <div>
-                    {this.state.showProgressLogo ? <img src={blocnetsLogo} className="App-logo-progress" alt=""/> : ""}
+                    {this.state.showProgressLogo ?
+                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt=""/>
+                        </div> : ""}
                 </div>
                 <div style={{padding: 24}}>
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <FormControl fullWidth={true}>
-                                <InputLabel>
+                                <InputLabel style={{"textAlign": "left"}}>
                                     Recipient User Name
                                 </InputLabel>
                                 <Select value={this.state.recipientUserName} onChange={this.handleChange}
                                         input={<Input name="recipientUserName" style={{"textAlign": "left"}}/>}
                                         displayEmpty>
-                                    <MenuItem value={userIDMenuItems}>{userIDMenuItems}</MenuItem>
+                                    {userIDMenuItems.map((menuItem, i) => {
+                                        return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
+                                    })}
                                 </Select>
+                                <FormHelperText style={{"color": "red"}}>{this.state.errorText1}</FormHelperText>
                             </FormControl>
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <FormControl fullWidth={true}>
-                                <InputLabel>
+                                <InputLabel style={{"textAlign": "left"}}>
                                     Message Type
                                 </InputLabel>
                                 <Select value={this.state.messageType} onChange={this.handleChange}
@@ -129,6 +202,7 @@ class DocumentSendView extends React.Component {
                                         return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
                                     })}
                                 </Select>
+                                <FormHelperText style={{"color": "red"}}>{this.state.errorText2}</FormHelperText>
                             </FormControl>
                         </Grid>
                         <Grid container item xs={12} sm={6} justify="flex-end">
@@ -146,7 +220,7 @@ class DocumentSendView extends React.Component {
                     <Grid container spacing={24}>
                         <Grid container item xs={6}>
                             <FormControl fullWidth={true}>
-                                <InputLabel>
+                                <InputLabel style={{"textAlign": "left"}}>
                                     Data Type
                                 </InputLabel>
                                 <Select value={this.state.dataType} onChange={this.handleChange}
@@ -156,7 +230,29 @@ class DocumentSendView extends React.Component {
                                         return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
                                     })}
                                 </Select>
+                                <FormHelperText style={{"color": "red"}}>{this.state.errorText3}</FormHelperText>
                             </FormControl>
+                        </Grid>
+                    </Grid>
+                    <br/>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6}>
+                            <TextField
+                                value={this.state.message}
+                                onChange={this.handleChange}
+                                type="text"
+                                name="message"
+                                floatingLabelText="Message"
+                                floatingLabelFixed={true}
+                                style={{"float": "left", "textAlign": "left"}}
+                                hintText=""
+                                multiLine={true}
+                                rows={2}
+                                rowsMax={4}
+                                fullWidth={true}
+                                errorText={this.state.errorText4}
+                                errorStyle={{"float": "left"}}
+                            />
                         </Grid>
                     </Grid>
                     <br/>
@@ -187,14 +283,15 @@ class DocumentSendView extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        state,
+        data: state,
     };
 };
 
 // This way, we can call our action creator by doing this.props.fetchData(url);
 const mapDispatchToProps = (dispatch) => {
     return {
-        createDocumentEntryByUniqueID: (url, body) => dispatch(createDocumentEntryByUniqueID(url, body))
+        createDocumentEntryByUniqueID: (url, body) => dispatch(createDocumentEntryByUniqueID(url, body)),
+        createUserMessageDataByUserID: (url, body) => dispatch(createUserMessageDataByUserID(url, body))
     };
 };
 
