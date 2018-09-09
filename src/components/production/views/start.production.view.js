@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import blocnetsLogo from "../../../blocknetwhite-1.png";
 import Grid from '@material-ui/core/Grid';
 import TextField from 'material-ui/TextField';
-import Typography from "@material-ui/core/Typography/Typography";
-import FormGroup from '@material-ui/core/FormGroup';
 import Button from '@material-ui/core/Button';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
@@ -81,7 +79,6 @@ class StartProduction extends Component {
     handleText = i => e => {
         let materialID = [...this.state.materialID]
         materialID[i] = e.target.value
-        console.log(this.state.materialID);
         this.setState({
             materialID
         })
@@ -128,12 +125,17 @@ class StartProduction extends Component {
     handleSubmit = () => {
         this.setState({
             showProgressLogo: true,
-            showProgressLogoDialog: true,
-            counter: 0
+            showProgressLogoDialog: true
         });
         let data = {
             materialID: '',
-            oldMaterialID: this.state.materialID,
+            oldMaterialID: [
+                {
+                    materialID: this.state.initialMaterialID,
+                    parent: this.state.productionOrderNo,
+                    children: []
+                }
+            ],
             ipAddress: '',
             oldProdOrders: [],
             productionOrderNo: this.state.productionOrderNo,
@@ -143,57 +145,62 @@ class StartProduction extends Component {
         }
 
         // Foreach Material ID in this state, get it's shipping data
-        this.state.materialID.forEach(
-            element => this.props.getShippingDataByMaterialID(element))
-            .then(() => {
-                return this.props.data.sarReducer.getShippingDataByMaterialIDSuccess;
-            });
+        /*  this.state.materialID.forEach(
+             element => this.props.getShippingDataByMaterialID(element))
+             .then(() => {
+                 // this.props.getShippingDataByMaterialID
+                 // then update each of it's data field of 'receivedOrder' to true.
+                 return this.props.data.sarReducer.getShippingDataByMaterialIDSuccess;
+             }); */
 
         for (let i = 0; i < this.state.materialID.length; i++) {
-            console.log(this.state.materialID[i]);
+            if (this.state.materialID[i]) {
+                let obj = {
+                    materialID: this.state.materialID[i],
+                    parent: this.state.productionOrderNo,
+                    children: []
+                }
+                data.oldMaterialID.push(obj);
+            }
         };
-        // this.props.getShippingDataByMaterialID
-        // then update each of it's data field of 'receivedOrder' to true.
 
-        //this.props.createProductionOrderByProdOrderNo(this.state.productionOrderNo, data);
+        this.props.createProductionOrderByProdOrderNo(this.state.productionOrderNo, data);
 
-        /* setTimeout(
+        setTimeout(
             function () {
-                this.setState({counter: 1});
-                if (this.state.counter === 1) {
-                    if (this.props.data.prdReducer.createProductionOrderByProdOrderNoSuccess === true &&
-                        this.props.data.prdReducer.createShippingDataByShipmentIDSuccess === true) {
-                        this.setState({
-                            showProgressLogo: false,
-                            showProgressLogoDialog: false,
-                            snackbar: {
-                                autoHideDuration: 2000,
-                                message: 'Started Production!',
-                                open: true,
-                                sbColor: '#23CE6B'
-                            },
-                            openDialog: false,
-                            materialID: '',
-                            errorText: 'This is a required field.',
-                            errorText1: 'This is a required field.',
-                        });
-                    } else {
-                        this.setState({
-                            showProgressLogo: false,
-                            showProgressLogoDialog: false,
-                            snackbar: {
-                                autoHideDuration: 2000,
-                                message: 'Production Error! Please try again.',
-                                open: true,
-                                sbColor: 'red'
-                            }
-                        })
-                    }
+                if (this.props.data.prdReducer.createProductionOrderByProdOrderNoSuccess) {
+                    this.setState({
+                        errorText: 'This is a required field.',
+                        errorText1: 'This is a required field.',
+                        productionOrderNo: '',
+                        initialMaterialID: '',
+                        materialID: [],
+                        showProgressLogo: false,
+                        openDialog: false,
+                        showProgressLogoDialog: false,
+                        snackbar: {
+                            autoHideDuration: 2000,
+                            message: 'Started Production!',
+                            open: true,
+                            sbColor: '#23CE6B'
+                        }
+                    });
+                } else if (this.props.data.prdReducer.createProductionOrderByProdOrderNoError) {
+                    this.setState({
+                        showProgressLogo: false,
+                        showProgressLogoDialog: false,
+                        snackbar: {
+                            autoHideDuration: 2000,
+                            message: 'Production Error! Please try again.',
+                            open: true,
+                            sbColor: 'red'
+                        }
+                    })
                 }
             }
                 .bind(this),
             3000
-        ); */
+        );
     }
 
     render() {
@@ -211,7 +218,6 @@ class StartProduction extends Component {
         });
 
         const formComplete = this.state.productionOrderNo && this.state.initialMaterialID;
-
         const rows = [
             createData('Production Order No.', this.state.productionOrderNo),
             createData('Material ID', this.state.initialMaterialID + ',' + this.state.materialID),
