@@ -9,14 +9,14 @@ import {authenticate} from './redux/actions/authentication.action';
 import {connect} from 'react-redux';
 import DocumentDashboardView
     from './components/document-review-and-entry/document-dashboard/document.dashboard.view';
+import BillOfMaterials from './components/bill-of-materials/bill-of-materials';
 import TrackAndTraceResultsView from './components/track-and-trace/views/track-and-trace.results.view';
 import ShippingView from './components/shipping-view/shipping.view';
 import ReceivingView from './components/receiving-view/receiving.view';
 import StartProductionView from './components/production/views/start.production.view';
 import CompleteProductionView from './components/production/views/complete.production.view';
-import TrackerView from './components/track-and-trace/views/track-and-trace.view';
-import BillOfMaterials from './components/bill-of-materials/bill-of-materials';
-import DocumentSendView from './components/document-review-and-entry/document-send/document.send.view';
+import TrackAndTraceView from './components/track-and-trace/views/track-and-trace.view';
+import SendDocumentView from './components/document-review-and-entry/document-send/document.send.view';
 import logo from './blocknetwhite-1.png';
 import paperLogo from './blocnets-logo.png'
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
@@ -103,7 +103,6 @@ class App extends Component {
             searchKey: '',
             openSearch: false,
             searchCriteria: '',
-            counter: 0,
             billOfMaterialsData: [],
             snackbar: {
                 autoHideDuration: 2000,
@@ -153,6 +152,14 @@ class App extends Component {
         });
     };
 
+    showBillOfMaterials = () => {
+        this.setState({
+            show: 'billofmaterials',
+            open: false,
+            transactionCode: 'eBOM01'
+        });
+    };
+
     showShippingView = () => {
         this.setState({
             show: 'shippingview',
@@ -183,27 +190,19 @@ class App extends Component {
             open: false,
             transactionCode: 'PRD02'
         })
-    }
+    };
 
-    showTrackerView = () => {
+    showTrackAndTraceView = () => {
         this.setState({
-            show: 'trackerview',
+            show: 'trackandtraceview',
             open: false,
             transactionCode: 'TAT01'
         });
     };
 
-    showBillOfMaterials = () => {
+    showSendDocumentView = () => {
         this.setState({
-            show: 'billofmaterials',
-            open: false,
-            transactionCode: 'eBOM01'
-        });
-    };
-
-    showDocumentSendView = () => {
-        this.setState({
-            show: 'documentsendview',
+            show: 'senddocumentview',
             open: false,
             transactionCode: 'DSR01'
         });
@@ -238,17 +237,13 @@ class App extends Component {
     handleSearchData = (searchCriteria) => {
         let bomData = [];
         this.setState({
-            showProgressLogo: true,
-            counter: 0
+            showProgressLogo: true
         });
         if (searchCriteria === 'Material ID') {
             setTimeout(
                 function () {
-                    this.setState({counter: 1});
-                    if (this.state.counter === 1) {
-                        bomData = sessionStorage.getItem('BOMDataByMaterialID');
-                        this.handleBOMData(bomData);
-                    }
+                    bomData = sessionStorage.getItem('BOMDataByMaterialID');
+                    this.handleBOMData(bomData);
                 }
                     .bind(this),
                 3000
@@ -256,11 +251,8 @@ class App extends Component {
         } else if (searchCriteria === 'Material Name') {
             setTimeout(
                 function () {
-                    this.setState({counter: 1});
-                    if (this.state.counter === 1) {
-                        bomData = sessionStorage.getItem('BOMDataByMaterialName');
-                        this.handleBOMData(bomData);
-                    }
+                    bomData = sessionStorage.getItem('BOMDataByMaterialName');
+                    this.handleBOMData(bomData);
                 }
                     .bind(this),
                 3000
@@ -268,11 +260,8 @@ class App extends Component {
         } else if (searchCriteria === 'Material Description') {
             setTimeout(
                 function () {
-                    this.setState({counter: 1});
-                    if (this.state.counter === 1) {
-                        bomData = sessionStorage.getItem('BOMDataByMaterialDesc');
-                        this.handleBOMData(bomData);
-                    }
+                    bomData = sessionStorage.getItem('BOMDataByMaterialDesc');
+                    this.handleBOMData(bomData);
                 }
                     .bind(this),
                 3000
@@ -280,11 +269,8 @@ class App extends Component {
         } else if (searchCriteria === 'Part No.') {
             setTimeout(
                 function () {
-                    this.setState({counter: 1});
-                    if (this.state.counter === 1) {
-                        bomData = sessionStorage.getItem('BOMDataByPartNumber');
-                        this.handleBOMData(bomData);
-                    }
+                    bomData = sessionStorage.getItem('BOMDataByPartNumber');
+                    this.handleBOMData(bomData);
                 }
                     .bind(this),
                 3000
@@ -292,11 +278,8 @@ class App extends Component {
         } else if (searchCriteria === 'Part Name') {
             setTimeout(
                 function () {
-                    this.setState({counter: 1});
-                    if (this.state.counter === 1) {
-                        bomData = sessionStorage.getItem('BOMDataByPartName');
-                        this.handleBOMData(bomData);
-                    }
+                    bomData = sessionStorage.getItem('BOMDataByPartName');
+                    this.handleBOMData(bomData);
                 }
                     .bind(this),
                 3000
@@ -304,11 +287,8 @@ class App extends Component {
         } else if (searchCriteria === 'Part Description') {
             setTimeout(
                 function () {
-                    this.setState({counter: 1});
-                    if (this.state.counter === 1) {
-                        bomData = sessionStorage.getItem('BOMDataByPartDesc');
-                        this.handleBOMData(bomData);
-                    }
+                    bomData = sessionStorage.getItem('BOMDataByPartDesc');
+                    this.handleBOMData(bomData);
                 }
                     .bind(this),
                 3000
@@ -350,6 +330,9 @@ class App extends Component {
             case 'trackandtraceresultsview':
                 content = (<TrackAndTraceResultsView data={this.state}/>);
                 break;
+            case 'billofmaterials':
+                content = (<BillOfMaterials/>);
+                break;
             case 'shippingview':
                 content = (<ShippingView/>);
                 break;
@@ -360,16 +343,13 @@ class App extends Component {
                 content = (<StartProductionView/>);
                 break;
             case 'completeproductionview':
-                content = (<CompleteProductionView />);
+                content = (<CompleteProductionView/>);
                 break;
-            case 'billofmaterials':
-                content = (<BillOfMaterials/>);
+            case 'trackandtraceview':
+                content = (<TrackAndTraceView/>);
                 break;
-            case 'trackerview':
-                content = (<TrackerView/>);
-                break;
-            case 'documentsendview':
-                content = (<DocumentSendView/>);
+            case 'senddocumentview':
+                content = (<SendDocumentView/>);
                 break;
             default:
                 content = (
@@ -436,23 +416,23 @@ class App extends Component {
                                                 <Paper>
                                                     <ClickAwayListener onClickAway={this.handleSearchClose}>
                                                         <MenuList style={{"textAlign": "left"}}>
-                                                            <MenuItem
-                                                                onClick={event => this.handleSearch(event, "Material ID")}>Material
+                                                            <MenuItem className="menuList"
+                                                                      onClick={event => this.handleSearch(event, "Material ID")}>Material
                                                                 ID: {this.state.searchKey}</MenuItem>
-                                                            <MenuItem
-                                                                onClick={event => this.handleSearch(event, "Material Name")}>Material
+                                                            <MenuItem className="menuList"
+                                                                      onClick={event => this.handleSearch(event, "Material Name")}>Material
                                                                 Name: {this.state.searchKey}</MenuItem>
-                                                            <MenuItem
-                                                                onClick={event => this.handleSearch(event, "Material Description")}>Material
+                                                            <MenuItem className="menuList"
+                                                                      onClick={event => this.handleSearch(event, "Material Description")}>Material
                                                                 Description: {this.state.searchKey}</MenuItem>
-                                                            <MenuItem
-                                                                onClick={event => this.handleSearch(event, "Part No.")}>Part
+                                                            <MenuItem className="menuList"
+                                                                      onClick={event => this.handleSearch(event, "Part No.")}>Part
                                                                 No.: {this.state.searchKey}</MenuItem>
-                                                            <MenuItem
-                                                                onClick={event => this.handleSearch(event, "Part Name")}>Part
+                                                            <MenuItem className="menuList"
+                                                                      onClick={event => this.handleSearch(event, "Part Name")}>Part
                                                                 Name: {this.state.searchKey}</MenuItem>
-                                                            <MenuItem
-                                                                onClick={event => this.handleSearch(event, "Part Description")}>Part
+                                                            <MenuItem className="menuList"
+                                                                      onClick={event => this.handleSearch(event, "Part Description")}>Part
                                                                 Description: {this.state.searchKey}</MenuItem>
                                                         </MenuList>
                                                     </ClickAwayListener>
@@ -487,19 +467,23 @@ class App extends Component {
                         onClick={this.handleToggle}
                         title={<img src={logo} style={appBarLogoStyle} alt="Blocnets"/>}
                     />
-                    <MenuItem id="showBillOfMaterialsId" onClick={this.showBillOfMaterials}>Engineering Bill of Materials</MenuItem>
+                    <MenuItem id="showBillOfMaterialsId" onClick={this.showBillOfMaterials}>Engineering Bill of
+                        Materials</MenuItem>
                     <hr/>
                     <MenuItem id="showShippingViewId" onClick={this.showShippingView}>Shipping</MenuItem>
                     <hr/>
                     <MenuItem id="showReceivingViewId" onClick={this.showReceivingView}>Receiving</MenuItem>
                     <hr/>
-                    <MenuItem id="showStartProductionViewId" onClick={this.showStartProductionView}>Start Production</MenuItem>
+                    <MenuItem id="showStartProductionViewId" onClick={this.showStartProductionView}>Start
+                        Production</MenuItem>
                     <hr/>
-                    <MenuItem id="showCompleteProductionViewId" onClick={this.showCompleteProductionView}>Complete Production</MenuItem>
+                    <MenuItem id="showCompleteProductionViewId" onClick={this.showCompleteProductionView}>Complete
+                        Production</MenuItem>
                     <hr/>
-                    <MenuItem id="showTrackerViewId" onClick={this.showTrackerView}>Track and Trace</MenuItem>
+                    <MenuItem id="showTrackAndTraceViewId" onClick={this.showTrackAndTraceView}>Track and
+                        Trace</MenuItem>
                     <hr/>
-                    <MenuItem id="showDocumentSendViewId" onClick={this.showDocumentSendView}>Document Review and
+                    <MenuItem id="showSendDocumentViewId" onClick={this.showSendDocumentView}>Document Review and
                         Entry</MenuItem>
                 </Drawer>
                 {/* Page View with content loaded */}

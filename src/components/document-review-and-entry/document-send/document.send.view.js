@@ -25,7 +25,7 @@ let userIDMenuItems = response[0].userID;
 let messageTypeMenuItems = response[0].messageType;
 let dataTypeMenuItems = response[0].dataType;
 
-class DocumentSendView extends React.Component {
+class SendDocumentView extends React.Component {
 
     constructor(props) {
         super(props);
@@ -39,7 +39,6 @@ class DocumentSendView extends React.Component {
             errorText3: 'This is a required field.',
             message: '',
             errorText4: 'This is a required field.',
-            counter: 0,
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
@@ -76,11 +75,11 @@ class DocumentSendView extends React.Component {
     handleUpload = (event) => {
     };
 
-    handleSubmit = (event) => {
-        this.setState({
-            showProgressLogo: true,
-            counter: 0
-        });
+    handleSendDocumentForReview = (event) => {
+        this.props.data.dreReducer.createDocumentEntryByUniqueIDSuccess = '';
+        this.props.data.umaReducer.getUserMessageDataByUserIDError = '';
+        this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess = '';
+        this.setState({showProgressLogo: true});
         let dreURL = this.guid();
         let dreBody = {
             text: this.state.message,
@@ -100,60 +99,56 @@ class DocumentSendView extends React.Component {
         this.props.getUserMessageDataByUserID(umaURL);
         setTimeout(
             function () {
-                this.setState({counter: 1});
-                if (this.state.counter === 1) {
-                    if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages) {
-                        oldMessages = this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages;
-                        allMessages = [dreURL];
-                        for (let i = 0; i < oldMessages.length; i++) {
-                            allMessages.push(oldMessages[i]);
-                        }
-                        umaBody = {
-                            userMessages: allMessages,
-                            archivedMessages: ["string"]
-                        };
-                        this.props.updateUserMessageDataByUserID(umaURL, umaBody);
-                    } else {
-                        umaBody = {
-                            userMessages: [dreURL],
-                            archivedMessages: ["string"]
-                        };
-                        this.props.updateUserMessageDataByUserID(umaURL, umaBody);
+                if (this.props.data.umaReducer.getUserMessageDataByUserIDError !== true) {
+                    oldMessages = this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages;
+                    allMessages = [dreURL];
+                    for (let i = 0; i < oldMessages.length; i++) {
+                        allMessages.push(oldMessages[i]);
                     }
-                    setTimeout(
-                        function () {
-                            if (this.props.data.dreReducer.createDocumentEntryByUniqueIDSuccess === true
-                                && this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess === true) {
-                                this.setState({
-                                    showProgressLogo: false,
-                                    snackbar: {
-                                        autoHideDuration: 2000,
-                                        message: 'Document Sent Successfully!',
-                                        open: true,
-                                        sbColor: '#23CE6B'
-                                    },
-                                    recipientUserName: '',
-                                    messageType: '',
-                                    dataType: '',
-                                    message: '',
-                                    counter: 0
-                                });
-                            } else {
-                                this.setState({
-                                    showProgressLogo: false,
-                                    snackbar: {
-                                        autoHideDuration: 2000,
-                                        message: 'Error sending document! Please try again.',
-                                        open: true,
-                                        sbColor: 'red'
-                                    }
-                                })
-                            }
-                        }
-                            .bind(this),
-                        2000
-                    );
+                    umaBody = {
+                        userMessages: allMessages,
+                        archivedMessages: ["string"]
+                    };
+                    this.props.updateUserMessageDataByUserID(umaURL, umaBody);
+                } else {
+                    umaBody = {
+                        userMessages: [dreURL],
+                        archivedMessages: ["string"]
+                    };
+                    this.props.updateUserMessageDataByUserID(umaURL, umaBody);
                 }
+                setTimeout(
+                    function () {
+                        if (this.props.data.dreReducer.createDocumentEntryByUniqueIDSuccess === true
+                            && this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess === true) {
+                            this.setState({
+                                showProgressLogo: false,
+                                snackbar: {
+                                    autoHideDuration: 2000,
+                                    message: 'Document Sent Successfully!',
+                                    open: true,
+                                    sbColor: '#23CE6B'
+                                },
+                                recipientUserName: '',
+                                messageType: '',
+                                dataType: '',
+                                message: ''
+                            });
+                        } else {
+                            this.setState({
+                                showProgressLogo: false,
+                                snackbar: {
+                                    autoHideDuration: 2000,
+                                    message: 'Error sending document! Please try again.',
+                                    open: true,
+                                    sbColor: 'red'
+                                }
+                            })
+                        }
+                    }
+                        .bind(this),
+                    2000
+                );
             }
                 .bind(this),
             1000
@@ -196,7 +191,7 @@ class DocumentSendView extends React.Component {
             && this.state.dataType && this.state.message;
 
         return (
-            <form onSubmit={this.handleSubmit}>
+            <form>
                 <div>
                     {this.state.showProgressLogo ?
                         <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt=""/>
@@ -289,7 +284,8 @@ class DocumentSendView extends React.Component {
                         <Grid container item xs={12}>
                             <MuiThemeProvider theme={buttonThemeYellow}>
                                 <Button type="submit" value="Submit" variant="contained" color="primary"
-                                        fullWidth={true} disabled={!formComplete}>
+                                        fullWidth={true} disabled={!formComplete}
+                                        onClick={this.handleSendDocumentForReview}>
                                     Send Document for Review
                                 </Button>
                             </MuiThemeProvider>
@@ -325,4 +321,4 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DocumentSendView);
+export default connect(mapStateToProps, mapDispatchToProps)(SendDocumentView);

@@ -53,11 +53,12 @@ class ShippingView extends Component {
             counter: '001',
             manualShipping: '',
             manualShipping2: 'NO',
+            deliveryOrderNo: '',
+            shipmentQuantity: '',
             openDialog: false,
             showProgressLogoDialog: false,
             doNotAskAgain: '',
             doNotAskAgain2: false,
-            counter2: 0,
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
@@ -125,12 +126,13 @@ class ShippingView extends Component {
         this.props.data.sarReducer.createShippingDataByShipmentIDSuccess = '';
         this.setState({
             showProgressLogo: true,
-            showProgressLogoDialog: true,
-            counter: 0
+            showProgressLogoDialog: true
         });
         let shipmentUrl = this.state.shipmentID;
         let materialUrl = this.state.materialID;
         let data = {
+            materialID: this.state.materialID,
+            shipmentID: this.state.shipmentID,
             address1: this.state.addressLine1,
             address2: this.state.addressLine2,
             city: this.state.city,
@@ -139,56 +141,59 @@ class ShippingView extends Component {
             country: this.state.country,
             ipAddress: this.state.ipAddress,
             manuallyShipped: this.state.manualShipping,
+            deliverOrderNo: this.state.deliveryOrderNo,
+            shipmentQuantity: this.state.shipmentQuantity,
+            shipmentSent: true,
+            shipmentCompleted: true,
             shipped: true,
-            received: false
+            receivedShipment: false,
+            receivedOrder: false
         };
         this.props.createShippingDataByMaterialID(materialUrl, data);
         this.props.createShippingDataByShipmentID(shipmentUrl, data);
         setTimeout(
             function () {
-                this.setState({counter: 1});
-                if (this.state.counter === 1) {
-                    if (this.props.data.sarReducer.createShippingDataByMaterialIDSuccess === true &&
-                        this.props.data.sarReducer.createShippingDataByShipmentIDSuccess === true) {
-                        this.setState({
-                            showProgressLogo: false,
-                            showProgressLogoDialog: false,
-                            snackbar: {
-                                autoHideDuration: 2000,
-                                message: 'Shipping Successful!',
-                                open: true,
-                                sbColor: '#23CE6B'
-                            },
-                            openDialog: false,
-                            materialID: '',
-                            errorText1: 'This is a required field.',
-                            shipmentID: '',
-                            addressLine1: '',
-                            addressLine2: '',
-                            city: '',
-                            addressState: '',
-                            postalCode: '',
-                            country: '',
-                            ipAddress: '',
-                            errorText2: 'This is a required field.',
-                            ipAddressLength: '',
-                            counter: '001',
-                            manualShipping: '',
-                            manualShipping2: 'NO',
-                            counter2: 0
-                        });
-                    } else {
-                        this.setState({
-                            showProgressLogo: false,
-                            showProgressLogoDialog: false,
-                            snackbar: {
-                                autoHideDuration: 2000,
-                                message: 'Shipping Error! Please try again.',
-                                open: true,
-                                sbColor: 'red'
-                            }
-                        })
-                    }
+                if (this.props.data.sarReducer.createShippingDataByMaterialIDSuccess === true &&
+                    this.props.data.sarReducer.createShippingDataByShipmentIDSuccess === true) {
+                    this.setState({
+                        showProgressLogo: false,
+                        showProgressLogoDialog: false,
+                        snackbar: {
+                            autoHideDuration: 2000,
+                            message: 'Shipping Successful!',
+                            open: true,
+                            sbColor: '#23CE6B'
+                        },
+                        openDialog: false,
+                        materialID: '',
+                        errorText1: 'This is a required field.',
+                        shipmentID: '',
+                        addressLine1: '',
+                        addressLine2: '',
+                        city: '',
+                        addressState: '',
+                        postalCode: '',
+                        country: '',
+                        ipAddress: '',
+                        errorText2: 'This is a required field.',
+                        ipAddressLength: '',
+                        counter: '001',
+                        manualShipping: '',
+                        manualShipping2: 'NO',
+                        deliveryOrderNo: '',
+                        shipmentQuantity: ''
+                    });
+                } else {
+                    this.setState({
+                        showProgressLogo: false,
+                        showProgressLogoDialog: false,
+                        snackbar: {
+                            autoHideDuration: 2000,
+                            message: 'Shipping Error! Please try again.',
+                            open: true,
+                            sbColor: 'red'
+                        }
+                    })
                 }
             }
                 .bind(this),
@@ -248,6 +253,8 @@ class ShippingView extends Component {
                 + this.state.country),
             createData('IP Address', this.state.ipAddress),
             createData('Manual Shipping', this.state.manualShipping2),
+            createData('Delivery Order No.', this.state.deliveryOrderNo),
+            createData('Shipment Quantity', this.state.shipmentQuantity)
         ];
 
         return (
@@ -267,10 +274,10 @@ class ShippingView extends Component {
                                 name="materialID"
                                 floatingLabelText="Material ID"
                                 floatingLabelFixed={true}
-                                style={{"float": "left"}}
+                                style={{"float": "left", "textAlign": "left"}}
                                 hintText=""
                                 errorText={this.state.errorText1}
-                                errorStyle={{"float": "left"}}
+                                errorStyle={{"float": "left", "textAlign": "left"}}
                             />
                         </Grid>
                         <Fade in={this.state.ipAddressLength === 6}>
@@ -290,7 +297,7 @@ class ShippingView extends Component {
                                 name="addressLine1"
                                 floatingLabelText="Address"
                                 floatingLabelFixed={true}
-                                style={{"float": "left"}}
+                                style={{"float": "left", "textAlign": "left"}}
                                 hintText=""
                             />
                         </Grid>
@@ -302,7 +309,7 @@ class ShippingView extends Component {
                                 name="addressLine2"
                                 floatingLabelText=" "
                                 floatingLabelFixed={true}
-                                style={{"float": "left"}}
+                                style={{"float": "left", "textAlign": "left"}}
                                 hintText="Address Line 2"
                             />
                         </Grid>
@@ -314,7 +321,7 @@ class ShippingView extends Component {
                                 name="city"
                                 floatingLabelText=" "
                                 floatingLabelFixed={true}
-                                style={{"float": "left"}}
+                                style={{"float": "left", "textAlign": "left"}}
                                 hintText="City"
                             />
                         </Grid>
@@ -326,7 +333,8 @@ class ShippingView extends Component {
                                 name="addressState"
                                 floatingLabelText=" "
                                 floatingLabelFixed={true}
-                                style={{"float": "left"}} hintText="State"
+                                style={{"float": "left", "textAlign": "left"}}
+                                hintText="State"
                             />
                         </Grid>
                     </Grid>
@@ -339,7 +347,7 @@ class ShippingView extends Component {
                                 name="postalCode"
                                 floatingLabelText=" "
                                 floatingLabelFixed={true}
-                                style={{"float": "left"}}
+                                style={{"float": "left", "textAlign": "left"}}
                                 hintText="Postal Code"
                             />
                         </Grid>
@@ -351,7 +359,7 @@ class ShippingView extends Component {
                                 name="country"
                                 floatingLabelText=" "
                                 floatingLabelFixed={true}
-                                style={{"float": "left"}}
+                                style={{"float": "left", "textAlign": "left"}}
                                 hintText="Country"
                             />
                         </Grid>
@@ -365,13 +373,13 @@ class ShippingView extends Component {
                                 name="ipAddress"
                                 floatingLabelText="IP Address"
                                 floatingLabelFixed={true}
-                                style={{"float": "left"}}
+                                style={{"float": "left", "textAlign": "left"}}
                                 hintText=""
                                 errorText={this.state.errorText2}
-                                errorStyle={{"float": "left"}}
+                                errorStyle={{"float": "left", "textAlign": "left"}}
                             />
                         </Grid>
-                        <Grid container item xs={6} sm={6}>
+                        <Grid container item xs={6} sm={3}>
                             <FormGroup row>
                                 <FormControlLabel
                                     control={
@@ -385,6 +393,30 @@ class ShippingView extends Component {
                                 />
                             </FormGroup>
                         </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                value={this.state.deliveryOrderNo}
+                                onChange={this.handleChange}
+                                type="text"
+                                name="deliveryOrderNo"
+                                floatingLabelText="Delivery Order No."
+                                floatingLabelFixed={true}
+                                style={{"float": "left", "textAlign": "left"}}
+                                hintText=""
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                value={this.state.shipmentQuantity}
+                                onChange={this.handleChange}
+                                type="text"
+                                name="shipmentQuantity"
+                                floatingLabelText="Shipment Quantity"
+                                floatingLabelFixed={true}
+                                style={{"float": "left", "textAlign": "left"}}
+                                hintText=""
+                            />
+                        </Grid>
                     </Grid>
                     <br/><br/>
                     <Grid container spacing={24}>
@@ -392,7 +424,7 @@ class ShippingView extends Component {
                             <MuiThemeProvider theme={buttonThemeYellow}>
                                 <Button type="submit" value="Submit" variant="contained" color="primary"
                                         fullWidth={true} disabled={!formComplete}>
-                                    Submit
+                                    Send Shipment
                                 </Button>
                             </MuiThemeProvider>
                         </Grid>
@@ -416,7 +448,7 @@ class ShippingView extends Component {
                                             </div> : ""}
                                     </div>
                                     <div style={{"overflowX": "auto"}}>
-                                        <Table>
+                                        <Table style={{"tableLayout": "fixed"}}>
                                             <TableBody>
                                                 {rows.map(row => {
                                                     return (

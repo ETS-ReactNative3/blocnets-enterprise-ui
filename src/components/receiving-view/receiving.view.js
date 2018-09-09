@@ -50,7 +50,6 @@ class ReceivingView extends Component {
             openShipmentIDDialog: false,
             showProgressLogoDialog: false,
             receivedShipment: false,
-            counter: 0,
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
@@ -80,85 +79,84 @@ class ReceivingView extends Component {
             showProgressLogo: true,
             openMaterialIDDialog: false,
             openShipmentIDDialog: false,
-            showProgressLogoDialog: false,
-            counter: 0
+            showProgressLogoDialog: false
         });
         sessionStorage.clear();
         if (this.state.shipmentIDInformed === false) {
-            let val = this.state.materialID;
-            this.props.getShippingDataByMaterialID(val);
+            let url = this.state.materialID;
+            this.props.getShippingDataByMaterialID(url);
             setTimeout(
                 function () {
-                    this.setState({counter: 1});
-                    if (this.state.counter === 1) {
-                        dataByMaterialID = JSON.parse(sessionStorage.getItem('DataByMaterialID'));
-                        if (dataByMaterialID) {
-                            materialIDRows = [
-                                createData('Material ID', this.state.materialID),
-                                createData('Address', dataByMaterialID.address1 + ' ' + dataByMaterialID.city + ' ' + dataByMaterialID.state + ' ' + dataByMaterialID.country + ' ' + dataByMaterialID.postalCode),
-                                createData('IP Address', dataByMaterialID.ipAddress),
-                                createData('Manual Shipping', dataByMaterialIDManuallyShipped),
-                            ];
-                            this.setState({
-                                showProgressLogo: false,
-                                openMaterialIDDialog: true,
-                                receivedShipment: dataByMaterialID.receivedShipment
-                            });
-                            if (dataByMaterialID.manuallyShipped === true) {
-                                dataByMaterialIDManuallyShipped = 'YES'
-                            }
-                        } else {
-                            this.setState({
-                                showProgressLogo: false,
-                                snackbar: {
-                                    autoHideDuration: 2000,
-                                    message: 'No shipping information!',
-                                    open: true,
-                                    sbColor: 'red'
-                                },
-                                openMaterialIDDialog: false
-                            })
+                    dataByMaterialID = JSON.parse(sessionStorage.getItem('DataByMaterialID'));
+                    if (dataByMaterialID) {
+                        materialIDRows = [
+                            createData('Material ID', this.state.materialID),
+                            createData('Shipment ID', dataByMaterialID.shipmentID),
+                            createData('Address', dataByMaterialID.address1 + ' ' + dataByMaterialID.city + ' ' + dataByMaterialID.state + ' ' + dataByMaterialID.country + ' ' + dataByMaterialID.postalCode),
+                            createData('IP Address', dataByMaterialID.ipAddress),
+                            createData('Manual Shipping', dataByMaterialIDManuallyShipped),
+                            createData('Delivery Order No.', dataByMaterialID.deliverOrderNo),
+                            createData('Shipment Quantity', dataByMaterialID.shipmentQuantity)
+                        ];
+                        this.setState({
+                            showProgressLogo: false,
+                            openMaterialIDDialog: true,
+                            receivedShipment: dataByMaterialID.receivedShipment
+                        });
+                        if (dataByMaterialID.manuallyShipped === true) {
+                            dataByMaterialIDManuallyShipped = 'YES'
                         }
+                    } else {
+                        this.setState({
+                            showProgressLogo: false,
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'No shipping information!',
+                                open: true,
+                                sbColor: 'red'
+                            },
+                            openMaterialIDDialog: false
+                        })
                     }
                 }
                     .bind(this),
                 1000
             );
         } else if (this.state.materialIDInformed === false) {
-            let val = this.state.shipmentID;
-            this.props.getShippingDataByShipmentID(val);
+            let url = this.state.shipmentID;
+            this.props.getShippingDataByShipmentID(url);
             setTimeout(
                 function () {
-                    this.setState({counter: 1});
-                    if (this.state.counter === 1) {
-                        dataByShipmentID = JSON.parse(sessionStorage.getItem('DataByShipmentID'));
-                        if (dataByShipmentID) {
-                            shipmentIDRows = [
-                                createData('Shipment ID', this.state.shipmentID),
-                                createData('Address', dataByShipmentID.address1 + ' ' + dataByShipmentID.city + ' ' + dataByShipmentID.state + ' ' + dataByShipmentID.country + ' ' + dataByShipmentID.postalCode),
-                                createData('IP Address', dataByShipmentID.ipAddress),
-                                createData('Manual Shipping', dataByShipmentIDManuallyShipped),
-                            ];
-                            this.setState({
-                                showProgressLogo: false,
-                                openShipmentIDDialog: true,
-                                receivedShipment: dataByShipmentID.receivedShipment
-                            });
-                            if (dataByShipmentID.manuallyShipped === true) {
-                                dataByShipmentIDManuallyShipped = 'YES'
-                            }
-                        } else {
-                            this.setState({
-                                showProgressLogo: false,
-                                snackbar: {
-                                    autoHideDuration: 2000,
-                                    message: 'No shipping information!',
-                                    open: true,
-                                    sbColor: 'red'
-                                },
-                                openShipmentIDDialog: false
-                            })
+                    dataByShipmentID = JSON.parse(sessionStorage.getItem('DataByShipmentID'));
+                    if (dataByShipmentID) {
+                        shipmentIDRows = [
+                            createData('Material ID', dataByShipmentID.materialID),
+                            createData('Shipment ID', this.state.shipmentID),
+                            createData('Address', dataByShipmentID.address1 + ' ' + dataByShipmentID.city + ' ' + dataByShipmentID.state + ' ' + dataByShipmentID.country + ' ' + dataByShipmentID.postalCode),
+                            createData('IP Address', dataByShipmentID.ipAddress),
+                            createData('Manual Shipping', dataByShipmentIDManuallyShipped),
+                            createData('Delivery Order No.', dataByShipmentID.deliverOrderNo),
+                            createData('Shipment Quantity', dataByShipmentID.shipmentQuantity)
+                        ];
+                        this.setState({
+                            showProgressLogo: false,
+                            openShipmentIDDialog: true,
+                            receivedShipment: dataByShipmentID.receivedShipment
+                        });
+                        if (dataByShipmentID.manuallyShipped === true) {
+                            dataByShipmentIDManuallyShipped = 'YES'
                         }
+                    } else {
+                        this.setState({
+                            showProgressLogo: false,
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'No shipping information!',
+                                open: true,
+                                sbColor: 'red'
+                            },
+                            openShipmentIDDialog: false
+                        })
                     }
                 }
                     .bind(this),
@@ -178,54 +176,77 @@ class ReceivingView extends Component {
     };
 
     handleMIDialogReceiveShipment = (event) => {
-        this.setState({
-            counter: 0,
-            showProgressLogoDialog: true
-        });
-        let url = this.state.materialID;
-        let body = {
+        this.props.data.sarReducer.updateShippingDataByMaterialIDSuccess = '';
+        this.props.data.sarReducer.updateShippingDataByShipmentIDSuccess = '';
+        this.setState({showProgressLogoDialog: true});
+        let urlMaterialID = this.state.materialID;
+        let bodyMaterialID = {
+            shipmentID: dataByMaterialID.shipmentID,
             address1: dataByMaterialID.address1,
             address2: dataByMaterialID.address2,
             city: dataByMaterialID.city,
+            state: dataByMaterialID.state,
+            postalCode: dataByMaterialID.postalCode,
             country: dataByMaterialID.country,
             ipAddress: dataByMaterialID.ipAddress,
             manuallyShipped: dataByMaterialID.manuallyShipped,
-            postalCode: dataByMaterialID.postalCode,
-            receivedShipment: true,
+            deliverOrderNo: dataByMaterialID.deliverOrderNo,
+            shipmentQuantity: dataByMaterialID.shipmentQuantity,
+            shipmentSent: dataByMaterialID.shipmentSent,
+            shipmentCompleted: dataByMaterialID.shipmentCompleted,
             shipped: dataByMaterialID.shipped,
-            state: dataByMaterialID.state
+            receivedShipment: true,
+            receivedOrder: dataByMaterialID.receivedOrder
         };
-        this.props.updateShippingDataByMaterialID(url, body);
+        let urlShipmentID = dataByMaterialID.shipmentID;
+        let bodyShipmentID = {
+            materialID: this.state.materialID,
+            address1: dataByMaterialID.address1,
+            address2: dataByMaterialID.address2,
+            city: dataByMaterialID.city,
+            state: dataByMaterialID.state,
+            postalCode: dataByMaterialID.postalCode,
+            country: dataByMaterialID.country,
+            ipAddress: dataByMaterialID.ipAddress,
+            manuallyShipped: dataByMaterialID.manuallyShipped,
+            deliverOrderNo: dataByMaterialID.deliverOrderNo,
+            shipmentQuantity: dataByMaterialID.shipmentQuantity,
+            shipmentSent: dataByMaterialID.shipmentSent,
+            shipmentCompleted: dataByMaterialID.shipmentCompleted,
+            shipped: dataByMaterialID.shipped,
+            receivedShipment: true,
+            receivedOrder: dataByMaterialID.receivedOrder
+        };
+        this.props.updateShippingDataByMaterialID(urlMaterialID, bodyMaterialID);
+        this.props.updateShippingDataByShipmentID(urlShipmentID, bodyShipmentID);
         setTimeout(
             function () {
-                this.setState({counter: 1});
-                if (this.state.counter === 1) {
-                    if (this.props.data.sarReducer.updateShippingDataByMaterialIDSuccess === true) {
-                        this.setState({
-                            showProgressLogoDialog: false,
-                            snackbar: {
-                                autoHideDuration: 2000,
-                                message: 'Receive Shipment Success!',
-                                open: true,
-                                sbColor: '#23CE6B'
-                            },
-                            openMaterialIDDialog: false,
-                            materialID: '',
-                            materialIDInformed: false,
-                            shipmentID: '',
-                            shipmentIDInformed: false
-                        });
-                    } else {
-                        this.setState({
-                            showProgressLogoDialog: false,
-                            snackbar: {
-                                autoHideDuration: 2000,
-                                message: 'Receive Shipment Error! Please try again.',
-                                open: true,
-                                sbColor: 'red'
-                            }
-                        })
-                    }
+                if (this.props.data.sarReducer.updateShippingDataByMaterialIDSuccess === true
+                    && this.props.data.sarReducer.updateShippingDataByShipmentIDSuccess === true) {
+                    this.setState({
+                        showProgressLogoDialog: false,
+                        snackbar: {
+                            autoHideDuration: 2000,
+                            message: 'Receive Shipment Success!',
+                            open: true,
+                            sbColor: '#23CE6B'
+                        },
+                        openMaterialIDDialog: false,
+                        materialID: '',
+                        materialIDInformed: false,
+                        shipmentID: '',
+                        shipmentIDInformed: false
+                    });
+                } else {
+                    this.setState({
+                        showProgressLogoDialog: false,
+                        snackbar: {
+                            autoHideDuration: 2000,
+                            message: 'Receive Shipment Error! Please try again.',
+                            open: true,
+                            sbColor: 'red'
+                        }
+                    })
                 }
             }
                 .bind(this),
@@ -234,54 +255,78 @@ class ReceivingView extends Component {
     };
 
     handleSIDialogReceiveShipment = (event) => {
-        this.setState({
-            counter: 0,
-            showProgressLogoDialog: true
-        });
-        let url = this.state.shipmentID;
-        let body = {
+        this.props.data.sarReducer.updateShippingDataByMaterialIDSuccess = '';
+        this.props.data.sarReducer.updateShippingDataByShipmentIDSuccess = '';
+        this.setState({showProgressLogoDialog: true});
+        let urlMaterialID = dataByShipmentID.materialID;
+        let bodyMaterialID = {
+            shipmentID: this.state.shipmentID,
             address1: dataByShipmentID.address1,
             address2: dataByShipmentID.address2,
             city: dataByShipmentID.city,
+            state: dataByShipmentID.state,
+            postalCode: dataByShipmentID.postalCode,
             country: dataByShipmentID.country,
             ipAddress: dataByShipmentID.ipAddress,
             manuallyShipped: dataByShipmentID.manuallyShipped,
-            postalCode: dataByShipmentID.postalCode,
-            receivedShipment: true,
+            deliverOrderNo: dataByShipmentID.deliverOrderNo,
+            shipmentQuantity: dataByShipmentID.shipmentQuantity,
+            shipmentSent: dataByShipmentID.shipmentSent,
+            shipmentCompleted: dataByShipmentID.shipmentCompleted,
             shipped: dataByShipmentID.shipped,
-            state: dataByShipmentID.state
+            receivedShipment: true,
+            receivedOrder: dataByShipmentID.receivedOrder
         };
-        this.props.updateShippingDataByShipmentID(url, body);
+
+        let urlShipmentID = this.state.shipmentID;
+        let bodyShipmentID = {
+            materialID: dataByShipmentID.materialID,
+            address1: dataByShipmentID.address1,
+            address2: dataByShipmentID.address2,
+            city: dataByShipmentID.city,
+            state: dataByShipmentID.state,
+            postalCode: dataByShipmentID.postalCode,
+            country: dataByShipmentID.country,
+            ipAddress: dataByShipmentID.ipAddress,
+            manuallyShipped: dataByShipmentID.manuallyShipped,
+            deliverOrderNo: dataByShipmentID.deliverOrderNo,
+            shipmentQuantity: dataByShipmentID.shipmentQuantity,
+            shipmentSent: dataByShipmentID.shipmentSent,
+            shipmentCompleted: dataByShipmentID.shipmentCompleted,
+            shipped: dataByShipmentID.shipped,
+            receivedShipment: true,
+            receivedOrder: dataByShipmentID.receivedOrder
+        };
+        this.props.updateShippingDataByMaterialID(urlMaterialID, bodyMaterialID);
+        this.props.updateShippingDataByShipmentID(urlShipmentID, bodyShipmentID);
         setTimeout(
             function () {
-                this.setState({counter: 1});
-                if (this.state.counter === 1) {
-                    if (this.props.data.sarReducer.updateShippingDataByShipmentIDSuccess === true) {
-                        this.setState({
-                            snackbar: {
-                                showProgressLogoDialog: false,
-                                autoHideDuration: 2000,
-                                message: 'Receive Shipment Success!',
-                                open: true,
-                                sbColor: '#23CE6B'
-                            },
-                            openShipmentIDDialog: false,
-                            materialID: '',
-                            materialIDInformed: false,
-                            shipmentID: '',
-                            shipmentIDInformed: false
-                        });
-                    } else {
-                        this.setState({
+                if (this.props.data.sarReducer.updateShippingDataByMaterialIDSuccess === true
+                    && this.props.data.sarReducer.updateShippingDataByShipmentIDSuccess === true) {
+                    this.setState({
+                        snackbar: {
                             showProgressLogoDialog: false,
-                            snackbar: {
-                                autoHideDuration: 2000,
-                                message: 'Receive Shipment Error! Please try again.',
-                                open: true,
-                                sbColor: 'red'
-                            }
-                        })
-                    }
+                            autoHideDuration: 2000,
+                            message: 'Receive Shipment Success!',
+                            open: true,
+                            sbColor: '#23CE6B'
+                        },
+                        openShipmentIDDialog: false,
+                        materialID: '',
+                        materialIDInformed: false,
+                        shipmentID: '',
+                        shipmentIDInformed: false
+                    });
+                } else {
+                    this.setState({
+                        showProgressLogoDialog: false,
+                        snackbar: {
+                            autoHideDuration: 2000,
+                            message: 'Receive Shipment Error! Please try again.',
+                            open: true,
+                            sbColor: 'red'
+                        }
+                    })
                 }
             }
                 .bind(this),
@@ -331,7 +376,7 @@ class ReceivingView extends Component {
                                 name="materialID"
                                 floatingLabelText="Material ID"
                                 floatingLabelFixed={true}
-                                style={{"float": "left"}}
+                                style={{"float": "left", "textAlign": "left"}}
                                 hintText=""
                                 disabled={this.state.shipmentIDInformed}
                             />
@@ -344,7 +389,7 @@ class ReceivingView extends Component {
                                 name="shipmentID"
                                 floatingLabelText="Shipment ID"
                                 floatingLabelFixed={true}
-                                style={{"float": "left"}}
+                                style={{"float": "left", "textAlign": "left"}}
                                 hintText=""
                                 disabled={this.state.materialIDInformed}
                             />
@@ -381,7 +426,7 @@ class ReceivingView extends Component {
                                             </div> : ""}
                                     </div>
                                     <div style={{"overflowX": "auto"}}>
-                                        <Table>
+                                        <Table style={{"tableLayout": "fixed"}}>
                                             <TableBody>
                                                 {materialIDRows.map(row => {
                                                     return (
@@ -487,8 +532,8 @@ const mapStateToProps = (state) => {
 // This way, we can call our action creator by doing this.props.fetchData(url);
 const mapDispatchToProps = (dispatch) => {
     return {
-        getShippingDataByMaterialID: (val) => dispatch(getShippingDataByMaterialID(val)),
-        getShippingDataByShipmentID: (val) => dispatch(getShippingDataByShipmentID(val)),
+        getShippingDataByMaterialID: (url) => dispatch(getShippingDataByMaterialID(url)),
+        getShippingDataByShipmentID: (url) => dispatch(getShippingDataByShipmentID(url)),
         updateShippingDataByMaterialID: (url, body) => dispatch(updateShippingDataByMaterialID(url, body)),
         updateShippingDataByShipmentID: (url, body) => dispatch(updateShippingDataByShipmentID(url, body))
     };

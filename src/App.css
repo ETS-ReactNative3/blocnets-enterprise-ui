@@ -1,88 +1,108 @@
 body {
-  background-color: #1f1f1f;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 100 100'%3E%3Crect x='0' y='0' width='58' height='58' fill='%23121212'/%3E%3C/svg%3E");
+    background-color: #1f1f1f;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 100 100'%3E%3Crect x='0' y='0' width='58' height='58' fill='%23121212'/%3E%3C/svg%3E");
 }
 
 .node {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .node circle {
-  fill: #fff;
-  stroke: yellow;
-  stroke-width: 3px;
+    fill: #fff;
+    stroke: yellow;
+    stroke-width: 3px;
 }
 
 .node text {
-  font: 12px sans-serif;
+    font: 12px sans-serif;
 }
 
 .link {
-  fill: none;
-  stroke: #ccc;
-  stroke-width: 2px;
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 2px;
 }
 
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 50px;
+    animation: App-logo-spin infinite 20s linear;
+    height: 50px;
 }
 
 .App-logo-progress {
-  animation: App-logo-spin infinite 5s linear;
-  height: 40px;
-  display: block;
-  position: absolute;
-  margin-left: auto;
-  margin-right: auto;
-  left: 0;
-  right: 0;
-  bottom: 50%;
+    animation: App-logo-spin infinite 5s linear;
+    height: 40px;
+    display: block;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    bottom: 50%;
 }
 
 .App-header {
-  background-color: #222 !important;
-  height: 115px;
-  padding: 20px;
-  color: white;
+    background-color: #222 !important;
+    height: 115px;
+    padding: 20px;
+    color: white;
 }
 
 .App-bar {
-  background-color: #222 !important;
-  height: 115px !important;
+    background-color: #222 !important;
+    height: 115px !important;
 }
 
 .App-title {
-  font-size: 1.5em;
+    font-size: 1.5em;
 }
 
 .App-intro {
-  font-size: large;
+    font-size: large;
 }
 
 .White-theme {
-  background-color: #ffffff !important;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 100 100'%3E%3Crect x='0' y='0' width='30' height='30' fill-opacity='0.33' fill='%23ededed'/%3E%3C/svg%3E") !important;
+    background-color: #ffffff !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 100 100'%3E%3Crect x='0' y='0' width='30' height='30' fill-opacity='0.33' fill='%23ededed'/%3E%3C/svg%3E") !important;
 }
 
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .overlay {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  background: black;
-  opacity: 0.5;
-  z-index: 1000;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: black;
+    opacity: 0.5;
+    z-index: 1000;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+@media screen and (max-width: 500px) {
+    span.menuList {
+        font-size: 8px !important;
+        line-height: 24px !important;
+        white-space: normal !important;
+        word-wrap: break-word !important;
+    }
+}
+
+@media screen and (min-width: 501px) {
+    span.menuList {
+        white-space: normal !important;
+        word-wrap: break-word !important;
+    }
 }
