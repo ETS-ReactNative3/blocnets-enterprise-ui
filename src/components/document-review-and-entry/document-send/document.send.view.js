@@ -130,6 +130,7 @@ class DocumentSendView extends React.Component {
                 .bind(this),
             3000
         );
+        event.preventDefault();
     };
 
     guid = () => {
