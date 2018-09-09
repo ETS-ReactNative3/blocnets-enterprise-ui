@@ -1,28 +1,30 @@
 [
-    {
-        "userID": ["Guest",
-            "Tester1",
-            "Tester2",
-            "Tester3",
-            "Tester4",
-            "Tester5",
-            "Tester6",
-            "Tester7",
-            "Tester8"],
-        "status": "Pending",
-        "messageType": [
-            "Notifications",
-            "Approval",
-            "Veto"
-        ],
-        "dataType": [
-            "Purchase Order",
-            "Manufacturing Bill of Materials",
-            "Engineering Bill of Materials",
-            "Shipping Document",
-            "Requirements Document",
-            "Material Manufacturing Details",
-            "Material Quality Measurements"
-        ]
-    }
+  {
+    "userID": [
+      "Guest",
+      "Tester1",
+      "Tester2",
+      "Tester3",
+      "Tester4",
+      "Tester5",
+      "Tester6",
+      "Tester7",
+      "Tester8"
+    ],
+    "status": "Pending",
+    "messageType": [
+      "Notifications",
+      "Approval",
+      "Veto"
+    ],
+    "dataType": [
+      "Purchase Order",
+      "Manufacturing Bill of Materials",
+      "Engineering Bill of Materials",
+      "Shipping Document",
+      "Requirements Document",
+      "Material Manufacturing Details",
+      "Material Quality Measurements"
+    ]
+  }
 ]

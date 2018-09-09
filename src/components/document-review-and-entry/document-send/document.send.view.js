@@ -9,12 +9,15 @@ import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import TextField from "material-ui/TextField";
 import Button from '@material-ui/core/Button';
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
 import Snackbar from 'material-ui/Snackbar';
 import {connect} from 'react-redux';
 import {createDocumentEntryByUniqueID} from '../../../redux/actions/document.review.entry.actions';
-import {createUserMessageDataByUserID} from '../../../redux/actions/user.message.array.action';
+import {
+    getUserMessageDataByUserID,
+    updateUserMessageDataByUserID
+} from '../../../redux/actions/user.message.array.action';
 //Temporary Only
 import response from './messageData.json';
 
@@ -78,8 +81,7 @@ class DocumentSendView extends React.Component {
             showProgressLogo: true,
             counter: 0
         });
-        let uniqueID = this.guid();
-        let dreURL = uniqueID;
+        let dreURL = this.guid();
         let dreBody = {
             text: this.state.message,
             status: "pending",
@@ -88,47 +90,73 @@ class DocumentSendView extends React.Component {
             fileId: "string"
         };
         this.props.createDocumentEntryByUniqueID(dreURL, dreBody);
+        let oldMessages = [];
+        let allMessages = [];
         let umaURL = this.state.recipientUserName;
         let umaBody = {
-            userMessages: uniqueID,
-            archivedMessages: "string"
+            userMessages: ["string"],
+            archivedMessages: ["string"]
         };
-        this.props.createUserMessageDataByUserID(umaURL, umaBody);
+        this.props.getUserMessageDataByUserID(umaURL);
         setTimeout(
             function () {
                 this.setState({counter: 1});
                 if (this.state.counter === 1) {
-                    if (this.props.data.dreReducer.createDocumentEntryByUniqueIDSuccess === true
-                        && this.props.data.umaReducer.createUserMessageDataByUserIDSuccess === true) {
-                        this.setState({
-                            showProgressLogo: false,
-                            snackbar: {
-                                autoHideDuration: 2000,
-                                message: 'Document Sent Successfully!',
-                                open: true,
-                                sbColor: '#23CE6B'
-                            },
-                            recipientUserName: '',
-                            messageType: '',
-                            dataType: '',
-                            message: '',
-                            counter: 0
-                        });
+                    if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages) {
+                        oldMessages = this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages;
+                        allMessages = [dreURL];
+                        for (let i = 0; i < oldMessages.length; i++) {
+                            allMessages.push(oldMessages[i]);
+                        }
+                        umaBody = {
+                            userMessages: allMessages,
+                            archivedMessages: ["string"]
+                        };
+                        this.props.updateUserMessageDataByUserID(umaURL, umaBody);
                     } else {
-                        this.setState({
-                            showProgressLogo: false,
-                            snackbar: {
-                                autoHideDuration: 2000,
-                                message: 'Error sending document! Please try again.',
-                                open: true,
-                                sbColor: 'red'
-                            }
-                        })
+                        umaBody = {
+                            userMessages: [dreURL],
+                            archivedMessages: ["string"]
+                        };
+                        this.props.updateUserMessageDataByUserID(umaURL, umaBody);
                     }
+                    setTimeout(
+                        function () {
+                            if (this.props.data.dreReducer.createDocumentEntryByUniqueIDSuccess === true
+                                && this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess === true) {
+                                this.setState({
+                                    showProgressLogo: false,
+                                    snackbar: {
+                                        autoHideDuration: 2000,
+                                        message: 'Document Sent Successfully!',
+                                        open: true,
+                                        sbColor: '#23CE6B'
+                                    },
+                                    recipientUserName: '',
+                                    messageType: '',
+                                    dataType: '',
+                                    message: '',
+                                    counter: 0
+                                });
+                            } else {
+                                this.setState({
+                                    showProgressLogo: false,
+                                    snackbar: {
+                                        autoHideDuration: 2000,
+                                        message: 'Error sending document! Please try again.',
+                                        open: true,
+                                        sbColor: 'red'
+                                    }
+                                })
+                            }
+                        }
+                            .bind(this),
+                        2000
+                    );
                 }
             }
                 .bind(this),
-            3000
+            1000
         );
         event.preventDefault();
     };
@@ -292,7 +320,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         createDocumentEntryByUniqueID: (url, body) => dispatch(createDocumentEntryByUniqueID(url, body)),
-        createUserMessageDataByUserID: (url, body) => dispatch(createUserMessageDataByUserID(url, body))
+        getUserMessageDataByUserID: (url, body) => dispatch(getUserMessageDataByUserID(url)),
+        updateUserMessageDataByUserID: (url, body) => dispatch(updateUserMessageDataByUserID(url, body))
     };
 };
 
