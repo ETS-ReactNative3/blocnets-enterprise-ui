@@ -2,7 +2,7 @@ import React from 'react';
 import blocnetsLogo from "../../../blocknetwhite-1.png";
 import Grid from '@material-ui/core/Grid';
 import FormControl from "@material-ui/core/FormControl/FormControl";
-import InputLabel from "@material-ui/core/InputLabel/InputLabel";
+import FormLabel from "@material-ui/core/FormLabel/FormLabel";
 import Select from "@material-ui/core/Select/Select";
 import Input from "@material-ui/core/Input/Input";
 import MenuItem from "@material-ui/core/MenuItem/MenuItem";
@@ -205,10 +205,15 @@ class DocumentSendView extends React.Component {
                 <div style={{padding: 24}}>
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
+                            <FormLabel style={{"textAlign": "left"}}>Recipient User Name</FormLabel>
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <FormLabel style={{"textAlign": "left"}}>Message Type</FormLabel>
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
                             <FormControl fullWidth={true}>
-                                <InputLabel style={{"textAlign": "left"}}>
-                                    Recipient User Name
-                                </InputLabel>
                                 <Select value={this.state.recipientUserName} onChange={this.handleChange}
                                         input={<Input name="recipientUserName" style={{"textAlign": "left"}}/>}
                                         displayEmpty>
@@ -221,9 +226,6 @@ class DocumentSendView extends React.Component {
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <FormControl fullWidth={true}>
-                                <InputLabel style={{"textAlign": "left"}}>
-                                    Message Type
-                                </InputLabel>
                                 <Select value={this.state.messageType} onChange={this.handleChange}
                                         input={<Input name="messageType" style={{"textAlign": "left"}}/>}
                                         displayEmpty>
@@ -245,13 +247,11 @@ class DocumentSendView extends React.Component {
                             </Grid>
                         </Grid>
                     </Grid>
-                    <br/>
+                    <br/><br/>
                     <Grid container spacing={24}>
                         <Grid container item xs={6}>
+                            <FormLabel style={{"textAlign": "left"}}>Data Type</FormLabel>
                             <FormControl fullWidth={true}>
-                                <InputLabel style={{"textAlign": "left"}}>
-                                    Data Type
-                                </InputLabel>
                                 <Select value={this.state.dataType} onChange={this.handleChange}
                                         input={<Input name="dataType" style={{"textAlign": "left"}}/>}
                                         displayEmpty>
@@ -265,7 +265,7 @@ class DocumentSendView extends React.Component {
                     </Grid>
                     <br/>
                     <Grid container spacing={24}>
-                        <Grid container item xs={6}>
+                        <Grid container item xs={12}>
                             <TextField
                                 value={this.state.message}
                                 onChange={this.handleChange}
