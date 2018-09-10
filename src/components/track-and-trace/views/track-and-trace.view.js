@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import blocnetsLogo from "../../../blocknetwhite-1.png";
 import Grid from '@material-ui/core/Grid';
 import TextField from 'material-ui/TextField';
 import Button from '@material-ui/core/Button';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
 import red from '@material-ui/core/colors/red';
 import Dialog from 'material-ui/Dialog';
@@ -13,12 +13,11 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Switch from "@material-ui/core/Switch/Switch";
-import Fade from "@material-ui/core/Fade/Fade";
-import Tree from 'react-d3-tree';
 import Snackbar from 'material-ui/Snackbar';
-import { connect } from 'react-redux';
-import { getShippingDataByMaterialID } from '../../../redux/actions/shipping.and.receiving.actions';
-import { createConstruct } from '../../../redux/actions/tree.spawn.action';
+import {connect} from 'react-redux';
+import {getShippingDataByMaterialID} from '../../../redux/actions/shipping.and.receiving.actions';
+import {createConstruct} from '../../../redux/actions/tree.spawn.action';
+import TrackAndTraceTreeView from './track-and-trace.tree.view';
 
 let data = [];
 let tree = [];
@@ -36,7 +35,7 @@ let counter = 0;
 
 function createData(info1, info2) {
     counter += 1;
-    return { id: counter, info1, info2 };
+    return {id: counter, info1, info2};
 }
 
 class TrackAndTraceView extends Component {
@@ -66,6 +65,7 @@ class TrackAndTraceView extends Component {
             tree: '',
             openDialog: false,
             showMaterialMap: false,
+            showMaterialMapSwitch: false,
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
@@ -76,18 +76,22 @@ class TrackAndTraceView extends Component {
     }
 
     handleChange = (event) => {
-        this.setState({ [event.target.name]: event.target.value });
+        this.setState({[event.target.name]: event.target.value});
         if ([event.target.name].toString() === 'showMaterialMapSwitch' && event.target.checked === true) {
-            this.setState({ showMaterialMap: true });
+            this.setState({showMaterialMap: true});
         } else if ([event.target.name].toString() === 'showMaterialMapSwitch' && event.target.checked === false) {
-            this.setState({ showMaterialMap: false });
+            this.setState({showMaterialMap: false});
         }
     };
 
     handleTrack = (event) => {
         tree = []; // Clean Tree
         this.props.data.sarReducer.getShippingDataByMaterialIDSuccess = '';
-        this.setState({ showProgressLogo: true });
+        this.setState({
+            showProgressLogo: true,
+            openDialog: false,
+            showMaterialMap: false
+        });
         this.props.getShippingDataByMaterialID(this.state.materialID);
         this.props.createConstruct(this.state.materialID);
         setTimeout(
@@ -125,7 +129,7 @@ class TrackAndTraceView extends Component {
                         createData('Shipment Completed', dataShipmentCompleted),
                         createData('Shipped', dataShipped),
                         createData('Received Shipment', dataReceivedShipent),
-                        createData('Received Shipment', dataReceivedOrder),
+                        createData('Received Order', dataReceivedOrder),
                     ];
                     this.setState({
                         showProgressLogo: false,
@@ -163,6 +167,13 @@ class TrackAndTraceView extends Component {
         });
     };
 
+    handleTreeClose = () => {
+        this.setState({
+            showMaterialMap: false,
+            showMaterialMapSwitch: false
+        });
+    };
+
     handleSnackbarClose = () => {
         this.setState({
             snackbar: {
@@ -192,10 +203,10 @@ class TrackAndTraceView extends Component {
             <form>
                 <div>
                     {this.state.showProgressLogo ?
-                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt="" />
+                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt=""/>
                         </div> : ""}
                 </div>
-                <div style={{ padding: 24 }}>
+                <div style={{padding: 24}}>
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <TextField
@@ -205,7 +216,7 @@ class TrackAndTraceView extends Component {
                                 name="materialID"
                                 floatingLabelText="Material ID"
                                 floatingLabelFixed={true}
-                                style={{ "float": "left", "textAlign": "left" }}
+                                style={{"float": "left", "textAlign": "left"}}
                                 hintText=""
                             />
                         </Grid>
@@ -214,8 +225,8 @@ class TrackAndTraceView extends Component {
                         <Grid container item xs={12}>
                             <MuiThemeProvider theme={buttonThemeYellow}>
                                 <Button type="submit" value="Track" variant="contained" color="primary"
-                                    fullWidth={true} onClick={this.handleTrack}
-                                    disabled={!this.state.materialID}>
+                                        fullWidth={true} onClick={this.handleTrack}
+                                        disabled={!this.state.materialID}>
                                     Track
                                 </Button>
                             </MuiThemeProvider>
@@ -223,26 +234,26 @@ class TrackAndTraceView extends Component {
                     </Grid>
                 </div>
                 <Dialog open={this.state.openDialog} onClose={this.handleDialogClose}
-                    title="Block Information" autoScrollBodyContent={true}>
-                    <div style={{ padding: 24 }}>
+                        title="Block Information" autoScrollBodyContent={true}>
+                    <div style={{padding: 24}} id="treeContainer">
                         <Grid container justify="flex-end">
                             <Grid item>
-                                <i className="material-icons" style={{ "cursor": "pointer" }}
-                                    onClick={this.handleDialogClose}>close</i>
+                                <i className="material-icons" style={{"cursor": "pointer"}}
+                                   onClick={this.handleDialogClose}>close</i>
                             </Grid>
                         </Grid>
-                        <br />
+                        <br/>
                         <Grid container justify="center">
                             <Grid item xs={12}>
-                                <Paper style={{ "width": "100%" }}>
+                                <Paper style={{"width": "100%"}}>
                                     <div>
                                         {this.state.showProgressLogoDialog ?
                                             <div className="overlay"><img src={blocnetsLogo}
-                                                className="App-logo-progress" alt="" />
+                                                                          className="App-logo-progress" alt=""/>
                                             </div> : ""}
                                     </div>
-                                    <div style={{ "overflowX": "auto" }}>
-                                        <Table style={{ "tableLayout": "fixed" }}>
+                                    <div style={{"overflowX": "auto"}}>
+                                        <Table style={{"tableLayout": "fixed"}}>
                                             <TableBody>
                                                 {rows.map(row => {
                                                     return (
@@ -258,26 +269,32 @@ class TrackAndTraceView extends Component {
                                 </Paper>
                             </Grid>
                         </Grid>
-                        <br />
+                        <br/>
                         <Grid container>
                             <Grid item>
                                 <MuiThemeProvider theme={buttonThemeRed}>
                                     <Switch
                                         onChange={this.handleChange}
                                         name="showMaterialMapSwitch"
+                                        checked={this.state.showMaterialMapSwitch}
                                     />
                                     Show Material Map
                                 </MuiThemeProvider>
                             </Grid>
                         </Grid>
-                        <br />
-                        <Fade in={this.state.showMaterialMap}>
-                            <Grid container>
+                        <br/>
+                        <Dialog open={this.state.showMaterialMap} onClose={this.handleTreeClose}>
+                            <Grid container justify="flex-end">
                                 <Grid item>
-                                    <Tree data={this.state.tree} orientation={'horizontal'}/>
+                                    <i className="material-icons" style={{"cursor": "pointer"}}
+                                       onClick={this.handleTreeClose}>close</i>
                                 </Grid>
                             </Grid>
-                        </Fade>
+                            <br/>
+                            <div>
+                                <TrackAndTraceTreeView data={this.state}/>
+                            </div>
+                        </Dialog>
                     </div>
                 </Dialog>
                 <Snackbar
@@ -285,7 +302,7 @@ class TrackAndTraceView extends Component {
                     message={this.state.snackbar.message}
                     autoHideDuration={this.state.snackbar.autoHideDuration}
                     onRequestClose={this.handleSnackbarClose}
-                    bodyStyle={{ backgroundColor: this.state.snackbar.sbColor }}
+                    bodyStyle={{backgroundColor: this.state.snackbar.sbColor}}
                 />
             </form>
         );
