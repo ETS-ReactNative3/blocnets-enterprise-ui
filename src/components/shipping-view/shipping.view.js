@@ -430,7 +430,7 @@ class ShippingView extends Component {
                         </Grid>
                     </Grid>
                 </div>
-                <Dialog open={this.state.openDialog} onClose={this.handleDialogClose}>
+                <Dialog open={this.state.openDialog} onClose={this.handleDialogClose} autoScrollBodyContent={true}>
                     <div style={{padding: 24}}>
                         <Grid container>
                             <Grid container item xs={12}>

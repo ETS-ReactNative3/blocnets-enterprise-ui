@@ -89,10 +89,13 @@ class ReceivingView extends Component {
                 function () {
                     dataByMaterialID = JSON.parse(sessionStorage.getItem('DataByMaterialID'));
                     if (dataByMaterialID) {
+                        if (dataByMaterialID.manuallyShipped === true) {
+                            dataByMaterialIDManuallyShipped = 'YES'
+                        }
                         materialIDRows = [
                             createData('Material ID', this.state.materialID),
                             createData('Shipment ID', dataByMaterialID.shipmentID),
-                            createData('Address', dataByMaterialID.address1 + ' ' + dataByMaterialID.city + ' ' + dataByMaterialID.state + ' ' + dataByMaterialID.country + ' ' + dataByMaterialID.postalCode),
+                            createData('Address', dataByMaterialID.address1 + ' ' + dataByMaterialID.address2 + ' ' + dataByMaterialID.city + ' ' + dataByMaterialID.state + ' ' + dataByMaterialID.country + ' ' + dataByMaterialID.postalCode),
                             createData('IP Address', dataByMaterialID.ipAddress),
                             createData('Manual Shipping', dataByMaterialIDManuallyShipped),
                             createData('Delivery Order No.', dataByMaterialID.deliverOrderNo),
@@ -103,9 +106,6 @@ class ReceivingView extends Component {
                             openMaterialIDDialog: true,
                             receivedShipment: dataByMaterialID.receivedShipment
                         });
-                        if (dataByMaterialID.manuallyShipped === true) {
-                            dataByMaterialIDManuallyShipped = 'YES'
-                        }
                     } else {
                         this.setState({
                             showProgressLogo: false,
@@ -129,10 +129,13 @@ class ReceivingView extends Component {
                 function () {
                     dataByShipmentID = JSON.parse(sessionStorage.getItem('DataByShipmentID'));
                     if (dataByShipmentID) {
+                        if (dataByShipmentID.manuallyShipped === true) {
+                            dataByShipmentIDManuallyShipped = 'YES'
+                        }
                         shipmentIDRows = [
                             createData('Material ID', dataByShipmentID.materialID),
                             createData('Shipment ID', this.state.shipmentID),
-                            createData('Address', dataByShipmentID.address1 + ' ' + dataByShipmentID.city + ' ' + dataByShipmentID.state + ' ' + dataByShipmentID.country + ' ' + dataByShipmentID.postalCode),
+                            createData('Address', dataByShipmentID.address1 + ' ' + dataByShipmentID.address2 + ' ' + dataByShipmentID.city + ' ' + dataByShipmentID.state + ' ' + dataByShipmentID.country + ' ' + dataByShipmentID.postalCode),
                             createData('IP Address', dataByShipmentID.ipAddress),
                             createData('Manual Shipping', dataByShipmentIDManuallyShipped),
                             createData('Delivery Order No.', dataByShipmentID.deliverOrderNo),
@@ -143,9 +146,6 @@ class ReceivingView extends Component {
                             openShipmentIDDialog: true,
                             receivedShipment: dataByShipmentID.receivedShipment
                         });
-                        if (dataByShipmentID.manuallyShipped === true) {
-                            dataByShipmentIDManuallyShipped = 'YES'
-                        }
                     } else {
                         this.setState({
                             showProgressLogo: false,
@@ -411,7 +411,7 @@ class ReceivingView extends Component {
                         </Grid>
                     </Grid>
                 </div>
-                <Dialog open={this.state.openMaterialIDDialog} onClose={this.handleDialogClose}>
+                <Dialog open={this.state.openMaterialIDDialog} onClose={this.handleDialogClose} autoScrollBodyContent={true}>
                     <div style={{padding: 24}}>
                         <Grid container justify="flex-end">
                             <Grid item>
@@ -461,7 +461,7 @@ class ReceivingView extends Component {
                         </Grid>
                     </div>
                 </Dialog>
-                <Dialog open={this.state.openShipmentIDDialog} onClose={this.handleDialogClose}>
+                <Dialog open={this.state.openShipmentIDDialog} onClose={this.handleDialogClose} autoScrollBodyContent={true}>
                     <div style={{padding: 24}}>
                         <Grid container justify="flex-end">
                             <Grid item>
