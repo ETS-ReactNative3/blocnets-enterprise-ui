@@ -22,6 +22,7 @@ import { Card, CardTitle, CardText } from 'material-ui/Card';
 import Tree from 'react-d3-tree';
 import { connect } from 'react-redux';
 import { getShippingDataByMaterialID } from '../../../redux/actions/shipping.and.receiving.actions';
+import { createConstruct } from '../../../redux/actions/tree.spawn.action';
 
 let counter = 0;
 
@@ -207,51 +208,6 @@ class TrackerView extends Component {
             />,
         ];
 
-        const myTreeData = [
-            {
-                name: 'heroku=1',
-                attributes: {
-                    timestamp: 'Apr 7 07:34:11',
-                    block: 'Instantiated worldcrop',
-                    Booty: 'Juicy af'
-                },
-                children: [
-                    {
-                        name: 'Entity_1',
-                        attributes: {
-                            timestamp: 'Apr 7 07: 34: 40 ',
-                            block: 'Updated worldcorp',
-                        },
-                        children: [
-                            {
-                                name: 'Entity_3',
-                                attributes: {
-                                    timestamp: 'Apr 7 07:36:05',
-                                    block: 'Finalized worldcorp',
-                                }
-                            },
-                        ]
-                    },
-                    {
-                        name: 'Entity_2',
-                        attributes: {
-                            timestamp: 'Apr 7 07: 34: 40 ',
-                            block: 'Refactored worldcorp',
-                        },
-                        children: [
-                            {
-                                name: 'Entity_4',
-                                attributes: {
-                                    timestamp: 'Apr 7 07:36:05',
-                                    block: 'Finalized worldcorp',
-                                }
-                            },
-                        ]
-                    },
-                ],
-            },
-        ];
-
         return (
             <form onSubmit={this.handleSubmit} style={{ "marginTop": "5%" }}>
                 <div>
@@ -383,6 +339,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getShippingDataByMaterialID: (url) => dispatch(getShippingDataByMaterialID(url)),
+        createConstruct: (materialID) => dispatch(createConstruct(materialID))
     };
 };
 

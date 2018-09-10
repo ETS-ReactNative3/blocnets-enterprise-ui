@@ -5,7 +5,8 @@ import {
   sarReducer,
   prdReducer,
   dreReducer,
-  umaReducer
+  umaReducer,
+  spawnConstructReducer
 }
   from './reducers/main.reducers';
 
@@ -15,5 +16,6 @@ export default combineReducers({
   sarReducer,
   prdReducer,
   dreReducer,
-  umaReducer
+  umaReducer,
+  spawnConstructReducer
 });
