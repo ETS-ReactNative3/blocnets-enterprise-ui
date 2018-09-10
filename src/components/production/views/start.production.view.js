@@ -146,7 +146,11 @@ class StartProduction extends Component {
 
         let tmp = [];
 
-        // Foreach Material ID in this state, get it's shipping data and update the "receivedOrder" flags
+        /** 
+         * Foreach Material ID in this state, 
+         * get it's shipping data and update "receivedOrder" flags
+         * and the new Production Order No.
+        */
         if (data.oldMaterialID[0].materialID) {
             tmp.push(data.oldMaterialID[0].materialID);
             this.state.materialID.forEach(element => tmp.push(element));

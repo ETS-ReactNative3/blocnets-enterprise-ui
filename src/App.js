@@ -98,7 +98,7 @@ class App extends Component {
         this.state = {
             "open": false,
             "show": null,
-            transactionCode: 'DRE01',
+            transactionCode: 'DRE02',
             showProgressLogo: false,
             searchKey: '',
             openSearch: false,
@@ -119,7 +119,7 @@ class App extends Component {
         this.setState({
             show: 'home',
             open: false,
-            transactionCode: 'DRE01'
+            transactionCode: 'DRE02'
         });
     };
 
@@ -204,7 +204,7 @@ class App extends Component {
         this.setState({
             show: 'senddocumentview',
             open: false,
-            transactionCode: 'DSR01'
+            transactionCode: 'DRE01'
         });
     };
 
