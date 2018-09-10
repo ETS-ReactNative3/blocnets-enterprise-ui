@@ -122,10 +122,10 @@ class StartProduction extends Component {
 
     handleSubmit = () => {
 
-        /* this.setState({
+        this.setState({
             showProgressLogo: true,
             showProgressLogoDialog: true
-        }); */
+        });
 
         let data = {
             materialID: '',
