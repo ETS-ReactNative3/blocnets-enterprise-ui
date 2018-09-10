@@ -154,7 +154,6 @@ export function getAndUpdateSARListByMaterialID(ListOfMaterialIDs, prdKey) {
                     let obj = response.data;
                     obj.receivedOrder = true;
                     obj.prdKey = prdKey;
-                    console.log(obj);
                     axios.put(config.chaincodes.Default + config.chaincodes.SAR + ListOfMaterialIDs[i], obj, { headers })
                         .then(() => {
                             return dispatch({

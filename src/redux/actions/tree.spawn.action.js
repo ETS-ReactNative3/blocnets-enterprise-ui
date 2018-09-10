@@ -32,29 +32,29 @@ export function createConstruct(materialID) {
         axios.get(config.chaincodes.Default + config.chaincodes.SAR + materialID, { headers })
             .then((response) => {
                 let obj = response.data;
-                if (obj.prdKey) {
-                    axios.get(config.chaincodes.Default + config.chaincodes.PRD + obj.prdKey, { headers })
+                let key = obj.prdKey;
+                if (key) {
+                    axios.get(config.chaincodes.Default + config.chaincodes.PRD + key, { headers })
                         .then((response) => {
-                            let prdObj = response.data
-                            let construct = [
-                                {
-                                    name: obj.materialID,
-                                    attributes: { ipAddress: obj.ipAddress },
-                                    children: [],
-                                },
-                            ];
+                            let construct = {
+                                name: obj.materialID,
+                                attributes: { ipAddress: obj.ipAddress },
+                                children: [],
+                            };
 
-                            for (var i = 0; i < prdObj.oldMaterialID.length; i++) {
+                            let tmp = [];
+
+                            for (var i = 0; i < response.data.oldMaterialID.length; i++) {
                                 let nestedObj = {
-                                    name: prdObj.oldMaterialID[i].materialID,
+                                    name: response.data.oldMaterialID[i].materialID,
                                     attributes: {
-                                        parent: prdObj.oldMaterialID[i].parent
+                                        parent: response.data.oldMaterialID[i].parent
                                     },
-                                    children: [prdObj.oldMaterialID[i].children],
+                                    children: [response.data.oldMaterialID[i].children],
                                 }
-                                construct.children.push(nestedObj);
+                                tmp.push(nestedObj);
                             }
-
+                            construct.children.push(tmp);
                             return dispatch({
                                 type: "GET_PRD_DATA_FOR_CONSTRUCT_SUCCESS",
                                 payload: construct

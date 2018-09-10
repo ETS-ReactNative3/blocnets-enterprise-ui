@@ -273,7 +273,7 @@ export function umaReducer(state = {}, action) {
 
 export function spawnConstructReducer(state = {}, action) {
     switch (action.type) {
-        case "LOADING CONSTRUCT": {
+        case "LOADING_CONSTRUCT": {
             return state = { ...state, loadingConstruct: action.payload }
         }
         case "GET_PRD_DATA_FOR_CONSTRUCT_SUCCESS": {
