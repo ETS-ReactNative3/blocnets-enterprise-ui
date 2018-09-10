@@ -132,7 +132,7 @@ export function bomReducer(state = {}, action) {
     }
 }
 
-export function sarReducer(state = {}, action) {
+export function sarReducer(state = { items: [], errors: [] }, action) {
     switch (action.type) {
         case "LOADING_SAR_VIEW": {
             return state = { ...state, loadingSARView: action.payload }
@@ -172,6 +172,18 @@ export function sarReducer(state = {}, action) {
         }
         case "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_FAILED": {
             return state = { ...state, updateShippingDataByMaterialIDFail: action.payload }
+        }
+        case "GET_SAR_DATA_LIST_BY_MATERIAL_ID_SUCCESS": {
+            return state = { ...state, items: [...state.items, action.payload] }
+        }
+        case "GET_SAR_DATA_LIST_BY_MATERIAL_ID_FAILED": {
+            return state = { ...state, errors: [...state.errors, action.payload] }
+        }
+        case "UPDATE_SAR_DATA_LIST_BY_MATERIAL_ID_SUCCESS": {
+            return state = { ...state, getAndUpdateSARListByMaterialIDSuccess: action.payload }
+        }
+        case "UPDATE_SAR_DATA_LIST_BY_MATERIAL_ID_FAILED": {
+            return state = { ...state, errors: [...state.errors, action.payload] }
         }
         default:
             return state;

@@ -22,9 +22,7 @@ import {
 }
     from '../../../redux/actions/production.actions';
 import {
-    getShippingDataByMaterialID,
-    updateShippingDataByMaterialID,
-    updateShippingDataByShipmentID
+    getAndUpdateSARListByMaterialID
 }
     from '../../../redux/actions/shipping.and.receiving.actions';
 
@@ -123,10 +121,12 @@ class StartProduction extends Component {
     };
 
     handleSubmit = () => {
-        this.setState({
+
+        /* this.setState({
             showProgressLogo: true,
             showProgressLogoDialog: true
-        });
+        }); */
+
         let data = {
             materialID: '',
             oldMaterialID: [
@@ -142,16 +142,18 @@ class StartProduction extends Component {
             receivedOrder: true,
             completedProductionOrder: false,
             productionQuantity: ''
-        }
+        };
 
-        // Foreach Material ID in this state, get it's shipping data
-        /*  this.state.materialID.forEach(
-             element => this.props.getShippingDataByMaterialID(element))
-             .then(() => {
-                 // this.props.getShippingDataByMaterialID
-                 // then update each of it's data field of 'receivedOrder' to true.
-                 return this.props.data.sarReducer.getShippingDataByMaterialIDSuccess;
-             }); */
+        let tmp = [];
+
+        // Foreach Material ID in this state, get it's shipping data and update the "receivedOrder" flags
+        if (data.oldMaterialID[0].materialID) {
+            tmp.push(data.oldMaterialID[0].materialID);
+            this.state.materialID.forEach(element => tmp.push(element));
+            if (tmp) {
+                this.props.getAndUpdateSARListByMaterialID(tmp, this.state.productionOrderNo);
+            }
+        }
 
         for (let i = 0; i < this.state.materialID.length; i++) {
             if (this.state.materialID[i]) {
@@ -371,9 +373,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         createProductionOrderByProdOrderNo: (url, body) => dispatch(createProductionOrderByProdOrderNo(url, body)),
-        getShippingDataByMaterialID: (url) => dispatch(getShippingDataByMaterialID(url)),
-        updateShippingDataByMaterialID: (url, body) => dispatch(updateShippingDataByMaterialID(url, body)),
-        updateShippingDataByShipmentID: (url, body) => dispatch(updateShippingDataByShipmentID(url, body)),
+        getAndUpdateSARListByMaterialID: (array, key) => dispatch(getAndUpdateSARListByMaterialID(array, key))
     };
 };
 
