@@ -42,19 +42,17 @@ export function createConstruct(materialID) {
                                 children: [],
                             };
 
-                            let tmp = [];
-
                             for (var i = 0; i < response.data.oldMaterialID.length; i++) {
                                 let nestedObj = {
                                     name: response.data.oldMaterialID[i].materialID,
                                     attributes: {
                                         parent: response.data.oldMaterialID[i].parent
                                     },
-                                    children: [response.data.oldMaterialID[i].children],
+                                    children: response.data.oldMaterialID[i].children,
                                 }
-                                tmp.push(nestedObj);
+                                construct.children.push(nestedObj);
                             }
-                            construct.children.push(tmp);
+                            console.log(JSON.stringify(construct));
                             return dispatch({
                                 type: "GET_PRD_DATA_FOR_CONSTRUCT_SUCCESS",
                                 payload: construct

@@ -63,7 +63,7 @@ class TrackAndTraceView extends Component {
             receivedShipment: '',
             receivedOrder: '',
             prdKey: '',
-            tree: [{}],
+            tree: '',
             openDialog: false,
             showMaterialMap: false,
             snackbar: {
@@ -85,6 +85,7 @@ class TrackAndTraceView extends Component {
     };
 
     handleTrack = (event) => {
+        tree = []; // Clean Tree
         this.props.data.sarReducer.getShippingDataByMaterialIDSuccess = '';
         this.setState({ showProgressLogo: true });
         this.props.getShippingDataByMaterialID(this.state.materialID);
@@ -94,7 +95,6 @@ class TrackAndTraceView extends Component {
                 if (this.props.data.sarReducer.getShippingDataByMaterialIDSuccess) {
                     data = this.props.data.sarReducer.getShippingDataByMaterialIDSuccess;
                     tree.push(this.props.data.spawnConstructReducer.construct);
-                    //tree = this.props.data.spawnConstructReducer.construct;
                     if (data.manuallyShipped === true) {
                         dataManualShipping = 'YES'
                     }
@@ -274,7 +274,7 @@ class TrackAndTraceView extends Component {
                         <Fade in={this.state.showMaterialMap}>
                             <Grid container>
                                 <Grid item>
-                                    <Tree data={tree} /* orientation={"horizontal"} *//>
+                                    <Tree data={this.state.tree} orientation={'horizontal'}/>
                                 </Grid>
                             </Grid>
                         </Fade>
