@@ -1,23 +1,59 @@
 import React, { Component } from 'react';
 import blocnetsLogo from "../../../blocknetwhite-1.png";
+import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
-import Dialog from 'material-ui/Dialog';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
+import Dialog from 'material-ui/Dialog'; 
 import FlatButton from 'material-ui/FlatButton';
-import Toggle from 'material-ui/Toggle';
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
+import red from '@material-ui/core/colors/red';
+import Toggle from 'material-ui/Toggle';
 import { Card, CardTitle, CardText } from 'material-ui/Card';
 import Tree from 'react-d3-tree';
 import { connect } from 'react-redux';
 import { getShippingDataByMaterialID } from '../../../redux/actions/shipping.and.receiving.actions';
 
+let counter = 0;
+
+function createData(info1, info2) {
+    counter += 1;
+    return {id: counter, info1, info2};
+}
+
 class TrackerView extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            materialID: '',
+            shipmentID: '',
+            shipmentSent: '',
+            shipmentCompleted: '',
+            shipmentQuantity: '',
+            manuallyShipped: '',
+            shipped: true,
+            addressLine1: '',
+            addressLine2: '',
+            city: '',
+            state: '',
+            country: '',
+            postalCode: '',
+            ipAddress: '',
+            receivedShipment: '',
+            receivedOrder: '',
+            deliveryOrderNo: '',
+            prdKey: '',
+            openDialog: false,
+            showProgressLogoDialog: false,
             showProgressLogo: false,
             snackBar: {
                 autoHideDuration: 2000,
@@ -136,9 +172,32 @@ class TrackerView extends Component {
             },
         });
 
+        const buttonThemeRed = createMuiTheme({
+            palette: {
+                primary: red
+            },
+        });
+
         const style = {
             margin: 12,
         };
+
+        const rows = [
+            createData('Material ID', this.state.materialID),
+            createData('Shipment ID', this.state.shipmentID),
+            createData('Address', this.state.addressLine1 + ' ' + this.state.addressLine2 + ' '
+                + this.state.city + ' ' + this.state.state + ' ' + this.state.postalCode + ' '
+                + this.state.country),
+            createData('IP Address', this.state.ipAddress),
+            createData('Manually Shipped', this.state.manuallyShipped),
+            createData('Delivery Order No.', this.state.deliveryOrderNo),
+            createData('Shipment Quantity', this.state.shipmentQuantity),
+            createData('Shipment Sent', this.state.shipmentSent),
+            createData('Shipment Completed', this.state.shipmentCompleted),
+            createData('Received Shipment', this.state.receivedShipment),
+            createData('Received Order', this.state.receivedOrder),
+            createData('Started Production', this.state.prdKey)
+        ];
 
         const actions = [
             <FlatButton
@@ -202,20 +261,11 @@ class TrackerView extends Component {
                 </div>
                 <div style={{ padding: 24 }}>
                     <Grid container spacing={24}>
-                        <Grid container item xs={6} sm={3}>
+                        <Grid container item xs={12} sm={3}>
                             <TextField
                                 value={this.state.id} onChange={this.handleIdChange}
                                 type="text"
                                 floatingLabelText="Material ID"
-                                floatingLabelFixed={true}
-                                style={{ "float": "left", "marginLeft": "5%" }}
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                value={this.state.id} onChange={this.handleIdChange}
-                                type="text"
-                                floatingLabelText="Production Order"
                                 floatingLabelFixed={true}
                                 style={{ "float": "left", "marginLeft": "5%" }}
                             />
@@ -245,31 +295,78 @@ class TrackerView extends Component {
                     autoHideDuration={this.state.snackBar.autoHideDuration}
                     onRequestClose={this.handleRequestClose}
                 />
-                <Dialog
-                    title="Block Information "
-                    actions={actions}
-                    modal={false}
-                    open={this.state.dialog.open}
-                    onRequestClose={this.handleClose}
-                >
-                    <Card>
-                        <div>
-                            <CardText>{JSON.stringify(this.props.data.sarReducer.getShippingDataByMaterialIDSuccess)}</CardText>
-                        </div>
-                    </Card>
-                    < br />
-                    <Toggle
-                        toggled={this.state.legacy.expanded}
-                        onToggle={this.handleLegacyToggle}
-                        labelPosition="right"
-                        label="Show eBOM example"
-                    />
-                    <Card expanded={this.state.legacy.expanded} onExpandChange={this.handleExpandChange}>
-                        <CardTitle title="eBOM" subtitle="example" expandable={true} />
-                        <CardText expandable={true}>
-                            <Tree data={myTreeData} />
-                        </CardText>
-                    </Card>
+                <Dialog open={this.state.openDialog} onClose={this.handleDialogClose}>
+                    <div style={{padding: 24}}>
+                        <Grid container>
+                            <Grid container item xs={12}>
+                                Please confirm information.
+                            </Grid>
+                        </Grid>
+                        <br/>
+                        <Grid container justify="center">
+                            <Grid container item xs={12}>
+                                <Paper style={{"width": "100%"}}>
+                                    <div>
+                                        {this.state.showProgressLogoDialog ?
+                                            <div className="overlay"><img src={blocnetsLogo}
+                                                                          className="App-logo-progress" alt=""/>
+                                            </div> : ""}
+                                    </div>
+                                    <div style={{"overflowX": "auto"}}>
+                                        <Table style={{"tableLayout": "fixed"}}>
+                                            <TableBody>
+                                                {rows.map(row => {
+                                                    return (
+                                                        <TableRow key={row.id}>
+                                                            <TableCell>{row.info1}</TableCell>
+                                                            <TableCell>{row.info2}</TableCell>
+                                                        </TableRow>
+                                                    );
+                                                })}
+                                            </TableBody>
+                                        </Table>{/* 
+                                        <Tree data={myTreeData}></Tree> */}
+                                    </div>
+                                </Paper>
+                            </Grid>
+                        </Grid>
+                        <br/>
+                        <Grid container spacing={24}>
+                            <Grid container item xs={12}>
+                                <FormGroup row>
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                onChange={this.handleCheckboxChange}
+                                                name="doNotAskAgain"
+                                                color="default"
+                                            />
+                                        }
+                                        label="Do not ask again."
+                                    />
+                                </FormGroup>
+                            </Grid>
+                        </Grid>
+                        <br/>
+                        <Grid container spacing={24}>
+                            <Grid container item xs={4} sm={4}>
+                                <MuiThemeProvider theme={buttonThemeRed}>
+                                    <Button type="submit" value="OK" variant="flat" color="primary" fullWidth={true}
+                                            onClick={this.handleSubmit}>
+                                        OK
+                                    </Button>
+                                </MuiThemeProvider>
+                            </Grid>
+                            <Grid container item xs={4} sm={4}>
+                                <MuiThemeProvider theme={buttonThemeRed}>
+                                    <Button type="submit" value="Cancel" variant="flat" color="primary" fullWidth={true}
+                                            onClick={this.handleDialogClose}>
+                                        Cancel
+                                    </Button>
+                                </MuiThemeProvider>
+                            </Grid>
+                        </Grid>
+                    </div>
                 </Dialog>
             </form >
         );
