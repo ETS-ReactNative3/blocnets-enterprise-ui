@@ -7,7 +7,7 @@ import Snackbar from "material-ui/Snackbar";
 class TrackAndTraceResultsView extends Component {
 
     handleSnackbarClose = () => {
-        this.props.data.snackbar.open = false;
+        this.props.snackbar.open = false;
     };
 
     render() {
@@ -27,7 +27,7 @@ class TrackAndTraceResultsView extends Component {
                                 <Paper style={{"width": "100%", "height": "50vh"}}>
                                     <div style={{"overflowX": "auto"}}>
                                         <Typography align="left">
-                                            {this.props.data.billOfMaterialsData}
+                                            {this.props.tatData}
                                         </Typography>
                                     </div>
                                 </Paper>
@@ -35,11 +35,11 @@ class TrackAndTraceResultsView extends Component {
                         </Grid>
                     </div>
                     <Snackbar
-                        open={this.props.data.snackbar.open}
-                        message={this.props.data.snackbar.message}
-                        autoHideDuration={this.props.data.snackbar.autoHideDuration}
+                        open={this.props.snackbar.open}
+                        message={this.props.snackbar.message}
+                        autoHideDuration={this.props.snackbar.autoHideDuration}
                         onRequestClose={this.handleSnackbarClose}
-                        bodyStyle={{backgroundColor: this.props.data.snackbar.sbColor}}
+                        bodyStyle={{backgroundColor: this.props.snackbar.sbColor}}
                     />
                 </div>
             </form>

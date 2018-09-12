@@ -130,7 +130,12 @@ class App extends Component {
     };
 
     showTrackAndTraceResultsView = () => {
-        sessionStorage.clear();
+        this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess = '';
+        this.props.data.bomReducer.getBillOfMaterialsByMaterialNameSuccess = '';
+        this.props.data.bomReducer.getBillOfMaterialsByMaterialDescSuccess = '';
+        this.props.data.bomReducer.getBillOfMaterialsByPartNumberSuccess = '';
+        this.props.data.bomReducer.getBillOfMaterialsByPartNameSuccess = '';
+        this.props.data.bomReducer.getBillOfMaterialsByPartDescSuccess = '';
         this.setState({ billOfMaterialsData: [] });
         if (this.state.searchCriteria === 'Material ID') {
             this.props.getBillOfMaterialsByMaterialID(this.state.searchKey);
@@ -170,7 +175,7 @@ class App extends Component {
         this.setState({
             show: 'shippingview',
             open: false,
-            transactionCode: 'SHP01'
+            transactionCode: 'SAR01'
         });
     };
 
@@ -178,7 +183,7 @@ class App extends Component {
         this.setState({
             show: 'receivingview',
             open: false,
-            transactionCode: 'REC01'
+            transactionCode: 'SAR02'
         });
     };
 
@@ -248,7 +253,9 @@ class App extends Component {
         if (searchCriteria === 'Material ID') {
             setTimeout(
                 function () {
-                    bomData = sessionStorage.getItem('BOMDataByMaterialID');
+                    if(this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess) {
+                        bomData = JSON.stringify(this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess);
+                    }
                     this.handleBOMData(bomData);
                 }
                     .bind(this),
@@ -257,7 +264,9 @@ class App extends Component {
         } else if (searchCriteria === 'Material Name') {
             setTimeout(
                 function () {
-                    bomData = sessionStorage.getItem('BOMDataByMaterialName');
+                    if(this.props.data.bomReducer.getBillOfMaterialsByMaterialNameSuccess) {
+                        bomData = JSON.stringify(this.props.data.bomReducer.getBillOfMaterialsByMaterialNameSuccess);
+                    }
                     this.handleBOMData(bomData);
                 }
                     .bind(this),
@@ -266,7 +275,9 @@ class App extends Component {
         } else if (searchCriteria === 'Material Description') {
             setTimeout(
                 function () {
-                    bomData = sessionStorage.getItem('BOMDataByMaterialDesc');
+                    if(this.props.data.bomReducer.getBillOfMaterialsByMaterialDescSuccess) {
+                        bomData = JSON.stringify(this.props.data.bomReducer.getBillOfMaterialsByMaterialDescSuccess);
+                    }
                     this.handleBOMData(bomData);
                 }
                     .bind(this),
@@ -275,7 +286,9 @@ class App extends Component {
         } else if (searchCriteria === 'Part No.') {
             setTimeout(
                 function () {
-                    bomData = sessionStorage.getItem('BOMDataByPartNumber');
+                    if(this.props.data.bomReducer.getBillOfMaterialsByPartNumberSuccess) {
+                        bomData = JSON.stringify(this.props.data.bomReducer.getBillOfMaterialsByPartNumberSuccess);
+                    }
                     this.handleBOMData(bomData);
                 }
                     .bind(this),
@@ -284,7 +297,9 @@ class App extends Component {
         } else if (searchCriteria === 'Part Name') {
             setTimeout(
                 function () {
-                    bomData = sessionStorage.getItem('BOMDataByPartName');
+                    if(this.props.data.bomReducer.getBillOfMaterialsByPartNameSuccess) {
+                        bomData = JSON.stringify(this.props.data.bomReducer.getBillOfMaterialsByPartNameSuccess);
+                    }
                     this.handleBOMData(bomData);
                 }
                     .bind(this),
@@ -293,7 +308,9 @@ class App extends Component {
         } else if (searchCriteria === 'Part Description') {
             setTimeout(
                 function () {
-                    bomData = sessionStorage.getItem('BOMDataByPartDesc');
+                    if(this.props.data.bomReducer.getBillOfMaterialsByPartDescSuccess) {
+                        bomData = JSON.stringify(this.props.data.bomReducer.getBillOfMaterialsByPartDescSuccess);
+                    }
                     this.handleBOMData(bomData);
                 }
                     .bind(this),
@@ -303,7 +320,7 @@ class App extends Component {
     };
 
     handleBOMData = (bomData) => {
-        if (bomData) {
+        if (bomData.length > 0) {
             this.setState({
                 showProgressLogo: false,
                 billOfMaterialsData: bomData,
@@ -334,7 +351,7 @@ class App extends Component {
 
         switch (this.state.show) {
             case 'trackandtraceresultsview':
-                content = (<TrackAndTraceResultsView data={this.state} />);
+                content = (<TrackAndTraceResultsView tatData={this.state.billOfMaterialsData} snackbar={this.state.snackbar}/>);
                 break;
             case 'billofmaterials':
                 content = (<BillOfMaterials />);
@@ -548,7 +565,7 @@ App.propTypes = {
 
 const mapStateToProps = (state) => {
     return {
-        state
+        data: state
     };
 };
 

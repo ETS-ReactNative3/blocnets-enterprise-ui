@@ -75,19 +75,20 @@ class ReceivingView extends Component {
     };
 
     handleRetrieveShipment = (event) => {
+        this.props.data.sarReducer.getShippingDataByMaterialIDSuccess = '';
+        this.props.data.sarReducer.getShippingDataByShipmentIDSuccess = '';
         this.setState({
             showProgressLogo: true,
             openMaterialIDDialog: false,
             openShipmentIDDialog: false,
             showProgressLogoDialog: false
         });
-        sessionStorage.clear();
         if (this.state.shipmentIDInformed === false) {
             let url = this.state.materialID;
             this.props.getShippingDataByMaterialID(url);
             setTimeout(
                 function () {
-                    dataByMaterialID = JSON.parse(sessionStorage.getItem('DataByMaterialID'));
+                    dataByMaterialID = this.props.data.sarReducer.getShippingDataByMaterialIDSuccess;
                     if (dataByMaterialID) {
                         if (dataByMaterialID.manuallyShipped === true) {
                             dataByMaterialIDManuallyShipped = 'YES'
@@ -127,7 +128,7 @@ class ReceivingView extends Component {
             this.props.getShippingDataByShipmentID(url);
             setTimeout(
                 function () {
-                    dataByShipmentID = JSON.parse(sessionStorage.getItem('DataByShipmentID'));
+                    dataByShipmentID = this.props.data.sarReducer.getShippingDataByShipmentIDSuccess;
                     if (dataByShipmentID) {
                         if (dataByShipmentID.manuallyShipped === true) {
                             dataByShipmentIDManuallyShipped = 'YES'
