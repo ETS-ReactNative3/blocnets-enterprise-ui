@@ -93,10 +93,10 @@ class App extends Component {
             this.setState({ currentDateAndTime: new Date().toUTCString() })
         }, 1000)
 
-        setInterval(() => {
+        /* setInterval(() => {
             let user = 'Guest';
             this.props.getEachMessageForUserID(user);
-        }, 30000);
+        }, 30000); */
     }
 
     constructor(props) {
@@ -480,12 +480,14 @@ class App extends Component {
                     <hr />
                     <MenuItem id="showReceivingViewId" onClick={this.showReceivingView}>Receiving</MenuItem>
                     <hr />
+                    {/* 
                     <MenuItem id="showStartProductionViewId" onClick={this.showStartProductionView}>Start
                         Production</MenuItem>
                     <hr />
                     <MenuItem id="showCompleteProductionViewId" onClick={this.showCompleteProductionView}>Complete
                         Production</MenuItem>
-                    <hr />
+                    <hr /> 
+                    */}
                     <MenuItem id="showTrackAndTraceViewId" onClick={this.showTrackAndTraceView}>Track and
                         Trace</MenuItem>
                     <hr />
