@@ -266,6 +266,12 @@ export function umaReducer(state = {}, action) {
         case "UPDATE_UMA_DATA_BY_USER_ID_SUCCESS": {
             return state = { ...state, updateUserMessageDataByUserIDSuccess: action.payload }
         }
+        case "GET_EACH_MESSAGE_FOR_USER_ID_SUCCESS" : {
+            return state = { ...state, getEachMessageForUserIDSuccess: action.payload }
+        }
+        case "GET_EACH_MESSAGE_FOR_USER_ID_FAILED": {
+            return state = { ...state, getEachMessageForUserIDError: action.payload }
+        }
         default:
             return state;
     }
