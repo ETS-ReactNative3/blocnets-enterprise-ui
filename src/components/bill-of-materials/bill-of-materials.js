@@ -1,7 +1,6 @@
 import React from 'react';
 import BillOfMaterialsForm from './views/bill-of-materials.form.view';
 import BillOfMaterialsReview from './views/bill-of-materials.review.view';
-import BillOfMaterialsTree from './views/bill-of-materials.tree.view';
 
 class BillOfMaterials extends React.Component {
 
@@ -10,17 +9,22 @@ class BillOfMaterials extends React.Component {
         this.state = {
             showBillOfMaterialsForm: true,
             showBillOfMaterialsReview: false,
-            showBillOfMaterialsTree: false,
-            data: ''
+            eBOMData: '',
+            snackbar: {
+                autoHideDuration: 2000,
+                message: '',
+                open: false,
+                sbColor: 'black'
+            }
         };
     }
 
-    handleData = (data) => {
+    handleData = (showBillOfMaterialsForm, showBillOfMaterialsReview, eBOMData, snackbar) => {
         this.setState({
-            showBillOfMaterialsForm: data.showBillOfMaterialsForm,
-            showBillOfMaterialsReview: data.showBillOfMaterialsReview,
-            showBillOfMaterialsTree: data.showBillOfMaterialsTree,
-            data: data
+            showBillOfMaterialsForm: showBillOfMaterialsForm,
+            showBillOfMaterialsReview: showBillOfMaterialsReview,
+            eBOMData: eBOMData,
+            snackbar: snackbar
         });
     };
 
@@ -28,11 +32,15 @@ class BillOfMaterials extends React.Component {
         return (
             <div id="billOfMaterials">
                 {this.state.showBillOfMaterialsForm === true ?
-                    <BillOfMaterialsForm viewHandler={this.handleData}/> : ""}
+                    <BillOfMaterialsForm showBillOfMaterialsForm={this.state.showBillOfMaterialsForm}
+                                         showBillOfMaterialsReview={this.state.showBillOfMaterialsReview}
+                                         eBOMData={this.state.eBOMData} snackbar={this.state.snackbar}
+                                         viewHandler={this.handleData}/> : ""}
                 {this.state.showBillOfMaterialsReview === true ?
-                    <BillOfMaterialsReview data={this.state} viewHandler={this.handleData}/> : ""}
-                {this.state.showBillOfMaterialsTree === true ?
-                    <BillOfMaterialsTree data={this.state} viewHandler={this.handleData}/> : ""}
+                    <BillOfMaterialsReview showBillOfMaterialsForm={this.state.showBillOfMaterialsForm}
+                                           showBillOfMaterialsReview={this.state.showBillOfMaterialsReview}
+                                           eBOMData={this.state.eBOMData} snackbar={this.state.snackbar}
+                                           viewHandler={this.handleData}/> : ""}
             </div>
         )
     }

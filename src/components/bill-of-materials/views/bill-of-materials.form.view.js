@@ -8,74 +8,73 @@ import {Step, Stepper, StepLabel, StepContent} from 'material-ui/Stepper';
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from 'material-ui/Checkbox';
+import Snackbar from "material-ui/Snackbar";
 
 class BillOfMaterialsForm extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            showBillOfMaterialsForm: false,
-            showBillOfMaterialsReview: true,
-            showBillOfMaterialsTree: false,
             activeStep: 0,
-            materialID: '',
-            errorText1: 'This is a required field.',
-            materialName: '',
-            errorText2: 'This is a required field.',
-            materialDescription: '',
-            errorText3: 'This is a required field.',
-            partNo: '',
-            partName: '',
-            partDescription: '',
-            volume: '',
-            weight: '',
-            length: '',
-            width: '',
-            height: '',
-            temperatureLimits: '',
-            shockVibration: '',
-            altitudeRestrictions: '',
-            compressionRestrictions: '',
-            alwaysUpright: '',
-            alwaysUpright2: 'NO',
-            metallic: '',
-            metallic2: 'NO',
-            hazmat: '',
-            hazmat2: 'NO',
-            magnetic: '',
-            magnetic2: 'NO',
-            lengthTolerance: '',
-            roundTolerance: '',
-            nonSkidTolerance: '',
-            shipAddressLine1: '',
-            shipAddressLine2: '',
-            shipCity: '',
-            shipAddressState: '',
-            shipPostalCode: '',
-            shipCountry: '',
-            shipIPAddress: '',
-            billAddressLine1: '',
-            billAddressLine2: '',
-            billCity: '',
-            billAddressState: '',
-            billPostalCode: '',
-            billCountry: '',
-            billIPAddress: '',
-            paymentTerms: '',
-            minEOQuantities: '',
-            maxEOQuantities: '',
-            maxEPWithdrawRate: '',
-            minOrderLeadTimes: '',
-            addressLine1: '',
-            addressLine2: '',
-            city: '',
-            addressState: '',
-            postalCode: '',
-            country: '',
-            ipAddress: '',
-            matSupPerIPAddress: '',
-            supPaymentTerms: '',
-            supOrderPolicy: ''
+            materialID: this.props.eBOMData.materialID,
+            errorText1: this.props.eBOMData.materialID ? '' : 'This is a required field.',
+            materialName: this.props.eBOMData.materialName,
+            errorText2: this.props.eBOMData.materialName ? '' : 'This is a required field.',
+            materialDescription: this.props.eBOMData.materialDescription,
+            errorText3: this.props.eBOMData.materialDescription ? '' : 'This is a required field.',
+            partNo: this.props.eBOMData.partNo,
+            partName: this.props.eBOMData.partName,
+            partDescription: this.props.eBOMData.partDescription,
+            volume: this.props.eBOMData.volume,
+            weight: this.props.eBOMData.weight,
+            materialLength: this.props.eBOMData.materialLength,
+            width: this.props.eBOMData.width,
+            height: this.props.eBOMData.height,
+            temperatureLimits: this.props.eBOMData.temperatureLimits,
+            shockVibration: this.props.eBOMData.shockVibration,
+            altitudeRestrictions: this.props.eBOMData.altitudeRestrictions,
+            compressionRestrictions: this.props.eBOMData.compressionRestrictions,
+            alwaysUpright: this.props.eBOMData.alwaysUpright ? this.props.eBOMData.alwaysUpright : false,
+            alwaysUpright2: this.props.eBOMData.alwaysUpright === true ? 'YES' : 'NO',
+            metallic: this.props.eBOMData.metallic ? this.props.eBOMData.metallic : false,
+            metallic2: this.props.eBOMData.metallic === true ? 'YES' : 'NO',
+            hazmat: this.props.eBOMData.hazmat ? this.props.eBOMData.hazmat : false,
+            hazmat2: this.props.eBOMData.hazmat === true ? 'YES' : 'NO',
+            magnetic: this.props.eBOMData.magnetic ? this.props.eBOMData.magnetic : false,
+            magnetic2: this.props.eBOMData.magnetic === true ? 'YES' : 'NO',
+            lengthTolerance: this.props.eBOMData.lengthTolerance,
+            roundTolerance: this.props.eBOMData.roundTolerance,
+            nonSkidTolerance: this.props.eBOMData.nonSkidTolerance,
+            shipToAddressLine1: this.props.eBOMData.shipToAddressLine1 ? this.props.eBOMData.shipToAddressLine1 : '',
+            shipToAddressLine2: this.props.eBOMData.shipToAddressLine2 ? this.props.eBOMData.shipToAddressLine2 : '',
+            shipToCity: this.props.eBOMData.shipToCity ? this.props.eBOMData.shipToCity : '',
+            shipToAddressState: this.props.eBOMData.shipToAddressState ? this.props.eBOMData.shipToAddressState : '',
+            shipToPostalCode: this.props.eBOMData.shipToPostalCode ? this.props.eBOMData.shipToPostalCode : '',
+            shipToCountry: this.props.eBOMData.shipToCountry ? this.props.eBOMData.shipToCountry : '',
+            shipToIPAddress: this.props.eBOMData.shipToIPAddress,
+            billToAddressLine1: this.props.eBOMData.billToAddressLine1 ? this.props.eBOMData.billToAddressLine1 : '',
+            billToAddressLine2: this.props.eBOMData.billToAddressLine2 ? this.props.eBOMData.billToAddressLine2 : '',
+            billToCity: this.props.eBOMData.billToCity ? this.props.eBOMData.billToCity : '',
+            billToAddressState: this.props.eBOMData.billToAddressState ? this.props.eBOMData.billToAddressState : '',
+            billToPostalCode: this.props.eBOMData.billToPostalCode ? this.props.eBOMData.billToPostalCode : '',
+            billToCountry: this.props.eBOMData.billToCountry ? this.props.eBOMData.billToCountry : '',
+            billToIPAddress: this.props.eBOMData.billToIPAddress ? this.props.eBOMData.billToIPAddress : '',
+            paymentTerms: this.props.eBOMData.paymentTerms,
+            minEOQuantities: this.props.eBOMData.minEOQuantities,
+            maxEOQuantities: this.props.eBOMData.maxEOQuantities,
+            maxEPWithdrawRate: this.props.eBOMData.maxEPWithdrawRate,
+            minOrderLeadTimes: this.props.eBOMData.minOrderLeadTimes,
+            addressLine1: this.props.eBOMData.addressLine1 ? this.props.eBOMData.addressLine1 : '',
+            addressLine2: this.props.eBOMData.addressLine2 ? this.props.eBOMData.addressLine2 : '',
+            city: this.props.eBOMData.city ? this.props.eBOMData.city : '',
+            addressState: this.props.eBOMData.addressState ? this.props.eBOMData.addressState : '',
+            postalCode: this.props.eBOMData.postalCode ? this.props.eBOMData.postalCode : '',
+            country: this.props.eBOMData.country ? this.props.eBOMData.country : '',
+            ipAddress: this.props.eBOMData.ipAddress,
+            matSupPerIPAddress: this.props.eBOMData.matSupPerIPAddress,
+            supPaymentTerms: this.props.eBOMData.supPaymentTerms,
+            supOrderPolicy: this.props.eBOMData.supOrderPolicy,
+            snackbar: this.props.snackbar
         };
     }
 
@@ -102,7 +101,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="volume"
                                     floatingLabelText="Volume"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
                                     value={this.state.volume}
                                     onChange={this.handleChange}
@@ -114,7 +113,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="weight"
                                     floatingLabelText="Weight"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
                                     value={this.state.weight}
                                     onChange={this.handleChange}
@@ -123,12 +122,12 @@ class BillOfMaterialsForm extends React.Component {
                             <Grid container item xs={6} sm={3}>
                                 <TextField
                                     type="text"
-                                    name="length"
+                                    name="materialLength"
                                     floatingLabelText="Length"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
-                                    value={this.state.length}
+                                    value={this.state.materialLength}
                                     onChange={this.handleChange}
                                 />
                             </Grid>
@@ -138,7 +137,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="width"
                                     floatingLabelText="Width"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
                                     value={this.state.width}
                                     onChange={this.handleChange}
@@ -152,7 +151,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="height"
                                     floatingLabelText="Height"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
                                     value={this.state.height}
                                     onChange={this.handleChange}
@@ -171,7 +170,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="temperatureLimits"
                                     floatingLabelText="Temperature Limits"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
                                     value={this.state.temperatureLimits}
                                     onChange={this.handleChange}
@@ -183,7 +182,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="shockVibration"
                                     floatingLabelText="Shock/Vibration"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
                                     value={this.state.shockVibration}
                                     onChange={this.handleChange}
@@ -195,7 +194,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="altitudeRestrictions"
                                     floatingLabelText="Altitude Restrictions"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
                                     value={this.state.altitudeRestrictions}
                                     onChange={this.handleChange}
@@ -207,7 +206,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="compressionRestrictions"
                                     floatingLabelText="Compression Restrictions"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
                                     value={this.state.compressionRestrictions}
                                     onChange={this.handleChange}
@@ -223,6 +222,7 @@ class BillOfMaterialsForm extends React.Component {
                                                 name="alwaysUpright"
                                                 color="default"
                                                 onClick={this.handleCheckboxChange}
+                                                checked={this.state.alwaysUpright}
                                             />
                                         }
                                         label=""
@@ -246,6 +246,7 @@ class BillOfMaterialsForm extends React.Component {
                                                 name="metallic"
                                                 color="default"
                                                 onClick={this.handleCheckboxChange}
+                                                checked={this.state.metallic}
                                             />
                                         }
                                         label=""
@@ -261,6 +262,7 @@ class BillOfMaterialsForm extends React.Component {
                                                 name="hazmat"
                                                 color="default"
                                                 onClick={this.handleCheckboxChange}
+                                                checked={this.state.hazmat}
                                             />
                                         }
                                         label=""
@@ -276,6 +278,7 @@ class BillOfMaterialsForm extends React.Component {
                                                 name="magnetic"
                                                 color="default"
                                                 onClick={this.handleCheckboxChange}
+                                                checked={this.state.magnetic}
                                             />
                                         }
                                         label=""
@@ -296,7 +299,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="lengthTolerance"
                                     floatingLabelText="Length Tolerance"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
                                     value={this.state.lengthTolerance}
                                     onChange={this.handleChange}
@@ -308,7 +311,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="roundTolerance"
                                     floatingLabelText="Round Tolerance"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
                                     value={this.state.roundTolerance}
                                     onChange={this.handleChange}
@@ -320,7 +323,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="nonSkidTolerance"
                                     floatingLabelText="Non-Skid Tolerance"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
                                     value={this.state.nonSkidTolerance}
                                     onChange={this.handleChange}
@@ -336,48 +339,48 @@ class BillOfMaterialsForm extends React.Component {
                             <Grid container item xs={6} sm={3}>
                                 <TextField
                                     type="text"
-                                    name="shipAddressLine1"
+                                    name="shipToAddressLine1"
                                     floatingLabelText="Ship To Address"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
-                                    value={this.state.shipAddressLine1}
+                                    value={this.state.shipToAddressLine1}
                                     onChange={this.handleChange}
                                 />
                             </Grid>
                             <Grid container item xs={6} sm={3}>
                                 <TextField
                                     type="text"
-                                    name="shipAddressLine2"
+                                    name="shipToAddressLine2"
                                     floatingLabelText=" "
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText="Address Line 2"
-                                    value={this.state.shipAddressLine2}
+                                    value={this.state.shipToAddressLine2}
                                     onChange={this.handleChange}
                                 />
                             </Grid>
                             <Grid container item xs={6} sm={3}>
                                 <TextField
                                     type="text"
-                                    name="shipCity"
+                                    name="shipToCity"
                                     floatingLabelText=" "
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText="City"
-                                    value={this.state.shipCity}
+                                    value={this.state.shipToCity}
                                     onChange={this.handleChange}
                                 />
                             </Grid>
                             <Grid container item xs={6} sm={3}>
                                 <TextField
                                     type="text"
-                                    name="shipAddressState"
+                                    name="shipToAddressState"
                                     floatingLabelText=" "
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText="State"
-                                    value={this.state.shipAddressState}
+                                    value={this.state.shipToAddressState}
                                     onChange={this.handleChange}
                                 />
                             </Grid>
@@ -386,24 +389,24 @@ class BillOfMaterialsForm extends React.Component {
                             <Grid container item xs={6} sm={3}>
                                 <TextField
                                     type="text"
-                                    name="shipPostalCode"
+                                    name="shipToPostalCode"
                                     floatingLabelText=" "
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText="Postal Code"
-                                    value={this.state.shipPostalCode}
+                                    value={this.state.shipToPostalCode}
                                     onChange={this.handleChange}
                                 />
                             </Grid>
                             <Grid container item xs={6} sm={3}>
                                 <TextField
                                     type="text"
-                                    name="shipCountry"
+                                    name="shipToCountry"
                                     floatingLabelText=" "
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText="Country"
-                                    value={this.state.shipCountry}
+                                    value={this.state.shipToCountry}
                                     onChange={this.handleChange}
                                 />
                             </Grid>
@@ -412,12 +415,12 @@ class BillOfMaterialsForm extends React.Component {
                             <Grid container item xs={6} sm={3}>
                                 <TextField
                                     type="text"
-                                    name="shipIPAddress"
+                                    name="shipToIPAddress"
                                     floatingLabelText="Ship To IP Address"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
-                                    value={this.state.shipIPAddress}
+                                    value={this.state.shipToIPAddress}
                                     onChange={this.handleChange}
                                 />
                             </Grid>
@@ -426,48 +429,48 @@ class BillOfMaterialsForm extends React.Component {
                             <Grid container item xs={6} sm={3}>
                                 <TextField
                                     type="text"
-                                    name="billAddressLine1"
+                                    name="billToAddressLine1"
                                     floatingLabelText="Bill To Address"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
-                                    value={this.state.billAddressLine1}
+                                    value={this.state.billToAddressLine1}
                                     onChange={this.handleChange}
                                 />
                             </Grid>
                             <Grid container item xs={6} sm={3}>
                                 <TextField
                                     type="text"
-                                    name="billAddressLine2"
+                                    name="billToAddressLine2"
                                     floatingLabelText=" "
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText="Address Line 2"
-                                    value={this.state.billAddressLine2}
+                                    value={this.state.billToAddressLine2}
                                     onChange={this.handleChange}
                                 />
                             </Grid>
                             <Grid container item xs={6} sm={3}>
                                 <TextField
                                     type="text"
-                                    name="billCity"
+                                    name="billToCity"
                                     floatingLabelText=" "
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText="City"
-                                    value={this.state.billCity}
+                                    value={this.state.billToCity}
                                     onChange={this.handleChange}
                                 />
                             </Grid>
                             <Grid container item xs={6} sm={3}>
                                 <TextField
                                     type="text"
-                                    name="billAddressState"
+                                    name="billToAddressState"
                                     floatingLabelText=" "
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText="State"
-                                    value={this.state.billAddressState}
+                                    value={this.state.billToAddressState}
                                     onChange={this.handleChange}
                                 />
                             </Grid>
@@ -476,24 +479,24 @@ class BillOfMaterialsForm extends React.Component {
                             <Grid container item xs={6} sm={3}>
                                 <TextField
                                     type="text"
-                                    name="billPostalCode"
+                                    name="billToPostalCode"
                                     floatingLabelText=" "
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText="Postal Code"
-                                    value={this.state.billPostalCode}
+                                    value={this.state.billToPostalCode}
                                     onChange={this.handleChange}
                                 />
                             </Grid>
                             <Grid container item xs={6} sm={3}>
                                 <TextField
                                     type="text"
-                                    name="billCountry"
+                                    name="billToCountry"
                                     floatingLabelText=" "
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText="Country"
-                                    value={this.state.billCountry}
+                                    value={this.state.billToCountry}
                                     onChange={this.handleChange}
                                 />
                             </Grid>
@@ -502,12 +505,12 @@ class BillOfMaterialsForm extends React.Component {
                             <Grid container item xs={6} sm={3}>
                                 <TextField
                                     type="text"
-                                    name="billIPAddress"
+                                    name="billToIPAddress"
                                     floatingLabelText="Bill To IP Address"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
-                                    value={this.state.billIPAddress}
+                                    value={this.state.billToIPAddress}
                                     onChange={this.handleChange}
                                 />
                             </Grid>
@@ -524,7 +527,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="paymentTerms"
                                     floatingLabelText="Payment Terms"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
                                     value={this.state.paymentTerms}
                                     onChange={this.handleChange}
@@ -542,7 +545,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="minEOQuantities"
                                     floatingLabelText="Minimum Economic Order Quantities"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
                                     fullWidth={true}
                                     value={this.state.minEOQuantities}
@@ -555,7 +558,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="maxEOQuantities"
                                     floatingLabelText="Maximum Economic Order Quantities"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText="" fullWidth={true}
                                     value={this.state.maxEOQuantities}
                                     onChange={this.handleChange}
@@ -569,7 +572,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="maxEPWithdrawRate"
                                     floatingLabelText="Maximum Economic Product Withdraw Rate"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
                                     fullWidth={true}
                                     value={this.state.maxEPWithdrawRate}
@@ -582,7 +585,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="minOrderLeadTimes"
                                     floatingLabelText="Minimum Order Lead Times"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
                                     value={this.state.minOrderLeadTimes}
                                     onChange={this.handleChange}
@@ -601,7 +604,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="addressLine1"
                                     floatingLabelText="Address"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
                                     value={this.state.addressLine1}
                                     onChange={this.handleChange}
@@ -613,7 +616,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="addressLine2"
                                     floatingLabelText=" "
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText="Address Line 2"
                                     value={this.state.addressLine2}
                                     onChange={this.handleChange}
@@ -625,7 +628,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="city"
                                     floatingLabelText=" "
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText="City"
                                     value={this.state.city}
                                     onChange={this.handleChange}
@@ -637,7 +640,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="addressState"
                                     floatingLabelText=" "
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText="State"
                                     value={this.state.addressState}
                                     onChange={this.handleChange}
@@ -651,7 +654,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="postalCode"
                                     floatingLabelText=" "
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText="Postal Code"
                                     value={this.state.postalCode}
                                     onChange={this.handleChange}
@@ -663,7 +666,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="country"
                                     floatingLabelText=" "
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText="Country"
                                     value={this.state.country}
                                     onChange={this.handleChange}
@@ -677,7 +680,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="ipAddress"
                                     floatingLabelText="IP Address"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
                                     value={this.state.ipAddress}
                                     onChange={this.handleChange}
@@ -691,7 +694,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="matSupPerIPAddress"
                                     floatingLabelText="Material Supplied Per IP Address"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
                                     value={this.state.matSupPerIPAddress}
                                     onChange={this.handleChange}
@@ -703,7 +706,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="supPaymentTerms"
                                     floatingLabelText="Supplier Payment Terms"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
                                     value={this.state.supPaymentTerms}
                                     onChange={this.handleChange}
@@ -715,7 +718,7 @@ class BillOfMaterialsForm extends React.Component {
                                     name="supOrderPolicy"
                                     floatingLabelText="Supplier Order Policy"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left"}}
+                                    style={{"float": "left", "textAlign": "left"}}
                                     hintText=""
                                     value={this.state.supOrderPolicy}
                                     onChange={this.handleChange}
@@ -725,7 +728,7 @@ class BillOfMaterialsForm extends React.Component {
                     </div>
                 );
             default:
-                return 'Unknown step';
+                return 'Unknown step.';
         }
     };
 
@@ -751,24 +754,48 @@ class BillOfMaterialsForm extends React.Component {
     handleCheckboxChange = (event) => {
         this.setState({[event.target.name]: event.target.checked});
         if ([event.target.name].toString() === 'alwaysUpright' && event.target.checked === true) {
-            this.setState({alwaysUpright2: 'YES'});
+            this.setState({
+                alwaysUpright: true,
+                alwaysUpright2: 'YES'
+            });
         } else if ([event.target.name].toString() === 'alwaysUpright' && event.target.checked === false) {
-            this.setState({alwaysUpright2: 'NO'});
+            this.setState({
+                alwaysUpright: false,
+                alwaysUpright2: 'NO'
+            });
         }
         if ([event.target.name].toString() === 'metallic' && event.target.checked === true) {
-            this.setState({metallic2: 'YES'});
+            this.setState({
+                metallic: true,
+                metallic2: 'YES'
+            });
         } else if ([event.target.name].toString() === 'metallic' && event.target.checked === false) {
-            this.setState({metallic2: 'NO'});
+            this.setState({
+                metallic: false,
+                metallic2: 'NO'
+            });
         }
         if ([event.target.name].toString() === 'hazmat' && event.target.checked === true) {
-            this.setState({hazmat2: 'YES'});
+            this.setState({
+                hazmat: true,
+                hazmat2: 'YES'
+            });
         } else if ([event.target.name].toString() === 'hazmat' && event.target.checked === false) {
-            this.setState({hazmat2: 'NO'});
+            this.setState({
+                hazmat: false,
+                hazmat2: 'NO'
+            });
         }
         if ([event.target.name].toString() === 'magnetic' && event.target.checked === true) {
-            this.setState({magnetic2: 'YES'});
+            this.setState({
+                magnetic: true,
+                magnetic2: 'YES'
+            });
         } else if ([event.target.name].toString() === 'magnetic' && event.target.checked === false) {
-            this.setState({magnetic2: 'NO'});
+            this.setState({
+                magnetic: false,
+                magnetic2: 'NO'
+            });
         }
     };
 
@@ -784,9 +811,12 @@ class BillOfMaterialsForm extends React.Component {
                 activeStep: state.activeStep + 1,
             }));
         } else {
-            event.preventDefault();
-            this.props.viewHandler(this.state);
+            this.props.viewHandler(false, true, this.state, this.state.snackbar);
         }
+    };
+
+    handleSnackbarClose = () => {
+        this.props.snackbar.open = false;
     };
 
     render() {
@@ -813,12 +843,12 @@ class BillOfMaterialsForm extends React.Component {
                                 name="materialID"
                                 floatingLabelText="Material ID"
                                 floatingLabelFixed={true}
-                                style={{"float": "left"}}
+                                style={{"float": "left", "textAlign": "left"}}
                                 hintText=""
                                 value={this.state.materialID}
                                 onChange={this.handleChange}
                                 errorText={this.state.errorText1}
-                                errorStyle={{"float": "left"}}
+                                errorStyle={{"float": "left", "textAlign": "left"}}
                             />
                         </Grid>
                         <Grid container item xs={12} sm={3}>
@@ -827,12 +857,12 @@ class BillOfMaterialsForm extends React.Component {
                                 name="materialName"
                                 floatingLabelText="Material Name"
                                 floatingLabelFixed={true}
-                                style={{"float": "left"}}
+                                style={{"float": "left", "textAlign": "left"}}
                                 hintText=""
                                 value={this.state.materialName}
                                 onChange={this.handleChange}
                                 errorText={this.state.errorText2}
-                                errorStyle={{"float": "left"}}
+                                errorStyle={{"float": "left", "textAlign": "left"}}
                             />
                         </Grid>
                         <Grid container item xs={12} sm={3}>
@@ -841,12 +871,12 @@ class BillOfMaterialsForm extends React.Component {
                                 name="materialDescription"
                                 floatingLabelText="Material Description"
                                 floatingLabelFixed={true}
-                                style={{"float": "left"}}
+                                style={{"float": "left", "textAlign": "left"}}
                                 hintText=""
                                 value={this.state.materialDescription}
                                 onChange={this.handleChange}
                                 errorText={this.state.errorText3}
-                                errorStyle={{"float": "left"}}
+                                errorStyle={{"float": "left", "textAlign": "left"}}
                             />
                         </Grid>
                         <Grid container item xs={12} sm={3} justify="flex-end">
@@ -867,7 +897,7 @@ class BillOfMaterialsForm extends React.Component {
                                 name="partNo"
                                 floatingLabelText="Part No."
                                 floatingLabelFixed={true}
-                                style={{"float": "left"}}
+                                style={{"float": "left", "textAlign": "left"}}
                                 hintText=""
                                 value={this.state.partNo}
                                 onChange={this.handleChange}
@@ -879,7 +909,7 @@ class BillOfMaterialsForm extends React.Component {
                                 name="partName"
                                 floatingLabelText="Part Name"
                                 floatingLabelFixed={true}
-                                style={{"float": "left"}}
+                                style={{"float": "left", "textAlign": "left"}}
                                 hintText=""
                                 value={this.state.partName}
                                 onChange={this.handleChange}
@@ -891,7 +921,7 @@ class BillOfMaterialsForm extends React.Component {
                                 name="partDescription"
                                 floatingLabelText="Part Description"
                                 floatingLabelFixed={true}
-                                style={{"float": "left"}}
+                                style={{"float": "left", "textAlign": "left"}}
                                 hintText=""
                                 value={this.state.partDescription}
                                 onChange={this.handleChange}
@@ -944,10 +974,16 @@ class BillOfMaterialsForm extends React.Component {
                         );
                     })}
                 </Stepper>
+                <Snackbar
+                    open={this.props.snackbar.open}
+                    message={this.props.snackbar.message}
+                    autoHideDuration={this.props.snackbar.autoHideDuration}
+                    onRequestClose={this.handleSnackbarClose}
+                    bodyStyle={{backgroundColor: this.props.snackbar.sbColor}}
+                />
             </div>
         );
     }
 }
-
 
 export default BillOfMaterialsForm;
