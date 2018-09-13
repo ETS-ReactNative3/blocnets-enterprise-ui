@@ -1,11 +1,20 @@
 import React, {Component} from 'react';
 import blocnetsLogo from "../../blocknetwhite-1.png";
 import Grid from '@material-ui/core/Grid';
+import FormLabel from "@material-ui/core/FormLabel/FormLabel";
 import TextField from 'material-ui/TextField';
-import Typography from "@material-ui/core/Typography/Typography";
+import FormControl from "@material-ui/core/FormControl/FormControl";
+import Select from "@material-ui/core/Select/Select";
+import Input from "@material-ui/core/Input/Input";
+import MenuItem from "@material-ui/core/MenuItem/MenuItem";
+import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Divider from "@material-ui/core/Divider/Divider";
+import IconButton from '@material-ui/core/IconButton';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
@@ -17,20 +26,13 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Snackbar from 'material-ui/Snackbar';
-import Fade from '@material-ui/core/Fade';
 import {connect} from 'react-redux';
+import {getBillOfMaterialsByMaterialID} from '../../redux/actions/bill-of-materials.actions';
 import {
     createShippingDataByMaterialID,
     createShippingDataByShipmentID
 }
     from '../../redux/actions/shipping.and.receiving.actions';
-
-let counter = 0;
-
-function createData(info1, info2) {
-    counter += 1;
-    return {id: counter, info1, info2};
-}
 
 class ShippingView extends Component {
 
@@ -41,24 +43,19 @@ class ShippingView extends Component {
             materialID: '',
             errorText1: 'This is a required field.',
             shipmentID: '',
-            addressLine1: '',
-            addressLine2: '',
-            city: '',
-            addressState: '',
-            postalCode: '',
-            country: '',
-            ipAddress: '',
+            address: '',
+            addressMenuItems: '',
             errorText2: 'This is a required field.',
-            ipAddressLength: '',
-            counter: '001',
-            manualShipping: '',
+            manualShipping: false,
             manualShipping2: 'NO',
-            deliveryOrderNo: '',
-            shipmentQuantity: '',
+            shipmentCompleted: false,
+            shipmentCompleted2: 'NO',
+            materialIDQuantityList: [{
+                materialID: '',
+                quantity: ''
+            }],
             openDialog: false,
             showProgressLogoDialog: false,
-            doNotAskAgain: '',
-            doNotAskAgain2: false,
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
@@ -68,53 +65,128 @@ class ShippingView extends Component {
         };
     }
 
+    handleMaterialIDChange = (event) => {
+        /*if(event.target.value) {
+            let eBOMData = [];
+            this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess = '';
+            let shipToAddressMenuItemsLength = '';
+            this.setState({showProgressLogo: true});
+            this.props.getBillOfMaterialsByMaterialID(event.target.value);
+            setTimeout(
+                function () {
+                    eBOMData = this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess;
+                    if (eBOMData) {
+                        this.setState({
+                            showProgressLogo: false,
+                            addressMenuItems: eBOMData.supplier.supplierCustomerShipToAddress
+                        });
+                        shipToAddressMenuItemsLength = this.state.addressMenuItems.replace(/\s+/g, '').length;
+                        if (shipToAddressMenuItemsLength === 0) {
+                            this.setState({
+                                addressMenuItems: '',
+                                snackbar: {
+                                    autoHideDuration: 2000,
+                                    message: 'Address cannot be found!',
+                                    open: true,
+                                    sbColor: 'red'
+                                },
+                            });
+                        }
+                    } else {
+                        this.setState({
+                            showProgressLogo: false,
+                            addressMenuItems: '',
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Address cannot be found!',
+                                open: true,
+                                sbColor: 'red'
+                            },
+                        });
+                    }
+                }
+                    .bind(this),
+                1000
+            );
+        }*/
+    };
+
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
         if ([event.target.name].toString() === 'materialID' && event.target.value) {
             this.setState({errorText1: ''});
         } else if ([event.target.name].toString() === 'materialID' && !event.target.value) {
-            this.setState({errorText1: 'This is a required field.'});
-        }
-        if ([event.target.name].toString() === 'ipAddress' && event.target.value) {
-            this.setState({errorText2: ''});
-        } else if ([event.target.name].toString() === 'ipAddress' && !event.target.value) {
-            this.setState({errorText2: 'This is a required field.'});
-        }
-        let shipmentID = '';
-        let ipAddress2 = '';
-        let ipAddressLength = '';
-        if ([event.target.name].toString() === 'ipAddress') {
-            ipAddress2 = event.target.value.replace(/\D/g, "").substring(0, 6);
-            ipAddressLength = ipAddress2.length;
-            shipmentID = ipAddress2 + '-' + this.state.counter;
             this.setState({
-                shipmentID: shipmentID,
-                ipAddressLength: ipAddressLength
+                errorText1: 'This is a required field.',
+                addressMenuItems: ''
             });
+        }
+        if ([event.target.name].toString() === 'address' && event.target.value) {
+            this.setState({errorText2: ''});
+        } else if ([event.target.name].toString() === 'address' && !event.target.value) {
+            this.setState({errorText2: 'This is a required field.'});
         }
     };
 
     handleCheckboxChange = (event) => {
         this.setState({[event.target.name]: event.target.checked});
         if ([event.target.name].toString() === 'manualShipping' && event.target.checked === true) {
-            this.setState({manualShipping2: 'YES'});
+            this.setState({
+                manualShipping: true,
+                manualShipping2: 'YES'
+            });
         } else if ([event.target.name].toString() === 'manualShipping' && event.target.checked === false) {
-            this.setState({manualShipping2: 'NO'});
+            this.setState({
+                manualShipping: false,
+                manualShipping2: 'NO'
+            });
         }
-        if ([event.target.name].toString() === 'doNotAskAgain' && event.target.checked === true) {
-            this.setState({doNotAskAgain2: true});
-        } else if ([event.target.name].toString() === 'doNotAskAgain' && event.target.checked === false) {
-            this.setState({doNotAskAgain2: false});
+        if ([event.target.name].toString() === 'shipmentCompleted' && event.target.checked === true) {
+            this.setState({
+                shipmentCompleted: true,
+                shipmentCompleted2: 'YES'
+            });
+        } else if ([event.target.name].toString() === 'shipmentCompleted' && event.target.checked === false) {
+            this.setState({
+                shipmentCompleted: false,
+                shipmentCompleted2: 'NO'
+            });
         }
     };
 
+    handleAddition = (event) => {
+        let materialIDQuantityList = this.state.materialIDQuantityList;
+        let materialIDQuantityList2 = {
+            materialID: '',
+            quantity: ''
+        };
+        let materialIDQuantityListFinal = materialIDQuantityList.concat(materialIDQuantityList2);
+        this.setState({
+            materialIDQuantityList: materialIDQuantityListFinal
+        })
+    };
+
+    handleDeletion = (index) => (event) => {
+        let materialIDQuantityList = this.state.materialIDQuantityList;
+        let materialIDQuantityList2 = materialIDQuantityList.slice(0, index);
+        let materialIDQuantityList3 = materialIDQuantityList.slice(index + 1);
+        let materialIDQuantityListFinal = materialIDQuantityList2.concat(materialIDQuantityList3);
+        this.setState({
+            materialIDQuantityList: materialIDQuantityListFinal
+        })
+
+    };
+
+    handleMaterialIDText = index => event => {
+        event.preventDefault();
+    };
+
+    handleQuantityText = index => event => {
+        event.preventDefault();
+    };
+
     handleConfirmation = (event) => {
-        if (this.state.doNotAskAgain2 === true) {
-            this.setState({openDialog: false});
-            this.handleSubmit();
-        } else {
-            this.setState({openDialog: true});
-        }
+        this.setState({openDialog: true});
         event.preventDefault();
     };
 
@@ -231,6 +303,16 @@ class ShippingView extends Component {
 
     render() {
 
+        const addCircleIconStyle = {
+            color: "black",
+            transform: "scale(1.8)"
+        };
+
+        const deleteIconStyle = {
+            color: "black",
+            transform: "scale(1.6)"
+        };
+
         const buttonThemeYellow = createMuiTheme({
             palette: {
                 primary: yellow
@@ -243,19 +325,38 @@ class ShippingView extends Component {
             },
         });
 
-        const formComplete = this.state.materialID && this.state.ipAddressLength === 6;
+        const formComplete = this.state.materialID && this.state.address;
 
         const rows = [
             createData('Material ID', this.state.materialID),
             createData('Shipment ID', this.state.shipmentID),
-            createData('Address', this.state.addressLine1 + ' ' + this.state.addressLine2 + ' '
-                + this.state.city + ' ' + this.state.addressState + ' ' + this.state.postalCode + ' '
-                + this.state.country),
-            createData('IP Address', this.state.ipAddress),
+            createData('Address', this.state.address),
             createData('Manual Shipping', this.state.manualShipping2),
-            createData('Delivery Order No.', this.state.deliveryOrderNo),
-            createData('Shipment Quantity', this.state.shipmentQuantity)
+            createData('Shipment Completed', this.state.shipmentCompleted2),
+            createData('Material ID/Quantity', this.state.materialIDList)
         ];
+
+        let counter = 0;
+
+        function createData(info1, info2) {
+            counter += 1;
+            return {id: counter, info1, info2};
+        }
+
+        function createTableContent() {
+            let tableContent = [
+                createData('Material ID', this.state.materialID),
+                createData('Shipment ID', this.state.shipmentID),
+                createData('Address', this.state.address),
+                createData('Manual Shipping', this.state.manualShipping2),
+                createData('Shipment Completed', this.state.shipmentCompleted2),
+                createData('', '')
+            ];
+            for (let i = 0; i < this.state.materialIDList.length; i++) {
+                tableContent.push(createData('Material ID/Quantity', this.state.materialIDList[i] + '/' + this.state.quantityList[i]));
+            }
+            return tableContent;
+        }
 
         return (
             <form onSubmit={this.handleConfirmation}>
@@ -266,119 +367,59 @@ class ShippingView extends Component {
                 </div>
                 <div style={{padding: 24}}>
                     <Grid container spacing={24}>
-                        <Grid container item xs>
+                        <Grid container item xs={6} sm={3}>
+                            <FormLabel style={{"textAlign": "left"}}>Material ID</FormLabel>
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <FormLabel style={{"textAlign": "left"}}>Shipment ID</FormLabel>
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
                             <TextField
                                 value={this.state.materialID}
                                 onChange={this.handleChange}
                                 type="text"
                                 name="materialID"
-                                floatingLabelText="Material ID"
-                                floatingLabelFixed={true}
                                 style={{"float": "left", "textAlign": "left"}}
                                 hintText=""
                                 errorText={this.state.errorText1}
                                 errorStyle={{"float": "left", "textAlign": "left"}}
+                                onBlur={this.handleMaterialIDChange}
                             />
                         </Grid>
-                        <Fade in={this.state.ipAddressLength === 6}>
-                            <Grid container item xs>
-                                <Typography variant="subheading" align="right" style={{"width": "100%"}}>
-                                    Shipment ID: {this.state.shipmentID}
-                                </Typography>
-                            </Grid>
-                        </Fade>
-                    </Grid>
-                    <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <TextField
-                                value={this.state.addressLine1}
+                                value={this.state.shipmentID}
                                 onChange={this.handleChange}
                                 type="text"
-                                name="addressLine1"
-                                floatingLabelText="Address"
-                                floatingLabelFixed={true}
+                                name="shipmentID"
                                 style={{"float": "left", "textAlign": "left"}}
                                 hintText=""
                             />
                         </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                value={this.state.addressLine2}
-                                onChange={this.handleChange}
-                                type="text"
-                                name="addressLine2"
-                                floatingLabelText=" "
-                                floatingLabelFixed={true}
-                                style={{"float": "left", "textAlign": "left"}}
-                                hintText="Address Line 2"
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                value={this.state.city}
-                                onChange={this.handleChange}
-                                type="text"
-                                name="city"
-                                floatingLabelText=" "
-                                floatingLabelFixed={true}
-                                style={{"float": "left", "textAlign": "left"}}
-                                hintText="City"
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                value={this.state.addressState}
-                                onChange={this.handleChange}
-                                type="text"
-                                name="addressState"
-                                floatingLabelText=" "
-                                floatingLabelFixed={true}
-                                style={{"float": "left", "textAlign": "left"}}
-                                hintText="State"
-                            />
+                    </Grid>
+                    <br/><br/>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={12}>
+                            <FormLabel style={{"textAlign": "left"}}>Address</FormLabel>
                         </Grid>
                     </Grid>
                     <Grid container spacing={24}>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                value={this.state.postalCode}
-                                onChange={this.handleChange}
-                                type="text"
-                                name="postalCode"
-                                floatingLabelText=" "
-                                floatingLabelFixed={true}
-                                style={{"float": "left", "textAlign": "left"}}
-                                hintText="Postal Code"
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                value={this.state.country}
-                                onChange={this.handleChange}
-                                type="text"
-                                name="country"
-                                floatingLabelText=" "
-                                floatingLabelFixed={true}
-                                style={{"float": "left", "textAlign": "left"}}
-                                hintText="Country"
-                            />
+                        <Grid container item xs={12}>
+                            <FormControl fullWidth={true}>
+                                <Select value={this.state.address} onChange={this.handleChange}
+                                        input={<Input name="address" style={{"textAlign": "left"}}/>}
+                                        displayEmpty>
+                                    <MenuItem
+                                        value={this.state.addressMenuItems}>{this.state.addressMenuItems}</MenuItem>
+                                </Select>
+                            </FormControl>
+                            <FormHelperText style={{"color": "red"}}>{this.state.errorText2}</FormHelperText>
                         </Grid>
                     </Grid>
+                    <br/>
                     <Grid container spacing={24}>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                value={this.state.ipAddress}
-                                onChange={this.handleChange}
-                                type="text"
-                                name="ipAddress"
-                                floatingLabelText="IP Address"
-                                floatingLabelFixed={true}
-                                style={{"float": "left", "textAlign": "left"}}
-                                hintText=""
-                                errorText={this.state.errorText2}
-                                errorStyle={{"float": "left", "textAlign": "left"}}
-                            />
-                        </Grid>
                         <Grid container item xs={6} sm={3}>
                             <FormGroup row>
                                 <FormControlLabel
@@ -394,30 +435,72 @@ class ShippingView extends Component {
                             </FormGroup>
                         </Grid>
                         <Grid container item xs={6} sm={3}>
-                            <TextField
-                                value={this.state.deliveryOrderNo}
-                                onChange={this.handleChange}
-                                type="text"
-                                name="deliveryOrderNo"
-                                floatingLabelText="Delivery Order No."
-                                floatingLabelFixed={true}
-                                style={{"float": "left", "textAlign": "left"}}
-                                hintText=""
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                value={this.state.shipmentQuantity}
-                                onChange={this.handleChange}
-                                type="text"
-                                name="shipmentQuantity"
-                                floatingLabelText="Shipment Quantity"
-                                floatingLabelFixed={true}
-                                style={{"float": "left", "textAlign": "left"}}
-                                hintText=""
-                            />
+                            <FormGroup row>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            onChange={this.handleCheckboxChange}
+                                            name="shipmentCompleted"
+                                            color="default"
+                                        />
+                                    }
+                                    label="Shipment Completed"
+                                />
+                            </FormGroup>
                         </Grid>
                     </Grid>
+                    <br/><br/>
+                    <Divider style={{"height": "3px", "backgroundColor": "red"}}/>
+                    <br/><br/>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <FormLabel style={{"textAlign": "left"}}>Material ID</FormLabel>
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <FormLabel style={{"textAlign": "left"}}>Quantity</FormLabel>
+                        </Grid>
+                    </Grid>
+                    {this.state.materialIDQuantityList.map((materialIDQuantityList, index) => (
+                        <span key={index}>
+                            <Grid container spacing={24}>
+                                <Grid container item xs={6} sm={3}>
+                                    <TextField
+                                        type="text"
+                                        style={{"float": "left", "textAlign": "left"}}
+                                        name="materialIDList"
+                                        onChange={this.handleMaterialIDText(index)}
+                                        hintText=""
+                                        value={materialIDQuantityList.materialID}
+                                    />
+                                </Grid>
+                                <Grid container item xs={6} sm={3}>
+                                    <TextField
+                                        type="text"
+                                        style={{"float": "left", "textAlign": "left"}}
+                                        name="quantityList"
+                                        onChange={this.handleQuantityText(index)}
+                                        hintText=""
+                                        value={materialIDQuantityList.quantity}
+                                    />
+                                </Grid>
+                                {index === 0 ?
+                                    <Grid container item xs={6} sm={3}>
+                                        <IconButton onClick={this.handleAddition}>
+                                            <AddCircleIcon style={addCircleIconStyle}/>
+                                        </IconButton>
+                                    </Grid>
+                                    :
+                                    <Grid container item xs={6} sm={3}>
+                                        <IconButton onClick={this.handleDeletion(index)}>
+                                            <DeleteIcon style={deleteIconStyle}/>
+                                        </IconButton>
+                                    </Grid>
+                                }
+                            </Grid>
+                        </span>
+                    ))}
+
+
                     <br/><br/>
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
@@ -533,6 +616,7 @@ const mapStateToProps = (state) => {
 // This way, we can call our action creator by doing this.props.fetchData(url);
 const mapDispatchToProps = (dispatch) => {
     return {
+        getBillOfMaterialsByMaterialID: (url) => dispatch(getBillOfMaterialsByMaterialID(url)),
         createShippingDataByMaterialID: (url, body) => dispatch(createShippingDataByMaterialID(url, body)),
         createShippingDataByShipmentID: (url, body) => dispatch(createShippingDataByShipmentID(url, body))
     };

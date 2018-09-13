@@ -412,7 +412,8 @@ class ReceivingView extends Component {
                         </Grid>
                     </Grid>
                 </div>
-                <Dialog open={this.state.openMaterialIDDialog} onClose={this.handleDialogClose} autoScrollBodyContent={true}>
+                <Dialog open={this.state.openMaterialIDDialog} onClose={this.handleDialogClose}
+                        autoScrollBodyContent={true}>
                     <div style={{padding: 24}}>
                         <Grid container justify="flex-end">
                             <Grid item>
@@ -462,7 +463,8 @@ class ReceivingView extends Component {
                         </Grid>
                     </div>
                 </Dialog>
-                <Dialog open={this.state.openShipmentIDDialog} onClose={this.handleDialogClose} autoScrollBodyContent={true}>
+                <Dialog open={this.state.openShipmentIDDialog} onClose={this.handleDialogClose}
+                        autoScrollBodyContent={true}>
                     <div style={{padding: 24}}>
                         <Grid container justify="flex-end">
                             <Grid item>

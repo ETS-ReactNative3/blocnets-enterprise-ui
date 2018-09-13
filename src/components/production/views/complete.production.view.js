@@ -146,7 +146,7 @@ class CompleteProduction extends Component {
                         errorText2: 'This is a required field.',
                         ipAddress: '',
                         errorText3: 'This is a required field.',
-                        productionCompleted: '',
+                        productionCompleted: false,
                         quantity: '',
                     });
                 } else {
@@ -282,6 +282,7 @@ class CompleteProduction extends Component {
                                                 onChange={this.handleCheckboxChange}
                                                 name="productionCompleted"
                                                 color="default"
+                                                checked={this.state.productionCompleted}
                                             />
                                         }
                                         label="Production Completed"
