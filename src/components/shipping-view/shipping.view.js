@@ -45,6 +45,7 @@ class ShippingView extends Component {
             shipmentID: '',
             address: '',
             addressMenuItems: '',
+            ipAddress: '',
             errorText2: 'This is a required field.',
             manualShipping: false,
             manualShipping2: 'NO',
@@ -66,7 +67,7 @@ class ShippingView extends Component {
     }
 
     handleMaterialIDChange = (event) => {
-        /*if(event.target.value) {
+        if (event.target.value) {
             let eBOMData = [];
             this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess = '';
             let shipToAddressMenuItemsLength = '';
@@ -78,12 +79,14 @@ class ShippingView extends Component {
                     if (eBOMData) {
                         this.setState({
                             showProgressLogo: false,
-                            addressMenuItems: eBOMData.supplier.supplierCustomerShipToAddress
+                            addressMenuItems: eBOMData.supplier.supplierCustomerShipToAddress,
+                            ipAddress: eBOMData.supplier.supplierCustomerShipToIPAddress
                         });
                         shipToAddressMenuItemsLength = this.state.addressMenuItems.replace(/\s+/g, '').length;
                         if (shipToAddressMenuItemsLength === 0) {
                             this.setState({
                                 addressMenuItems: '',
+                                ipAddress: '',
                                 snackbar: {
                                     autoHideDuration: 2000,
                                     message: 'Address cannot be found!',
@@ -96,6 +99,7 @@ class ShippingView extends Component {
                         this.setState({
                             showProgressLogo: false,
                             addressMenuItems: '',
+                            ipAddress: '',
                             snackbar: {
                                 autoHideDuration: 2000,
                                 message: 'Address cannot be found!',
@@ -108,17 +112,23 @@ class ShippingView extends Component {
                     .bind(this),
                 1000
             );
-        }*/
+        }
     };
 
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
         if ([event.target.name].toString() === 'materialID' && event.target.value) {
             this.setState({errorText1: ''});
+            let materialIDQuantityList = [...this.state.materialIDQuantityList];
+            materialIDQuantityList[0].materialID = event.target.value;
+            this.setState({
+                materialIDQuantityList: materialIDQuantityList
+            });
         } else if ([event.target.name].toString() === 'materialID' && !event.target.value) {
             this.setState({
                 errorText1: 'This is a required field.',
-                addressMenuItems: ''
+                addressMenuItems: '',
+                ipAddress: ''
             });
         }
         if ([event.target.name].toString() === 'address' && event.target.value) {
@@ -182,9 +192,13 @@ class ShippingView extends Component {
         let materialIDQuantityList = [...this.state.materialIDQuantityList];
         if ([event.target.name].toString() === 'materialIDList' && event.target.value) {
             materialIDQuantityList[index].materialID = event.target.value;
+        } else if ([event.target.name].toString() === 'materialIDList' && !event.target.value) {
+            materialIDQuantityList[index].materialID = '';
         }
         if ([event.target.name].toString() === 'quantityList' && event.target.value) {
             materialIDQuantityList[index].quantity = event.target.value;
+        } else if ([event.target.name].toString() === 'quantityList' && !event.target.value) {
+            materialIDQuantityList[index].quantity = '';
         }
         this.setState({
             materialIDQuantityList: materialIDQuantityList
