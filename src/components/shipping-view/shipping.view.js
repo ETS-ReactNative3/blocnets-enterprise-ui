@@ -30,6 +30,8 @@ import {connect} from 'react-redux';
 import {getBillOfMaterialsByMaterialID} from '../../redux/actions/bill-of-materials.actions';
 import {syncSARDataAndBindKeys} from '../../redux/actions/shipping.and.receiving.actions';
 
+let counter = 0;
+
 class ShippingView extends Component {
 
     constructor(props) {
@@ -58,7 +60,6 @@ class ShippingView extends Component {
             openDialogQuantity: false,
             openDialogConfirmation: false,
             showProgressLogoDialog: false,
-            counter: 0,
             rows: [],
             snackbar: {
                 autoHideDuration: 2000,
@@ -283,8 +284,8 @@ class ShippingView extends Component {
     };
 
     createData = (info1, info2) => {
-        this.state.counter += 1;
-        return {id: this.state.counter, info1, info2};
+        counter += 1;
+        return {id: counter, info1, info2};
     };
 
     createTableContent = () => {
