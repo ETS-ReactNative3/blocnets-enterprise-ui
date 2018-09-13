@@ -105,8 +105,11 @@ class BillOfMaterialsReview extends React.Component {
                 materialMvmtOrderType: [
                     "string"
                 ],
-                materialMvmtLocation: "string",
-                materialMvmtShippedTo: "string",
+                materialMvmtLocation: this.props.eBOMData.materialIPAddress,
+                materialMvmtShippedTo: this.props.eBOMData.materialAddressLine1 + ' '
+                    + this.props.eBOMData.materialAddressLine2 + ' ' + this.props.eBOMData.materialCity
+                    + ' ' + this.props.eBOMData.materialAddressState + ' ' + this.props.eBOMData.materialPostalCode + ' '
+                    + this.props.eBOMData.materialCountry,
                 materialMvmtShippedFrom: "string",
                 materialMvmtCageCode: "string",
                 materialMvmtSupplierName: "string",
@@ -123,7 +126,7 @@ class BillOfMaterialsReview extends React.Component {
                 materialVolumeUnits: "string",
                 materialWeight: this.props.eBOMData.weight,
                 materialWeightUnits: "string",
-                materialLengthLength: this.props.eBOMData.materialLength,
+                materialLength: this.props.eBOMData.materialLength,
                 materialLengthUnits: "string",
                 materialWidth: this.props.eBOMData.width,
                 materialWidthUnits: "string",
@@ -281,7 +284,13 @@ class BillOfMaterialsReview extends React.Component {
             createData('IP Address', this.props.eBOMData.ipAddress),
             createData('Material Supplied Per IP Address', this.props.eBOMData.matSupPerIPAddress),
             createData('Supplier Payment Terms', this.props.eBOMData.supPaymentTerms),
-            createData('Supplier Order Policy', this.props.eBOMData.supOrderPolicy)
+            createData('Supplier Order Policy', this.props.eBOMData.supOrderPolicy),
+            createData('Material', ''),
+            createData('Address', this.props.eBOMData.materialAddressLine1 + ' '
+                + this.props.eBOMData.materialAddressLine2 + ' ' + this.props.eBOMData.materialCity
+                + ' ' + this.props.eBOMData.materialAddressState + ' ' + this.props.eBOMData.materialPostalCode + ' '
+                + this.props.eBOMData.materialCountry),
+            createData('IP Address', this.props.eBOMData.materialIPAddress),
         ];
 
         const buttonTheme = createMuiTheme({
