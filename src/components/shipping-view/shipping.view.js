@@ -177,12 +177,18 @@ class ShippingView extends Component {
 
     };
 
-    handleMaterialIDText = index => event => {
+    handleText = index => event => {
         event.preventDefault();
-    };
-
-    handleQuantityText = index => event => {
-        event.preventDefault();
+        let materialIDQuantityList = [...this.state.materialIDQuantityList];
+        if ([event.target.name].toString() === 'materialIDList' && event.target.value) {
+            materialIDQuantityList[index].materialID = event.target.value;
+        }
+        if ([event.target.name].toString() === 'quantityList' && event.target.value) {
+            materialIDQuantityList[index].quantity = event.target.value;
+        }
+        this.setState({
+            materialIDQuantityList: materialIDQuantityList
+        });
     };
 
     handleConfirmation = (event) => {
@@ -468,7 +474,7 @@ class ShippingView extends Component {
                                         type="text"
                                         style={{"float": "left", "textAlign": "left"}}
                                         name="materialIDList"
-                                        onChange={this.handleMaterialIDText(index)}
+                                        onChange={this.handleText(index)}
                                         hintText=""
                                         value={materialIDQuantityList.materialID}
                                     />
@@ -478,7 +484,7 @@ class ShippingView extends Component {
                                         type="text"
                                         style={{"float": "left", "textAlign": "left"}}
                                         name="quantityList"
-                                        onChange={this.handleQuantityText(index)}
+                                        onChange={this.handleText(index)}
                                         hintText=""
                                         value={materialIDQuantityList.quantity}
                                     />
