@@ -28,11 +28,7 @@ import TableCell from '@material-ui/core/TableCell';
 import Snackbar from 'material-ui/Snackbar';
 import {connect} from 'react-redux';
 import {getBillOfMaterialsByMaterialID} from '../../redux/actions/bill-of-materials.actions';
-import {
-    createShippingDataByMaterialID,
-    createShippingDataByShipmentID
-}
-    from '../../redux/actions/shipping.and.receiving.actions';
+import {syncSARDataAndBindKeys} from '../../redux/actions/shipping.and.receiving.actions';
 
 class ShippingView extends Component {
 
@@ -41,22 +37,29 @@ class ShippingView extends Component {
         this.state = {
             showProgressLogo: false,
             materialID: '',
-            errorText1: 'This is a required field.',
+            errorTextMaterialID: 'This is a required field.',
             shipmentID: '',
+            shipmentIDGenerated: '',
+            shipmentIDTyped: '',
             address: '',
             addressMenuItems: '',
             ipAddress: '',
-            errorText2: 'This is a required field.',
+            errorTextAddress: 'This is a required field.',
             manualShipping: false,
             manualShipping2: 'NO',
             shipmentCompleted: false,
             shipmentCompleted2: 'NO',
+            quantity: '',
+            errorTextQuantity: 'This is a required field.',
             materialIDQuantityList: [{
                 materialID: '',
                 quantity: ''
             }],
-            openDialog: false,
+            openDialogQuantity: false,
+            openDialogConfirmation: false,
             showProgressLogoDialog: false,
+            counter: 0,
+            rows: [],
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
@@ -118,7 +121,7 @@ class ShippingView extends Component {
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
         if ([event.target.name].toString() === 'materialID' && event.target.value) {
-            this.setState({errorText1: ''});
+            this.setState({errorTextMaterialID: ''});
             let materialIDQuantityList = [...this.state.materialIDQuantityList];
             materialIDQuantityList[0].materialID = event.target.value;
             this.setState({
@@ -126,15 +129,20 @@ class ShippingView extends Component {
             });
         } else if ([event.target.name].toString() === 'materialID' && !event.target.value) {
             this.setState({
-                errorText1: 'This is a required field.',
+                errorTextMaterialID: 'This is a required field.',
                 addressMenuItems: '',
                 ipAddress: ''
             });
         }
         if ([event.target.name].toString() === 'address' && event.target.value) {
-            this.setState({errorText2: ''});
+            this.setState({errorTextAddress: ''});
         } else if ([event.target.name].toString() === 'address' && !event.target.value) {
-            this.setState({errorText2: 'This is a required field.'});
+            this.setState({errorTextAddress: 'This is a required field.'});
+        }
+        if ([event.target.name].toString() === 'quantity' && event.target.value) {
+            this.setState({errorTextQuantity: ''});
+        } else if ([event.target.name].toString() === 'quantity' && !event.target.value) {
+            this.setState({errorTextQuantity: 'This is a required field.'});
         }
     };
 
@@ -184,11 +192,9 @@ class ShippingView extends Component {
         this.setState({
             materialIDQuantityList: materialIDQuantityListFinal
         })
-
     };
 
-    handleText = index => event => {
-        event.preventDefault();
+    handleText = (index) => (event) => {
         let materialIDQuantityList = [...this.state.materialIDQuantityList];
         if ([event.target.name].toString() === 'materialIDList' && event.target.value) {
             materialIDQuantityList[index].materialID = event.target.value;
@@ -206,108 +212,120 @@ class ShippingView extends Component {
     };
 
     handleConfirmation = (event) => {
-        this.setState({openDialog: true});
         event.preventDefault();
+        if (this.state.shipmentCompleted === true) {
+            this.setState({
+                openDialogQuantity: false,
+                openDialogConfirmation: true,
+                rows: this.createTableContent()
+            });
+        } else {
+            this.setState({
+                openDialogQuantity: true,
+                openDialogConfirmation: false
+            });
+        }
+    };
+
+    handleSubmitQuantity = () => {
+        this.setState({
+            openDialogConfirmation: true,
+            rows: this.createTableContent()
+        });
+    };
+
+    handleDialogCloseQuantity = () => {
+        this.setState({
+            openDialogQuantity: false,
+            quantity: ''
+        });
     };
 
     handlePrint = () => {
     };
 
-    handleSubmit = (event) => {
-        this.props.data.sarReducer.createShippingDataByMaterialIDSuccess = '';
-        this.props.data.sarReducer.createShippingDataByShipmentIDSuccess = '';
-        this.setState({
-            showProgressLogo: true,
-            showProgressLogoDialog: true
-        });
-        let shipmentUrl = this.state.shipmentID;
-        let materialUrl = this.state.materialID;
-        let data = {
+    handleSubmitConfirmation = () => {
+        let payload = {
             materialID: this.state.materialID,
             shipmentID: this.state.shipmentID,
-            address1: this.state.addressLine1,
-            address2: this.state.addressLine2,
-            city: this.state.city,
-            state: this.state.addressState,
-            postalCode: this.state.postalCode,
-            country: this.state.country,
-            ipAddress: this.state.ipAddress,
-            manuallyShipped: this.state.manualShipping,
-            deliverOrderNo: this.state.deliveryOrderNo,
-            shipmentQuantity: this.state.shipmentQuantity,
+            listOfKeys: this.state.materialIDQuantityList,
             shipmentSent: true,
-            shipmentCompleted: true,
+            shipmentCompleted: this.state.shipmentCompleted,
+            shipmentQuantity: this.state.quantity,
+            manuallyShipped: this.state.manualShipping,
             shipped: true,
-            receivedShipment: false,
-            receivedOrder: false
+            address1: this.state.address,
+            address2: '',
+            city: '',
+            state: '',
+            country: '',
+            postalCode: '',
+            ipAddress: this.state.ipAddress,
+            receivedShipment: '',
+            receivedOrder: '',
+            deliverOrderNo: '',
+            prdKey: ''
         };
-        this.props.createShippingDataByMaterialID(materialUrl, data);
-        this.props.createShippingDataByShipmentID(shipmentUrl, data);
-        setTimeout(
-            function () {
-                if (this.props.data.sarReducer.createShippingDataByMaterialIDSuccess === true &&
-                    this.props.data.sarReducer.createShippingDataByShipmentIDSuccess === true) {
-                    this.setState({
-                        showProgressLogo: false,
-                        showProgressLogoDialog: false,
-                        snackbar: {
-                            autoHideDuration: 2000,
-                            message: 'Shipping Successful!',
-                            open: true,
-                            sbColor: '#23CE6B'
-                        },
-                        openDialog: false,
-                        materialID: '',
-                        errorText1: 'This is a required field.',
-                        shipmentID: '',
-                        addressLine1: '',
-                        addressLine2: '',
-                        city: '',
-                        addressState: '',
-                        postalCode: '',
-                        country: '',
-                        ipAddress: '',
-                        errorText2: 'This is a required field.',
-                        ipAddressLength: '',
-                        counter: '001',
-                        manualShipping: '',
-                        manualShipping2: 'NO',
-                        deliveryOrderNo: '',
-                        shipmentQuantity: ''
-                    });
-                } else {
-                    this.setState({
-                        showProgressLogo: false,
-                        showProgressLogoDialog: false,
-                        snackbar: {
-                            autoHideDuration: 2000,
-                            message: 'Shipping Error! Please try again.',
-                            open: true,
-                            sbColor: 'red'
-                        }
-                    })
-                }
-            }
-                .bind(this),
-            3000
-        );
-        /* let shipmentID = this.state.shipmentID;
-        let newShipmentID = this.state.shipmentID;
-        let countString = '';
-        let countInteger = '';
-        countInteger = parseInt(shipmentID.substring(7, 10))+1;
-        countString = countInteger.toString().padStart(3,'0');
-        newShipmentID = shipmentID.substring(0, 6) + '-' + countString;
-        this.setState({shipmentID: newShipmentID}); */
+        this.props.syncSARDataAndBindKeys(payload);
+        this.setState({
+            openDialogQuantity: false,
+            openDialogConfirmation: false
+        });
     };
 
-    handleDialogClose = () => {
+    handleDialogCloseConfirmation = () => {
         this.setState({
-            showProgressLogo: false,
-            openDialog: false,
-            showProgressLogoDialog: false,
-            doNotAskAgain2: false
+            openDialogConfirmation: false
         });
+    };
+
+    guid = () => {
+        let shipmentID = this.generateUniqueID() + '-' + this.generateUniqueID() + '-'
+            + this.generateUniqueID() + '-' + this.generateUniqueID();
+        this.setState({
+            shipmentIDGenerated: shipmentID
+        });
+        return shipmentID;
+    };
+
+    generateUniqueID = () => {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    };
+
+    createData = (info1, info2) => {
+        this.state.counter += 1;
+        return {id: this.state.counter, info1, info2};
+    };
+
+    createTableContent = () => {
+        let shipmentID = '';
+        if (!this.state.shipmentIDTyped) {
+            shipmentID = this.guid();
+            this.setState({
+                shipmentID: shipmentID
+            });
+        } else {
+            shipmentID = this.state.shipmentIDTyped;
+            this.setState({
+                shipmentID: shipmentID
+            });
+        }
+        let tableContent = [
+            this.createData('Material ID', this.state.materialID),
+            this.createData('Shipment ID', shipmentID),
+            this.createData('Address', this.state.address),
+            this.createData('Manual Shipping', this.state.manualShipping2),
+            this.createData('Shipment Completed', this.state.shipmentCompleted2)
+        ];
+        for (let i = 0; i < this.state.materialIDQuantityList.length; i++) {
+            tableContent.push(this.createData('Material ID/Quantity', this.state.materialIDQuantityList[i].materialID + '/' + this.state.materialIDQuantityList[i].quantity));
+        }
+        if (this.state.shipmentCompleted === false) {
+            tableContent.push(this.createData('Quantity', this.state.quantity));
+        }
+        return tableContent;
     };
 
     handleSnackbarClose = () => {
@@ -347,39 +365,9 @@ class ShippingView extends Component {
 
         const formComplete = this.state.materialID && this.state.address;
 
-        const rows = [
-            createData('Material ID', this.state.materialID),
-            createData('Shipment ID', this.state.shipmentID),
-            createData('Address', this.state.address),
-            createData('Manual Shipping', this.state.manualShipping2),
-            createData('Shipment Completed', this.state.shipmentCompleted2),
-            createData('Material ID/Quantity', this.state.materialIDList)
-        ];
-
-        let counter = 0;
-
-        function createData(info1, info2) {
-            counter += 1;
-            return {id: counter, info1, info2};
-        }
-
-        function createTableContent() {
-            let tableContent = [
-                createData('Material ID', this.state.materialID),
-                createData('Shipment ID', this.state.shipmentID),
-                createData('Address', this.state.address),
-                createData('Manual Shipping', this.state.manualShipping2),
-                createData('Shipment Completed', this.state.shipmentCompleted2),
-                createData('', '')
-            ];
-            for (let i = 0; i < this.state.materialIDList.length; i++) {
-                tableContent.push(createData('Material ID/Quantity', this.state.materialIDList[i] + '/' + this.state.quantityList[i]));
-            }
-            return tableContent;
-        }
 
         return (
-            <form onSubmit={this.handleConfirmation}>
+            <form>
                 <div>
                     {this.state.showProgressLogo ?
                         <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt=""/>
@@ -403,17 +391,17 @@ class ShippingView extends Component {
                                 name="materialID"
                                 style={{"float": "left", "textAlign": "left"}}
                                 hintText=""
-                                errorText={this.state.errorText1}
+                                errorText={this.state.errorTextMaterialID}
                                 errorStyle={{"float": "left", "textAlign": "left"}}
                                 onBlur={this.handleMaterialIDChange}
                             />
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <TextField
-                                value={this.state.shipmentID}
+                                value={this.state.shipmentIDTyped}
                                 onChange={this.handleChange}
                                 type="text"
-                                name="shipmentID"
+                                name="shipmentIDTyped"
                                 style={{"float": "left", "textAlign": "left"}}
                                 hintText=""
                             />
@@ -435,7 +423,7 @@ class ShippingView extends Component {
                                         value={this.state.addressMenuItems}>{this.state.addressMenuItems}</MenuItem>
                                 </Select>
                             </FormControl>
-                            <FormHelperText style={{"color": "red"}}>{this.state.errorText2}</FormHelperText>
+                            <FormHelperText style={{"color": "red"}}>{this.state.errorTextAddress}</FormHelperText>
                         </Grid>
                     </Grid>
                     <br/>
@@ -519,21 +507,60 @@ class ShippingView extends Component {
                             </Grid>
                         </span>
                     ))}
-
-
                     <br/><br/>
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
                             <MuiThemeProvider theme={buttonThemeYellow}>
                                 <Button type="submit" value="Submit" variant="contained" color="primary"
-                                        fullWidth={true} disabled={!formComplete}>
+                                        fullWidth={true} disabled={!formComplete} onClick={this.handleConfirmation}>
                                     Send Shipment
                                 </Button>
                             </MuiThemeProvider>
                         </Grid>
                     </Grid>
                 </div>
-                <Dialog open={this.state.openDialog} onClose={this.handleDialogClose} autoScrollBodyContent={true}>
+                <Dialog open={this.state.openDialogQuantity} onClose={this.handleDialogCloseQuantity} autoScrollBodyContent={true}>
+                    <div style={{padding: 24}}>
+                        <Grid container spacing={24}>
+                            <Grid container item xs={12}>
+                                <TextField
+                                    value={this.state.quantity}
+                                    onChange={this.handleChange}
+                                    type="text"
+                                    name="quantity"
+                                    floatingLabelText="Quantity"
+                                    floatingLabelFixed={true}
+                                    style={{"float": "left", "textAlign": "left"}}
+                                    hintText=""
+                                    errorText={this.state.errorTextQuantity}
+                                    errorStyle={{"float": "left", "textAlign": "left"}}
+                                />
+                            </Grid>
+                        </Grid>
+                        <br/>
+                        <Grid container spacing={24}>
+                            <Grid container item xs={4} sm={4}>
+                            </Grid>
+                            <Grid container item xs={4} sm={4}>
+                                <MuiThemeProvider theme={buttonThemeRed}>
+                                    <Button type="submit" value="OK" variant="flat" color="primary" fullWidth={true}
+                                            onClick={this.handleSubmitQuantity} disabled={!this.state.quantity}>
+                                        OK
+                                    </Button>
+                                </MuiThemeProvider>
+                            </Grid>
+                            <Grid container item xs={4} sm={4}>
+                                <MuiThemeProvider theme={buttonThemeRed}>
+                                    <Button type="submit" value="Cancel" variant="flat" color="primary" fullWidth={true}
+                                            onClick={this.handleDialogCloseQuantity}>
+                                        Cancel
+                                    </Button>
+                                </MuiThemeProvider>
+                            </Grid>
+                        </Grid>
+                    </div>
+                </Dialog>
+                <Dialog open={this.state.openDialogConfirmation} onClose={this.handleDialogCloseConfirmation} autoScrollBodyContent={true}>
                     <div style={{padding: 24}}>
                         <Grid container>
                             <Grid container item xs={12}>
@@ -553,7 +580,7 @@ class ShippingView extends Component {
                                     <div style={{"overflowX": "auto"}}>
                                         <Table style={{"tableLayout": "fixed"}}>
                                             <TableBody>
-                                                {rows.map(row => {
+                                                {this.state.rows.map(row => {
                                                     return (
                                                         <TableRow key={row.id}>
                                                             <TableCell>{row.info1}</TableCell>
@@ -569,23 +596,6 @@ class ShippingView extends Component {
                         </Grid>
                         <br/>
                         <Grid container spacing={24}>
-                            <Grid container item xs={12}>
-                                <FormGroup row>
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox
-                                                onChange={this.handleCheckboxChange}
-                                                name="doNotAskAgain"
-                                                color="default"
-                                            />
-                                        }
-                                        label="Do not ask again."
-                                    />
-                                </FormGroup>
-                            </Grid>
-                        </Grid>
-                        <br/>
-                        <Grid container spacing={24}>
                             <Grid container item xs={4} sm={4}>
                                 <MuiThemeProvider theme={buttonThemeRed}>
                                     <Button type="submit" value="Print" variant="flat" color="primary" fullWidth={true}
@@ -597,7 +607,7 @@ class ShippingView extends Component {
                             <Grid container item xs={4} sm={4}>
                                 <MuiThemeProvider theme={buttonThemeRed}>
                                     <Button type="submit" value="OK" variant="flat" color="primary" fullWidth={true}
-                                            onClick={this.handleSubmit}>
+                                            onClick={this.handleSubmitConfirmation}>
                                         OK
                                     </Button>
                                 </MuiThemeProvider>
@@ -605,7 +615,7 @@ class ShippingView extends Component {
                             <Grid container item xs={4} sm={4}>
                                 <MuiThemeProvider theme={buttonThemeRed}>
                                     <Button type="submit" value="Cancel" variant="flat" color="primary" fullWidth={true}
-                                            onClick={this.handleDialogClose}>
+                                            onClick={this.handleDialogCloseConfirmation}>
                                         Cancel
                                     </Button>
                                 </MuiThemeProvider>
@@ -637,8 +647,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getBillOfMaterialsByMaterialID: (url) => dispatch(getBillOfMaterialsByMaterialID(url)),
-        createShippingDataByMaterialID: (url, body) => dispatch(createShippingDataByMaterialID(url, body)),
-        createShippingDataByShipmentID: (url, body) => dispatch(createShippingDataByShipmentID(url, body))
+        syncSARDataAndBindKeys: (payload) => dispatch(syncSARDataAndBindKeys(payload))
     };
 };
 
