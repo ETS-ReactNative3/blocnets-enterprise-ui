@@ -73,7 +73,7 @@ class ShippingView extends Component {
         if (event.target.value) {
             let eBOMData = [];
             this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess = '';
-            let shipToAddressMenuItemsLength = '';
+            let addressMenuItemsLength = '';
             this.setState({showProgressLogo: true});
             this.props.getBillOfMaterialsByMaterialID(event.target.value);
             setTimeout(
@@ -82,11 +82,11 @@ class ShippingView extends Component {
                     if (eBOMData) {
                         this.setState({
                             showProgressLogo: false,
-                            addressMenuItems: eBOMData.supplier.supplierCustomerShipToAddress,
-                            ipAddress: eBOMData.supplier.supplierCustomerShipToIPAddress
+                            addressMenuItems: eBOMData.material.materialMvmtShippedTo,
+                            ipAddress: eBOMData.material.materialMvmtLocation
                         });
-                        shipToAddressMenuItemsLength = this.state.addressMenuItems.replace(/\s+/g, '').length;
-                        if (shipToAddressMenuItemsLength === 0) {
+                        addressMenuItemsLength = this.state.addressMenuItems.replace(/\s+/g, '').length;
+                        if (addressMenuItemsLength === 0) {
                             this.setState({
                                 addressMenuItems: '',
                                 ipAddress: '',
@@ -124,9 +124,7 @@ class ShippingView extends Component {
             this.setState({errorTextMaterialID: ''});
             let materialIDQuantityList = [...this.state.materialIDQuantityList];
             materialIDQuantityList[0].materialID = event.target.value;
-            this.setState({
-                materialIDQuantityList: materialIDQuantityList
-            });
+            this.setState({materialIDQuantityList: materialIDQuantityList});
         } else if ([event.target.name].toString() === 'materialID' && !event.target.value) {
             this.setState({
                 errorTextMaterialID: 'This is a required field.',
@@ -179,9 +177,7 @@ class ShippingView extends Component {
             quantity: ''
         };
         let materialIDQuantityListFinal = materialIDQuantityList.concat(materialIDQuantityList2);
-        this.setState({
-            materialIDQuantityList: materialIDQuantityListFinal
-        })
+        this.setState({materialIDQuantityList: materialIDQuantityListFinal})
     };
 
     handleDeletion = (index) => (event) => {
@@ -189,9 +185,7 @@ class ShippingView extends Component {
         let materialIDQuantityList2 = materialIDQuantityList.slice(0, index);
         let materialIDQuantityList3 = materialIDQuantityList.slice(index + 1);
         let materialIDQuantityListFinal = materialIDQuantityList2.concat(materialIDQuantityList3);
-        this.setState({
-            materialIDQuantityList: materialIDQuantityListFinal
-        })
+        this.setState({materialIDQuantityList: materialIDQuantityListFinal})
     };
 
     handleText = (index) => (event) => {
@@ -206,9 +200,7 @@ class ShippingView extends Component {
         } else if ([event.target.name].toString() === 'quantityList' && !event.target.value) {
             materialIDQuantityList[index].quantity = '';
         }
-        this.setState({
-            materialIDQuantityList: materialIDQuantityList
-        });
+        this.setState({materialIDQuantityList: materialIDQuantityList});
     };
 
     handleConfirmation = (event) => {
@@ -274,17 +266,13 @@ class ShippingView extends Component {
     };
 
     handleDialogCloseConfirmation = () => {
-        this.setState({
-            openDialogConfirmation: false
-        });
+        this.setState({openDialogConfirmation: false});
     };
 
     guid = () => {
         let shipmentID = this.generateUniqueID() + '-' + this.generateUniqueID() + '-'
             + this.generateUniqueID() + '-' + this.generateUniqueID();
-        this.setState({
-            shipmentIDGenerated: shipmentID
-        });
+        this.setState({shipmentIDGenerated: shipmentID});
         return shipmentID;
     };
 
@@ -303,14 +291,10 @@ class ShippingView extends Component {
         let shipmentID = '';
         if (!this.state.shipmentIDTyped) {
             shipmentID = this.guid();
-            this.setState({
-                shipmentID: shipmentID
-            });
+            this.setState({shipmentID: shipmentID});
         } else {
             shipmentID = this.state.shipmentIDTyped;
-            this.setState({
-                shipmentID: shipmentID
-            });
+            this.setState({shipmentID: shipmentID});
         }
         let tableContent = [
             this.createData('Material ID', this.state.materialID),
@@ -519,7 +503,8 @@ class ShippingView extends Component {
                         </Grid>
                     </Grid>
                 </div>
-                <Dialog open={this.state.openDialogQuantity} onClose={this.handleDialogCloseQuantity} autoScrollBodyContent={true}>
+                <Dialog open={this.state.openDialogQuantity} onClose={this.handleDialogCloseQuantity}
+                        autoScrollBodyContent={true}>
                     <div style={{padding: 24}}>
                         <Grid container spacing={24}>
                             <Grid container item xs={12}>
@@ -560,7 +545,8 @@ class ShippingView extends Component {
                         </Grid>
                     </div>
                 </Dialog>
-                <Dialog open={this.state.openDialogConfirmation} onClose={this.handleDialogCloseConfirmation} autoScrollBodyContent={true}>
+                <Dialog open={this.state.openDialogConfirmation} onClose={this.handleDialogCloseConfirmation}
+                        autoScrollBodyContent={true}>
                     <div style={{padding: 24}}>
                         <Grid container>
                             <Grid container item xs={12}>
