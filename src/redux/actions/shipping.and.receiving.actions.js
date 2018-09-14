@@ -185,18 +185,18 @@ export function syncSARDataAndBindKeys(payload) {
             payload: true
         });
 
+        console.log(JSON.stringify(payload));
+
         function syncSARDataByMaterialID() {
             if (payload.materialID) {
-
                 let data = {
                     materialID: payload.materialID,
                     shipmentID: payload.shipmentID,
-                    listOfKeys: [payload.shipmentID],
+                    listOfKeys: [{ guid: payload.shipmentID }],
                     shipmentSent: true,
                     shipmentCompleted: payload.shipmentCompleted,
                     shipmentQuantity: payload.shipmentQuantity,
                     manuallyShipped: payload.manuallyShipped,
-                    shipped: true,
                     address1: payload.address1,
                     address2: payload.address2,
                     city: payload.city,
@@ -204,11 +204,11 @@ export function syncSARDataAndBindKeys(payload) {
                     country: payload.country,
                     postalCode: payload.postalCode,
                     ipAddress: payload.ipAddress,
-                    receivedShipment: '',
-                    receivedOrder: '',
-                    deliverOrderNo: '',
-                    prdKey: ''
-                }
+                    receivedShipment: payload.receivedShipment,
+                    receivedOrder: payload.receivedOrder,
+                    deliverOrderNo: payload.deliverOrderNo,
+                    prdKey: payload.prdKey
+                };
                 axios.head(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + payload.materialID, { headers })
                     .then(() => {
                         dispatch({
@@ -222,17 +222,39 @@ export function syncSARDataAndBindKeys(payload) {
                                     payload: true
                                 });
 
-                                let updatedObj = response.data;
-                                let array = [];
+                                let newObj = {
+                                    materialID: response.data.materialID,
+                                    shipmentID: response.data.shipmentID,
+                                    listOfKeys: [{ guid: payload.shipmentID }],
+                                    shipmentSent: true,
+                                    shipmentCompleted: response.data.shipmentCompleted,
+                                    shipmentQuantity: response.data.shipmentQuantity,
+                                    manuallyShipped: response.data.manuallyShipped,
+                                    address1: response.data.address1,
+                                    address2: response.data.address2,
+                                    city: response.data.city,
+                                    state: response.data.state,
+                                    country: response.data.country,
+                                    postalCode: response.data.postalCode,
+                                    ipAddress: response.data.ipAddress,
+                                    receivedShipment: response.data.receivedShipment,
+                                    receivedOrder: response.data.receivedOrder,
+                                    deliverOrderNo: response.data.deliverOrderNo,
+                                    prdKey: response.data.prdKey
+                                };
 
                                 for (let i = 0; i < response.data.listOfKeys.length; i++) {
-                                    array.push(response.data.listOfKeys[i]);
+                                    if (response.data.listOfKeys[i].guid) {
+                                        newObj.listOfKeys.push(response.data.listOfKeys[i].guid)
+                                    } else {
+                                        let obj = {
+                                            guid: response.data.listOfKeys[i]
+                                        };
+                                        newObj.listOfKeys.push(obj);
+                                    }
                                 }
 
-                                array.push(data.shipmentID);
-                                updatedObj.listOfKeys = array;
-
-                                axios.put(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + payload.materialID, updatedObj, { headers })
+                                axios.put(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + payload.materialID, newObj, { headers })
                                     .then(() => {
                                         dispatch({
                                             type: "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
@@ -253,14 +275,13 @@ export function syncSARDataAndBindKeys(payload) {
                                     payload: error
                                 });
                             })
-
                     })
                     .catch(() => {
                         dispatch({
                             type: "CHECKED_SAR_DATA_BY_MATERIAL_ID_DOES_NOT_EXIST",
                             payload: true
                         });
-                        axios.post(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + payload.materialID, payload, { headers })
+                        axios.post(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + payload.materialID, data, { headers })
                             .then(() => {
                                 return dispatch({
                                     type: "CREATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
@@ -303,7 +324,7 @@ export function syncSARDataAndBindKeys(payload) {
                 let newMaterialIDData = {
                     materialID: payload.materialID,
                     shipmentID: payload.shipmentID,
-                    listOfKeys: [ payload.shipmentID ],
+                    listOfKeys: [{ guid: payload.shipmentID }],
                     shipmentSent: true,
                     shipmentCompleted: payload.shipmentCompleted,
                     shipmentQuantity: payload.shipmentQuantity,
@@ -336,14 +357,41 @@ export function syncSARDataAndBindKeys(payload) {
                                         payload: true
                                     });
 
-                                    let updatedObj = response.data;
+                                    let updatedObj = {
+                                        materialID: data.listOfKeys[i].materialID,
+                                        shipmentID: response.data.shipmentID,
+                                        listOfKeys: response.data.listOfKeys,
+                                        shipmentSent: true,
+                                        shipmentCompleted: response.data.shipmentCompleted,
+                                        shipmentQuantity: response.data.shipmentQuantity,
+                                        manuallyShipped: response.data.manuallyShipped,
+                                        address1: response.data.address1,
+                                        address2: response.data.address2,
+                                        city: response.data.city,
+                                        state: response.data.state,
+                                        country: response.data.country,
+                                        postalCode: response.data.postalCode,
+                                        ipAddress: response.data.ipAddress,
+                                        receivedShipment: response.data.receivedShipment,
+                                        receivedOrder: response.data.receivedOrder,
+                                        deliverOrderNo: response.data.deliverOrderNo,
+                                        prdKey: response.data.prdKey
+                                    };
+
                                     let array = [];
 
                                     for (let i = 0; i < response.data.listOfKeys.length; i++) {
-                                        array.push(response.data.listOfKeys[i]);
+                                        if (response.data.listOfKeys[i].guid) {
+                                            array.push(response.data.listOfKeys[i].guid);
+                                        } else {
+                                            let obj = {
+                                                guid: response.data.listOfKeys[i]
+                                            };
+                                            array.push(obj);
+                                        }
                                     }
 
-                                    array.push(data.shipmentID);
+                                    array.push({ guid: data.shipmentID });
                                     updatedObj.listOfKeys = array;
 
                                     axios.put(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + data.listOfKeys[i].materialID, updatedObj, { headers })
