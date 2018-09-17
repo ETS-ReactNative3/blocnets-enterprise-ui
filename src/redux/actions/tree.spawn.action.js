@@ -38,7 +38,7 @@ export function createConstruct(materialID) {
                     axios.get(config.chaincodes.Default + config.chaincodes.PRD + key, { headers })
                         .then((response) => {
                             let construct = {
-                                name: obj.materialID,
+                                name: key,
                                 attributes: { ipAddress: obj.ipAddress },
                                 children: [],
                             };
