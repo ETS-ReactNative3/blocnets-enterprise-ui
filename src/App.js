@@ -84,6 +84,13 @@ const userIconStyle = {
     transform: "scale(2.1)"
 };
 
+let counter = 0;
+
+function createData(info1, info2) {
+    counter += 1;
+    return {id: counter, info1, info2};
+}
+
 class App extends Component {
 
     /* Dev Note: Will automatically fire the prop actions, or http request, once component mounts */
@@ -109,6 +116,7 @@ class App extends Component {
             openSearch: false,
             searchCriteria: '',
             billOfMaterialsData: [],
+            materialID: '',
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
@@ -135,7 +143,10 @@ class App extends Component {
         this.props.data.bomReducer.getBillOfMaterialsByPartNumberSuccess = '';
         this.props.data.bomReducer.getBillOfMaterialsByPartNameSuccess = '';
         this.props.data.bomReducer.getBillOfMaterialsByPartDescSuccess = '';
-        this.setState({ billOfMaterialsData: [] });
+        this.setState({
+            billOfMaterialsData: [],
+            materialID: ''
+        });
         if (this.state.searchCriteria === 'Material ID') {
             this.props.getBillOfMaterialsByMaterialID(this.state.searchKey);
             this.handleSearchData('Material ID');
@@ -253,7 +264,7 @@ class App extends Component {
             setTimeout(
                 function () {
                     if (this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess) {
-                        bomData = JSON.stringify(this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess);
+                        bomData = this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess;
                     }
                     this.handleBOMData(bomData);
                 }
@@ -264,7 +275,7 @@ class App extends Component {
             setTimeout(
                 function () {
                     if (this.props.data.bomReducer.getBillOfMaterialsByMaterialNameSuccess) {
-                        bomData = JSON.stringify(this.props.data.bomReducer.getBillOfMaterialsByMaterialNameSuccess);
+                        bomData = this.props.data.bomReducer.getBillOfMaterialsByMaterialNameSuccess;
                     }
                     this.handleBOMData(bomData);
                 }
@@ -275,7 +286,7 @@ class App extends Component {
             setTimeout(
                 function () {
                     if (this.props.data.bomReducer.getBillOfMaterialsByMaterialDescSuccess) {
-                        bomData = JSON.stringify(this.props.data.bomReducer.getBillOfMaterialsByMaterialDescSuccess);
+                        bomData = this.props.data.bomReducer.getBillOfMaterialsByMaterialDescSuccess;
                     }
                     this.handleBOMData(bomData);
                 }
@@ -286,7 +297,7 @@ class App extends Component {
             setTimeout(
                 function () {
                     if (this.props.data.bomReducer.getBillOfMaterialsByPartNumberSuccess) {
-                        bomData = JSON.stringify(this.props.data.bomReducer.getBillOfMaterialsByPartNumberSuccess);
+                        bomData = this.props.data.bomReducer.getBillOfMaterialsByPartNumberSuccess;
                     }
                     this.handleBOMData(bomData);
                 }
@@ -297,7 +308,7 @@ class App extends Component {
             setTimeout(
                 function () {
                     if (this.props.data.bomReducer.getBillOfMaterialsByPartNameSuccess) {
-                        bomData = JSON.stringify(this.props.data.bomReducer.getBillOfMaterialsByPartNameSuccess);
+                        bomData = this.props.data.bomReducer.getBillOfMaterialsByPartNameSuccess;
                     }
                     this.handleBOMData(bomData);
                 }
@@ -308,7 +319,7 @@ class App extends Component {
             setTimeout(
                 function () {
                     if (this.props.data.bomReducer.getBillOfMaterialsByPartDescSuccess) {
-                        bomData = JSON.stringify(this.props.data.bomReducer.getBillOfMaterialsByPartDescSuccess);
+                        bomData = this.props.data.bomReducer.getBillOfMaterialsByPartDescSuccess;
                     }
                     this.handleBOMData(bomData);
                 }
@@ -319,28 +330,83 @@ class App extends Component {
     };
 
     handleBOMData = (bomData) => {
-        if (bomData.length > 0) {
+        let bomDataLength = JSON.stringify(bomData).length;
+        if (bomDataLength > 2) {
+            let alwaysUpright = bomData.material.materialAlwaysUpRight === true ? 'YES' : 'NO';
+            let metallic = bomData.material.materialOther[0].substr(10, 1) === 't' ? 'YES' : 'NO';
+            let hazmat = bomData.material.materialOther[1].substr(8, 1) === 't' ? 'YES' : 'NO';
+            let magnetic = bomData.material.materialOther[2].substr(10, 1) === 't' ? 'YES' : 'NO';
             this.setState({
                 showProgressLogo: false,
-                billOfMaterialsData: bomData,
+                billOfMaterialsData: [
+                    createData('Material ID', bomData.material.materialNumber),
+                    createData('Material Name', bomData.material.materialSerialNumber),
+                    createData('Material Description', bomData.material.materialDescription),
+                    createData('Part No.', ''),
+                    createData('Part Name', ''),
+                    createData('Part Description', ''),
+                    createData('Material Dimensions', ''),
+                    createData('Volume', bomData.material.materialVolume),
+                    createData('Weight', bomData.material.materialWeight),
+                    createData('Length', bomData.material.materialLength),
+                    createData('Width', bomData.material.materialWidth),
+                    createData('Height', bomData.material.materialHeight),
+                    createData('Material Handling Characteristics', ''),
+                    createData('Temperature Limits', bomData.material.materialTempLimits),
+                    createData('Shock/Vibration', bomData.material.materialVibrationLimits),
+                    createData('Altitude Restrictions', bomData.material.materialAltitudeRestrictions),
+                    createData('Compression Restrictions', bomData.material.materialCompressionRestrictions),
+                    createData('Always Upright', alwaysUpright),
+                    createData('Material Other', ''),
+                    createData('Metallic', metallic),
+                    createData('Hazmat', hazmat),
+                    createData('Magnetic', magnetic),
+                    createData('Material Quality Standards', ''),
+                    createData('Length Tolerance', bomData.material.materialLengthTolerance),
+                    createData('Round Tolerance', bomData.material.materialRoundTolerance),
+                    createData('Non-Skid Tolerance', bomData.material.materialNonSkidTolerance),
+                    createData('Supplier Customer Definition', ''),
+                    createData('Ship To Address', bomData.supplier.supplierCustomerShipToAddress),
+                    createData('Ship To IP Address', bomData.supplier.supplierCustomerShipToIPAddress),
+                    createData('Bill To Address', bomData.supplier.supplierCustomerBillToAddress),
+                    createData('Bill To IP Address', bomData.supplier.supplierCustomerBillToIPAddress),
+                    createData('Supplier Payment Terms', ''),
+                    createData('Payment Terms', ''),
+                    createData('Supplier Order Quantities Controls', ''),
+                    createData('Minimum Economic Order Quantities', bomData.supplier.supplierMinimumEconomicOrderQuantity),
+                    createData('Maximum Economic Order Quantities', bomData.supplier.supplierMaximumEconomicOrderQuantity),
+                    createData('Maximum Economic Product Withdraw Rate', bomData.supplier.supplierMaximumEconomicProductWithdrawRate),
+                    createData('Minimum Order Lead Times', bomData.supplier.supplierMinimumOrderLeadTime),
+                    createData('Suppliers', ''),
+                    createData('Address', bomData.supplier.supplierLocationAddress),
+                    createData('IP Address', ''),
+                    createData('Material Supplied Per IP Address', ''),
+                    createData('Supplier Payment Terms', ''),
+                    createData('Supplier Order Policy', ''),
+                    createData('Material', ''),
+                    createData('Address', bomData.material.materialMvmtShippedTo),
+                    createData('IP Address', bomData.material.materialMvmtLocation),
+                ],
+                materialID: bomData.material.materialNumber,
                 snackbar: {
                     autoHideDuration: 2000,
                     message: 'Successfully tracked a block!',
                     open: true,
                     sbColor: '#23CE6B'
                 }
-            })
+            });
         } else {
             this.setState({
                 showProgressLogo: false,
-                billOfMaterialsData: '',
+                billOfMaterialsData: [],
+                materialID: '',
                 snackbar: {
                     autoHideDuration: 2000,
                     message: 'Error tracking a block!',
                     open: true,
                     sbColor: 'red'
                 }
-            })
+            });
         }
     };
 
@@ -351,7 +417,8 @@ class App extends Component {
         switch (this.state.show) {
             case 'trackandtraceresultsview':
                 content = (<TrackAndTraceResultsView tatData={this.state.billOfMaterialsData}
-                    snackbar={this.state.snackbar} />);
+                                                     snackbar={this.state.snackbar}
+                                                     materialID={this.state.materialID}/>);
                 break;
             case 'billofmaterials':
                 content = (<BillOfMaterials />);
