@@ -31,7 +31,6 @@ export function createConstruct(materialID) {
         });
         axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + materialID, { headers })
             .then((response) => {
-                console.log(response.data);
                 let obj = response.data;
                 let key = obj.prdKey;
                 if (key) {
@@ -39,7 +38,7 @@ export function createConstruct(materialID) {
                         .then((response) => {
                             let construct = {
                                 name: key,
-                                attributes: { ipAddress: obj.ipAddress },
+                                attributes: { ipAddress: response.data.ipAddress },
                                 children: [],
                             };
 
@@ -53,7 +52,6 @@ export function createConstruct(materialID) {
                                 }
                                 construct.children.push(nestedObj);
                             }
-                            console.log(JSON.stringify(construct));
                             return dispatch({
                                 type: "GET_PRD_DATA_FOR_CONSTRUCT_SUCCESS",
                                 payload: construct
