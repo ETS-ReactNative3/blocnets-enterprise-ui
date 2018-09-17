@@ -148,13 +148,13 @@ export function getAndUpdateSARListByMaterialID(ListOfMaterialIDs, prdKey) {
             payload: true
         });
         for (let i = 0; i < ListOfMaterialIDs.length; i++) {
-            axios.get(config.chaincodes.Default + config.chaincodes.SAR + ListOfMaterialIDs[i], { headers })
+            axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + ListOfMaterialIDs[i], { headers })
                 .then((response) => {
 
                     let obj = response.data;
                     obj.receivedOrder = true;
                     obj.prdKey = prdKey;
-                    axios.put(config.chaincodes.Default + config.chaincodes.SAR + ListOfMaterialIDs[i], obj, { headers })
+                    axios.put(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + ListOfMaterialIDs[i], obj, { headers })
                         .then(() => {
                             return dispatch({
                                 type: "UPDATE_SAR_DATA_LIST_BY_MATERIAL_ID_SUCCESS",

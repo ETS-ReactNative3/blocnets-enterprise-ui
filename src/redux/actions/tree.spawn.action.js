@@ -29,8 +29,9 @@ export function createConstruct(materialID) {
             type: "LOADING_CONSTRUCT",
             payload: true
         });
-        axios.get(config.chaincodes.Default + config.chaincodes.SAR + materialID, { headers })
+        axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + materialID, { headers })
             .then((response) => {
+                console.log(response.data);
                 let obj = response.data;
                 let key = obj.prdKey;
                 if (key) {
