@@ -25,23 +25,44 @@ class TrackAndTraceResultsView extends Component {
             showMaterialMap: false,
             showMaterialMapSwitch: false,
             tree: '',
+            snackbar: {
+                autoHideDuration: 2000,
+                message: '',
+                open: false,
+                sbColor: 'black'
+            },
         };
     };
 
     handleChange = (event) => {
+        tree = [];
+        this.props.data.spawnConstructReducer.construct = '';
         if ([event.target.name].toString() === 'showMaterialMapSwitch' && event.target.checked === true) {
             this.setState({
                 showMaterialMapSwitch: true
             });
-            tree = [];
             this.props.createConstruct(this.props.materialID);
             setTimeout(
                 function () {
-                    tree.push(this.props.data.spawnConstructReducer.construct);
-                    this.setState({
-                        tree: tree,
-                        showMaterialMap: true
-                    });
+                    if(this.props.data.spawnConstructReducer.construct !== '') {
+                        tree.push(this.props.data.spawnConstructReducer.construct);
+                        this.setState({
+                            tree: tree,
+                            showMaterialMap: true
+                        });
+                    } else {
+                        this.setState({
+                            tree: '',
+                            showMaterialMap: false,
+                            showMaterialMapSwitch: false,
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Material Map does not exist!',
+                                open: true,
+                                sbColor: 'red'
+                            },
+                        });
+                    }
                 }
                     .bind(this),
                 1000);
@@ -62,6 +83,14 @@ class TrackAndTraceResultsView extends Component {
 
     handleSnackbarClose = () => {
         this.props.snackbar.open = false;
+        this.setState({
+            snackbar: {
+                autoHideDuration: 2000,
+                message: '',
+                open: false,
+                sbColor: 'black'
+            },
+        });
     };
 
     render() {
@@ -147,6 +176,13 @@ class TrackAndTraceResultsView extends Component {
                         autoHideDuration={this.props.snackbar.autoHideDuration}
                         onRequestClose={this.handleSnackbarClose}
                         bodyStyle={{backgroundColor: this.props.snackbar.sbColor}}
+                    />
+                    <Snackbar
+                        open={this.state.snackbar.open}
+                        message={this.state.snackbar.message}
+                        autoHideDuration={this.state.snackbar.autoHideDuration}
+                        onRequestClose={this.handleSnackbarClose}
+                        bodyStyle={{backgroundColor: this.state.snackbar.sbColor}}
                     />
                 </div>
             </form>
