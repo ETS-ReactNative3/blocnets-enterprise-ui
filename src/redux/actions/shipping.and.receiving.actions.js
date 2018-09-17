@@ -16,7 +16,7 @@ export function createShippingDataByShipmentID(url, body) {
             type: "LOADING_SAR_VIEW",
             payload: true
         });
-        axios.post(config.chaincodes.Default + config.chaincodes.SAR + url, body, { headers })
+        axios.post(config.chaincodes.Default + config.chaincodes.SAR + 'shipmentId=' + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_SHIPPING_DATA_BY_SHIPMENT_ID_SUCCESS",
@@ -36,7 +36,7 @@ export function getShippingDataByShipmentID(url) {
             type: "LOADING_SAR_VIEW",
             payload: true
         });
-        axios.get(config.chaincodes.Default + config.chaincodes.SAR + url, { headers })
+        axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'shipmentId=' + url, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('DataByShipmentID', data);
@@ -58,7 +58,7 @@ export function updateShippingDataByShipmentID(url, body) {
             type: "LOADING_SAR_VIEW",
             payload: true
         });
-        axios.put(config.chaincodes.Default + config.chaincodes.SAR + url, body, { headers })
+        axios.put(config.chaincodes.Default + config.chaincodes.SAR + 'shipmentId=' + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_SHIPPING_DATA_BY_SHIPMENT_ID_SUCCESS",
@@ -78,7 +78,7 @@ export function createShippingDataByMaterialID(url, body) {
             type: "LOADING_SAR_VIEW",
             payload: true
         });
-        axios.post(config.chaincodes.Default + config.chaincodes.SAR + url, body, { headers })
+        axios.post(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
@@ -98,7 +98,7 @@ export function getShippingDataByMaterialID(url) {
             type: "LOADING_SAR_VIEW",
             payload: true
         });
-        axios.get(config.chaincodes.Default + config.chaincodes.SAR + url, { headers })
+        axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + url, { headers })
             .then((response) => {
                 let data = JSON.stringify(response.data);
                 sessionStorage.setItem('DataByMaterialID', data);
@@ -120,7 +120,7 @@ export function updateShippingDataByMaterialID(url, body) {
             type: "LOADING_SAR_VIEW",
             payload: true
         });
-        axios.put(config.chaincodes.Default + config.chaincodes.SAR + url, body, { headers })
+        axios.put(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
@@ -185,182 +185,84 @@ export function syncSARDataAndBindKeys(payload) {
             payload: true
         });
 
-        console.log(JSON.stringify(payload));
+        if (payload.materialID && payload.shipmentID) {
 
-        function syncSARDataByMaterialID() {
-            if (payload.materialID) {
-                let data = {
-                    materialID: payload.materialID,
-                    shipmentID: payload.shipmentID,
-                    listOfKeys: [{ guid: payload.shipmentID }],
-                    shipmentSent: true,
-                    shipmentCompleted: payload.shipmentCompleted,
-                    shipmentQuantity: payload.shipmentQuantity,
-                    manuallyShipped: payload.manuallyShipped,
-                    address1: payload.address1,
-                    address2: payload.address2,
-                    city: payload.city,
-                    state: payload.state,
-                    country: payload.country,
-                    postalCode: payload.postalCode,
-                    ipAddress: payload.ipAddress,
-                    receivedShipment: payload.receivedShipment,
-                    receivedOrder: payload.receivedOrder,
-                    deliverOrderNo: payload.deliverOrderNo,
-                    prdKey: payload.prdKey
-                };
-                axios.head(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + payload.materialID, { headers })
+            let materialKeyData = {
+                materialID: payload.materialID,
+                shipmentID: payload.shipmentID,
+                listOfKeys: [{ guid: payload.shipmentID }],
+                shipmentSent: true,
+                shipmentCompleted: payload.shipmentCompleted,
+                shipmentQuantity: payload.shipmentQuantity,
+                manuallyShipped: payload.manuallyShipped,
+                address1: payload.address1,
+                address2: payload.address2,
+                city: payload.city,
+                state: payload.state,
+                country: payload.country,
+                postalCode: payload.postalCode,
+                ipAddress: payload.ipAddress,
+                receivedShipment: payload.receivedShipment,
+                receivedOrder: payload.receivedOrder,
+                deliverOrderNo: payload.deliverOrderNo,
+                prdKey: payload.prdKey
+            };
+
+            let shipKeyData = {
+                materialID: payload.materialID,
+                shipmentID: payload.shipmentID,
+                listOfKeys: payload.listOfKeys,
+                shipmentSent: true,
+                shipmentCompleted: payload.shipmentCompleted,
+                shipmentQuantity: payload.shipmentQuantity,
+                manuallyShipped: payload.manuallyShipped,
+                shipped: true,
+                address1: payload.address1,
+                address2: payload.address2,
+                city: payload.city,
+                state: payload.state,
+                country: payload.country,
+                postalCode: payload.postalCode,
+                ipAddress: payload.ipAddress,
+                receivedShipment: '',
+                receivedOrder: '',
+                deliverOrderNo: '',
+                prdKey: ''
+            };
+
+            axios.post(config.chaincodes.Default + config.chaincodes.SAR + 'shipmentId=' + payload.shipmentID, payload, { headers })
+                .then(() => {
+                    dispatch({
+                        type: "CREATE_SHIPPING_DATA_BY_SHIPMENT_ID_SUCCESS",
+                        payload: true
+                    });
+                })
+                .catch((error) => {
+                    dispatch({
+                        type: "CREATE_SHIPPING_DATA_BY_SHIPMENT_ID_FAILED",
+                        payload: error
+                    });
+                })
+
+            for (let i = 0; i < shipKeyData.listOfKeys.length; i++) {
+                axios.head(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + shipKeyData.listOfKeys[i].materialID, { headers })
                     .then(() => {
                         dispatch({
                             type: "CHECKED_SAR_DATA_BY_MATERIAL_ID_DOES_EXIST",
                             payload: true
                         });
-                        axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + payload.materialID, { headers })
+                        axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + shipKeyData.listOfKeys[i].materialID, { headers })
                             .then((response) => {
                                 dispatch({
                                     type: "GET_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
                                     payload: true
                                 });
 
-                                let newObj = {
-                                    materialID: response.data.materialID,
-                                    shipmentID: response.data.shipmentID,
-                                    listOfKeys: [{ guid: payload.shipmentID }],
-                                    shipmentSent: true,
-                                    shipmentCompleted: response.data.shipmentCompleted,
-                                    shipmentQuantity: response.data.shipmentQuantity,
-                                    manuallyShipped: response.data.manuallyShipped,
-                                    address1: response.data.address1,
-                                    address2: response.data.address2,
-                                    city: response.data.city,
-                                    state: response.data.state,
-                                    country: response.data.country,
-                                    postalCode: response.data.postalCode,
-                                    ipAddress: response.data.ipAddress,
-                                    receivedShipment: response.data.receivedShipment,
-                                    receivedOrder: response.data.receivedOrder,
-                                    deliverOrderNo: response.data.deliverOrderNo,
-                                    prdKey: response.data.prdKey
-                                };
-
-                                for (let i = 0; i < response.data.listOfKeys.length; i++) {
-                                    if (response.data.listOfKeys[i].guid) {
-                                        newObj.listOfKeys.push(response.data.listOfKeys[i].guid)
-                                    } else {
-                                        let obj = {
-                                            guid: response.data.listOfKeys[i]
-                                        };
-                                        newObj.listOfKeys.push(obj);
-                                    }
-                                }
-
-                                axios.put(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + payload.materialID, newObj, { headers })
-                                    .then(() => {
-                                        dispatch({
-                                            type: "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
-                                            payload: true
-                                        });
-                                    })
-                                    .catch((error) => {
-                                        dispatch({
-                                            type: "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
-                                            payload: error
-                                        });
-                                    })
-
-                            })
-                            .catch((error) => {
-                                dispatch({
-                                    type: "GET_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
-                                    payload: error
-                                });
-                            })
-                    })
-                    .catch(() => {
-                        dispatch({
-                            type: "CHECKED_SAR_DATA_BY_MATERIAL_ID_DOES_NOT_EXIST",
-                            payload: true
-                        });
-                        axios.post(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + payload.materialID, data, { headers })
-                            .then(() => {
-                                return dispatch({
-                                    type: "CREATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
-                                    payload: true
-                                });
-                            })
-                            .catch(() => dispatch({
-                                type: "CREATE_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
-                                payload: true
-                            }));
-                    })
-            }
-        }
-
-        function syncSARDataByShipmentID() {
-            if (payload.shipmentID) {
-
-                let data = {
-                    materialID: payload.materialID,
-                    shipmentID: payload.shipmentID,
-                    listOfKeys: payload.listOfKeys,
-                    shipmentSent: true,
-                    shipmentCompleted: payload.shipmentCompleted,
-                    shipmentQuantity: payload.shipmentQuantity,
-                    manuallyShipped: payload.manuallyShipped,
-                    shipped: true,
-                    address1: payload.address1,
-                    address2: payload.address2,
-                    city: payload.city,
-                    state: payload.state,
-                    country: payload.country,
-                    postalCode: payload.postalCode,
-                    ipAddress: payload.ipAddress,
-                    receivedShipment: '',
-                    receivedOrder: '',
-                    deliverOrderNo: '',
-                    prdKey: ''
-                }
-
-                let newMaterialIDData = {
-                    materialID: payload.materialID,
-                    shipmentID: payload.shipmentID,
-                    listOfKeys: [{ guid: payload.shipmentID }],
-                    shipmentSent: true,
-                    shipmentCompleted: payload.shipmentCompleted,
-                    shipmentQuantity: payload.shipmentQuantity,
-                    manuallyShipped: payload.manuallyShipped,
-                    shipped: true,
-                    address1: payload.address1,
-                    address2: payload.address2,
-                    city: payload.city,
-                    state: payload.state,
-                    country: payload.country,
-                    postalCode: payload.postalCode,
-                    ipAddress: payload.ipAddress,
-                    receivedShipment: '',
-                    receivedOrder: '',
-                    deliverOrderNo: '',
-                    prdKey: ''
-                }
-
-                for (let i = 0; i < data.listOfKeys.length; i++) {
-                    axios.head(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + data.listOfKeys[i].materialID, { headers })
-                        .then(() => {
-                            dispatch({
-                                type: "CHECKED_SAR_DATA_BY_MATERIAL_ID_DOES_EXIST",
-                                payload: true
-                            });
-                            axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + data.listOfKeys[i].materialID, { headers })
-                                .then((response) => {
-                                    dispatch({
-                                        type: "GET_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
-                                        payload: true
-                                    });
-
+                                if (response.data) {
                                     let updatedObj = {
-                                        materialID: data.listOfKeys[i].materialID,
+                                        materialID: shipKeyData.listOfKeys[i].materialID,
                                         shipmentID: response.data.shipmentID,
-                                        listOfKeys: response.data.listOfKeys,
+                                        listOfKeys: [{ guid: payload.shipmentID }],
                                         shipmentSent: true,
                                         shipmentCompleted: response.data.shipmentCompleted,
                                         shipmentQuantity: response.data.shipmentQuantity,
@@ -378,76 +280,61 @@ export function syncSARDataAndBindKeys(payload) {
                                         prdKey: response.data.prdKey
                                     };
 
-                                    let array = [];
-
                                     for (let i = 0; i < response.data.listOfKeys.length; i++) {
                                         if (response.data.listOfKeys[i].guid) {
-                                            array.push(response.data.listOfKeys[i].guid);
+                                            console.log(response.data.listOfKeys[i].guid);
+                                            updatedObj.listOfKeys.push(response.data.listOfKeys[i]);
                                         } else {
                                             let obj = {
                                                 guid: response.data.listOfKeys[i]
                                             };
-                                            array.push(obj);
+                                            updatedObj.listOfKeys.push(obj);
                                         }
-                                    }
-
-                                    array.push({ guid: data.shipmentID });
-                                    updatedObj.listOfKeys = array;
-
-                                    axios.put(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + data.listOfKeys[i].materialID, updatedObj, { headers })
-                                        .then(() => {
-                                            dispatch({
-                                                type: "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
+                                        axios.put(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + updatedObj.materialID, updatedObj, { headers })
+                                            .then(() => {
+                                                return dispatch({
+                                                    type: "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
+                                                    payload: true
+                                                });
+                                            })
+                                            .catch(() => dispatch({
+                                                type: "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
                                                 payload: true
-                                            });
-                                        })
-                                        .catch((error) => {
-                                            dispatch({
-                                                type: "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
-                                                payload: error
-                                            });
-                                        })
+                                            }));
+                                    }
+                                }
 
-                                })
-                                .catch((error) => {
-                                    dispatch({
-                                        type: "GET_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
-                                        payload: error
-                                    });
-                                })
+                            })
+                            .catch((error) => {
+                                dispatch({
+                                    type: "GET_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
+                                    payload: error
+                                });
+                            })
 
-                        })
-                        .catch(() => {
-                            axios.post(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + data.listOfKeys[i].materialID, newMaterialIDData, { headers })
-                                .then(() => {
-                                    return dispatch({
-                                        type: "CREATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
-                                        payload: true
-                                    });
-                                })
-                                .catch(() => dispatch({
-                                    type: "CREATE_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
-                                    payload: true
-                                }));
-                        })
-                }
-                axios.post(config.chaincodes.Default + config.chaincodes.SAR + 'shipmentId=' + payload.shipmentID, payload, { headers })
-                    .then(() => {
+                    })
+                    .catch(() => {
                         dispatch({
-                            type: "CREATE_SHIPPING_DATA_BY_SHIPMENT_ID_SUCCESS",
+                            type: "CHECKED_SAR_DATA_BY_MATERIAL_ID_DOES_NOT_EXIST",
                             payload: true
                         });
-                    })
-                    .catch((error) => {
-                        dispatch({
-                            type: "CREATE_SHIPPING_DATA_BY_SHIPMENT_ID_FAILED",
-                            payload: error
-                        });
+                        axios.post(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + shipKeyData.listOfKeys[i].materialID, materialKeyData, { headers })
+                            .then(() => {
+                                return dispatch({
+                                    type: "CREATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
+                                    payload: true
+                                });
+                            })
+                            .catch(() => dispatch({
+                                type: "CREATE_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
+                                payload: true
+                            }));
                     })
             }
         }
-
-        syncSARDataByMaterialID();
-        syncSARDataByShipmentID();
-    };
+        dispatch({
+            type: "SYNC_SAR_DATA_AND_BIND_KEYS_SUCCESS",
+            payload: true
+        });
+    }
 }

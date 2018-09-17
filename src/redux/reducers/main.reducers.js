@@ -185,6 +185,15 @@ export function sarReducer(state = { items: [], errors: [] }, action) {
         case "UPDATE_SAR_DATA_LIST_BY_MATERIAL_ID_FAILED": {
             return state = { ...state, errors: [...state.errors, action.payload] }
         }
+        case "CHECKED_SAR_DATA_BY_MATERIAL_ID_DOES_EXIST": {
+            return state = { ...state, checkedSARDataByMaterialIDDoesExist: action.payload }
+        }
+        case "CHECKED_SAR_DATA_BY_MATERIAL_ID_DOES_NOT_EXIST": {
+            return state = { ...state, checkedSARDataByMaterialIDDoesNotExist: action.payload }
+        }
+        case "SYNC_SAR_DATA_AND_BIND_KEYS_SUCCESS": {
+            return state = { ...state, syncSARDataAndBindKeysSuccess: action.payload }
+        }
         default:
             return state;
     }
@@ -266,7 +275,7 @@ export function umaReducer(state = {}, action) {
         case "UPDATE_UMA_DATA_BY_USER_ID_SUCCESS": {
             return state = { ...state, updateUserMessageDataByUserIDSuccess: action.payload }
         }
-        case "GET_EACH_MESSAGE_FOR_USER_ID_SUCCESS" : {
+        case "GET_EACH_MESSAGE_FOR_USER_ID_SUCCESS": {
             return state = { ...state, getEachMessageForUserIDSuccess: action.payload }
         }
         case "GET_EACH_MESSAGE_FOR_USER_ID_FAILED": {
@@ -292,7 +301,7 @@ export function spawnConstructReducer(state = {}, action) {
             return state = { ...state, readyToSpawn: action.payload }
         }
         case "GET_SHIPPING_DATA_FOR_CONSTRUCT_FAILED": {
-            return state = { ...state, failedToSpawn: action.payload}
+            return state = { ...state, failedToSpawn: action.payload }
         }
         default:
             return state;
