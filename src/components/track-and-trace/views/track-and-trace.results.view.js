@@ -30,6 +30,9 @@ class TrackAndTraceResultsView extends Component {
 
     handleChange = (event) => {
         if ([event.target.name].toString() === 'showMaterialMapSwitch' && event.target.checked === true) {
+            this.setState({
+                showMaterialMapSwitch: true
+            });
             tree = [];
             this.props.createConstruct(this.props.materialID);
             setTimeout(
@@ -43,7 +46,10 @@ class TrackAndTraceResultsView extends Component {
                     .bind(this),
                 1000);
         } else if ([event.target.name].toString() === 'showMaterialMapSwitch' && event.target.checked === false) {
-            this.setState({showMaterialMap: false});
+            this.setState({
+                showMaterialMap: false,
+                showMaterialMapSwitch: false
+            });
         }
     };
 
