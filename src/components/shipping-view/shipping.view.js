@@ -189,6 +189,34 @@ class ShippingView extends Component {
         this.setState({materialIDQuantityList: materialIDQuantityListFinal})
     };
 
+    handleMaterialIDText = (index) => (event) => {
+        if (event.target.value) {
+            this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess = '';
+            this.setState({showProgressLogo: true});
+            let childMaterialID = event.target.value;
+            this.props.getBillOfMaterialsByMaterialID(event.target.value);
+            setTimeout(
+                function () {
+                    if (this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess) {
+                        this.setState({showProgressLogo: false});
+                    } else {
+                        this.setState({
+                            showProgressLogo: false,
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Master Data does not exist for ' + childMaterialID + '.',
+                                open: true,
+                                sbColor: 'red'
+                            },
+                        });
+                    }
+                }
+                    .bind(this),
+                1000
+            );
+        }
+    };
+
     handleText = (index) => (event) => {
         let materialIDQuantityList = [...this.state.materialIDQuantityList];
         if ([event.target.name].toString() === 'materialIDList' && event.target.value) {
@@ -238,6 +266,10 @@ class ShippingView extends Component {
     };
 
     handleSubmitConfirmation = () => {
+        this.props.data.sarReducer.createShippingDataByShipmentIDSuccess = '';
+        this.props.data.sarReducer.updateShippingDataByMaterialIDSuccess = '';
+        this.props.data.sarReducer.createShippingDataByMaterialIDSuccess = '';
+        this.setState({showProgressLogoDialog: true});
         let payload = {
             materialID: this.state.materialID,
             shipmentID: this.state.shipmentID,
@@ -260,10 +292,57 @@ class ShippingView extends Component {
             prdKey: ''
         };
         this.props.syncSARDataAndBindKeys(payload);
-        this.setState({
-            openDialogQuantity: false,
-            openDialogConfirmation: false
-        });
+        setTimeout(
+            function () {
+                if (this.props.data.sarReducer.createShippingDataByShipmentIDSuccess === true &&
+                    (this.props.data.sarReducer.updateShippingDataByMaterialIDSuccess === true ||
+                        this.props.data.sarReducer.createShippingDataByMaterialIDSuccess === true)
+                ) {
+                    this.setState({
+                        showProgressLogoDialog: false,
+                        snackbar: {
+                            autoHideDuration: 2000,
+                            message: 'Shipping Successful!',
+                            open: true,
+                            sbColor: '#23CE6B'
+                        },
+                        openDialogQuantity: false,
+                        openDialogConfirmation: false,
+                        materialID: '',
+                        errorTextMaterialID: 'This is a required field.',
+                        shipmentID: '',
+                        shipmentIDGenerated: '',
+                        shipmentIDTyped: '',
+                        address: '',
+                        addressMenuItems: '',
+                        ipAddress: '',
+                        errorTextAddress: 'This is a required field.',
+                        manualShipping: false,
+                        manualShipping2: 'NO',
+                        shipmentCompleted: false,
+                        shipmentCompleted2: 'NO',
+                        quantity: '',
+                        errorTextQuantity: 'This is a required field.',
+                        materialIDQuantityList: [{
+                            materialID: '',
+                            quantity: ''
+                        }],
+                        rows: []
+                    });
+                } else {
+                    this.setState({
+                        showProgressLogoDialog: false,
+                        snackbar: {
+                            autoHideDuration: 2000,
+                            message: 'Shipping Error! Please try again.',
+                            open: true,
+                            sbColor: 'red'
+                        }
+                    });
+                }
+            }
+                .bind(this),
+            10000);
     };
 
     handleDialogCloseConfirmation = () => {
@@ -360,6 +439,15 @@ class ShippingView extends Component {
                 </div>
                 <div style={{padding: 24}}>
                     <Grid container spacing={24}>
+                        <Grid container item xs={12}>
+                            <FormLabel style={{"textAlign": "left", "fontWeight": "bold", "color": "black"}}>CREATE
+                                SHIPPING INFORMATION</FormLabel>
+                        </Grid>
+                    </Grid>
+                    <br/>
+                    <Divider style={{"height": "2px", "backgroundColor": "black"}}/>
+                    <br/><br/>
+                    <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <FormLabel style={{"textAlign": "left"}}>Material ID</FormLabel>
                         </Grid>
@@ -421,6 +509,7 @@ class ShippingView extends Component {
                                             onChange={this.handleCheckboxChange}
                                             name="manualShipping"
                                             color="default"
+                                            checked={this.state.manualShipping}
                                         />
                                     }
                                     label="Manual Shipping"
@@ -435,6 +524,7 @@ class ShippingView extends Component {
                                             onChange={this.handleCheckboxChange}
                                             name="shipmentCompleted"
                                             color="default"
+                                            checked={this.state.shipmentCompleted}
                                         />
                                     }
                                     label="Shipment Completed"
@@ -443,7 +533,14 @@ class ShippingView extends Component {
                         </Grid>
                     </Grid>
                     <br/><br/>
-                    <Divider style={{"height": "3px", "backgroundColor": "red"}}/>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={12}>
+                            <FormLabel style={{"textAlign": "left", "fontWeight": "bold", "color": "black"}}>ADDITIONAL
+                                SHIPPING INFORMATION</FormLabel>
+                        </Grid>
+                    </Grid>
+                    <br/>
+                    <Divider style={{"height": "2px", "backgroundColor": "black"}}/>
                     <br/><br/>
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
@@ -464,6 +561,7 @@ class ShippingView extends Component {
                                         onChange={this.handleText(index)}
                                         hintText=""
                                         value={materialIDQuantityList.materialID}
+                                        onBlur={this.handleMaterialIDText(index)}
                                     />
                                 </Grid>
                                 <Grid container item xs={6} sm={3}>
