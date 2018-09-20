@@ -21,7 +21,7 @@ export default function configureStore(initialState) {
   );
 
   store.subscribe(() => {
-    console.log("STORE CHANGED: ", store.getState());
+    //console.log("STORE CHANGED: ", store.getState());
   })
 
   return store;

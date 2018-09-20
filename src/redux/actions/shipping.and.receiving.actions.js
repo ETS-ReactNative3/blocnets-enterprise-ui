@@ -184,7 +184,8 @@ export function syncSARDataAndBindKeys(payload) {
             type: "LOADING_SAR_VIEW",
             payload: true
         });
-
+        console.log("Payload: ");
+        console.log(payload);
         if (payload.materialID && payload.shipmentID) {
 
             let materialKeyData = {
@@ -279,6 +280,10 @@ export function syncSARDataAndBindKeys(payload) {
                                         deliverOrderNo: response.data.deliverOrderNo,
                                         prdKey: response.data.prdKey
                                     };
+
+                                    if(response.data.listOfKeys === null){
+                                        response.data.listOfKeys = [{guid: null}];
+                                    }
 
                                     for (let i = 0; i < response.data.listOfKeys.length; i++) {
                                         if (response.data.listOfKeys[i].guid) {
