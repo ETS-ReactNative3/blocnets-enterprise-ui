@@ -1,6 +1,6 @@
 import axios from 'axios';
 import config from '../config.json';
-//import { resolver } from '../../services/callback.resolver';
+import { resolver } from '../../services/callback.resolver';
 
 const token = localStorage.getItem('Token');
 
@@ -29,13 +29,11 @@ export function createBillOfMaterialsByMaterialID(url, body) {
                 });
             })
             .catch((error) => {
-                console.log(error.response);
-                if (error.response.status === 409 || error.response.status === 401) {
-                    dispatch({
-                        type: "CREATE_BOM_DATA_BY_MATERIAL_ID_FAILED",
-                        payload: true
-                    });
-                }
+                let errorMsg = resolver(error);
+                dispatch({
+                    type: "CREATE_BOM_DATA_BY_MATERIAL_ID_FAILED",
+                    payload: errorMsg
+                });
             })
     };
 }
@@ -54,12 +52,12 @@ export function getBillOfMaterialsByMaterialID(url) {
                 });
             })
             .catch((error) => {
-                if (error.response.status === 404 || error.response.status === 401) {
-                    dispatch({
-                        type: "GET_BOM_DATA_BY_MATERIAL_ID_FAILED",
-                        payload: true
-                    })
-                }
+                let errorMsg = resolver(error);
+                dispatch({
+                    type: "GET_BOM_DATA_BY_MATERIAL_ID_FAILED",
+                    payload: errorMsg
+                })
+
             });
     };
 }
@@ -107,13 +105,12 @@ export function createBillOfMaterialsByMaterialName(url, body) {
                 });
             })
             .catch((error) => {
-                if (error.response.status === 409 || error.response.status === 401) {
-                    dispatch({
-                        type: "CREATE_BOM_DATA_MATERIAL_NAME_FAILED",
-                        payload: true
-                    })
-                }
-            });
+                let errorMsg = resolver(error);
+                dispatch({
+                    type: "CREATE_BOM_DATA_MATERIAL_NAME_FAILED",
+                    payload: errorMsg
+                })
+            })
     };
 }
 
@@ -173,10 +170,10 @@ export function createBillOfMaterialsByMaterialDesc(url, body) {
                 });
             })
             .catch((error) => {
-                console.log(error.response);
+                let errorMsg = resolver(error);
                 dispatch({
                     type: "CREATE_BOM_DATA_BY_MATERIAL_DESC_FAILED",
-                    payload: true
+                    payload: errorMsg
                 })
             });
     };
@@ -240,10 +237,10 @@ export function createBillOfMaterialsByPartNumber(url, body) {
                 });
             })
             .catch((error) => {
-                console.log(error.response);
+                let errorMsg = resolver(error);
                 dispatch({
                     type: "CREATE_BOM_DATA_BY_PART_NUMBER_FAILED",
-                    payload: true
+                    payload: errorMsg
                 })
             });
     };
@@ -307,10 +304,10 @@ export function createBillOfMaterialsByPartName(url, body) {
                 });
             })
             .catch((error) => {
-                console.log(error.response);
+                let errorMsg = resolver(error);
                 dispatch({
                     type: "CREATE_BOM_DATA_BY_PART_NAME_FAILED",
-                    payload: true
+                    payload: errorMsg
                 })
             });
     };
@@ -374,10 +371,10 @@ export function createBillOfMaterialsByPartDesc(url, body) {
                 });
             })
             .catch((error) => {
-                console.log(error.response);
+                let errorMsg = resolver(error);
                 dispatch({
                     type: "CREATE_BOM_DATA_BY_PART_DESC_FAILED",
-                    payload: true
+                    payload: errorMsg
                 })
             });
     };

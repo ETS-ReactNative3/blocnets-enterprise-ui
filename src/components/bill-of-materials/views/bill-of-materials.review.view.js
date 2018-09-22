@@ -37,16 +37,20 @@ class BillOfMaterialsReview extends React.Component {
         };
     }
 
+    handleError = (error) => {
+        this.setState({
+            showProgressLogo: false,
+            snackbar: {
+                autoHideDuration: 2000,
+                message: "Error: " + error,
+                open: true,
+                sbColor: 'red'
+            }
+        });
+        this.props.viewHandler(true, false, this.props.eBOMData, this.state.snackbar);
+    }
+
     handleSubmit = (event) => {
-        this.props.data.bomReducer.createBillOfMaterialsByMaterialIDSuccess = '';
-        this.props.data.bomReducer.createBillOfMaterialsByMaterialNameSuccess = '';
-        this.props.data.bomReducer.createBillOfMaterialsByMaterialDescSuccess = '';
-        this.props.data.bomReducer.createBillOfMaterialsByPartNumberSuccess = '';
-        this.props.data.bomReducer.createBillOfMaterialsByPartNameSuccess = '';
-        this.props.data.bomReducer.createBillOfMaterialsByPartDescSuccess = '';
-        let createBillOfMaterialsByPartNumberSuccess = '';
-        let createBillOfMaterialsByPartNameSuccess = '';
-        let createBillOfMaterialsByPartDescSuccess = '';
         this.setState({ showProgressLogo: true });
         let BOMMaterialUrl = this.props.eBOMData.materialID;
         let BOMMaterialNameUrl = this.props.eBOMData.materialName;
@@ -177,35 +181,32 @@ class BillOfMaterialsReview extends React.Component {
             .then(() => {
                 if (this.props.eBOMData.partNo) {
                     this.props.createBillOfMaterialsByPartNumber(BOMPartNoUrl, data);
-                } else {
-                    createBillOfMaterialsByPartNumberSuccess = true;
                 }
             })
             .then(() => {
                 if (this.props.eBOMData.partName) {
                     this.props.createBillOfMaterialsByPartName(BOMPartNameUrl, data);
-                } else {
-                    createBillOfMaterialsByPartNameSuccess = true;
                 }
             })
             .then(() => {
                 if (this.props.eBOMData.partDescription) {
                     this.props.createBillOfMaterialsByPartDesc(BOMPartDescriptionUrl, data);
-                } else {
-                    createBillOfMaterialsByPartDescSuccess = true;
                 }
             })
             .then(() => {
-                if (this.props.data.bomReducer.createBillOfMaterialsByMaterialIDSuccess === true
-                    && this.props.data.bomReducer.createBillOfMaterialsByMaterialNameSuccess === true
-                    && this.props.data.bomReducer.createBillOfMaterialsByMaterialDescSuccess === true
-                    && (this.props.data.bomReducer.createBillOfMaterialsByPartNumberSuccess === true
-                        || createBillOfMaterialsByPartNumberSuccess === true)
-                    && (this.props.data.bomReducer.createBillOfMaterialsByPartNameSuccess === true
-                        || createBillOfMaterialsByPartNameSuccess === true)
-                    && (this.props.data.bomReducer.createBillOfMaterialsByPartDescSuccess === true
-                        || createBillOfMaterialsByPartDescSuccess === true)
-                ) {
+                if (this.props.data.bomReducer.createBillOfMaterialsByMaterialIDError) {
+                    this.handleError(this.props.data.bomReducer.createBillOfMaterialsByMaterialIDError.status);
+                } else if (this.props.data.bomReducer.createBillOfMaterialsByMaterialNameError) {
+                    this.handleError(this.props.data.bomReducer.createBillOfMaterialsByMaterialNameError.status);
+                } else if (this.props.data.bomReducer.createBillOfMaterialsByMaterialDescError) {
+                    this.handleError(this.props.data.bomReducer.createBillOfMaterialsByMaterialDescError.status);
+                } else if (this.props.data.bomReducer.createBillOfMaterialsByPartNumberError) {
+                    this.handleError(this.props.data.bomReducer.createBillOfMaterialsByPartNumberError.status);
+                } else if (this.props.data.bomReducer.createBillOfMaterialsByPartNameError) {
+                    this.handleError(this.props.data.bomReducer.createBillOfMaterialsByPartNameError);
+                } else if (this.props.data.bomReducer.createBillOfMaterialsByPartDescError) {
+                    this.handleError(this.props.data.bomReducer.createBillOfMaterialsByPartDescError.status);
+                } else {
                     this.setState({
                         showProgressLogo: false,
                         snackbar: {
@@ -216,17 +217,6 @@ class BillOfMaterialsReview extends React.Component {
                         }
                     });
                     this.props.viewHandler(true, false, '', this.state.snackbar);
-                } else {
-                    this.setState({
-                        showProgressLogo: false,
-                        snackbar: {
-                            autoHideDuration: 2000,
-                            message: 'Error Creating Engineering Bill of Materials! Please try again.',
-                            open: true,
-                            sbColor: 'red'
-                        }
-                    });
-                    this.props.viewHandler(true, false, this.props.eBOMData, this.state.snackbar);
                 }
             })
     };
