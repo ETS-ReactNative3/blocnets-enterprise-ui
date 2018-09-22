@@ -85,9 +85,8 @@ class ReceivingView extends Component {
         });
         if (this.state.shipmentIDInformed === false) {
             let url = this.state.materialID;
-            this.props.getShippingDataByMaterialID(url);
-            setTimeout(
-                function () {
+            Promise.resolve(this.props.getShippingDataByMaterialID(url))
+                .then(() => {
                     dataByMaterialID = this.props.data.sarReducer.getShippingDataByMaterialIDSuccess;
                     if (dataByMaterialID) {
                         if (dataByMaterialID.manuallyShipped === true) {
@@ -119,10 +118,7 @@ class ReceivingView extends Component {
                             openMaterialIDDialog: false
                         })
                     }
-                }
-                    .bind(this),
-                1000
-            );
+                });
         } else if (this.state.materialIDInformed === false) {
             let url = this.state.shipmentID;
             this.props.getShippingDataByShipmentID(url);

@@ -93,15 +93,13 @@ export function createShippingDataByMaterialID(url, body) {
 }
 
 export function getShippingDataByMaterialID(url) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_SAR_VIEW",
             payload: true
         });
-        axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + url, { headers })
+        await axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + url, {headers})
             .then((response) => {
-                let data = JSON.stringify(response.data);
-                sessionStorage.setItem('DataByMaterialID', data);
                 return dispatch({
                     type: "GET_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
                     payload: response.data
