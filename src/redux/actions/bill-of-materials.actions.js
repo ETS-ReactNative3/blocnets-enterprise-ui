@@ -29,10 +29,10 @@ export function createBillOfMaterialsByMaterialID(url, body) {
                 });
             })
             .catch((error) => {
-                let errorMsg = resolver(error);
+                let errorData = resolver(error);
                 dispatch({
                     type: "CREATE_BOM_DATA_BY_MATERIAL_ID_FAILED",
-                    payload: errorMsg
+                    payload: errorData
                 });
             })
     };
@@ -52,10 +52,10 @@ export function getBillOfMaterialsByMaterialID(url) {
                 });
             })
             .catch((error) => {
-                let errorMsg = resolver(error);
+                let errorData = resolver(error);
                 dispatch({
                     type: "GET_BOM_DATA_BY_MATERIAL_ID_FAILED",
-                    payload: errorMsg
+                    payload: errorData
                 })
 
             });
@@ -76,13 +76,11 @@ export function updateBillOfMaterialsByMaterialID(url, body) {
                 });
             })
             .catch((error) => {
-                console.log(error.response);
-                if (error.response.status === 404 || error.response.status === 401) {
-                    dispatch({
-                        type: "UPDATE_BOM_DATA_BY_MATERIAL_ID_FAILED",
-                        payload: true
-                    })
-                }
+                let errorData = resolver(error);
+                dispatch({
+                    type: "UPDATE_BOM_DATA_BY_MATERIAL_ID_FAILED",
+                    payload: errorData
+                })
             });
     };
 }
@@ -105,10 +103,10 @@ export function createBillOfMaterialsByMaterialName(url, body) {
                 });
             })
             .catch((error) => {
-                let errorMsg = resolver(error);
+                let errorData = resolver(error);
                 dispatch({
                     type: "CREATE_BOM_DATA_MATERIAL_NAME_FAILED",
-                    payload: errorMsg
+                    payload: errorData
                 })
             })
     };
@@ -127,10 +125,13 @@ export function getBillOfMaterialsByMaterialName(url) {
                     payload: response.data
                 });
             })
-            .catch(() => dispatch({
-                type: "GET_BOM_DATA_BY_MATERIAL_NAME_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "GET_BOM_DATA_BY_MATERIAL_NAME_FAILED",
+                    payload: errorData
+                })
+            });
     };
 }
 
@@ -147,10 +148,13 @@ export function updateBillOfMaterialsByMaterialName(url, body) {
                     payload: true
                 });
             })
-            .catch(() => dispatch({
-                type: "UPDATE_BOM_DATA_BY_MATERIAL_NAME_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "UPDATE_BOM_DATA_BY_MATERIAL_NAME_FAILED",
+                    payload: errorData
+                })
+            });
     };
 }
 /**
@@ -170,10 +174,10 @@ export function createBillOfMaterialsByMaterialDesc(url, body) {
                 });
             })
             .catch((error) => {
-                let errorMsg = resolver(error);
+                let errorData = resolver(error);
                 dispatch({
                     type: "CREATE_BOM_DATA_BY_MATERIAL_DESC_FAILED",
-                    payload: errorMsg
+                    payload: errorData
                 })
             });
     };
@@ -192,10 +196,13 @@ export function getBillOfMaterialsByMaterialDesc(url) {
                     payload: response.data
                 });
             })
-            .catch(() => dispatch({
-                type: "GET_BOM_DATA_BY_MATERIAL_DESC_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "GET_BOM_DATA_BY_MATERIAL_DESC_FAILED",
+                    payload: errorData
+                })
+            });
     };
 }
 
@@ -212,10 +219,13 @@ export function updateBillOfMaterialsByMaterialDesc(url, body) {
                     payload: true
                 });
             })
-            .catch(() => dispatch({
-                type: "UPDATE_BOM_DATA_BY_MATERIAL_DESC_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "UPDATE_BOM_DATA_BY_MATERIAL_DESC_FAILED",
+                    payload: errorData
+                })
+            });
     };
 }
 /**
@@ -237,10 +247,10 @@ export function createBillOfMaterialsByPartNumber(url, body) {
                 });
             })
             .catch((error) => {
-                let errorMsg = resolver(error);
+                let errorData = resolver(error);
                 dispatch({
                     type: "CREATE_BOM_DATA_BY_PART_NUMBER_FAILED",
-                    payload: errorMsg
+                    payload: errorData
                 })
             });
     };
@@ -259,10 +269,13 @@ export function getBillOfMaterialsByPartNumber(url) {
                     payload: response.data
                 });
             })
-            .catch(() => dispatch({
-                type: "GET_BOM_DATA_BY_PART_NUMBER_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "GET_BOM_DATA_BY_PART_NUMBER_FAILED",
+                    payload: errorData
+                })
+            });
     };
 }
 
@@ -279,10 +292,13 @@ export function updateBillOfMaterialsByPartNumber(url, body) {
                     payload: true
                 });
             })
-            .catch(() => dispatch({
-                type: "UPDATE_BOM_DATA_BY_PART_NUMBER_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "UPDATE_BOM_DATA_BY_PART_NUMBER_FAILED",
+                    payload: errorData
+                })
+            });
     };
 }
 /**
@@ -304,10 +320,10 @@ export function createBillOfMaterialsByPartName(url, body) {
                 });
             })
             .catch((error) => {
-                let errorMsg = resolver(error);
+                let errorData = resolver(error);
                 dispatch({
                     type: "CREATE_BOM_DATA_BY_PART_NAME_FAILED",
-                    payload: errorMsg
+                    payload: errorData
                 })
             });
     };
@@ -326,10 +342,13 @@ export function getBillOfMaterialsByPartName(url) {
                     payload: response.data
                 });
             })
-            .catch(() => dispatch({
-                type: "GET_BOM_DATA_BY_PART_NAME_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "GET_BOM_DATA_BY_PART_NAME_FAILED",
+                    payload: errorData
+                })
+            });
     };
 }
 
@@ -346,10 +365,13 @@ export function updateBillOfMaterialsByPartName(url, body) {
                     payload: true
                 });
             })
-            .catch(() => dispatch({
-                type: "UPDATE_BOM_DATA_BY_PART_NAME_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "UPDATE_BOM_DATA_BY_PART_NAME_FAILED",
+                    payload: errorData
+                })
+            });
     };
 }
 /**
@@ -371,10 +393,10 @@ export function createBillOfMaterialsByPartDesc(url, body) {
                 });
             })
             .catch((error) => {
-                let errorMsg = resolver(error);
+                let errorData = resolver(error);
                 dispatch({
                     type: "CREATE_BOM_DATA_BY_PART_DESC_FAILED",
-                    payload: errorMsg
+                    payload: errorData
                 })
             });
     };
@@ -393,10 +415,13 @@ export function getBillOfMaterialsByPartDesc(url) {
                     payload: response.data
                 });
             })
-            .catch(() => dispatch({
-                type: "GET_BOM_DATA_BY_PART_DESC_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "GET_BOM_DATA_BY_PART_DESC_FAILED",
+                    payload: errorData
+                })
+            });
     };
 }
 
@@ -413,9 +438,12 @@ export function updateBillOfMaterialsByPartDesc(url, body) {
                     payload: true
                 });
             })
-            .catch(() => dispatch({
-                type: "UPDATE_BOM_DATA_BY_PART_DESC_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "UPDATE_BOM_DATA_BY_PART_DESC_FAILED",
+                    payload: errorData
+                })
+            });
     };
 }

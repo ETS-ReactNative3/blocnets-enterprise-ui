@@ -1,5 +1,6 @@
 import axios from 'axios';
 import config from '../config.json';
+import { resolver } from '../../services/callback.resolver';
 
 const token = localStorage.getItem('Token');
 
@@ -23,10 +24,13 @@ export function createDocumentEntryByUniqueID(url, body) {
                     payload: true
                 });
             })
-            .catch(() => dispatch({
-                type: "CREATE_DRE_DATA_BY_UNIQUE_ID_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "CREATE_DRE_DATA_BY_UNIQUE_ID_FAILED",
+                    payload: errorData
+                })
+            });
     };
 }
 
@@ -43,11 +47,13 @@ export function getDocumentEntryByUniqueID(url) {
                     payload: true + response
                 });
             })
-            .catch((error) => dispatch({
-                type: "GET_DRE_DATA_BY_UNIQUE_ID_FAILED",
-                payload: true + error
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "GET_DRE_DATA_BY_UNIQUE_ID_FAILED",
+                    payload: errorData
+                })
             })
-            )
     };
 }
 
@@ -57,16 +63,19 @@ export function updateDocumentEntryByUniqueID(url, body) {
             type: "LOADING_DRE_VIEW",
             payload: true
         });
-        await axios.put(config.chaincodes.Default + config.chaincodes.SAR + url, body, {headers})
+        await axios.put(config.chaincodes.Default + config.chaincodes.SAR + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_DRE_DATA_BY_UNIQUE_ID_SUCCESS",
                     payload: true
                 });
             })
-            .catch(() => dispatch({
-                type: "UPDATE_DRE_DATA_BY_UNIQUE_ID_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "UPDATE_DRE_DATA_BY_UNIQUE_ID_FAILED",
+                    payload: errorData
+                })
+            });
     };
 }

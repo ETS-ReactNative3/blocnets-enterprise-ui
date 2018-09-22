@@ -1,5 +1,6 @@
 import axios from 'axios';
 import config from '../config.json';
+import { resolver } from '../../services/callback.resolver';
 
 export function authenticate() {
     return async (dispatch) => {
@@ -15,7 +16,10 @@ export function authenticate() {
                 localStorage.setItem('Token', response.data.access_token);
                 dispatch(checkAuthorization(true))
             })
-            .catch((error) => dispatch(authRequestFailed(true,error)));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch(authRequestFailed(true, errorData))
+            });
     }
 }
 

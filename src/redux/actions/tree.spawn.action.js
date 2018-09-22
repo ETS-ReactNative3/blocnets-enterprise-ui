@@ -1,5 +1,6 @@
 import axios from 'axios';
 import config from '../config.json';
+import { resolver } from '../../services/callback.resolver';
 
 const token = localStorage.getItem('Token');
 
@@ -57,19 +58,25 @@ export function createConstruct(materialID) {
                                 payload: construct
                             });
                         })
-                        .catch((error) => dispatch({
-                            type: "GET_PRD_DATA_FOR_CONSTRUCT_FAILED",
-                            payload: error
-                        }));
+                        .catch((error) => {
+                            let errorData = resolver(error);
+                            dispatch({
+                                type: "GET_PRD_DATA_FOR_CONSTRUCT_FAILED",
+                                payload: errorData
+                            })
+                        });
                 }
                 return dispatch({
                     type: "GET_SHIPPING_DATA_FOR_CONSTRUCT_SUCCESS",
                     payload: response.data
                 });
             })
-            .catch((error) => dispatch({
-                type: "GET_SHIPPING_DATA_FOR_CONSTRUCT_FAILED",
-                payload: error
-            }));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "GET_SHIPPING_DATA_FOR_CONSTRUCT_FAILED",
+                    payload: errorData
+                })
+            });
     };
 }

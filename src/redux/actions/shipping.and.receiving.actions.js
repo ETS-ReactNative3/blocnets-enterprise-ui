@@ -1,5 +1,7 @@
 import axios from 'axios';
 import config from '../config.json';
+import { resolver } from '../../services/callback.resolver';
+
 
 const token = localStorage.getItem('Token');
 
@@ -23,10 +25,13 @@ export function createShippingDataByShipmentID(url, body) {
                     payload: true
                 });
             })
-            .catch(() => dispatch({
-                type: "CREATE_SHIPPING_DATA_BY_SHIPMENT_ID_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "CREATE_SHIPPING_DATA_BY_SHIPMENT_ID_FAILED",
+                    payload: errorData
+                })
+            });
     };
 }
 
@@ -43,10 +48,13 @@ export function getShippingDataByShipmentID(url) {
                     payload: response.data
                 });
             })
-            .catch(() => dispatch({
-                type: "GET_SHIPPING_DATA_BY_SHIPMENT_ID_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "GET_SHIPPING_DATA_BY_SHIPMENT_ID_FAILED",
+                    payload: errorData
+                })
+            });
     };
 }
 
@@ -63,10 +71,13 @@ export function updateShippingDataByShipmentID(url, body) {
                     payload: true
                 });
             })
-            .catch(() => dispatch({
-                type: "UPDATE_SHIPPING_DATA_BY_SHIPMENT_ID_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "UPDATE_SHIPPING_DATA_BY_SHIPMENT_ID_FAILED",
+                    payload: errorData
+                })
+            });
     };
 }
 
@@ -83,10 +94,13 @@ export function createShippingDataByMaterialID(url, body) {
                     payload: true
                 });
             })
-            .catch(() => dispatch({
-                type: "CREATE_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "CREATE_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
+                    payload: errorData
+                })
+            });
     };
 }
 
@@ -103,10 +117,13 @@ export function getShippingDataByMaterialID(url) {
                     payload: response.data
                 });
             })
-            .catch(() => dispatch({
-                type: "GET_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "GET_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
+                    payload: errorData
+                })
+            });
     };
 }
 
@@ -123,10 +140,13 @@ export function updateShippingDataByMaterialID(url, body) {
                     payload: true
                 });
             })
-            .catch(() => dispatch({
-                type: "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
+                    payload: errorData
+                })
+            });
     };
 }
 /**
@@ -157,19 +177,25 @@ export function getAndUpdateSARListByMaterialID(ListOfMaterialIDs, prdKey) {
                                 payload: true
                             });
                         })
-                        .catch((error) => dispatch({
-                            type: "UPDATE_SAR_DATA_LIST_BY_MATERIAL_ID_FAILED",
-                            payload: error
-                        }));
+                        .catch((error) => {
+                            let errorData = resolver(error);
+                            dispatch({
+                                type: "UPDATE_SAR_DATA_LIST_BY_MATERIAL_ID_FAILED",
+                                payload: errorData
+                            })
+                        });
                     return dispatch({
                         type: "GET_SAR_DATA_LIST_BY_MATERIAL_ID_SUCCESS",
                         payload: obj
                     });
                 })
-                .catch((error) => dispatch({
-                    type: "GET_SAR_DATA_LIST_BY_MATERIAL_ID_FAILED",
-                    payload: error
-                }));
+                .catch((error) => {
+                    let errorData = resolver(error);
+                    dispatch({
+                        type: "GET_SAR_DATA_LIST_BY_MATERIAL_ID_FAILED",
+                        payload: errorData
+                    })
+                });
         }
     };
 }
@@ -233,9 +259,10 @@ export function syncSARDataAndBindKeys(payload) {
                     });
                 })
                 .catch((error) => {
+                    let errorData = resolver(error);
                     dispatch({
                         type: "CREATE_SHIPPING_DATA_BY_SHIPMENT_ID_FAILED",
-                        payload: error
+                        payload: errorData
                     });
                 })
 
@@ -296,26 +323,31 @@ export function syncSARDataAndBindKeys(payload) {
                                                     payload: true
                                                 });
                                             })
-                                            .catch(() => dispatch({
-                                                type: "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
-                                                payload: true
-                                            }));
+                                            .catch((error) => {
+                                                let errorData = resolver(error);
+                                                dispatch({
+                                                    type: "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
+                                                    payload: errorData
+                                                })
+                                            });
                                     }
                                 }
 
                             })
                             .catch((error) => {
+                                let errorData = resolver(error);
                                 dispatch({
                                     type: "GET_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
-                                    payload: error
+                                    payload: errorData
                                 });
                             })
 
                     })
-                    .catch(() => {
+                    .catch((error) => {
+                        let errorData = resolver(error);
                         dispatch({
                             type: "CHECKED_SAR_DATA_BY_MATERIAL_ID_DOES_NOT_EXIST",
-                            payload: true
+                            payload: errorData
                         });
                         axios.post(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + shipKeyData.listOfKeys[i].materialID, materialKeyData, { headers })
                             .then(() => {
@@ -324,10 +356,13 @@ export function syncSARDataAndBindKeys(payload) {
                                     payload: true
                                 });
                             })
-                            .catch(() => dispatch({
-                                type: "CREATE_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
-                                payload: true
-                            }));
+                            .catch((error) => {
+                                let errorData = resolver(error);
+                                dispatch({
+                                    type: "CREATE_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
+                                    payload: errorData
+                                })
+                            });
                     })
             }
         }

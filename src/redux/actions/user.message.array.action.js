@@ -1,5 +1,6 @@
 import axios from 'axios';
 import config from '../config.json';
+import { resolver } from '../../services/callback.resolver';
 
 const token = localStorage.getItem('Token');
 
@@ -23,10 +24,13 @@ export function createUserMessageDataByUserID(url, body) {
                     payload: true
                 });
             })
-            .catch(() => dispatch({
-                type: "CREATE_UMA_DATA_BY_USER_ID_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "CREATE_UMA_DATA_BY_USER_ID_FAILED",
+                    payload: errorData
+                })
+            });
     };
 }
 
@@ -43,10 +47,13 @@ export function getUserMessageDataByUserID(url) {
                     payload: response.data
                 });
             })
-            .catch(() => dispatch({
-                type: "GET_UMA_DATA_BY_USER_ID_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "GET_UMA_DATA_BY_USER_ID_FAILED",
+                    payload: errorData
+                })
+            });
     };
 }
 
@@ -63,10 +70,13 @@ export function updateUserMessageDataByUserID(url, body) {
                     payload: true
                 });
             })
-            .catch(() => dispatch({
-                type: "UPDATE_UMA_DATA_BY_USER_ID_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "UPDATE_UMA_DATA_BY_USER_ID_FAILED",
+                    payload: errorData
+                })
+            });
     };
 }
 
@@ -90,15 +100,21 @@ export function getEachMessageForUserID(user) {
                                     payload: inbox
                                 });
                             })
-                            .catch((error) => dispatch({
-                                type: "GET_EACH_MESSAGE_FOR_USER_ID_FAILED",
-                                payload: error
-                            }));
+                            .catch((error) => {
+                                let errorData = resolver(error);
+                                dispatch({
+                                    type: "GET_EACH_MESSAGE_FOR_USER_ID_FAILED",
+                                    payload: errorData
+                                })
+                            });
                     }
                 }
-            }).catch((error) => dispatch({
-                type: "GET_UMA_DATA_FOR_USER_ID_FAILED",
-                payload: error
-            }))
+            }).catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "GET_UMA_DATA_FOR_USER_ID_FAILED",
+                    payload: errorData
+                });
+            })
     }
 }
