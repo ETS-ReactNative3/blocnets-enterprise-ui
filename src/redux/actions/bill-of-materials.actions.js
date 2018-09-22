@@ -1,5 +1,6 @@
 import axios from 'axios';
 import config from '../config.json';
+//import { resolver } from '../../services/callback.resolver';
 
 const token = localStorage.getItem('Token');
 
@@ -15,64 +16,76 @@ const headers = {
  * @param {*} body 
  */
 export function createBillOfMaterialsByMaterialID(url, body) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_BOM_VIEW",
             payload: true
         });
-        axios.post(config.chaincodes.Default + config.chaincodes.BOM + url, body, { headers })
+        await axios.post(config.chaincodes.Default + config.chaincodes.BOM + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_BOM_DATA_BY_MATERIAL_ID_SUCCESS",
                     payload: true
                 });
             })
-            .catch(() => dispatch({
-                type: "CREATE_BOM_DATA_BY_MATERIAL_ID_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                console.log(error.response);
+                if (error.response.status === 409 || error.response.status === 401) {
+                    dispatch({
+                        type: "CREATE_BOM_DATA_BY_MATERIAL_ID_FAILED",
+                        payload: true
+                    });
+                }
+            })
     };
 }
 
 export function getBillOfMaterialsByMaterialID(url) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_BOM_VIEW",
             payload: true
         });
-        axios.get(config.chaincodes.Default + config.chaincodes.BOM + url, { headers })
+        await axios.get(config.chaincodes.Default + config.chaincodes.BOM + url, { headers })
             .then((response) => {
-                let data = JSON.stringify(response.data);
-                sessionStorage.setItem('BOMDataByMaterialID', data);
                 return dispatch({
                     type: "GET_BOM_DATA_BY_MATERIAL_ID_SUCCESS",
                     payload: response.data
                 });
             })
-            .catch(() => dispatch({
-                type: "GET_BOM_DATA_BY_MATERIAL_ID_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                if (error.response.status === 404 || error.response.status === 401) {
+                    dispatch({
+                        type: "GET_BOM_DATA_BY_MATERIAL_ID_FAILED",
+                        payload: true
+                    })
+                }
+            });
     };
 }
 
 export function updateBillOfMaterialsByMaterialID(url, body) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_BOM_VIEW",
             payload: true
         });
-        axios.put(config.chaincodes.Default + config.chaincodes.BOM + url, body, { headers })
+        await axios.put(config.chaincodes.Default + config.chaincodes.BOM + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_BOM_DATA_BY_MATERIAL_ID_SUCCESS",
                     payload: true
                 });
             })
-            .catch(() => dispatch({
-                type: "UPDATE_BOM_DATA_BY_MATERIAL_ID_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                console.log(error.response);
+                if (error.response.status === 404 || error.response.status === 401) {
+                    dispatch({
+                        type: "UPDATE_BOM_DATA_BY_MATERIAL_ID_FAILED",
+                        payload: true
+                    })
+                }
+            });
     };
 }
 /**
@@ -81,35 +94,37 @@ export function updateBillOfMaterialsByMaterialID(url, body) {
  * @param {*} body 
  */
 export function createBillOfMaterialsByMaterialName(url, body) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_BOM_VIEW",
             payload: true
         });
-        axios.post(config.chaincodes.Default + config.chaincodes.BOM + "materialName=" + url, body, { headers })
+        await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "materialName=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_BOM_DATA_MATERIAL_NAME_SUCCESS",
                     payload: true
                 });
             })
-            .catch(() => dispatch({
-                type: "CREATE_BOM_DATA_MATERIAL_NAME_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                if (error.response.status === 409 || error.response.status === 401) {
+                    dispatch({
+                        type: "CREATE_BOM_DATA_MATERIAL_NAME_FAILED",
+                        payload: true
+                    })
+                }
+            });
     };
 }
 
 export function getBillOfMaterialsByMaterialName(url) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_BOM_VIEW",
             payload: true
         });
-        axios.get(config.chaincodes.Default + config.chaincodes.BOM + "materialName=" + url, { headers })
+        await axios.get(config.chaincodes.Default + config.chaincodes.BOM + "materialName=" + url, { headers })
             .then((response) => {
-                let data = JSON.stringify(response.data);
-                sessionStorage.setItem('BOMDataByMaterialName', data);
                 return dispatch({
                     type: "GET_BOM_DATA_BY_MATERIAL_NAME_SUCCESS",
                     payload: response.data
@@ -123,12 +138,12 @@ export function getBillOfMaterialsByMaterialName(url) {
 }
 
 export function updateBillOfMaterialsByMaterialName(url, body) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_BOM_VIEW",
             payload: true
         });
-        axios.put(config.chaincodes.Default + config.chaincodes.BOM + "materialName=" + url, body, { headers })
+        await axios.put(config.chaincodes.Default + config.chaincodes.BOM + "materialName=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_BOM_DATA_BY_MATERIAL_NAME_SUCCESS",
@@ -145,35 +160,36 @@ export function updateBillOfMaterialsByMaterialName(url, body) {
  * BOM data by Material Description
  */
 export function createBillOfMaterialsByMaterialDesc(url, body) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_BOM_VIEW",
             payload: true
         });
-        axios.post(config.chaincodes.Default + config.chaincodes.BOM + "materialDesc=" + url, body, { headers })
+        await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "materialDesc=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_BOM_DATA_BY_MATERIAL_DESC_SUCCESS",
                     payload: true
                 });
             })
-            .catch(() => dispatch({
-                type: "CREATE_BOM_DATA_BY_MATERIAL_DESC_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                console.log(error.response);
+                dispatch({
+                    type: "CREATE_BOM_DATA_BY_MATERIAL_DESC_FAILED",
+                    payload: true
+                })
+            });
     };
 }
 
 export function getBillOfMaterialsByMaterialDesc(url) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_BOM_VIEW",
             payload: true
         });
-        axios.get(config.chaincodes.Default + config.chaincodes.BOM + "materialDesc=" + url, { headers })
+        await axios.get(config.chaincodes.Default + config.chaincodes.BOM + "materialDesc=" + url, { headers })
             .then((response) => {
-                let data = JSON.stringify(response.data);
-                sessionStorage.setItem('BOMDataByMaterialDesc', data);
                 return dispatch({
                     type: "GET_BOM_DATA_BY_MATERIAL_DESC_SUCCESS",
                     payload: response.data
@@ -187,12 +203,12 @@ export function getBillOfMaterialsByMaterialDesc(url) {
 }
 
 export function updateBillOfMaterialsByMaterialDesc(url, body) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_BOM_VIEW",
             payload: true
         });
-        axios.put(config.chaincodes.Default + config.chaincodes.BOM + "materialDesc=" + url, body, { headers })
+        await axios.put(config.chaincodes.Default + config.chaincodes.BOM + "materialDesc=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_BOM_DATA_BY_MATERIAL_DESC_SUCCESS",
@@ -211,35 +227,36 @@ export function updateBillOfMaterialsByMaterialDesc(url, body) {
  * @param {*} body 
  */
 export function createBillOfMaterialsByPartNumber(url, body) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_BOM_VIEW",
             payload: true
         });
-        axios.post(config.chaincodes.Default + config.chaincodes.BOM + "partNumber=" + url, body, { headers })
+        await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "partNumber=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_BOM_DATA_BY_PART_NUMBER_SUCCESS",
                     payload: true
                 });
             })
-            .catch(() => dispatch({
-                type: "CREATE_BOM_DATA_BY_PART_NUMBER_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                console.log(error.response);
+                dispatch({
+                    type: "CREATE_BOM_DATA_BY_PART_NUMBER_FAILED",
+                    payload: true
+                })
+            });
     };
 }
 
 export function getBillOfMaterialsByPartNumber(url) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_BOM_VIEW",
             payload: true
         });
-        axios.get(config.chaincodes.Default + config.chaincodes.BOM + "partNumber=" + url, { headers })
+        await axios.get(config.chaincodes.Default + config.chaincodes.BOM + "partNumber=" + url, { headers })
             .then((response) => {
-                let data = JSON.stringify(response.data);
-                sessionStorage.setItem('BOMDataByPartNumber', data);
                 return dispatch({
                     type: "GET_BOM_DATA_BY_PART_NUMBER_SUCCESS",
                     payload: response.data
@@ -253,12 +270,12 @@ export function getBillOfMaterialsByPartNumber(url) {
 }
 
 export function updateBillOfMaterialsByPartNumber(url, body) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_BOM_VIEW",
             payload: true
         });
-        axios.put(config.chaincodes.Default + config.chaincodes.BOM + "partNumber=" + url, body, { headers })
+        await axios.put(config.chaincodes.Default + config.chaincodes.BOM + "partNumber=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_BOM_DATA_BY_PART_NUMBER_SUCCESS",
@@ -277,35 +294,36 @@ export function updateBillOfMaterialsByPartNumber(url, body) {
  * @param {*} body
  */
 export function createBillOfMaterialsByPartName(url, body) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_BOM_VIEW",
             payload: true
         });
-        axios.post(config.chaincodes.Default + config.chaincodes.BOM + "partName=" + url, body, { headers })
+        await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "partName=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_BOM_DATA_BY_PART_NAME_SUCCESS",
                     payload: true
                 });
             })
-            .catch(() => dispatch({
-                type: "CREATE_BOM_DATA_BY_PART_NAME_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                console.log(error.response);
+                dispatch({
+                    type: "CREATE_BOM_DATA_BY_PART_NAME_FAILED",
+                    payload: true
+                })
+            });
     };
 }
 
 export function getBillOfMaterialsByPartName(url) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_BOM_VIEW",
             payload: true
         });
-        axios.get(config.chaincodes.Default + config.chaincodes.BOM + "partName=" + url, { headers })
+        await axios.get(config.chaincodes.Default + config.chaincodes.BOM + "partName=" + url, { headers })
             .then((response) => {
-                let data = JSON.stringify(response.data);
-                sessionStorage.setItem('BOMDataByPartName', data);
                 return dispatch({
                     type: "GET_BOM_DATA_BY_PART_NAME_SUCCESS",
                     payload: response.data
@@ -319,13 +337,12 @@ export function getBillOfMaterialsByPartName(url) {
 }
 
 export function updateBillOfMaterialsByPartName(url, body) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_BOM_VIEW",
             payload: true
         });
-        axios.put(
-            config.chaincodes.Default + config.chaincodes.BOM + "partName=" + url, body, { headers })
+        await axios.put(config.chaincodes.Default + config.chaincodes.BOM + "partName=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_BOM_DATA_BY_PART_NAME_SUCCESS",
@@ -344,35 +361,36 @@ export function updateBillOfMaterialsByPartName(url, body) {
  * @param {*} body
  */
 export function createBillOfMaterialsByPartDesc(url, body) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_BOM_VIEW",
             payload: true
         });
-        axios.post(config.chaincodes.Default + config.chaincodes.BOM + "partDesc=" + url, body, { headers })
+        await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "partDesc=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_BOM_DATA_BY_PART_DESC_SUCCESS",
                     payload: true
                 });
             })
-            .catch(() => dispatch({
-                type: "CREATE_BOM_DATA_BY_PART_DESC_FAILED",
-                payload: true
-            }));
+            .catch((error) => {
+                console.log(error.response);
+                dispatch({
+                    type: "CREATE_BOM_DATA_BY_PART_DESC_FAILED",
+                    payload: true
+                })
+            });
     };
 }
 
 export function getBillOfMaterialsByPartDesc(url) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_BOM_VIEW",
             payload: true
         });
-        axios.get(config.chaincodes.Default + config.chaincodes.BOM + "partDesc=" + url, { headers })
+        await axios.get(config.chaincodes.Default + config.chaincodes.BOM + "partDesc=" + url, { headers })
             .then((response) => {
-                let data = JSON.stringify(response.data);
-                sessionStorage.setItem('BOMDataByPartDesc', data);
                 return dispatch({
                     type: "GET_BOM_DATA_BY_PART_DESC_SUCCESS",
                     payload: response.data
@@ -386,12 +404,12 @@ export function getBillOfMaterialsByPartDesc(url) {
 }
 
 export function updateBillOfMaterialsByPartDesc(url, body) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_BOM_VIEW",
             payload: true
         });
-        axios.put(config.chaincodes.Default + config.chaincodes.BOM + "partDesc=" + url, body, { headers })
+        await axios.put(config.chaincodes.Default + config.chaincodes.BOM + "partDesc=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_BOM_DATA_BY_PART_DESC_SUCCESS",

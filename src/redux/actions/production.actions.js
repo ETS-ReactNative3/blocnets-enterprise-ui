@@ -15,12 +15,12 @@ const headers = {
  * @param {*} body PRD chaincode schema data
  */
 export function createProductionOrderByProdOrderNo(url, body) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_PRD_VIEW",
             payload: true
         });
-        axios.post(config.chaincodes.Default + config.chaincodes.PRD + url, body, { headers })
+        await axios.post(config.chaincodes.Default + config.chaincodes.PRD + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_PRD_DATA_BY_PRODUCTION_ORDER_NUMBER_SUCCESS",
@@ -35,12 +35,12 @@ export function createProductionOrderByProdOrderNo(url, body) {
 }
 
 export function getProductionOrderByProdOrderNo(url) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_PRD_VIEW",
             payload: true
         });
-        axios.get(config.chaincodes.Default + config.chaincodes.PRD + url, { headers })
+        await axios.get(config.chaincodes.Default + config.chaincodes.PRD + url, { headers })
             .then((response) => {
                 return dispatch({
                     type: "GET_PRD_DATA_BY_PRODUCTION_ORDER_NUMBER_SUCCESS",
@@ -55,12 +55,12 @@ export function getProductionOrderByProdOrderNo(url) {
 }
 
 export function updateProductionOrderByProdOrderNo(url, body) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_PRD_VIEW",
             payload: true
         });
-        axios.put(config.chaincodes.Default + config.chaincodes.PRD + url, body, { headers })
+        await axios.put(config.chaincodes.Default + config.chaincodes.PRD + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_PRD_DATA_BY_PRODUCTION_ORDER_NUMBER_SUCCESS",

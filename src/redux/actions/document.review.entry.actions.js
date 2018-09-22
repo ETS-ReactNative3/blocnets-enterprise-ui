@@ -11,12 +11,12 @@ const headers = {
 }
 
 export function createDocumentEntryByUniqueID(url, body) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_DRE_VIEW",
             payload: true
         });
-        axios.post(config.chaincodes.Default + config.chaincodes.DRE + url, body, { headers })
+        await axios.post(config.chaincodes.Default + config.chaincodes.DRE + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_DRE_DATA_BY_UNIQUE_ID_SUCCESS",
@@ -31,15 +31,13 @@ export function createDocumentEntryByUniqueID(url, body) {
 }
 
 export function getDocumentEntryByUniqueID(url) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_DRE_VIEW",
             payload: true
         });
-        axios.get(config.chaincodes.Default + config.chaincodes.DRE + url, { headers })
+        await axios.get(config.chaincodes.Default + config.chaincodes.DRE + url, { headers })
             .then((response) => {
-                let data = JSON.stringify(response.data)
-                sessionStorage.setItem('messages', data);
                 return dispatch({
                     type: "GET_DRE_DATA_BY_UNIQUE_ID_SUCCESS",
                     payload: true + response
@@ -54,12 +52,12 @@ export function getDocumentEntryByUniqueID(url) {
 }
 
 export function updateDocumentEntryByUniqueID(url, body) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_DRE_VIEW",
             payload: true
         });
-        axios.put(config.chaincodes.Default + config.chaincodes.SAR + url, body, {headers})
+        await axios.put(config.chaincodes.Default + config.chaincodes.SAR + url, body, {headers})
             .then(() => {
                 return dispatch({
                     type: "UPDATE_DRE_DATA_BY_UNIQUE_ID_SUCCESS",

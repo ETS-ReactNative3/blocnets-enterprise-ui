@@ -2,9 +2,9 @@ import axios from 'axios';
 import config from '../config.json';
 
 export function authenticate() {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch(loadingView(true))
-        axios.get(config.serviceKey.oAuth.url + '/oauth/token?grant_type=client_credentials', {
+        await axios.get(config.serviceKey.oAuth.url + '/oauth/token?grant_type=client_credentials', {
             headers: {
                 'Authorization': 'Basic ' + btoa(config.serviceKey.oAuth.clientId + ":" + config.serviceKey.oAuth.clientSecret),
                 'Content-Type': 'application/x-www-form-urlencoded',

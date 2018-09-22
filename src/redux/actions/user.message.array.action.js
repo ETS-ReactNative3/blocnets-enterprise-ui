@@ -11,12 +11,12 @@ const headers = {
 }
 
 export function createUserMessageDataByUserID(url, body) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_UMA_VIEW",
             payload: true
         });
-        axios.post(config.chaincodes.Default + config.chaincodes.UMA + url, body, { headers })
+        await axios.post(config.chaincodes.Default + config.chaincodes.UMA + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_UMA_DATA_BY_USER_ID_SUCCESS",
@@ -31,12 +31,12 @@ export function createUserMessageDataByUserID(url, body) {
 }
 
 export function getUserMessageDataByUserID(url) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_UMA_VIEW",
             payload: true
         });
-        axios.get(config.chaincodes.Default + config.chaincodes.UMA + url, { headers })
+        await axios.get(config.chaincodes.Default + config.chaincodes.UMA + url, { headers })
             .then((response) => {
                 return dispatch({
                     type: "GET_UMA_DATA_BY_USER_ID_SUCCESS",
@@ -51,12 +51,12 @@ export function getUserMessageDataByUserID(url) {
 }
 
 export function updateUserMessageDataByUserID(url, body) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_UMA_VIEW",
             payload: true
         });
-        axios.put(config.chaincodes.Default + config.chaincodes.UMA + url, body, { headers })
+        await axios.put(config.chaincodes.Default + config.chaincodes.UMA + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_UMA_DATA_BY_USER_ID_SUCCESS",
@@ -71,12 +71,12 @@ export function updateUserMessageDataByUserID(url, body) {
 }
 
 export function getEachMessageForUserID(user) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_UMA_VIEW",
             payload: true
         });
-        axios.get(config.chaincodes.Default + config.chaincodes.UMA + user, { headers })
+        await axios.get(config.chaincodes.Default + config.chaincodes.UMA + user, { headers })
             .then((response) => {
                 let inbox = [];
                 if (response.data) {

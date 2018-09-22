@@ -24,12 +24,12 @@ const headers = {
  */
 
 export function createConstruct(materialID) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({
             type: "LOADING_CONSTRUCT",
             payload: true
         });
-        axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + materialID, { headers })
+        await axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + materialID, { headers })
             .then((response) => {
                 let obj = response.data;
                 let key = obj.prdKey;
