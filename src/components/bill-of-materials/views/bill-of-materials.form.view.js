@@ -298,6 +298,127 @@ class BillOfMaterialsForm extends React.Component {
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
                             <FormLabel style={{"textAlign": "left", "fontWeight": "bold", "color": "black"}}>
+                                Material Shipping Information
+                            </FormLabel>
+                        </Grid>
+                    </Grid>
+                    <br/>
+                    <Divider style={{"height": "1px", "backgroundColor": "black"}}/>
+                    <br/>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text"
+                                name="materialAddressLine1"
+                                floatingLabelText="Address"
+                                floatingLabelFixed={true}
+                                style={{"float": "left", "textAlign": "left"}}
+                                hintText=""
+                                value={this.state.materialAddressLine1}
+                                onChange={this.handleChange}
+                                errorText={this.state.errorTextMaterialAddressLine1}
+                                errorStyle={{"float": "left", "textAlign": "left"}}
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text"
+                                name="materialAddressLine2"
+                                floatingLabelText=" "
+                                floatingLabelFixed={true}
+                                style={{"float": "left", "textAlign": "left"}}
+                                hintText="Address Line 2"
+                                value={this.state.materialAddressLine2}
+                                onChange={this.handleChange}
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text"
+                                name="materialCity"
+                                floatingLabelText=" "
+                                floatingLabelFixed={true}
+                                style={{"float": "left", "textAlign": "left"}}
+                                hintText="City"
+                                value={this.state.materialCity}
+                                onChange={this.handleChange}
+                                errorText={this.state.errorTextMaterialCity}
+                                errorStyle={{"float": "left", "textAlign": "left"}}
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text"
+                                name="materialAddressState"
+                                floatingLabelText=" "
+                                floatingLabelFixed={true}
+                                style={{"float": "left", "textAlign": "left"}}
+                                hintText="State"
+                                value={this.state.materialAddressState}
+                                onChange={this.handleChange}
+                                errorText={this.state.errorTextMaterialAddressState}
+                                errorStyle={{"float": "left", "textAlign": "left"}}
+                            />
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text"
+                                name="materialPostalCode"
+                                floatingLabelText=" "
+                                floatingLabelFixed={true}
+                                style={{"float": "left", "textAlign": "left"}}
+                                hintText="Postal Code"
+                                value={this.state.materialPostalCode}
+                                onChange={this.handleChange}
+                                errorText={this.state.errorTextMaterialPostalCode}
+                                errorStyle={{"float": "left", "textAlign": "left"}}
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text"
+                                name="materialCountry"
+                                floatingLabelText=" "
+                                floatingLabelFixed={true}
+                                style={{"float": "left", "textAlign": "left"}}
+                                hintText="Country"
+                                value={this.state.materialCountry}
+                                onChange={this.handleChange}
+                            />
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text"
+                                name="materialIPAddress"
+                                floatingLabelText="IP Address"
+                                floatingLabelFixed={true}
+                                style={{"float": "left", "textAlign": "left"}}
+                                hintText=""
+                                value={this.state.materialIPAddress}
+                                onChange={this.handleChange}
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type="text"
+                                name="materialCompanyName"
+                                floatingLabelText="Company Name"
+                                floatingLabelFixed={true}
+                                style={{"float": "left", "textAlign": "left"}}
+                                hintText=""
+                                value={this.state.materialCompanyName}
+                                onChange={this.handleChange}
+                            />
+                        </Grid>
+                    </Grid>
+                    <br/><br/>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={12}>
+                            <FormLabel style={{"textAlign": "left", "fontWeight": "bold", "color": "black"}}>
                                 Material Dimensions
                             </FormLabel>
                         </Grid>
@@ -974,127 +1095,6 @@ class BillOfMaterialsForm extends React.Component {
                                 style={{"float": "left", "textAlign": "left"}}
                                 hintText=""
                                 value={this.state.supOrderPolicy}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                    </Grid>
-                    <br/><br/>
-                    <Grid container spacing={24}>
-                        <Grid container item xs={12}>
-                            <FormLabel style={{"textAlign": "left", "fontWeight": "bold", "color": "black"}}>
-                                Material
-                            </FormLabel>
-                        </Grid>
-                    </Grid>
-                    <br/>
-                    <Divider style={{"height": "1px", "backgroundColor": "black"}}/>
-                    <br/>
-                    <Grid container spacing={24}>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type="text"
-                                name="materialAddressLine1"
-                                floatingLabelText="Address"
-                                floatingLabelFixed={true}
-                                style={{"float": "left", "textAlign": "left"}}
-                                hintText=""
-                                value={this.state.materialAddressLine1}
-                                onChange={this.handleChange}
-                                errorText={this.state.errorTextMaterialAddressLine1}
-                                errorStyle={{"float": "left", "textAlign": "left"}}
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type="text"
-                                name="materialAddressLine2"
-                                floatingLabelText=" "
-                                floatingLabelFixed={true}
-                                style={{"float": "left", "textAlign": "left"}}
-                                hintText="Address Line 2"
-                                value={this.state.materialAddressLine2}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type="text"
-                                name="materialCity"
-                                floatingLabelText=" "
-                                floatingLabelFixed={true}
-                                style={{"float": "left", "textAlign": "left"}}
-                                hintText="City"
-                                value={this.state.materialCity}
-                                onChange={this.handleChange}
-                                errorText={this.state.errorTextMaterialCity}
-                                errorStyle={{"float": "left", "textAlign": "left"}}
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type="text"
-                                name="materialAddressState"
-                                floatingLabelText=" "
-                                floatingLabelFixed={true}
-                                style={{"float": "left", "textAlign": "left"}}
-                                hintText="State"
-                                value={this.state.materialAddressState}
-                                onChange={this.handleChange}
-                                errorText={this.state.errorTextMaterialAddressState}
-                                errorStyle={{"float": "left", "textAlign": "left"}}
-                            />
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={24}>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type="text"
-                                name="materialPostalCode"
-                                floatingLabelText=" "
-                                floatingLabelFixed={true}
-                                style={{"float": "left", "textAlign": "left"}}
-                                hintText="Postal Code"
-                                value={this.state.materialPostalCode}
-                                onChange={this.handleChange}
-                                errorText={this.state.errorTextMaterialPostalCode}
-                                errorStyle={{"float": "left", "textAlign": "left"}}
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type="text"
-                                name="materialCountry"
-                                floatingLabelText=" "
-                                floatingLabelFixed={true}
-                                style={{"float": "left", "textAlign": "left"}}
-                                hintText="Country"
-                                value={this.state.materialCountry}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={24}>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type="text"
-                                name="materialIPAddress"
-                                floatingLabelText="IP Address"
-                                floatingLabelFixed={true}
-                                style={{"float": "left", "textAlign": "left"}}
-                                hintText=""
-                                value={this.state.materialIPAddress}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type="text"
-                                name="materialCompanyName"
-                                floatingLabelText="Company Name"
-                                floatingLabelFixed={true}
-                                style={{"float": "left", "textAlign": "left"}}
-                                hintText=""
-                                value={this.state.materialCompanyName}
                                 onChange={this.handleChange}
                             />
                         </Grid>
