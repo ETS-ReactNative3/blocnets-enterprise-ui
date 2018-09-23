@@ -12,13 +12,8 @@ import yellow from '@material-ui/core/colors/yellow';
 import red from "@material-ui/core/colors/red";
 import {connect} from 'react-redux';
 import {
-    createBillOfMaterialsByMaterialID,
-    createBillOfMaterialsByMaterialName,
-    createBillOfMaterialsByMaterialDesc,
-    createBillOfMaterialsByPartNumber,
-    createBillOfMaterialsByPartName,
-    createBillOfMaterialsByPartDesc
-} from '../../../redux/actions/BOM/bill-of-materials.actions';
+    createMasterDataKeys
+} from '../../../redux/actions/BOM/create.master.data.action';
 
 let counter = 0;
 
@@ -37,28 +32,9 @@ class BillOfMaterialsReview extends React.Component {
         };
     }
 
-    handleError = (field, error) => {
-        console.log("error from eBOM:", error);
-        this.setState({
-            showProgressLogo: false,
-            snackbar: {
-                autoHideDuration: 2000,
-                message: field + ' not created! Error ' + error.data.error.code + ': ' + error.data.error.message + '!',
-                open: true,
-                sbColor: 'red'
-            }
-        });
-        this.props.viewHandler(true, false, this.props.eBOMData, this.state.snackbar);
-    }
-
     handleSubmit = () => {
+        this.props.data.bomReducer.createMasterDataKeysSuccess = '';
         this.setState({showProgressLogo: true});
-        let BOMMaterialUrl = this.props.eBOMData.materialID;
-        let BOMMaterialNameUrl = this.props.eBOMData.materialName;
-        let BOMMaterialDescriptionUrl = this.props.eBOMData.materialDescription;
-        let BOMPartNoUrl = this.props.eBOMData.partNo;
-        let BOMPartNameUrl = this.props.eBOMData.partName;
-        let BOMPartDescriptionUrl = this.props.eBOMData.partDescription;
         let data = {
             text: "string",
             file: "string",
@@ -172,42 +148,9 @@ class BillOfMaterialsReview extends React.Component {
                 materialLeadTimeViolationFee: "string"
             }
         };
-        Promise.resolve(this.props.createBillOfMaterialsByMaterialID(BOMMaterialUrl, data))
+        Promise.resolve(this.props.createMasterDataKeys(data))
             .then(() => {
-                this.props.createBillOfMaterialsByMaterialName(BOMMaterialNameUrl, data);
-            })
-            .then(() => {
-                this.props.createBillOfMaterialsByMaterialDesc(BOMMaterialDescriptionUrl, data);
-            })
-            .then(() => {
-                if (this.props.eBOMData.partNo) {
-                    this.props.createBillOfMaterialsByPartNumber(BOMPartNoUrl, data);
-                }
-            })
-            .then(() => {
-                if (this.props.eBOMData.partName) {
-                    this.props.createBillOfMaterialsByPartName(BOMPartNameUrl, data);
-                }
-            })
-            .then(() => {
-                if (this.props.eBOMData.partDescription) {
-                    this.props.createBillOfMaterialsByPartDesc(BOMPartDescriptionUrl, data);
-                }
-            })
-            .then(() => {
-                if (this.props.data.bomReducer.createBillOfMaterialsByMaterialIDError) {
-                    this.handleError('Material ID', this.props.data.bomReducer.createBillOfMaterialsByMaterialIDError);
-                } else if (this.props.data.bomReducer.createBillOfMaterialsByMaterialNameError) {
-                    this.handleError('Material Name', this.props.data.bomReducer.createBillOfMaterialsByMaterialNameError);
-                } else if (this.props.data.bomReducer.createBillOfMaterialsByMaterialDescError) {
-                    this.handleError('Material Description', this.props.data.bomReducer.createBillOfMaterialsByMaterialDescError);
-                } else if (this.props.data.bomReducer.createBillOfMaterialsByPartNumberError) {
-                    this.handleError('Part No.', this.props.data.bomReducer.createBillOfMaterialsByPartNumberError);
-                } else if (this.props.data.bomReducer.createBillOfMaterialsByPartNameError) {
-                    this.handleError('Part Name', this.props.data.bomReducer.createBillOfMaterialsByPartNameError);
-                } else if (this.props.data.bomReducer.createBillOfMaterialsByPartDescError) {
-                    this.handleError('Part Description', this.props.data.bomReducer.createBillOfMaterialsByPartDescError);
-                } else {
+                if (this.props.data.bomReducer.createMasterDataKeysSuccess === true) {
                     this.setState({
                         showProgressLogo: false,
                         snackbar: {
@@ -376,12 +319,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        createBillOfMaterialsByMaterialID: (url, body) => dispatch(createBillOfMaterialsByMaterialID(url, body)),
-        createBillOfMaterialsByMaterialName: (url, body) => dispatch(createBillOfMaterialsByMaterialName(url, body)),
-        createBillOfMaterialsByMaterialDesc: (url, body) => dispatch(createBillOfMaterialsByMaterialDesc(url, body)),
-        createBillOfMaterialsByPartNumber: (url, body) => dispatch(createBillOfMaterialsByPartNumber(url, body)),
-        createBillOfMaterialsByPartName: (url, body) => dispatch(createBillOfMaterialsByPartName(url, body)),
-        createBillOfMaterialsByPartDesc: (url, body) => dispatch(createBillOfMaterialsByPartDesc(url, body))
+        createMasterDataKeys: (data) => dispatch(createMasterDataKeys(data))
     };
 };
 
