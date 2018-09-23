@@ -234,13 +234,13 @@ class BillOfMaterialsReview extends React.Component {
             createData('Supplier Order Policy', this.props.eBOMData.supOrderPolicy)
         ];
 
-        const buttonTheme = createMuiTheme({
+        const buttonThemeYellow = createMuiTheme({
             palette: {
                 primary: yellow
             },
         });
 
-        const button2Theme = createMuiTheme({
+        const buttonThemeRed = createMuiTheme({
             palette: {
                 primary: red
             },
@@ -284,7 +284,7 @@ class BillOfMaterialsReview extends React.Component {
                     <Grid container spacing={24}>
                         <Grid container item xs={12} sm={3}>
                             <Grid container item xs>
-                                <MuiThemeProvider theme={buttonTheme}>
+                                <MuiThemeProvider theme={buttonThemeYellow}>
                                     <Button type="submit" value="OK" variant="contained" color="primary"
                                             onClick={this.handleSubmit}>
                                         OK
@@ -292,7 +292,7 @@ class BillOfMaterialsReview extends React.Component {
                                 </MuiThemeProvider>
                             </Grid>
                             <Grid container item xs>
-                                <MuiThemeProvider theme={button2Theme}>
+                                <MuiThemeProvider theme={buttonThemeRed}>
                                     <Button type="submit" value="Cancel" variant="contained" color="primary"
                                             onClick={this.handleCancel}>
                                         Cancel

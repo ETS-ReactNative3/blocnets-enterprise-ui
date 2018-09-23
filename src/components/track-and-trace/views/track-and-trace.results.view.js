@@ -5,15 +5,15 @@ import Table from "@material-ui/core/Table/Table";
 import TableBody from "@material-ui/core/TableBody/TableBody";
 import TableRow from "@material-ui/core/TableRow/TableRow";
 import TableCell from "@material-ui/core/TableCell/TableCell";
+import Typography from '@material-ui/core/Typography';
+import Switch from "@material-ui/core/Switch/Switch";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core";
 import red from "@material-ui/core/colors/red";
-import Switch from "@material-ui/core/Switch/Switch";
 import Dialog from "material-ui/Dialog";
 import Snackbar from "material-ui/Snackbar";
 import {connect} from 'react-redux';
 import {createConstruct} from '../../../redux/actions/tree.spawn.action';
 import TrackAndTraceTreeView from './track-and-trace.tree.view';
-import Typography from "@material-ui/core/Typography/Typography";
 
 let tree = [];
 
@@ -44,7 +44,7 @@ class TrackAndTraceResultsView extends Component {
             this.props.createConstruct(this.props.materialID);
             setTimeout(
                 function () {
-                    if(this.props.data.spawnConstructReducer.construct !== '') {
+                    if (this.props.data.spawnConstructReducer.construct !== '') {
                         tree.push(this.props.data.spawnConstructReducer.construct);
                         this.setState({
                             tree: tree,
@@ -111,26 +111,38 @@ class TrackAndTraceResultsView extends Component {
                             </Grid>
                         </Grid>
                         <br/>
-                        <Grid container justify="center">
-                            <Grid container item xs={12}>
-                                <Paper style={{"width": "100%"}}>
-                                    <div style={{"overflowX": "auto"}}>
-                                        <Table style={{"tableLayout": "fixed"}}>
-                                            <TableBody>
-                                                {this.props.tatData.map(row => {
-                                                    return (
-                                                        <TableRow key={row.id}>
-                                                            <TableCell>{row.info1}</TableCell>
-                                                            <TableCell>{row.info2}</TableCell>
-                                                        </TableRow>
-                                                    );
-                                                })}
-                                            </TableBody>
-                                        </Table>
-                                    </div>
-                                </Paper>
+                        {this.props.tatData.length !== 0 ?
+                            <Grid container justify="center">
+                                <Grid container item xs={12}>
+                                    <Paper style={{"width": "100%"}}>
+                                        <div style={{"overflowX": "auto"}}>
+                                            <Table style={{"tableLayout": "fixed"}}>
+                                                <TableBody>
+                                                    {this.props.tatData.map(row => {
+                                                        return (
+                                                            <TableRow key={row.id}>
+                                                                <TableCell>{row.info1}</TableCell>
+                                                                <TableCell>{row.info2}</TableCell>
+                                                            </TableRow>
+                                                        );
+                                                    })}
+                                                </TableBody>
+                                            </Table>
+                                        </div>
+                                    </Paper>
+                                </Grid>
+                            </Grid> :
+                            <Grid container justify="center">
+                                <Grid container item xs={12}>
+                                    <Paper style={{"width": "100%", "height": "50vh"}}>
+                                        <div style={{"overflowX": "auto"}}>
+                                            <Typography align="left">
+                                            </Typography>
+                                        </div>
+                                    </Paper>
+                                </Grid>
                             </Grid>
-                        </Grid>
+                        }
                         <br/>
                         {this.props.materialID ?
                             <Grid container>
@@ -145,16 +157,7 @@ class TrackAndTraceResultsView extends Component {
                                     </MuiThemeProvider>
                                 </Grid>
                             </Grid> :
-                            <Grid container justify="center">
-                                <Grid container item xs={12}>
-                                    <Paper style={{"width": "100%", "height": "50vh"}}>
-                                        <div style={{"overflowX": "auto"}}>
-                                            <Typography align="left">
-                                            </Typography>
-                                        </div>
-                                    </Paper>
-                                </Grid>
-                            </Grid>
+                            ''
                         }
                         <br/>
                         <Dialog open={this.state.showMaterialMap} onClose={this.handleTreeClose}>
