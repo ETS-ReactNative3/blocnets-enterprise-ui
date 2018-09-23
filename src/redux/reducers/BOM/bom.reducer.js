@@ -114,8 +114,41 @@ export function bomReducer(state = {}, action) {
         case "CREATE_MASTER_DATA_KEYS_SUCCESS": {
             return state = { ...state, createMasterDataKeysSuccess: action.payload }
         }
-        case "CREATE_MASTER_DATA_KEYS_FAILED": {
-            return state = { ...state, createMasterDataKeysError: action.payload }
+        case "CREATE_MASTER_DATA_KEY_MATERIAL_ID_SUCCESS": {
+            return state = { ...state, createMasterDataMaterialIdKeySuccess: action.payload }
+        }
+        case "CREATE_MASTER_DATA_KEY_MATERIAL_ID_FAILED": {
+            return state = { ...state, createMasterDataMaterialIdKeyError: action.payload }
+        }
+        case "CREATE_MASTER_DATA_KEY_MATERIAL_NAME_SUCCESS": {
+            return state = { ...state, createMasterDataMaterialNameKeySuccess: action.payload }
+        }
+        case "CREATE_MASTER_DATA_KEY_MATERIAL_NAME_FAILED": {
+            return state = { ...state, createMasterDataMaterialNameKeyError: action.payload }
+        }
+        case "CREATE_MASTER_DATA_KEY_MATERIAL_DESC_SUCCESS": {
+            return state = { ...state, createMasterDataMaterialDescKeySuccess: action.payload }
+        }
+        case "CREATE_MASTER_DATA_KEY_MATERIAL_DESC_FAILED": {
+            return state = { ...state, createMasterDataMaterialDescKeyError: action.payload }
+        }
+        case "CREATE_MASTER_DATA_KEY_PART_NO_SUCCESS": {
+            return state = { ...state, createMasterDataPartNoSuccess: action.payload }
+        }
+        case "CREATE_MASTER_DATA_KEY_PART_NO_FAILED": {
+            return state = { ...state, createMasterDataPartNoError: action.payload }
+        }
+        case "CREATE_MASTER_DATA_KEY_PART_NAME_SUCCESS": {
+            return state = { ...state, createMasterDataPartNameSuccess: action.payload }
+        }
+        case "CREATE_MASTER_DATA_KEY_PART_NAME_FAILED": {
+            return state = { ...state, createMasterDataPartNameError: action.payload }
+        }
+        case "CREATE_MASTER_DATA_KEY_PART_DESC_SUCCESS": {
+            return state = { ...state, createMasterDataPartDescSuccess: action.payload }
+        }
+        case "CREATE_MASTER_DATA_KEY_PART_DESC_FAILED": {
+            return state = { ...state, createMasterDataPartDescError: action.payload }
         }
         default:
             return state;

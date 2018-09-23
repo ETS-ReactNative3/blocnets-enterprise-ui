@@ -1,5 +1,5 @@
 export function resolver(error) {
-    console.log("Error Log: " + JSON.stringify(error.response));
+    //console.log("Error Log: " + JSON.stringify(error.response));
     if (error.response) {
         if (error.response.status) {
             switch (error.response.status) {
