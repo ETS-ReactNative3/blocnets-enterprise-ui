@@ -27,7 +27,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Snackbar from 'material-ui/Snackbar';
 import {connect} from 'react-redux';
-import {getBillOfMaterialsByMaterialID} from '../../redux/actions/bill-of-materials.actions';
+import {getBillOfMaterialsByMaterialID} from '../../redux/actions/BOM/bill-of-materials.actions';
 import {syncSARDataAndBindKeys} from '../../redux/actions/shipping.and.receiving.actions';
 
 let counter = 0;

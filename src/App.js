@@ -47,7 +47,7 @@ import {
     getBillOfMaterialsByPartNumber,
     getBillOfMaterialsByPartName,
     getBillOfMaterialsByPartDesc
-} from './redux/actions/bill-of-materials.actions';
+} from './redux/actions/BOM/bill-of-materials.actions';
 import { getEachMessageForUserID } from './redux/actions/user.message.array.action';
 
 const theme = createMuiTheme({

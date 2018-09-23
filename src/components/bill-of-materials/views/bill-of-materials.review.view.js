@@ -18,7 +18,7 @@ import {
     createBillOfMaterialsByPartNumber,
     createBillOfMaterialsByPartName,
     createBillOfMaterialsByPartDesc
-} from '../../../redux/actions/bill-of-materials.actions';
+} from '../../../redux/actions/BOM/bill-of-materials.actions';
 
 let counter = 0;
 

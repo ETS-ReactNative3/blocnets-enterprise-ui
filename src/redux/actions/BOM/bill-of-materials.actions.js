@@ -1,6 +1,6 @@
 import axios from 'axios';
-import config from '../config.json';
-import { resolver } from '../../services/callback.resolver';
+import config from '../../config.json';
+import { resolver } from '../../../services/callback.resolver';
 
 const token = localStorage.getItem('Token');
 

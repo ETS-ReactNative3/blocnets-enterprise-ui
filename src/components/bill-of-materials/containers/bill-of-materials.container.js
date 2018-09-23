@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import BillOfMaterials from '../bill-of-materials';
-//import BillOfMaterialsReview from '../views/bill-of-materials.review.view';
-import * as actions from '../../../redux/actions/bill-of-materials.view.action';
+import * as actions from '../../../redux/actions/BOM/bill-of-materials.actions';
 import ReactDOM from "react-dom";
 import React from "react";
 
