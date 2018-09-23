@@ -178,6 +178,13 @@ class BillOfMaterialsReview extends React.Component {
             createData('Part No.', this.props.eBOMData.partNo),
             createData('Part Name', this.props.eBOMData.partName),
             createData('Part Description', this.props.eBOMData.partDescription),
+            createData('Material Shipping Information', ''),
+            createData('Address', this.props.eBOMData.materialAddressLine1 + ' '
+                + this.props.eBOMData.materialAddressLine2 + ' ' + this.props.eBOMData.materialCity
+                + ' ' + this.props.eBOMData.materialAddressState + ' ' + this.props.eBOMData.materialPostalCode + ' '
+                + this.props.eBOMData.materialCountry),
+            createData('IP Address', this.props.eBOMData.materialIPAddress),
+            createData('Company Name', this.props.eBOMData.materialCompanyName),
             createData('Material Dimensions', ''),
             createData('Volume', this.props.eBOMData.volume),
             createData('Weight', this.props.eBOMData.weight),
@@ -224,14 +231,7 @@ class BillOfMaterialsReview extends React.Component {
             createData('IP Address', this.props.eBOMData.ipAddress),
             createData('Material Supplied Per IP Address', this.props.eBOMData.matSupPerIPAddress),
             createData('Supplier Payment Terms', this.props.eBOMData.supPaymentTerms),
-            createData('Supplier Order Policy', this.props.eBOMData.supOrderPolicy),
-            createData('Material', ''),
-            createData('Address', this.props.eBOMData.materialAddressLine1 + ' '
-                + this.props.eBOMData.materialAddressLine2 + ' ' + this.props.eBOMData.materialCity
-                + ' ' + this.props.eBOMData.materialAddressState + ' ' + this.props.eBOMData.materialPostalCode + ' '
-                + this.props.eBOMData.materialCountry),
-            createData('IP Address', this.props.eBOMData.materialIPAddress),
-            createData('Company Name', this.props.eBOMData.materialCompanyName)
+            createData('Supplier Order Policy', this.props.eBOMData.supOrderPolicy)
         ];
 
         const buttonTheme = createMuiTheme({
