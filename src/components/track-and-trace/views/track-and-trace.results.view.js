@@ -117,7 +117,7 @@ class TrackAndTraceResultsView extends Component {
                                     <Paper style={{"width": "100%"}}>
                                         <div style={{"overflowX": "auto"}}>
                                             <Table style={{"tableLayout": "fixed"}}>
-                                                <TableBody>
+                                                <TableBody style={{"overflowWrap": "break-word"}}>
                                                     {this.props.tatData.map(row => {
                                                         return (
                                                             <TableRow key={row.id}>

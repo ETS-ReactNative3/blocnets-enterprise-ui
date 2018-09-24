@@ -87,12 +87,12 @@ export function getEachMessageForUserID(user) {
             payload: true
         });
         await axios.get(config.chaincodes.Default + config.chaincodes.UMA + user, { headers })
-            .then((response) => {
+            .then(async (response) => {
                 let inbox = [];
                 if (response.data) {
                     for (let i = 0; i < response.data.userMessages.length; i++) {
                         let url = response.data.userMessages[i];
-                        axios.get(config.chaincodes.Default + config.chaincodes.DRE + url, { headers })
+                        await axios.get(config.chaincodes.Default + config.chaincodes.DRE + url, { headers })
                             .then((response) => {
                                 inbox.push(response.data);
                                 return dispatch({

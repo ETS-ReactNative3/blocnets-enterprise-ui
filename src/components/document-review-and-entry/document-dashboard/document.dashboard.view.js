@@ -11,32 +11,37 @@ import TableBody from '@material-ui/core/TableBody';
 import Checkbox from '@material-ui/core/Checkbox';
 import TablePagination from '@material-ui/core/TablePagination';
 import Button from "@material-ui/core/Button/Button";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core";
+import {createMuiTheme, MuiThemeProvider} from "@material-ui/core";
 import yellow from "@material-ui/core/colors/yellow";
 import red from "@material-ui/core/colors/red";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import Snackbar from "material-ui/Snackbar";
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import {
-    getUserMessageDataByUserID,
-    updateUserMessageDataByUserID,
     getEachMessageForUserID
 } from '../../../redux/actions/user.message.array.action';
-import { retrieveFileByUserId } from '../../../redux/actions/FILE/file.action';
 
 let counter = 0;
 
 const rows = [
-    { id: 'messageStatus', label: 'Status' },
-    { id: 'messageType', label: 'Message Type' },
-    { id: 'messageDescription', label: 'Message Description' },
-    { id: 'file', label: 'Attached File(s)' },
-    { id: 'messageDate', label: 'Date' }
+    {id: 'messageStatus', label: 'Status'},
+    {id: 'messageType', label: 'Message Type'},
+    {id: 'messageDataType', label: 'Data Type'},
+    {id: 'messageDescription', label: 'Message'},
+    {id: 'messageFile', label: 'Attached File(s)'},
+    {id: 'messageDate', label: 'Date'}
 ];
+
+let dialogCounter = 0;
+
+function createDialogData(info1, info2) {
+    counter += 1;
+    return {id: counter, info1, info2};
+}
 
 class TableHeader extends React.Component {
     render() {
-        const { onSelectAllClick, numSelected, rowCount } = this.props;
+        const {onSelectAllClick, numSelected, rowCount} = this.props;
         return (
             <TableHead>
                 <TableRow>
@@ -70,45 +75,51 @@ class DocumentDashboardView extends React.Component {
     componentDidMount() {
         Promise.resolve(this.props.getEachMessageForUserID('BadData'))
             .then(() => {
-                    Promise.resolve(this.setState({ loading: true}))
+                this.setState({
+                    showProgressLogo: false,
+                    data: this.createTableContent()
+                })
             })
     }
 
     constructor(props) {
         super(props);
         this.state = {
-            loading: false,
-            showProgressLogo: false,
+            showProgressLogo: true,
             selected: [],
             data: this.createTableContent(),
             page: 0,
             rowsPerPage: 10,
             openDialog: false,
+            dialogMessageStatus: '',
             dialogMessageType: '',
+            dialogMessageDataType: '',
             dialogMessageDescription: '',
+            dialogMessageFile: '',
+            dialogMessageDate: '',
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
                 open: false,
                 sbColor: 'black'
-            },
+            }
         }
     };
 
     createTableContent = () => {
         let tableContent = [];
-        let createData = (messageStatus, messageType, messageDescription, file, messageDate) => {
+        let createData = (messageStatus, messageType, messageDataType, messageDescription, messageFile, messageDate) => {
             counter += 1;
             return {
                 id: counter,
                 messageStatus,
                 messageType,
+                messageDataType,
                 messageDescription,
-                file,
+                messageFile,
                 messageDate
             };
-        }
-        console.log(this.props.data.umaReducer.getEachMessageForUserIDSuccess);
+        };
         if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
             for (let i = 0; i < this.props.data.umaReducer.getEachMessageForUserIDSuccess.length; i++) {
                 tableContent.push(
@@ -116,26 +127,27 @@ class DocumentDashboardView extends React.Component {
                         this.props.data.umaReducer.getEachMessageForUserIDSuccess[i].status,
                         this.props.data.umaReducer.getEachMessageForUserIDSuccess[i].type,
                         this.props.data.umaReducer.getEachMessageForUserIDSuccess[i].desc,
+                        this.props.data.umaReducer.getEachMessageForUserIDSuccess[i].text,
                         this.props.data.umaReducer.getEachMessageForUserIDSuccess[i].fileId,
                         this.props.data.umaReducer.getEachMessageForUserIDSuccess[i].date
                     ));
             }
         }
         return tableContent;
-    }
+    };
 
     isSelected = id => this.state.selected.indexOf(id) !== -1;
 
     handleSelectAllClick = (event, checked) => {
         if (checked) {
-            this.setState(state => ({ selected: state.data.map(n => n.id) }));
+            this.setState(state => ({selected: state.data.map(n => n.id)}));
             return;
         }
-        this.setState({ selected: [] });
+        this.setState({selected: []});
     };
 
     handleClickCheckbox = (event, id) => {
-        const { selected } = this.state;
+        const {selected} = this.state;
         const selectedIndex = selected.indexOf(id);
         let newSelected = [];
         if (selectedIndex === -1) {
@@ -150,23 +162,27 @@ class DocumentDashboardView extends React.Component {
                 selected.slice(selectedIndex + 1),
             );
         }
-        this.setState({ selected: newSelected });
+        this.setState({selected: newSelected});
     };
 
-    handleClickMessages = (event, messageStatus, messageType, messageDescription, file, messageDate) => {
+    handleClickMessages = (event, messageStatus, messageType, messageDataType, messageDescription, messageFile, messageDate) => {
         this.setState({
             openDialog: true,
+            dialogMessageStatus: messageStatus,
             dialogMessageType: messageType,
-            dialogMessageDescription: messageDescription
+            dialogMessageDataType: messageDataType,
+            dialogMessageDescription: messageDescription,
+            dialogMessageFile: messageFile,
+            dialogMessageDate: messageDate
         });
     };
 
     handleChangePage = (event, page) => {
-        this.setState({ page });
+        this.setState({page});
     };
 
     handleChangeRowsPerPage = event => {
-        this.setState({ rowsPerPage: event.target.value });
+        this.setState({rowsPerPage: event.target.value});
     };
 
     handleApprove = (event) => {
@@ -214,7 +230,7 @@ class DocumentDashboardView extends React.Component {
     };
 
     handleDialogClose = () => {
-        this.setState({ openDialog: false });
+        this.setState({openDialog: false});
     };
 
     handleDialogApprove = (event) => {
@@ -236,7 +252,7 @@ class DocumentDashboardView extends React.Component {
                 sbColor: 'red'
             }
         }); to show error message */
-        this.setState({ openDialog: false });
+        this.setState({openDialog: false});
         event.preventDefault();
     };
 
@@ -259,205 +275,232 @@ class DocumentDashboardView extends React.Component {
                 sbColor: 'red'
             }
         }); to show error message */
-        this.setState({ openDialog: false });
+        this.setState({openDialog: false});
         event.preventDefault();
     };
 
     render() {
-        if (this.state.loading) {
 
-            const { data, selected, rowsPerPage, page } = this.state;
+        const {data, selected, rowsPerPage, page} = this.state;
 
-            const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+        const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
-            const buttonThemeYellow = createMuiTheme({
-                palette: {
-                    primary: yellow
-                },
-            });
-            const buttonThemeRed = createMuiTheme({
-                palette: {
-                    primary: red
-                },
-            });
+        const buttonThemeYellow = createMuiTheme({
+            palette: {
+                primary: yellow
+            },
+        });
+        const buttonThemeRed = createMuiTheme({
+            palette: {
+                primary: red
+            },
+        });
 
-            return (
+        const dialogRows = [
+            createDialogData('Status', this.state.dialogMessageStatus.toUpperCase()),
+            createDialogData('Message Type', this.state.dialogMessageType),
+            createDialogData('Data Type', this.state.dialogMessageDataType),
+            createDialogData('Message', this.state.dialogMessageDescription),
+            createDialogData('File', this.state.dialogMessageFile),
+            createDialogData('Date', this.state.dialogMessageDate)
+        ];
+
+        return (
+            <div>
                 <div>
-                    <div>
-                        {this.state.showProgressLogo ?
-                            <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt="" />
-                            </div> : ""}
-                    </div>
-                    <div style={{ padding: 24 }}>
+                    {this.state.showProgressLogo ?
+                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt=""/>
+                        </div> : ""}
+                </div>
+                <div style={{padding: 24}}>
+                    <Grid container justify="center">
+                        <Grid container item xs={12}>
+                            <Paper style={{"width": "100%"}}>
+                                <div style={{"overflowX": "auto"}}>
+                                    <Table>
+                                        <TableHeader
+                                            numSelected={selected.length}
+                                            onSelectAllClick={this.handleSelectAllClick}
+                                            rowCount={data.length}
+                                        />
+                                        <TableBody style={{"overflowWrap": "break-word"}}>
+                                            {data
+                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                                .map(n => {
+                                                    const isSelected = this.isSelected(n.id);
+                                                    return (
+                                                        <TableRow hover aria-checked={isSelected}
+                                                                  tabIndex={-1} key={n.id}>
+                                                            <TableCell padding="checkbox">
+                                                                <Checkbox
+                                                                    onClick={event => this.handleClickCheckbox(event, n.id)}
+                                                                    checked={isSelected} color="default"/>
+                                                            </TableCell>
+                                                            <TableCell
+                                                                onClick={event => this.handleClickMessages(event, n.messageStatus, n.messageType, n.messageDataType, n.messageDescription, n.messageFile, n.messageDate)}
+                                                                style={{"cursor": "pointer"}}>
+                                                                {n.messageStatus.toUpperCase()}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                onClick={event => this.handleClickMessages(event, n.messageStatus, n.messageType, n.messageDataType, n.messageDescription, n.messageFile, n.messageDate)}
+                                                                style={{"cursor": "pointer"}}>
+                                                                {n.messageType}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                onClick={event => this.handleClickMessages(event, n.messageStatus, n.messageType, n.messageDataType, n.messageDescription, n.messageFile, n.messageDate)}
+                                                                style={{"cursor": "pointer"}}>
+                                                                {n.messageDataType}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                onClick={event => this.handleClickMessages(event, n.messageStatus, n.messageType, n.messageDataType, n.messageDescription, n.messageFile, n.messageDate)}
+                                                                style={{"cursor": "pointer"}}>
+                                                                {n.messageDescription}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                onClick={event => this.handleClickMessages(event, n.messageStatus, n.messageType, n.messageDataType, n.messageDescription, n.messageFile, n.messageDate)}
+                                                                style={{"cursor": "pointer"}}>
+                                                                {n.messageFile}
+                                                            </TableCell>
+                                                            <TableCell
+                                                                onClick={event => this.handleClickMessages(event, n.messageStatus, n.messageType, n.messageDataType, n.messageDescription, n.messageFile, n.messageDate)}
+                                                                style={{"cursor": "pointer"}}>
+                                                                {n.messageDate}
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    );
+                                                })}
+                                            {emptyRows > 0 && (
+                                                <TableRow style={{height: 49 * emptyRows}}>
+                                                    <TableCell colSpan={6}/>
+                                                </TableRow>
+                                            )}
+                                        </TableBody>
+                                    </Table>
+                                    <TablePagination
+                                        component="div"
+                                        count={data.length}
+                                        rowsPerPage={rowsPerPage}
+                                        page={page}
+                                        backIconButtonProps={{
+                                            'aria-label': 'Previous Page',
+                                        }}
+                                        nextIconButtonProps={{
+                                            'aria-label': 'Next Page',
+                                        }}
+                                        onChangePage={this.handleChangePage}
+                                        onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                    />
+                                </div>
+                            </Paper>
+                        </Grid>
+                    </Grid>
+                    <br/>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={12} sm={3}>
+                            <Grid>
+                                <MuiThemeProvider theme={buttonThemeYellow}>
+                                    <Button type="submit" value="Upload" variant="contained"
+                                            color="primary" disabled>
+                                        Upload...
+                                    </Button>
+                                </MuiThemeProvider>
+                            </Grid>
+                        </Grid>
+                        <Grid container item xs={12} sm={6}>
+                        </Grid>
+                        <Grid container item xs={12} sm={3}>
+                            <Grid container item xs justify="flex-end">
+                                <MuiThemeProvider theme={buttonThemeYellow}>
+                                    <Button type="submit" value="Approve" variant="contained"
+                                            color="primary" disabled={true}
+                                            onClick={this.handleApprove}>
+                                        Approve
+                                    </Button>
+                                </MuiThemeProvider>
+                            </Grid>
+                            <Grid container item xs justify="flex-end">
+                                <MuiThemeProvider theme={buttonThemeYellow}>
+                                    <Button type="submit" value="Reject" variant="contained"
+                                            color="primary" disabled={true}
+                                            onClick={this.handleReject}>
+                                        Reject
+                                    </Button>
+                                </MuiThemeProvider>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </div>
+                <Dialog open={this.state.openDialog} onClose={this.handleDialogClose}>
+                    <div style={{padding: 24}}>
+                        <Grid container justify="flex-end">
+                            <Grid item>
+                                <i className="material-icons" style={{"cursor": "pointer"}}
+                                   onClick={this.handleDialogClose}>close</i>
+                            </Grid>
+                        </Grid>
+                        <br/>
                         <Grid container justify="center">
                             <Grid container item xs={12}>
-                                <Paper style={{ "width": "100%" }}>
-                                    <div style={{ "overflowX": "auto" }}>
-                                        <Table>
-                                            <TableHeader
-                                                numSelected={selected.length}
-                                                onSelectAllClick={this.handleSelectAllClick}
-                                                rowCount={data.length}
-                                            />
-                                            <TableBody>
-                                                {data
-                                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                                    .map(n => {
-                                                        const isSelected = this.isSelected(n.id);
-                                                        return (
-                                                            <TableRow hover aria-checked={isSelected}
-                                                                tabIndex={-1} key={n.id}>
-                                                                <TableCell padding="checkbox">
-                                                                    <Checkbox
-                                                                        onClick={event => this.handleClickCheckbox(event, n.id)}
-                                                                        checked={isSelected} color="default" />
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    onClick={event => this.handleClickMessages(event, n.messageStatus, n.messageType, n.messageDescription, n.file, n.messageDate)}
-                                                                    style={{ "cursor": "pointer" }}>
-                                                                    {n.messageStatus}
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    onClick={event => this.handleClickMessages(event, n.messageStatus, n.messageType, n.messageDescription, n.file, n.messageDate)}
-                                                                    style={{ "cursor": "pointer" }}>
-                                                                    {n.messageType}
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    onClick={event => this.handleClickMessages(event, n.messageStatus, n.messageType, n.messageDescription, n.file, n.messageDate)}
-                                                                    style={{ "cursor": "pointer" }}>
-                                                                    {n.messageDescription}
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    onClick={event => this.handleClickMessages(event, n.messageStatus, n.messageType, n.messageDescription, n.file, n.messageDate)}
-                                                                    style={{ "cursor": "pointer" }}>
-                                                                    {n.file}
-                                                                </TableCell>
-                                                                <TableCell
-                                                                    onClick={event => this.handleClickMessages(event, n.messageStatus, n.messageType, n.messageDescription, n.file, n.messageDate)}
-                                                                    style={{ "cursor": "pointer" }}>
-                                                                    {n.messageDate}
-                                                                </TableCell>
-                                                            </TableRow>
-                                                        );
-                                                    })}
-                                                {emptyRows > 0 && (
-                                                    <TableRow style={{ height: 49 * emptyRows }}>
-                                                        <TableCell colSpan={6} />
-                                                    </TableRow>
-                                                )}
+                                <Paper style={{"width": "100%"}}>
+                                    <div>
+                                        {this.state.showProgressLogoDialog ?
+                                            <div className="overlay"><img src={blocnetsLogo}
+                                                                          className="App-logo-progress" alt=""/>
+                                            </div> : ""}
+                                    </div>
+                                    <div style={{"overflowX": "auto"}}>
+                                        <Table style={{"tableLayout": "fixed"}}>
+                                            <TableBody style={{"overflowWrap": "break-word"}}>
+                                                {dialogRows.map(row => {
+                                                    return (
+                                                        <TableRow key={row.id}>
+                                                            <TableCell>{row.info1}</TableCell>
+                                                            <TableCell>{row.info2}</TableCell>
+                                                        </TableRow>
+                                                    );
+                                                })}
                                             </TableBody>
                                         </Table>
-                                        <TablePagination
-                                            component="div"
-                                            count={data.length}
-                                            rowsPerPage={rowsPerPage}
-                                            page={page}
-                                            backIconButtonProps={{
-                                                'aria-label': 'Previous Page',
-                                            }}
-                                            nextIconButtonProps={{
-                                                'aria-label': 'Next Page',
-                                            }}
-                                            onChangePage={this.handleChangePage}
-                                            onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                                        />
                                     </div>
                                 </Paper>
                             </Grid>
                         </Grid>
-                        <br />
+                        <br/>
                         <Grid container spacing={24}>
-                            <Grid container item xs={12} sm={3}>
-                                <Grid>
-                                    <MuiThemeProvider theme={buttonThemeYellow}>
-                                        <Button type="submit" value="Upload" variant="contained"
-                                            color="primary" disabled>
-                                            Upload...
-                                    </Button>
-                                    </MuiThemeProvider>
-                                </Grid>
+                            <Grid container item xs={4} sm={4}>
                             </Grid>
-                            <Grid container item xs={12} sm={6}>
+                            <Grid container item xs={4} sm={4}>
+                                <MuiThemeProvider theme={buttonThemeRed}>
+                                    <Button type="submit" value="Approve" variant="flat" color="primary"
+                                            fullWidth={true} disabled={true}
+                                            onClick={this.handleDialogApprove}>
+                                        Approve
+                                    </Button>
+                                </MuiThemeProvider>
                             </Grid>
-                            <Grid container item xs={12} sm={3}>
-                                <Grid container item xs justify="flex-end">
-                                    <MuiThemeProvider theme={buttonThemeYellow}>
-                                        <Button type="submit" value="Approve" variant="contained"
-                                            color="primary" disabled={selected.length === 0}
-                                            onClick={event => this.handleApprove(event)}>
-                                            Approve
+                            <Grid container item xs={4} sm={4}>
+                                <MuiThemeProvider theme={buttonThemeRed}>
+                                    <Button type="submit" value="Reject" variant="flat" color="primary"
+                                            fullWidth={true} disabled={true}
+                                            onClick={this.handleDialogReject}>
+                                        Reject
                                     </Button>
-                                    </MuiThemeProvider>
-                                </Grid>
-                                <Grid container item xs justify="flex-end">
-                                    <MuiThemeProvider theme={buttonThemeYellow}>
-                                        <Button type="submit" value="Reject" variant="contained"
-                                            color="primary" disabled={selected.length === 0}
-                                            onClick={event => this.handleReject(event)}>
-                                            Reject
-                                    </Button>
-                                    </MuiThemeProvider>
-                                </Grid>
+                                </MuiThemeProvider>
                             </Grid>
                         </Grid>
                     </div>
-                    <Dialog open={this.state.openDialog} onClose={this.handleDialogClose}>
-                        <div style={{ padding: 24 }}>
-                            <Grid container justify="flex-end">
-                                <Grid item>
-                                    <i className="material-icons" style={{ "cursor": "pointer" }}
-                                        onClick={this.handleDialogClose}>close</i>
-                                </Grid>
-                            </Grid>
-                            <br />
-                            <Grid container>
-                                <Grid container item xs={12}>
-                                    <b>{this.state.dialogMessageType}</b>
-                                </Grid>
-                            </Grid>
-                            <br />
-                            <Grid container>
-                                <Grid container item xs={12}>
-                                    {this.state.dialogMessageDescription}
-                                </Grid>
-                            </Grid>
-                            <br />
-                            <Grid container spacing={24}>
-                                <Grid container item xs={4} sm={4}>
-                                </Grid>
-                                <Grid container item xs={4} sm={4}>
-                                    <MuiThemeProvider theme={buttonThemeRed}>
-                                        <Button type="submit" value="Approve" variant="flat" color="primary"
-                                            fullWidth={true}
-                                            onClick={event => this.handleDialogApprove(event)}>
-                                            Approve
-                                    </Button>
-                                    </MuiThemeProvider>
-                                </Grid>
-                                <Grid container item xs={4} sm={4}>
-                                    <MuiThemeProvider theme={buttonThemeRed}>
-                                        <Button type="submit" value="Reject" variant="flat" color="primary" fullWidth={true}
-                                            onClick={event => this.handleDialogReject(event)}>
-                                            Reject
-                                    </Button>
-                                    </MuiThemeProvider>
-                                </Grid>
-                            </Grid>
-                        </div>
-                    </Dialog>
-                    <Snackbar
-                        open={this.state.snackbar.open}
-                        message={this.state.snackbar.message}
-                        autoHideDuration={this.state.snackbar.autoHideDuration}
-                        onRequestClose={this.handleSnackbarClose}
-                        bodyStyle={{ backgroundColor: this.state.snackbar.sbColor }}
-                    />
-                </div>
-            );
+                </Dialog>
+                <Snackbar
+                    open={this.state.snackbar.open}
+                    message={this.state.snackbar.message}
+                    autoHideDuration={this.state.snackbar.autoHideDuration}
+                    onRequestClose={this.handleSnackbarClose}
+                    bodyStyle={{backgroundColor: this.state.snackbar.sbColor}}
+                />
+            </div>
+        );
 
-        } else {
-            return null;
-        }
+
     }
 }
 
@@ -474,9 +517,6 @@ const mapStateToProps = (state) => {
 // This way, we can call our action creator by doing this.props.fetchData(url);
 const mapDispatchToProps = (dispatch) => {
     return {
-        getUserMessageDataByUserID: (url) => dispatch(getUserMessageDataByUserID(url)),
-        updateUserMessageDataByUserID: (url, body) => dispatch(updateUserMessageDataByUserID(url, body)),
-        retrieveFileByUserId: (url) => dispatch(retrieveFileByUserId(url)),
         getEachMessageForUserID: (user) => dispatch(getEachMessageForUserID(user))
     };
 };
