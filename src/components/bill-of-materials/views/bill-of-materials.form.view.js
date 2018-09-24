@@ -177,7 +177,7 @@ class BillOfMaterialsForm extends React.Component {
         }
     };
 
-    handleConfirmation = () => {
+    handleCreateMasterData = () => {
         this.props.viewHandler(false, true, this.state, this.state.snackbar);
     };
 
@@ -1104,7 +1104,7 @@ class BillOfMaterialsForm extends React.Component {
                         <Grid container item xs={12}>
                             <MuiThemeProvider theme={buttonThemeYellow}>
                                 <Button type="submit" value="Submit" variant="contained" color="primary"
-                                        fullWidth={true} disabled={!formComplete} onClick={this.handleConfirmation}>
+                                        fullWidth={true} disabled={!formComplete} onClick={this.handleCreateMasterData}>
                                     Create Master Data
                                 </Button>
                             </MuiThemeProvider>

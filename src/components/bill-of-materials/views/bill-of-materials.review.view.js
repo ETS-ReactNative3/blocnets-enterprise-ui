@@ -155,7 +155,7 @@ class BillOfMaterialsReview extends React.Component {
                         showProgressLogo: false,
                         snackbar: {
                             autoHideDuration: 2000,
-                            message: 'Engineering Bill of Materials Successfully Created!',
+                            message: 'Master Data successfully created!',
                             open: true,
                             sbColor: '#23CE6B'
                         }
@@ -265,7 +265,7 @@ class BillOfMaterialsReview extends React.Component {
                             <Paper style={{"width": "100%"}}>
                                 <div style={{"overflowX": "auto"}}>
                                     <Table style={{"tableLayout": "fixed"}}>
-                                        <TableBody>
+                                        <TableBody style={{"overflowWrap": "break-word"}}>
                                             {rows.map(row => {
                                                 return (
                                                     <TableRow key={row.id}>

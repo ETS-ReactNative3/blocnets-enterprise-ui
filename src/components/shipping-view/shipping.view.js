@@ -76,9 +76,8 @@ class ShippingView extends Component {
             this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess = '';
             let addressMenuItemsLength = '';
             this.setState({showProgressLogo: true});
-            this.props.getBillOfMaterialsByMaterialID(event.target.value);
-            setTimeout(
-                function () {
+            Promise.resolve(this.props.getBillOfMaterialsByMaterialID(event.target.value))
+                .then(() => {
                     eBOMData = this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess;
                     if (eBOMData) {
                         this.setState({
@@ -112,10 +111,7 @@ class ShippingView extends Component {
                             },
                         });
                     }
-                }
-                    .bind(this),
-                1000
-            );
+                });
         }
     };
 
@@ -194,9 +190,8 @@ class ShippingView extends Component {
             this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess = '';
             this.setState({showProgressLogo: true});
             let childMaterialID = event.target.value;
-            this.props.getBillOfMaterialsByMaterialID(event.target.value);
-            setTimeout(
-                function () {
+            Promise.resolve(this.props.getBillOfMaterialsByMaterialID(event.target.value))
+                .then(() => {
                     if (this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess) {
                         this.setState({showProgressLogo: false});
                     } else {
@@ -210,10 +205,7 @@ class ShippingView extends Component {
                             },
                         });
                     }
-                }
-                    .bind(this),
-                1000
-            );
+                });
         }
     };
 
@@ -232,7 +224,7 @@ class ShippingView extends Component {
         this.setState({materialIDQuantityList: materialIDQuantityList});
     };
 
-    handleConfirmation = (event) => {
+    handleSendShipment = (event) => {
         event.preventDefault();
         if (this.state.shipmentCompleted === true) {
             this.setState({
@@ -291,13 +283,9 @@ class ShippingView extends Component {
             deliverOrderNo: '',
             prdKey: ''
         };
-        this.props.syncSARDataAndBindKeys(payload);
-        setTimeout(
-            function () {
-                if (this.props.data.sarReducer.createShippingDataByShipmentIDSuccess === true &&
-                    (this.props.data.sarReducer.updateShippingDataByMaterialIDSuccess === true ||
-                        this.props.data.sarReducer.createShippingDataByMaterialIDSuccess === true)
-                ) {
+        Promise.resolve(this.props.syncSARDataAndBindKeys(payload))
+            .then(() => {
+                if (this.props.data.sarReducer.syncSARDataAndBindKeysSuccess === true) {
                     this.setState({
                         showProgressLogoDialog: false,
                         snackbar: {
@@ -340,9 +328,7 @@ class ShippingView extends Component {
                         }
                     });
                 }
-            }
-                .bind(this),
-            10000);
+            });
     };
 
     handleDialogCloseConfirmation = () => {
@@ -429,7 +415,6 @@ class ShippingView extends Component {
 
         const formComplete = this.state.materialID && this.state.address;
 
-
         return (
             <form>
                 <div>
@@ -440,12 +425,12 @@ class ShippingView extends Component {
                 <div style={{padding: 24}}>
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
-                            <FormLabel style={{"textAlign": "left", "fontWeight": "bold", "color": "black"}}>CREATE
-                                SHIPPING INFORMATION</FormLabel>
+                            <FormLabel style={{"textAlign": "left", "fontWeight": "bold", "color": "black"}}>Create
+                                Shipping Information</FormLabel>
                         </Grid>
                     </Grid>
                     <br/>
-                    <Divider style={{"height": "2px", "backgroundColor": "black"}}/>
+                    <Divider style={{"height": "1px", "backgroundColor": "black"}}/>
                     <br/><br/>
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
@@ -535,12 +520,12 @@ class ShippingView extends Component {
                     <br/><br/>
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
-                            <FormLabel style={{"textAlign": "left", "fontWeight": "bold", "color": "black"}}>ADDITIONAL
-                                SHIPPING INFORMATION</FormLabel>
+                            <FormLabel style={{"textAlign": "left", "fontWeight": "bold", "color": "black"}}>Additional
+                                Shipping Information</FormLabel>
                         </Grid>
                     </Grid>
                     <br/>
-                    <Divider style={{"height": "2px", "backgroundColor": "black"}}/>
+                    <Divider style={{"height": "1px", "backgroundColor": "black"}}/>
                     <br/><br/>
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
@@ -595,7 +580,7 @@ class ShippingView extends Component {
                         <Grid container item xs={12}>
                             <MuiThemeProvider theme={buttonThemeYellow}>
                                 <Button type="submit" value="Submit" variant="contained" color="primary"
-                                        fullWidth={true} disabled={!formComplete} onClick={this.handleConfirmation}>
+                                        fullWidth={true} disabled={!formComplete} onClick={this.handleSendShipment}>
                                     Send Shipment
                                 </Button>
                             </MuiThemeProvider>
@@ -664,7 +649,7 @@ class ShippingView extends Component {
                                     </div>
                                     <div style={{"overflowX": "auto"}}>
                                         <Table style={{"tableLayout": "fixed"}}>
-                                            <TableBody>
+                                            <TableBody style={{"overflowWrap": "break-word"}}>
                                                 {this.state.rows.map(row => {
                                                     return (
                                                         <TableRow key={row.id}>

@@ -75,6 +75,7 @@ class ReceivingView extends Component {
     };
 
     handleRetrieveShipment = (event) => {
+        event.preventDefault();
         this.props.data.sarReducer.getShippingDataByMaterialIDSuccess = '';
         this.props.data.sarReducer.getShippingDataByShipmentIDSuccess = '';
         this.setState({
@@ -121,9 +122,8 @@ class ReceivingView extends Component {
                 });
         } else if (this.state.materialIDInformed === false) {
             let url = this.state.shipmentID;
-            this.props.getShippingDataByShipmentID(url);
-            setTimeout(
-                function () {
+            Promise.resolve(this.props.getShippingDataByShipmentID(url))
+                .then(() => {
                     dataByShipmentID = this.props.data.sarReducer.getShippingDataByShipmentIDSuccess;
                     if (dataByShipmentID) {
                         if (dataByShipmentID.manuallyShipped === true) {
@@ -155,12 +155,8 @@ class ReceivingView extends Component {
                             openShipmentIDDialog: false
                         })
                     }
-                }
-                    .bind(this),
-                1000
-            );
+                });
         }
-        event.preventDefault();
     };
 
     handleDialogClose = () => {
@@ -216,41 +212,39 @@ class ReceivingView extends Component {
             receivedShipment: true,
             receivedOrder: dataByMaterialID.receivedOrder
         };
-        this.props.updateShippingDataByMaterialID(urlMaterialID, bodyMaterialID);
-        this.props.updateShippingDataByShipmentID(urlShipmentID, bodyShipmentID);
-        setTimeout(
-            function () {
-                if (this.props.data.sarReducer.updateShippingDataByMaterialIDSuccess === true
-                    && this.props.data.sarReducer.updateShippingDataByShipmentIDSuccess === true) {
-                    this.setState({
-                        showProgressLogoDialog: false,
-                        snackbar: {
-                            autoHideDuration: 2000,
-                            message: 'Receive Shipment Success!',
-                            open: true,
-                            sbColor: '#23CE6B'
-                        },
-                        openMaterialIDDialog: false,
-                        materialID: '',
-                        materialIDInformed: false,
-                        shipmentID: '',
-                        shipmentIDInformed: false
-                    });
-                } else {
-                    this.setState({
-                        showProgressLogoDialog: false,
-                        snackbar: {
-                            autoHideDuration: 2000,
-                            message: 'Receive Shipment Error! Please try again.',
-                            open: true,
-                            sbColor: 'red'
+        Promise.resolve(this.props.updateShippingDataByMaterialID(urlMaterialID, bodyMaterialID))
+            .then(() => {
+                Promise.resolve(this.props.updateShippingDataByShipmentID(urlShipmentID, bodyShipmentID))
+                    .then(() => {
+                        if (this.props.data.sarReducer.updateShippingDataByMaterialIDSuccess === true
+                            && this.props.data.sarReducer.updateShippingDataByShipmentIDSuccess === true) {
+                            this.setState({
+                                showProgressLogoDialog: false,
+                                snackbar: {
+                                    autoHideDuration: 2000,
+                                    message: 'Receive Shipment Success!',
+                                    open: true,
+                                    sbColor: '#23CE6B'
+                                },
+                                openMaterialIDDialog: false,
+                                materialID: '',
+                                materialIDInformed: false,
+                                shipmentID: '',
+                                shipmentIDInformed: false
+                            });
+                        } else {
+                            this.setState({
+                                showProgressLogoDialog: false,
+                                snackbar: {
+                                    autoHideDuration: 2000,
+                                    message: 'Receive Shipment Error! Please try again.',
+                                    open: true,
+                                    sbColor: 'red'
+                                }
+                            })
                         }
-                    })
-                }
-            }
-                .bind(this),
-            3000
-        );
+                    });
+            });
     };
 
     handleSIDialogReceiveShipment = (event) => {
@@ -298,41 +292,39 @@ class ReceivingView extends Component {
             receivedShipment: true,
             receivedOrder: dataByShipmentID.receivedOrder
         };
-        this.props.updateShippingDataByMaterialID(urlMaterialID, bodyMaterialID);
-        this.props.updateShippingDataByShipmentID(urlShipmentID, bodyShipmentID);
-        setTimeout(
-            function () {
-                if (this.props.data.sarReducer.updateShippingDataByMaterialIDSuccess === true
-                    && this.props.data.sarReducer.updateShippingDataByShipmentIDSuccess === true) {
-                    this.setState({
-                        snackbar: {
-                            showProgressLogoDialog: false,
-                            autoHideDuration: 2000,
-                            message: 'Receive Shipment Success!',
-                            open: true,
-                            sbColor: '#23CE6B'
-                        },
-                        openShipmentIDDialog: false,
-                        materialID: '',
-                        materialIDInformed: false,
-                        shipmentID: '',
-                        shipmentIDInformed: false
-                    });
-                } else {
-                    this.setState({
-                        showProgressLogoDialog: false,
-                        snackbar: {
-                            autoHideDuration: 2000,
-                            message: 'Receive Shipment Error! Please try again.',
-                            open: true,
-                            sbColor: 'red'
+        Promise.resolve(this.props.updateShippingDataByMaterialID(urlMaterialID, bodyMaterialID))
+            .then(() => {
+                Promise.resolve(this.props.updateShippingDataByShipmentID(urlShipmentID, bodyShipmentID))
+                    .then(() => {
+                        if (this.props.data.sarReducer.updateShippingDataByMaterialIDSuccess === true
+                            && this.props.data.sarReducer.updateShippingDataByShipmentIDSuccess === true) {
+                            this.setState({
+                                snackbar: {
+                                    showProgressLogoDialog: false,
+                                    autoHideDuration: 2000,
+                                    message: 'Receive Shipment Success!',
+                                    open: true,
+                                    sbColor: '#23CE6B'
+                                },
+                                openShipmentIDDialog: false,
+                                materialID: '',
+                                materialIDInformed: false,
+                                shipmentID: '',
+                                shipmentIDInformed: false
+                            });
+                        } else {
+                            this.setState({
+                                showProgressLogoDialog: false,
+                                snackbar: {
+                                    autoHideDuration: 2000,
+                                    message: 'Receive Shipment Error! Please try again.',
+                                    open: true,
+                                    sbColor: 'red'
+                                }
+                            })
                         }
-                    })
-                }
-            }
-                .bind(this),
-            3000
-        );
+                    });
+            });
     };
 
     handleSnackbarClose = () => {
@@ -347,10 +339,6 @@ class ReceivingView extends Component {
     };
 
     render() {
-
-        if (this.props.requestError) {
-            return <p>Oh No! Something went unexpected..</p>;
-        }
 
         const buttonThemeYellow = createMuiTheme({
             palette: {
@@ -429,7 +417,7 @@ class ReceivingView extends Component {
                                     </div>
                                     <div style={{"overflowX": "auto"}}>
                                         <Table style={{"tableLayout": "fixed"}}>
-                                            <TableBody>
+                                            <TableBody style={{"overflowWrap": "break-word"}}>
                                                 {materialIDRows.map(row => {
                                                     return (
                                                         <TableRow key={row.id}>
@@ -480,7 +468,7 @@ class ReceivingView extends Component {
                                     </div>
                                     <div style={{"overflowX": "auto"}}>
                                         <Table>
-                                            <TableBody>
+                                            <TableBody style={{"overflowWrap": "break-word"}}>
                                                 {shipmentIDRows.map(row => {
                                                     return (
                                                         <TableRow key={row.id}>

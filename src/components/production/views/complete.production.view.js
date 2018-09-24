@@ -6,10 +6,10 @@ import Button from '@material-ui/core/Button';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
 import red from '@material-ui/core/colors/red';
+import Dialog from '@material-ui/core/Dialog';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Dialog from '@material-ui/core/Dialog';
 import Fade from "@material-ui/core/Fade/Fade";
 import Snackbar from 'material-ui/Snackbar';
 import {connect} from 'react-redux';
@@ -28,46 +28,46 @@ class CompleteProduction extends Component {
         this.state = {
             showProgressLogo: false,
             productionOrderNo: '',
-            errorText1: 'This is a required field.',
+            errorTextProductionOrderNo: 'This is a required field.',
             materialID: '',
-            errorText2: 'This is a required field.',
+            errorTextMaterialID: 'This is a required field.',
             ipAddress: '',
-            errorText3: 'This is a required field.',
-            productionCompleted: false,
-            quantity: '',
-            errorText4: 'This is a required field.',
+            errorTextIPAddress: 'This is a required field.',
             openDialog: false,
             showProgressLogoDialog: false,
+            productionCompleted: false,
+            quantity: '',
+            errorTextQuantity: 'This is a required field.',
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
                 open: false,
                 sbColor: 'black'
-            },
+            }
         };
     }
 
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
         if ([event.target.name].toString() === 'productionOrderNo' && event.target.value !== '') {
-            this.setState({errorText1: ''});
+            this.setState({errorTextProductionOrderNo: ''});
         } else if ([event.target.name].toString() === 'productionOrderNo' && !event.target.value) {
-            this.setState({errorText1: 'This is a required field.'});
+            this.setState({errorTextProductionOrderNo: 'This is a required field.'});
         }
         if ([event.target.name].toString() === 'materialID' && event.target.value !== '') {
-            this.setState({errorText2: ''});
+            this.setState({errorTextMaterialID: ''});
         } else if ([event.target.name].toString() === 'materialID' && !event.target.value) {
-            this.setState({errorText2: 'This is a required field.'});
+            this.setState({errorTextMaterialID: 'This is a required field.'});
         }
         if ([event.target.name].toString() === 'ipAddress' && event.target.value !== '') {
-            this.setState({errorText3: ''});
+            this.setState({errorTextIPAddress: ''});
         } else if ([event.target.name].toString() === 'ipAddress' && !event.target.value) {
-            this.setState({errorText3: 'This is a required field.'});
+            this.setState({errorTextIPAddress: 'This is a required field.'});
         }
         if ([event.target.name].toString() === 'quantity' && event.target.value !== '') {
-            this.setState({errorText4: ''});
+            this.setState({errorTextQuantity: ''});
         } else if ([event.target.name].toString() === 'quantity' && !event.target.value) {
-            this.setState({errorText4: 'This is a required field.'});
+            this.setState({errorTextQuantity: 'This is a required field.'});
         }
     };
 
@@ -81,6 +81,7 @@ class CompleteProduction extends Component {
     };
 
     handleCompleteProduction = (event) => {
+        event.preventDefault();
         this.props.data.prdReducer.getProductionOrderByProdOrderNoSuccess = '';
         this.setState({
             showProgressLogo: true,
@@ -89,9 +90,8 @@ class CompleteProduction extends Component {
             productionCompleted: false,
             quantity: '',
         });
-        this.props.getProductionOrderByProdOrderNo(this.state.productionOrderNo);
-        setTimeout(
-            function () {
+        Promise.resolve(this.props.getProductionOrderByProdOrderNo(this.state.productionOrderNo))
+            .then(() => {
                 if (this.props.data.prdReducer.getProductionOrderByProdOrderNoSuccess) {
                     data = this.props.data.prdReducer.getProductionOrderByProdOrderNoSuccess;
                     this.setState({showProgressLogo: false});
@@ -99,10 +99,7 @@ class CompleteProduction extends Component {
                     data = [];
                     this.setState({showProgressLogo: false});
                 }
-            }
-                .bind(this),
-            1000);
-        event.preventDefault();
+            });
     };
 
     handleDialogClose = () => {
@@ -127,9 +124,8 @@ class CompleteProduction extends Component {
             completedProductionOrder: this.state.productionCompleted,
             productionQuantity: this.state.quantity
         };
-        this.props.updateProductionOrderByProdOrderNo(url, body);
-        setTimeout(
-            function () {
+        Promise.resolve(this.props.updateProductionOrderByProdOrderNo(url, body))
+            .then(() => {
                 if (this.props.data.prdReducer.updateProductionOrderByProdOrderNoSuccess === true) {
                     this.setState({
                         showProgressLogoDialog: false,
@@ -141,11 +137,11 @@ class CompleteProduction extends Component {
                         },
                         openDialog: false,
                         productionOrderNo: '',
-                        errorText1: 'This is a required field.',
+                        errorTextProductionOrderNo: 'This is a required field.',
                         materialID: '',
-                        errorText2: 'This is a required field.',
+                        errorTextMaterialID: 'This is a required field.',
                         ipAddress: '',
-                        errorText3: 'This is a required field.',
+                        errorTextIPAddress: 'This is a required field.',
                         productionCompleted: false,
                         quantity: '',
                     });
@@ -160,10 +156,7 @@ class CompleteProduction extends Component {
                         }
                     })
                 }
-            }
-                .bind(this),
-            3000
-        );
+            });
     };
 
     handleSnackbarClose = () => {
@@ -215,7 +208,7 @@ class CompleteProduction extends Component {
                                 floatingLabelFixed={true}
                                 style={{"float": "left", "textAlign": "left"}}
                                 hintText=""
-                                errorText={this.state.errorText1}
+                                errorText={this.state.errorTextProductionOrderNo}
                                 errorStyle={{"float": "left", "textAlign": "left"}}
                             />
                         </Grid>
@@ -229,7 +222,7 @@ class CompleteProduction extends Component {
                                 floatingLabelFixed={true}
                                 style={{"float": "left", "textAlign": "left"}}
                                 hintText=""
-                                errorText={this.state.errorText2}
+                                errorText={this.state.errorTextMaterialID}
                                 errorStyle={{"float": "left", "textAlign": "left"}}
                             />
                         </Grid>
@@ -243,7 +236,7 @@ class CompleteProduction extends Component {
                                 floatingLabelFixed={true}
                                 style={{"float": "left", "textAlign": "left"}}
                                 hintText=""
-                                errorText={this.state.errorText3}
+                                errorText={this.state.errorTextIPAddress}
                                 errorStyle={{"float": "left", "textAlign": "left"}}
                             />
                         </Grid>
@@ -302,7 +295,7 @@ class CompleteProduction extends Component {
                                         floatingLabelFixed={true}
                                         style={{"float": "left", "textAlign": "left"}}
                                         hintText=""
-                                        errorText={this.state.errorText4}
+                                        errorText={this.state.errorTextQuantity}
                                         errorStyle={{"float": "left", "textAlign": "left"}}
                                     />
                                 </Grid>
