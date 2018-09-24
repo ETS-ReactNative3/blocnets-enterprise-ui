@@ -45,27 +45,11 @@ class TrackAndTraceView extends Component {
         this.state = {
             showProgressLogo: false,
             materialID: '',
-            shipmentID: '',
-            addressLine1: '',
-            addressLine2: '',
-            city: '',
-            state: '',
-            postalCode: '',
-            country: '',
-            ipAddress: '',
-            manuallyShipped: '',
-            deliveryOrderNo: '',
-            shipmentQuantity: '',
-            shipmentSent: '',
-            shipmentCompleted: '',
-            shipped: true,
-            receivedShipment: '',
-            receivedOrder: '',
-            prdKey: '',
-            tree: '',
+            errorTextMaterialID: 'This is a required field.',
             openDialog: false,
             showMaterialMap: false,
             showMaterialMapSwitch: false,
+            tree: '',
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
@@ -77,87 +61,116 @@ class TrackAndTraceView extends Component {
 
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
+        if ([event.target.name].toString() === 'materialID' && event.target.value) {
+            this.setState({errorTextMaterialID: ''});
+        } else if ([event.target.name].toString() === 'materialID' && !event.target.value) {
+            this.setState({errorTextMaterialID: 'This is a required field.'})
+        }
         if ([event.target.name].toString() === 'showMaterialMapSwitch' && event.target.checked === true) {
-            this.setState({showMaterialMap: true});
+            if (this.props.data.spawnConstructReducer.construct !== '' && this.props.data.spawnConstructReducer.construct !== undefined) {
+                this.setState({
+                    showMaterialMap: true,
+                    showMaterialMapSwitch: true
+                });
+            } else {
+                this.setState({
+                    tree: '',
+                    showMaterialMap: false,
+                    showMaterialMapSwitch: false,
+                    snackbar: {
+                        autoHideDuration: 2000,
+                        message: 'Material Map does not exist!',
+                        open: true,
+                        sbColor: 'red'
+                    },
+                });
+            }
         } else if ([event.target.name].toString() === 'showMaterialMapSwitch' && event.target.checked === false) {
-            this.setState({showMaterialMap: false});
+            this.setState({
+                showMaterialMap: false,
+                showMaterialMapSwitch: false
+            });
         }
     };
 
     handleTrack = (event) => {
+        event.preventDefault();
         tree = []; // Clean Tree
         this.props.data.sarReducer.getShippingDataByMaterialIDSuccess = '';
+        this.props.data.spawnConstructReducer.construct = '';
         this.setState({
             showProgressLogo: true,
             openDialog: false,
-            showMaterialMap: false
+            showMaterialMap: false,
+            showMaterialMapSwitch: false
         });
-        this.props.getShippingDataByMaterialID(this.state.materialID);
-        this.props.createConstruct(this.state.materialID);
-        setTimeout(
-            function () {
-                if (this.props.data.sarReducer.getShippingDataByMaterialIDSuccess) {
-                    data = this.props.data.sarReducer.getShippingDataByMaterialIDSuccess;
-                    tree.push(this.props.data.spawnConstructReducer.construct);
-                    if (data.manuallyShipped === true) {
-                        dataManualShipping = 'YES'
+        Promise.resolve(this.props.getShippingDataByMaterialID(this.state.materialID))
+            .then(() => {
+                this.props.createConstruct(this.state.materialID);
+                setTimeout(
+                    function () {
+                        if (this.props.data.sarReducer.getShippingDataByMaterialIDSuccess) {
+                            data = this.props.data.sarReducer.getShippingDataByMaterialIDSuccess;
+                            tree.push(this.props.data.spawnConstructReducer.construct);
+                            if (data.manuallyShipped === true) {
+                                dataManualShipping = 'YES'
+                            }
+                            if (data.shipmentSent === true) {
+                                dataShipmentSent = 'YES'
+                            }
+                            if (data.shipmentCompleted === true) {
+                                dataShipmentCompleted = 'YES'
+                            }
+                            if (data.shipped === true) {
+                                dataShipped = 'YES'
+                            }
+                            if (data.receivedShipment === true) {
+                                dataReceivedShipent = 'YES'
+                            }
+                            if (data.receivedOrder === true) {
+                                dataReceivedOrder = 'YES'
+                            }
+                            rows = [
+                                createData('Material ID', this.state.materialID),
+                                createData('Shipment ID', data.shipmentID),
+                                createData('Address', data.address1 + ' ' + data.address2 + ' ' + data.city + ' ' + data.state + ' ' + data.country + ' ' + data.postalCode),
+                                createData('IP Address', data.ipAddress),
+                                createData('Manual Shipping', dataManualShipping),
+                                createData('Delivery Order No.', data.deliverOrderNo),
+                                createData('Shipment Quantity', data.shipmentQuantity),
+                                createData('Shipment Sent', dataShipmentSent),
+                                createData('Shipment Completed', dataShipmentCompleted),
+                                createData('Shipped', dataShipped),
+                                createData('Received Shipment', dataReceivedShipent),
+                                createData('Received Order', dataReceivedOrder),
+                            ];
+                            this.setState({
+                                showProgressLogo: false,
+                                snackbar: {
+                                    autoHideDuration: 2000,
+                                    message: 'Successfully tracked a block!',
+                                    open: true,
+                                    sbColor: '#23CE6B'
+                                },
+                                openDialog: true,
+                                tree: tree
+                            });
+                        } else {
+                            this.setState({
+                                showProgressLogo: false,
+                                snackbar: {
+                                    open: true,
+                                    message: 'Error tracking a block!',
+                                    autoHideDuration: 2000,
+                                    sbColor: 'red'
+                                },
+                                openDialog: false
+                            });
+                        }
                     }
-                    if (data.shipmentSent === true) {
-                        dataShipmentSent = 'YES'
-                    }
-                    if (data.shipmentCompleted === true) {
-                        dataShipmentCompleted = 'YES'
-                    }
-                    if (data.shipped === true) {
-                        dataShipped = 'YES'
-                    }
-                    if (data.receivedShipment === true) {
-                        dataReceivedShipent = 'YES'
-                    }
-                    if (data.receivedOrder === true) {
-                        dataReceivedOrder = 'YES'
-                    }
-                    rows = [
-                        createData('Material ID', this.state.materialID),
-                        createData('Shipment ID', data.shipmentID),
-                        createData('Address', data.address1 + ' ' + data.address2 + ' ' + data.city + ' ' + data.state + ' ' + data.country + ' ' + data.postalCode),
-                        createData('IP Address', data.ipAddress),
-                        createData('Manual Shipping', dataManualShipping),
-                        createData('Delivery Order No.', data.deliverOrderNo),
-                        createData('Shipment Quantity', data.shipmentQuantity),
-                        createData('Shipment Sent', dataShipmentSent),
-                        createData('Shipment Completed', dataShipmentCompleted),
-                        createData('Shipped', dataShipped),
-                        createData('Received Shipment', dataReceivedShipent),
-                        createData('Received Order', dataReceivedOrder),
-                    ];
-                    this.setState({
-                        showProgressLogo: false,
-                        snackbar: {
-                            autoHideDuration: 2000,
-                            message: 'Successfully tracked a block!',
-                            open: true,
-                            sbColor: '#23CE6B'
-                        },
-                        openDialog: true,
-                        tree: tree
-                    });
-                } else {
-                    this.setState({
-                        showProgressLogo: false,
-                        snackbar: {
-                            open: true,
-                            message: 'Error tracking a block!',
-                            autoHideDuration: 2000,
-                            sbColor: 'red'
-                        },
-                        openDialog: false
-                    });
-                }
-            }
-                .bind(this),
-            1000);
-        event.preventDefault();
+                        .bind(this),
+                    1000);
+            });
     };
 
     handleDialogClose = () => {
@@ -199,6 +212,8 @@ class TrackAndTraceView extends Component {
             },
         });
 
+        const treeExisting = this.props.data.spawnConstructReducer.construct !== '' && this.props.data.spawnConstructReducer.construct !== undefined;
+
         return (
             <form>
                 <div>
@@ -218,9 +233,12 @@ class TrackAndTraceView extends Component {
                                 floatingLabelFixed={true}
                                 style={{"float": "left", "textAlign": "left"}}
                                 hintText=""
+                                errorText={this.state.errorTextMaterialID}
+                                errorStyle={{"float": "left", "textAlign": "left"}}
                             />
                         </Grid>
                     </Grid>
+                    <br/><br/>
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
                             <MuiThemeProvider theme={buttonThemeYellow}>
@@ -234,12 +252,18 @@ class TrackAndTraceView extends Component {
                     </Grid>
                 </div>
                 <Dialog open={this.state.openDialog} onClose={this.handleDialogClose}
-                        title="Block Information" autoScrollBodyContent={true}>
-                    <div style={{padding: 24}} id="treeContainer">
+                        autoScrollBodyContent={true}>
+                    <div style={{padding: 24}}>
                         <Grid container justify="flex-end">
                             <Grid item>
                                 <i className="material-icons" style={{"cursor": "pointer"}}
                                    onClick={this.handleDialogClose}>close</i>
+                            </Grid>
+                        </Grid>
+                        <br/>
+                        <Grid container>
+                            <Grid container item xs={12}>
+                                Block Information
                             </Grid>
                         </Grid>
                         <br/>
@@ -254,7 +278,7 @@ class TrackAndTraceView extends Component {
                                     </div>
                                     <div style={{"overflowX": "auto"}}>
                                         <Table style={{"tableLayout": "fixed"}}>
-                                            <TableBody>
+                                            <TableBody style={{"overflowWrap": "break-word"}}>
                                                 {rows.map(row => {
                                                     return (
                                                         <TableRow key={row.id}>
@@ -270,18 +294,20 @@ class TrackAndTraceView extends Component {
                             </Grid>
                         </Grid>
                         <br/>
-                        <Grid container>
-                            <Grid item>
-                                <MuiThemeProvider theme={buttonThemeRed}>
-                                    <Switch
-                                        onChange={this.handleChange}
-                                        name="showMaterialMapSwitch"
-                                        checked={this.state.showMaterialMapSwitch}
-                                    />
-                                    Show Material Map
-                                </MuiThemeProvider>
+                        {treeExisting ?
+                            <Grid container>
+                                <Grid item>
+                                    <MuiThemeProvider theme={buttonThemeRed}>
+                                        <Switch
+                                            onChange={this.handleChange}
+                                            name="showMaterialMapSwitch"
+                                            checked={this.state.showMaterialMapSwitch}
+                                        />
+                                        Show Material Map
+                                    </MuiThemeProvider>
+                                </Grid>
                             </Grid>
-                        </Grid>
+                            : ''}
                         <br/>
                         <Dialog open={this.state.showMaterialMap} onClose={this.handleTreeClose}>
                             <Grid container justify="flex-end">
