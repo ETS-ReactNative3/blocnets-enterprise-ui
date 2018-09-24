@@ -1,45 +1,45 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './App.css';
-import blocnetsLogo from "./blocknetwhite-1.png";
 import {
     BrowserRouter as Router,
     Route
 } from 'react-router-dom';
-import { authenticate } from './redux/actions/authentication.action';
-import { connect } from 'react-redux';
+import {authenticate} from './redux/actions/authentication.action';
+import {connect} from 'react-redux';
+import TrackAndTraceResultsView from './components/track-and-trace/views/track-and-trace.results.view';
 import DocumentDashboardView
     from './components/document-review-and-entry/document-dashboard/document.dashboard.view';
 import BillOfMaterials from './components/bill-of-materials/bill-of-materials';
-import TrackAndTraceResultsView from './components/track-and-trace/views/track-and-trace.results.view';
 import ShippingView from './components/shipping-view/shipping.view';
 import ReceivingView from './components/receiving-view/receiving.view';
 import StartProductionView from './components/production/views/start.production.view';
 import CompleteProductionView from './components/production/views/complete.production.view';
 import TrackAndTraceView from './components/track-and-trace/views/track-and-trace.view';
 import SendDocumentView from './components/document-review-and-entry/document-send/document.send.view';
-import logo from './blocknetwhite-1.png';
-import paperLogo from './blocnets-logo.png'
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import AppBar from 'material-ui/AppBar';
 import Grid from '@material-ui/core/Grid';
-import { Toolbar, ToolbarTitle } from 'material-ui/Toolbar'
-import { FormControl } from '@material-ui/core';
+import {Toolbar, ToolbarTitle} from 'material-ui/Toolbar'
+import {FormControl} from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import SearchIcon from '@material-ui/icons/Search';
 import Popper from '@material-ui/core/Popper';
 import Grow from '@material-ui/core/Grow';
+import Paper from 'material-ui/Paper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MenuList from '@material-ui/core/MenuList';
+import MenuItem from 'material-ui/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
-import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
-import Paper from 'material-ui/Paper';
-import Typography from '@material-ui/core/Typography';
-import SearchIcon from '@material-ui/icons/Search';
 import MailIcon from '@material-ui/icons/Mail';
 import UserIcon from '@material-ui/icons/AccountCircleRounded';
+import Drawer from 'material-ui/Drawer';
+import logo from './blocknetwhite-1.png';
+import paperLogo from './blocnets-logo.png'
+import blocnetsLogo from "./blocknetwhite-1.png";
+import Typography from '@material-ui/core/Typography';
 import {
     getBillOfMaterialsByMaterialID,
     getBillOfMaterialsByMaterialName,
@@ -48,7 +48,10 @@ import {
     getBillOfMaterialsByPartName,
     getBillOfMaterialsByPartDesc
 } from './redux/actions/BOM/bill-of-materials.actions';
-import { getEachMessageForUserID } from './redux/actions/user.message.array.action';
+import {
+    getShippingDataByShipmentID
+} from './redux/actions/shipping.and.receiving.actions';
+import {getEachMessageForUserID} from './redux/actions/user.message.array.action';
 
 const theme = createMuiTheme({
     palette: {
@@ -60,6 +63,15 @@ const appBarLogoStyle = {
     maxWidth: 50,
     maxHeight: 50,
     paddingTop: 10
+};
+
+const messageIconStyle = {
+    transform: "scale(1.0)"
+};
+
+const userIconStyle = {
+    color: "white",
+    transform: "scale(2.1)"
 };
 
 const paperStyle = {
@@ -75,15 +87,6 @@ const paperLogoStyle = {
     paddingTop: 10
 };
 
-const messageIconStyle = {
-    transform: "scale(1.0)"
-};
-
-const userIconStyle = {
-    color: "white",
-    transform: "scale(2.1)"
-};
-
 let counter = 0;
 
 function createData(info1, info2) {
@@ -97,7 +100,7 @@ class App extends Component {
     componentDidMount() {
         this.props.authenticate();
         setInterval(() => {
-            this.setState({ currentDateAndTime: new Date().toUTCString() })
+            this.setState({currentDateAndTime: new Date().toUTCString()})
         }, 1000)
         /* setInterval(() => {
             let user = 'Guest';
@@ -108,14 +111,14 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            "open": false,
-            "show": null,
+            open: false,
+            show: null,
             transactionCode: 'DRE02',
             showProgressLogo: false,
             searchKey: '',
             openSearch: false,
             searchCriteria: '',
-            billOfMaterialsData: [],
+            tatData: [],
             materialID: '',
             snackbar: {
                 autoHideDuration: 2000,
@@ -126,7 +129,7 @@ class App extends Component {
         };
     }
 
-    handleToggle = () => this.setState({ open: !this.state.open });
+    handleToggle = () => this.setState({open: !this.state.open});
 
     showMainView = () => {
         this.setState({
@@ -143,28 +146,70 @@ class App extends Component {
         this.props.data.bomReducer.getBillOfMaterialsByPartNumberSuccess = '';
         this.props.data.bomReducer.getBillOfMaterialsByPartNameSuccess = '';
         this.props.data.bomReducer.getBillOfMaterialsByPartDescSuccess = '';
+        this.props.data.sarReducer.getShippingDataByShipmentIDSuccess = '';
         this.setState({
-            billOfMaterialsData: [],
+            showProgressLogo: true,
+            tatData: [],
             materialID: ''
         });
+        let bomData = [];
+        let shippingData = [];
         if (this.state.searchCriteria === 'Material ID') {
-            this.props.getBillOfMaterialsByMaterialID(this.state.searchKey);
-            this.handleSearchData('Material ID');
+            Promise.resolve(this.props.getBillOfMaterialsByMaterialID(this.state.searchKey))
+                .then(() => {
+                    if (this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess) {
+                        bomData = this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess;
+                    }
+                    this.handleBOMData(bomData);
+                });
         } else if (this.state.searchCriteria === 'Material Name') {
-            this.props.getBillOfMaterialsByMaterialName(this.state.searchKey);
-            this.handleSearchData('Material Name');
+            Promise.resolve(this.props.getBillOfMaterialsByMaterialName(this.state.searchKey))
+                .then(() => {
+                    if (this.props.data.bomReducer.getBillOfMaterialsByMaterialNameSuccess) {
+                        bomData = this.props.data.bomReducer.getBillOfMaterialsByMaterialNameSuccess;
+                    }
+                    this.handleBOMData(bomData);
+                });
         } else if (this.state.searchCriteria === 'Material Description') {
-            this.props.getBillOfMaterialsByMaterialDesc(this.state.searchKey);
-            this.handleSearchData('Material Description');
+            Promise.resolve(this.props.getBillOfMaterialsByMaterialDesc(this.state.searchKey))
+                .then(() => {
+                    if (this.props.data.bomReducer.getBillOfMaterialsByMaterialDescSuccess) {
+                        bomData = this.props.data.bomReducer.getBillOfMaterialsByMaterialDescSuccess;
+                    }
+                    this.handleBOMData(bomData);
+                });
         } else if (this.state.searchCriteria === 'Part No.') {
-            this.props.getBillOfMaterialsByPartNumber(this.state.searchKey);
-            this.handleSearchData('Part No.');
+            Promise.resolve(this.props.getBillOfMaterialsByPartNumber(this.state.searchKey))
+                .then(() => {
+                    if (this.props.data.bomReducer.getBillOfMaterialsByPartNumberSuccess) {
+                        bomData = this.props.data.bomReducer.getBillOfMaterialsByPartNumberSuccess;
+                    }
+                    this.handleBOMData(bomData);
+                });
         } else if (this.state.searchCriteria === 'Part Name') {
-            this.props.getBillOfMaterialsByPartName(this.state.searchKey);
-            this.handleSearchData('Part Name');
+            Promise.resolve(this.props.getBillOfMaterialsByPartName(this.state.searchKey))
+                .then(() => {
+                    if (this.props.data.bomReducer.getBillOfMaterialsByPartNameSuccess) {
+                        bomData = this.props.data.bomReducer.getBillOfMaterialsByPartNameSuccess;
+                    }
+                    this.handleBOMData(bomData);
+                });
         } else if (this.state.searchCriteria === 'Part Description') {
-            this.props.getBillOfMaterialsByPartDesc(this.state.searchKey);
-            this.handleSearchData('Part Description');
+            Promise.resolve(this.props.getBillOfMaterialsByPartDesc(this.state.searchKey))
+                .then(() => {
+                    if (this.props.data.bomReducer.getBillOfMaterialsByPartDescSuccess) {
+                        bomData = this.props.data.bomReducer.getBillOfMaterialsByPartDescSuccess;
+                    }
+                    this.handleBOMData(bomData);
+                });
+        } else if (this.state.searchCriteria === 'Shipment ID') {
+            Promise.resolve(this.props.getShippingDataByShipmentID(this.state.searchKey))
+                .then(() => {
+                    if (this.props.data.sarReducer.getShippingDataByShipmentIDSuccess) {
+                        shippingData = this.props.data.sarReducer.getShippingDataByShipmentIDSuccess;
+                    }
+                    this.handleShippingData(shippingData);
+                });
         }
         this.setState({
             show: 'trackandtraceresultsview',
@@ -240,12 +285,12 @@ class App extends Component {
                 openSearch: false
             });
         } else {
-            this.setState({ openSearch: true });
+            this.setState({openSearch: true});
         }
     };
 
-    handleSearchClose = (event) => {
-        this.setState({ openSearch: false });
+    handleSearchClose = () => {
+        this.setState({openSearch: false});
     };
 
     handleSearch = (event, searchCriteria) => {
@@ -255,80 +300,6 @@ class App extends Component {
         });
     };
 
-    handleSearchData = (searchCriteria) => {
-        let bomData = [];
-        this.setState({
-            showProgressLogo: true
-        });
-        if (searchCriteria === 'Material ID') {
-            setTimeout(
-                function () {
-                    if (this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess) {
-                        bomData = this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess;
-                    }
-                    this.handleBOMData(bomData);
-                }
-                    .bind(this),
-                3000
-            );
-        } else if (searchCriteria === 'Material Name') {
-            setTimeout(
-                function () {
-                    if (this.props.data.bomReducer.getBillOfMaterialsByMaterialNameSuccess) {
-                        bomData = this.props.data.bomReducer.getBillOfMaterialsByMaterialNameSuccess;
-                    }
-                    this.handleBOMData(bomData);
-                }
-                    .bind(this),
-                3000
-            );
-        } else if (searchCriteria === 'Material Description') {
-            setTimeout(
-                function () {
-                    if (this.props.data.bomReducer.getBillOfMaterialsByMaterialDescSuccess) {
-                        bomData = this.props.data.bomReducer.getBillOfMaterialsByMaterialDescSuccess;
-                    }
-                    this.handleBOMData(bomData);
-                }
-                    .bind(this),
-                3000
-            );
-        } else if (searchCriteria === 'Part No.') {
-            setTimeout(
-                function () {
-                    if (this.props.data.bomReducer.getBillOfMaterialsByPartNumberSuccess) {
-                        bomData = this.props.data.bomReducer.getBillOfMaterialsByPartNumberSuccess;
-                    }
-                    this.handleBOMData(bomData);
-                }
-                    .bind(this),
-                3000
-            );
-        } else if (searchCriteria === 'Part Name') {
-            setTimeout(
-                function () {
-                    if (this.props.data.bomReducer.getBillOfMaterialsByPartNameSuccess) {
-                        bomData = this.props.data.bomReducer.getBillOfMaterialsByPartNameSuccess;
-                    }
-                    this.handleBOMData(bomData);
-                }
-                    .bind(this),
-                3000
-            );
-        } else if (searchCriteria === 'Part Description') {
-            setTimeout(
-                function () {
-                    if (this.props.data.bomReducer.getBillOfMaterialsByPartDescSuccess) {
-                        bomData = this.props.data.bomReducer.getBillOfMaterialsByPartDescSuccess;
-                    }
-                    this.handleBOMData(bomData);
-                }
-                    .bind(this),
-                3000
-            );
-        }
-    };
-
     handleBOMData = (bomData) => {
         let bomDataLength = JSON.stringify(bomData).length;
         if (bomDataLength > 2) {
@@ -336,15 +307,20 @@ class App extends Component {
             let metallic = bomData.material.materialOther[0].substr(10, 1) === 't' ? 'YES' : 'NO';
             let hazmat = bomData.material.materialOther[1].substr(8, 1) === 't' ? 'YES' : 'NO';
             let magnetic = bomData.material.materialOther[2].substr(10, 1) === 't' ? 'YES' : 'NO';
+            counter = 0;
             this.setState({
                 showProgressLogo: false,
-                billOfMaterialsData: [
+                tatData: [
                     createData('Material ID', bomData.material.materialNumber),
                     createData('Material Name', bomData.material.materialSerialNumber),
                     createData('Material Description', bomData.material.materialDescription),
-                    createData('Part No.', ''),
-                    createData('Part Name', ''),
-                    createData('Part Description', ''),
+                    createData('Part No.', bomData.material.materialMvmtMaterialNumber),
+                    createData('Part Name', bomData.material.materialMvmtCageCode),
+                    createData('Part Description', bomData.material.materialMvmtSupplierName),
+                    createData('Material Shipping Information', ''),
+                    createData('Address', bomData.material.materialMvmtShippedTo),
+                    createData('IP Address', bomData.material.materialMvmtLocation),
+                    createData('Company Name', bomData.material.materialMvmtShippedFrom),
                     createData('Material Dimensions', ''),
                     createData('Volume', bomData.material.materialVolume),
                     createData('Weight', bomData.material.materialWeight),
@@ -371,7 +347,7 @@ class App extends Component {
                     createData('Bill To Address', bomData.supplier.supplierCustomerBillToAddress),
                     createData('Bill To IP Address', bomData.supplier.supplierCustomerBillToIPAddress),
                     createData('Supplier Payment Terms', ''),
-                    createData('Payment Terms', ''),
+                    createData('Payment Terms', bomData.supplier.supplierName),
                     createData('Supplier Order Quantities Controls', ''),
                     createData('Minimum Economic Order Quantities', bomData.supplier.supplierMinimumEconomicOrderQuantity),
                     createData('Maximum Economic Order Quantities', bomData.supplier.supplierMaximumEconomicOrderQuantity),
@@ -379,13 +355,10 @@ class App extends Component {
                     createData('Minimum Order Lead Times', bomData.supplier.supplierMinimumOrderLeadTime),
                     createData('Suppliers', ''),
                     createData('Address', bomData.supplier.supplierLocationAddress),
-                    createData('IP Address', ''),
-                    createData('Material Supplied Per IP Address', ''),
-                    createData('Supplier Payment Terms', ''),
-                    createData('Supplier Order Policy', ''),
-                    createData('Material', ''),
-                    createData('Address', bomData.material.materialMvmtShippedTo),
-                    createData('IP Address', bomData.material.materialMvmtLocation),
+                    createData('IP Address', bomData.supplier.supplierCageCode),
+                    createData('Material Supplied Per IP Address', bomData.supplier.supplierMaterialNumber),
+                    createData('Supplier Payment Terms', bomData.supplier.supplierProductionCapacityCommittedToNetwork),
+                    createData('Supplier Order Policy', bomData.supplier.supplierOrderedLeadTime)
                 ],
                 materialID: bomData.material.materialNumber,
                 snackbar: {
@@ -398,8 +371,73 @@ class App extends Component {
         } else {
             this.setState({
                 showProgressLogo: false,
-                billOfMaterialsData: [],
+                tatData: [],
                 materialID: '',
+                snackbar: {
+                    autoHideDuration: 2000,
+                    message: 'Error tracking a block!',
+                    open: true,
+                    sbColor: 'red'
+                }
+            });
+        }
+    };
+
+    handleShippingData = (shippingData) => {
+        let shippingDataLength = JSON.stringify(shippingData).length;
+        let dataManualShipping = 'NO';
+        let dataShipmentSent = 'NO';
+        let dataShipmentCompleted = 'NO';
+        let dataShipped = 'NO';
+        let dataReceivedShipent = 'NO';
+        let dataReceivedOrder = 'NO';
+        if (shippingDataLength > 2) {
+            if (shippingData.manuallyShipped === true) {
+                dataManualShipping = 'YES'
+            }
+            if (shippingData.shipmentSent === true) {
+                dataShipmentSent = 'YES'
+            }
+            if (shippingData.shipmentCompleted === true) {
+                dataShipmentCompleted = 'YES'
+            }
+            if (shippingData.shipped === true) {
+                dataShipped = 'YES'
+            }
+            if (shippingData.receivedShipment === true) {
+                dataReceivedShipent = 'YES'
+            }
+            if (shippingData.receivedOrder === true) {
+                dataReceivedOrder = 'YES'
+            }
+            counter = 0;
+            this.setState({
+                showProgressLogo: false,
+                tatData: [
+                    createData('Material ID', shippingData.materialID),
+                    createData('Shipment ID', shippingData.shipmentID),
+                    createData('Address', shippingData.address1 + ' ' + shippingData.address2 + ' ' + shippingData.city + ' ' + shippingData.state + ' ' + shippingData.country + ' ' + shippingData.postalCode),
+                    createData('IP Address', shippingData.ipAddress),
+                    createData('Manual Shipping', dataManualShipping),
+                    createData('Delivery Order No.', shippingData.deliverOrderNo),
+                    createData('Shipment Quantity', shippingData.shipmentQuantity),
+                    createData('Shipment Sent', dataShipmentSent),
+                    createData('Shipment Completed', dataShipmentCompleted),
+                    createData('Shipped', dataShipped),
+                    createData('Received Shipment', dataReceivedShipent),
+                    createData('Received Order', dataReceivedOrder)
+                ],
+                snackbar: {
+                    autoHideDuration: 2000,
+                    message: 'Successfully tracked a block!',
+                    open: true,
+                    sbColor: '#23CE6B'
+                }
+            });
+        } else {
+            this.setState({
+                showProgressLogo: false,
+                tatData: [],
                 snackbar: {
                     autoHideDuration: 2000,
                     message: 'Error tracking a block!',
@@ -416,36 +454,37 @@ class App extends Component {
 
         switch (this.state.show) {
             case 'trackandtraceresultsview':
-                content = (<TrackAndTraceResultsView tatData={this.state.billOfMaterialsData}
+                content = (<TrackAndTraceResultsView materialID={this.state.materialID}
                                                      snackbar={this.state.snackbar}
-                                                     materialID={this.state.materialID}/>);
+                                                     tatData={this.state.tatData}
+                />);
                 break;
             case 'billofmaterials':
-                content = (<BillOfMaterials />);
+                content = (<BillOfMaterials/>);
                 break;
             case 'shippingview':
-                content = (<ShippingView />);
+                content = (<ShippingView/>);
                 break;
             case 'receivingview':
-                content = (<ReceivingView />);
+                content = (<ReceivingView/>);
                 break;
             case 'startproductionview':
-                content = (<StartProductionView />);
+                content = (<StartProductionView/>);
                 break;
             case 'completeproductionview':
-                content = (<CompleteProductionView />);
+                content = (<CompleteProductionView/>);
                 break;
             case 'trackandtraceview':
-                content = (<TrackAndTraceView />);
+                content = (<TrackAndTraceView/>);
                 break;
             case 'senddocumentview':
-                content = (<SendDocumentView />);
+                content = (<SendDocumentView/>);
                 break;
             default:
                 content = (
                     <Router>
                         <div>
-                            <Route exact path="/" component={DocumentDashboardView} />
+                            <Route exact path="/" component={DocumentDashboardView}/>
                         </div>
                     </Router>);
         }
@@ -455,12 +494,12 @@ class App extends Component {
                 <MuiThemeProvider theme={theme}>
                     {/* Main navigation bar menu for components */}
                     <AppBar position="static" className="App-header"
-                        iconClassNameRight="muidocs-icon-navigation-expand-more"
-                        onLeftIconButtonClick={this.handleToggle}>
+                            iconClassNameRight="muidocs-icon-navigation-expand-more"
+                            onLeftIconButtonClick={this.handleToggle}>
                         <Grid container spacing={24}>
                             <Grid item xs={3}>
                                 <ToolbarTitle
-                                    text={<img src={logo} className="App-logo" alt="logo" />}
+                                    text={<img src={logo} className="App-logo" alt="logo"/>}
                                     alt="Blocnets"
                                 />
                             </Grid>
@@ -484,46 +523,49 @@ class App extends Component {
                                                 <InputAdornment position="end">
                                                     <SearchIcon
                                                         onClick={this.showTrackAndTraceResultsView}
-                                                        style={{ "cursor": "pointer" }}
+                                                        style={{"cursor": "pointer"}}
                                                     />
                                                 </InputAdornment> :
                                                 <InputAdornment position="end">
                                                     <SearchIcon
-                                                        style={{ "fill": "black" }}
+                                                        style={{"fill": "black"}}
                                                     />
                                                 </InputAdornment>
                                         }
                                         onChange={this.handleSearchKey}
                                     />
                                     <Popper open={this.state.openSearch} transition disablePortal
-                                        style={{ "position": "relative" }}>
-                                        {({ TransitionProps, placement }) => (
+                                            style={{"position": "relative"}}>
+                                        {({TransitionProps, placement}) => (
                                             <Grow
                                                 {...TransitionProps}
                                                 id="menu-list-grow"
-                                                style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                                                style={{transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'}}
                                             >
                                                 <Paper>
                                                     <ClickAwayListener onClickAway={this.handleSearchClose}>
-                                                        <MenuList style={{ "textAlign": "left" }}>
+                                                        <MenuList style={{"textAlign": "left"}}>
                                                             <MenuItem className="menuList"
-                                                                onClick={event => this.handleSearch(event, "Material ID")}>Material
+                                                                      onClick={event => this.handleSearch(event, "Material ID")}>Material
                                                                 ID: {this.state.searchKey}</MenuItem>
                                                             <MenuItem className="menuList"
-                                                                onClick={event => this.handleSearch(event, "Material Name")}>Material
+                                                                      onClick={event => this.handleSearch(event, "Material Name")}>Material
                                                                 Name: {this.state.searchKey}</MenuItem>
                                                             <MenuItem className="menuList"
-                                                                onClick={event => this.handleSearch(event, "Material Description")}>Material
+                                                                      onClick={event => this.handleSearch(event, "Material Description")}>Material
                                                                 Description: {this.state.searchKey}</MenuItem>
                                                             <MenuItem className="menuList"
-                                                                onClick={event => this.handleSearch(event, "Part No.")}>Part
+                                                                      onClick={event => this.handleSearch(event, "Part No.")}>Part
                                                                 No.: {this.state.searchKey}</MenuItem>
                                                             <MenuItem className="menuList"
-                                                                onClick={event => this.handleSearch(event, "Part Name")}>Part
+                                                                      onClick={event => this.handleSearch(event, "Part Name")}>Part
                                                                 Name: {this.state.searchKey}</MenuItem>
                                                             <MenuItem className="menuList"
-                                                                onClick={event => this.handleSearch(event, "Part Description")}>Part
+                                                                      onClick={event => this.handleSearch(event, "Part Description")}>Part
                                                                 Description: {this.state.searchKey}</MenuItem>
+                                                            <MenuItem className="menuList"
+                                                                      onClick={event => this.handleSearch(event, "Shipment ID")}>Shipment
+                                                                ID: {this.state.searchKey}</MenuItem>
                                                         </MenuList>
                                                     </ClickAwayListener>
                                                 </Paper>
@@ -535,7 +577,7 @@ class App extends Component {
                             <Grid item xs={3}>
                                 <IconButton aria-label="pending messages" onClick={this.showMainView}>
                                     <Badge badgeContent={12} color="secondary" style={messageIconStyle}>
-                                        <MailIcon />
+                                        <MailIcon/>
                                     </Badge>
                                 </IconButton>
                             </Grid>
@@ -551,59 +593,63 @@ class App extends Component {
                 </MuiThemeProvider>
                 {/* Side Drawer's navigation bar menu for viewing content */}
                 <Drawer docked={false} width={250} open={this.state.open}
-                    onRequestChange={(open) => this.setState({ open })}>
+                        onRequestChange={(open) => this.setState({open})}>
                     <AppBar
                         className="App-bar"
                         onClick={this.handleToggle}
-                        title={<img src={logo} style={appBarLogoStyle} alt="Blocnets" />}
+                        title={<img src={logo} style={appBarLogoStyle} alt="Blocnets"/>}
                     />
                     <MenuItem id="showBillOfMaterialsId" onClick={this.showBillOfMaterials}>Engineering Bill of
                         Materials</MenuItem>
-                    <hr />
+                    <hr/>
                     <MenuItem id="showShippingViewId" onClick={this.showShippingView}>Shipping</MenuItem>
-                    <hr />
+                    <hr/>
                     <MenuItem id="showReceivingViewId" onClick={this.showReceivingView}>Receiving</MenuItem>
-                    <hr />
-                    <MenuItem id="showStartProductionViewId" onClick={this.showStartProductionView}>Start Production</MenuItem>
-                    <hr />
-                    <MenuItem id="showCompleteProductionViewId" onClick={this.showCompleteProductionView}>Complete Production</MenuItem>
-                    <hr />
-                    <MenuItem id="showTrackAndTraceViewId" onClick={this.showTrackAndTraceView}>Track and Trace</MenuItem>
-                    <hr />
-                    <MenuItem id="showSendDocumentViewId" onClick={this.showSendDocumentView}>Document Review and Entry</MenuItem>
+                    <hr/>
+                    <MenuItem id="showStartProductionViewId" onClick={this.showStartProductionView}>Start
+                        Production</MenuItem>
+                    <hr/>
+                    <MenuItem id="showCompleteProductionViewId" onClick={this.showCompleteProductionView}>Complete
+                        Production</MenuItem>
+                    <hr/>
+                    <MenuItem id="showTrackAndTraceViewId" onClick={this.showTrackAndTraceView}>Track and
+                        Trace</MenuItem>
+                    <hr/>
+                    <MenuItem id="showSendDocumentViewId" onClick={this.showSendDocumentView}>Document Review and
+                        Entry</MenuItem>
                 </Drawer>
                 {/* Page View with content loaded */}
                 <Paper className="White-theme" style={paperStyle} zDepth={5}>
-                    <Toolbar style={{ "justifyContent": "center", "height": 80 }}>
+                    <Toolbar style={{"justifyContent": "center", "height": 80}}>
                         <ToolbarTitle
-                            text={<img src={paperLogo} style={paperLogoStyle} alt="Blocnets" />}
+                            text={<img src={paperLogo} style={paperLogoStyle} alt="Blocnets"/>}
                         />
                     </Toolbar>
                     {content}
                 </Paper>
                 <div>
                     {this.state.showProgressLogo ?
-                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt="" />
+                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt=""/>
                         </div> : ""}
                 </div>
-                <div style={{ padding: 24 }}>
+                <div style={{padding: 24}}>
                     <Grid container spacing={24}>
                         <MuiThemeProvider theme={theme}>
                             <Grid container item xs={12}>
                                 <Grid container item xs>
-                                    <Typography align="right" style={{ "width": "100%" }}>
+                                    <Typography align="right" style={{"width": "100%"}}>
                                         {this.state.transactionCode} | System Number
                                     </Typography>
                                 </Grid>
                             </Grid>
                             <Grid container item xs={12}>
                                 <Grid container item xs>
-                                    <Typography align="left" style={{ "width": "100%" }}>
+                                    <Typography align="left" style={{"width": "100%"}}>
                                         © 2018 ALL RIGHTS RESERVED.
                                     </Typography>
                                 </Grid>
                                 <Grid container item xs>
-                                    <Typography align="right" style={{ "width": "100%" }}>
+                                    <Typography align="right" style={{"width": "100%"}}>
                                         {this.state.currentDateAndTime}
                                     </Typography>
                                 </Grid>
@@ -640,6 +686,7 @@ const mapDispatchToProps = (dispatch) => {
         getBillOfMaterialsByPartNumber: (url) => dispatch(getBillOfMaterialsByPartNumber(url)),
         getBillOfMaterialsByPartName: (url) => dispatch(getBillOfMaterialsByPartName(url)),
         getBillOfMaterialsByPartDesc: (url) => dispatch(getBillOfMaterialsByPartDesc(url)),
+        getShippingDataByShipmentID: (url) => dispatch(getShippingDataByShipmentID(url)),
         getEachMessageForUserID: (user) => dispatch(getEachMessageForUserID(user))
     };
 };
