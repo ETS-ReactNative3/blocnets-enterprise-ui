@@ -9,15 +9,17 @@ import MenuItem from "@material-ui/core/MenuItem/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import TextField from "material-ui/TextField";
 import Button from '@material-ui/core/Button';
-import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
 import Snackbar from 'material-ui/Snackbar';
-import {connect} from 'react-redux';
-import {createDocumentEntryByUniqueID} from '../../../redux/actions/document.review.entry.actions';
+import { connect } from 'react-redux';
+import { createDocumentEntryByUniqueID } from '../../../redux/actions/document.review.entry.actions';
 import {
     getUserMessageDataByUserID,
     updateUserMessageDataByUserID
 } from '../../../redux/actions/user.message.array.action';
+import { uploadFileByUserId } from '../../../redux/actions/FILE/file.action';
 //Temporary Only
 import response from './messageData.json';
 
@@ -31,6 +33,7 @@ class SendDocumentView extends React.Component {
         super(props);
         this.state = {
             showProgressLogo: false,
+            file: '',
             recipientUserName: '',
             errorText1: 'This is a required field.',
             messageType: '',
@@ -48,47 +51,85 @@ class SendDocumentView extends React.Component {
         };
     }
 
+    handleDREValidation = () => {
+        if (this.props.data.dreReducer.createDocumentEntryByUniqueIDSuccess === true
+            && this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess === true) {
+            this.setState({
+                showProgressLogo: false,
+                snackbar: {
+                    autoHideDuration: 2000,
+                    message: 'Document Sent Successfully!',
+                    open: true,
+                    sbColor: '#23CE6B'
+                },
+                recipientUserName: '',
+                messageType: '',
+                dataType: '',
+                message: ''
+            });
+        } else {
+            this.setState({
+                showProgressLogo: false,
+                snackbar: {
+                    autoHideDuration: 2000,
+                    message: "Error: " + this.props.data.umaReducer.getUserMessageDataByUserIDError + "Please try again.",
+                    open: true,
+                    sbColor: 'red'
+                }
+            })
+        }
+    }
+
     handleChange = (event) => {
-        this.setState({[event.target.name]: event.target.value});
+        this.setState({ [event.target.name]: event.target.value });
         if ([event.target.name].toString() === 'recipientUserName' && event.target.value) {
-            this.setState({errorText1: ''});
+            this.setState({ errorText1: '' });
         } else if ([event.target.name].toString() === 'recipientUserName' && !event.target.value) {
-            this.setState({errorText1: 'This is a required field.'});
+            this.setState({ errorText1: 'This is a required field.' });
         }
         if ([event.target.name].toString() === 'messageType' && event.target.value) {
-            this.setState({errorText2: ''});
+            this.setState({ errorText2: '' });
         } else if ([event.target.name].toString() === 'messageType' && !event.target.value) {
-            this.setState({errorText2: 'This is a required field.'});
+            this.setState({ errorText2: 'This is a required field.' });
         }
         if ([event.target.name].toString() === 'dataType' && event.target.value) {
-            this.setState({errorText3: ''});
+            this.setState({ errorText3: '' });
         } else if ([event.target.name].toString() === 'dataType' && !event.target.value) {
-            this.setState({errorText3: 'This is a required field.'});
+            this.setState({ errorText3: 'This is a required field.' });
         }
         if ([event.target.name].toString() === 'message' && event.target.value) {
-            this.setState({errorText4: ''});
+            this.setState({ errorText4: '' });
         } else if ([event.target.name].toString() === 'message' && !event.target.value) {
-            this.setState({errorText4: 'This is a required field.'});
+            this.setState({ errorText4: 'This is a required field.' });
         }
     };
 
-    handleUpload = (event) => {
-    };
+    handleFileChange = (event) => {
+        let files = event.target.files;
+        var file = files[0];
+        this.setState({
+            file: file
+        })
+    }
 
     handleSendDocumentForReview = (event) => {
         this.props.data.dreReducer.createDocumentEntryByUniqueIDSuccess = '';
         this.props.data.umaReducer.getUserMessageDataByUserIDError = '';
         this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess = '';
-        this.setState({showProgressLogo: true});
+        this.setState({ showProgressLogo: true });
+        let fileURL = this.guid();
+        let fileBody = {
+            file: this.state.file,
+            creatorID: 'Admin'
+        }
         let dreURL = this.guid();
         let dreBody = {
             text: this.state.message,
             status: "pending",
             type: this.state.messageType,
             desc: this.state.dataType,
-            fileId: "string"
+            fileId: this.state.fileKey
         };
-        this.props.createDocumentEntryByUniqueID(dreURL, dreBody);
         let oldMessages = [];
         let allMessages = [];
         let umaURL = this.state.recipientUserName;
@@ -96,63 +137,40 @@ class SendDocumentView extends React.Component {
             userMessages: ["string"],
             archivedMessages: ["string"]
         };
-        this.props.getUserMessageDataByUserID(umaURL);
-        setTimeout(
-            function () {
-                if (this.props.data.umaReducer.getUserMessageDataByUserIDError !== true) {
-                    oldMessages = this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages;
-                    allMessages = [dreURL];
-                    for (let i = 0; i < oldMessages.length; i++) {
-                        allMessages.push(oldMessages[i]);
-                    }
-                    umaBody = {
-                        userMessages: allMessages,
-                        archivedMessages: ["string"]
-                    };
-                    this.props.updateUserMessageDataByUserID(umaURL, umaBody);
-                } else {
-                    umaBody = {
-                        userMessages: [dreURL],
-                        archivedMessages: ["string"]
-                    };
-                    this.props.updateUserMessageDataByUserID(umaURL, umaBody);
-                }
-                setTimeout(
-                    function () {
-                        if (this.props.data.dreReducer.createDocumentEntryByUniqueIDSuccess === true
-                            && this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess === true) {
-                            this.setState({
-                                showProgressLogo: false,
-                                snackbar: {
-                                    autoHideDuration: 2000,
-                                    message: 'Document Sent Successfully!',
-                                    open: true,
-                                    sbColor: '#23CE6B'
-                                },
-                                recipientUserName: '',
-                                messageType: '',
-                                dataType: '',
-                                message: ''
-                            });
-                        } else {
-                            this.setState({
-                                showProgressLogo: false,
-                                snackbar: {
-                                    autoHideDuration: 2000,
-                                    message: 'Error sending document! Please try again.',
-                                    open: true,
-                                    sbColor: 'red'
+        console.log(this.state.file);
+        Promise.resolve(this.props.uploadFileByUserId(fileURL, fileBody))
+            .then(() => {
+                Promise.resolve(this.props.createDocumentEntryByUniqueID(dreURL, dreBody))
+                    .then(() => {
+                        Promise.resolve(this.props.getUserMessageDataByUserID(umaURL))
+                            .then(() => {
+                                if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages) {
+                                    oldMessages = this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages;
+                                    allMessages = [dreURL];
+                                    for (let i = 0; i < oldMessages.length; i++) {
+                                        allMessages.push(oldMessages[i]);
+                                    }
+                                    umaBody = {
+                                        userMessages: allMessages,
+                                        archivedMessages: ["string"]        // Change later to be dynamic
+                                    };
+                                    Promise.resolve(this.props.updateUserMessageDataByUserID(umaURL, umaBody))
+                                        .then(() => {
+                                            this.handleDREValidation();
+                                        })
+                                } else {
+                                    umaBody = {
+                                        userMessages: [dreURL],
+                                        archivedMessages: ["string"]
+                                    };
+                                    Promise.resolve(this.props.updateUserMessageDataByUserID(umaURL, umaBody))
+                                        .then(() => {
+                                            this.handleDREValidation();
+                                        })
                                 }
                             })
-                        }
-                    }
-                        .bind(this),
-                    2000
-                );
-            }
-                .bind(this),
-            1000
-        );
+                    })
+            })
         event.preventDefault();
     };
 
@@ -194,71 +212,85 @@ class SendDocumentView extends React.Component {
             <form>
                 <div>
                     {this.state.showProgressLogo ?
-                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt=""/>
+                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt="" />
                         </div> : ""}
                 </div>
-                <div style={{padding: 24}}>
+                <div style={{ padding: 24 }}>
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
-                            <FormLabel style={{"textAlign": "left"}}>Recipient User Name</FormLabel>
+                            <FormLabel style={{ "textAlign": "left" }}>Recipient User Name</FormLabel>
                         </Grid>
                         <Grid container item xs={6} sm={3}>
-                            <FormLabel style={{"textAlign": "left"}}>Message Type</FormLabel>
+                            <FormLabel style={{ "textAlign": "left" }}>Message Type</FormLabel>
                         </Grid>
                     </Grid>
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <FormControl fullWidth={true}>
                                 <Select value={this.state.recipientUserName} onChange={this.handleChange}
-                                        input={<Input name="recipientUserName" style={{"textAlign": "left"}}/>}
-                                        displayEmpty>
+                                    input={<Input name="recipientUserName" style={{ "textAlign": "left" }} />}
+                                    displayEmpty>
                                     {userIDMenuItems.map((menuItem, i) => {
                                         return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
                                     })}
                                 </Select>
-                                <FormHelperText style={{"color": "red"}}>{this.state.errorText1}</FormHelperText>
+                                <FormHelperText style={{ "color": "red" }}>{this.state.errorText1}</FormHelperText>
                             </FormControl>
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <FormControl fullWidth={true}>
                                 <Select value={this.state.messageType} onChange={this.handleChange}
-                                        input={<Input name="messageType" style={{"textAlign": "left"}}/>}
-                                        displayEmpty>
+                                    input={<Input name="messageType" style={{ "textAlign": "left" }} />}
+                                    displayEmpty>
                                     {messageTypeMenuItems.map((menuItem, i) => {
                                         return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
                                     })}
                                 </Select>
-                                <FormHelperText style={{"color": "red"}}>{this.state.errorText2}</FormHelperText>
+                                <FormHelperText style={{ "color": "red" }}>{this.state.errorText2}</FormHelperText>
                             </FormControl>
                         </Grid>
                         <Grid container item xs={12} sm={6} justify="flex-end">
                             <Grid>
                                 <MuiThemeProvider theme={buttonThemeYellow}>
-                                    <Button type="submit" value="Upload" variant="contained"
-                                            color="primary" onClick={this.handleUpload()} disabled>
-                                        Upload...
-                                    </Button>
+                                    <input
+                                        style={{ 'display': 'none' }}
+                                        id="flat-button-file"
+                                        //multiple
+                                        type="file"
+                                        onChange={this.handleFileChange}
+                                    />
+                                    <label htmlFor="flat-button-file">
+                                        <Button
+                                            type="submit"
+                                            value="Upload"
+                                            variant="contained"
+                                            color="primary"
+                                            component="span">
+                                            Upload
+                                            <CloudUploadIcon style={{ 'marginLeft': 'theme.spacing.unit' }} />
+                                        </Button>
+                                    </label>
                                 </MuiThemeProvider>
                             </Grid>
                         </Grid>
                     </Grid>
-                    <br/><br/>
+                    <br /><br />
                     <Grid container spacing={24}>
                         <Grid container item xs={6}>
-                            <FormLabel style={{"textAlign": "left"}}>Data Type</FormLabel>
+                            <FormLabel style={{ "textAlign": "left" }}>Data Type</FormLabel>
                             <FormControl fullWidth={true}>
                                 <Select value={this.state.dataType} onChange={this.handleChange}
-                                        input={<Input name="dataType" style={{"textAlign": "left"}}/>}
-                                        displayEmpty>
+                                    input={<Input name="dataType" style={{ "textAlign": "left" }} />}
+                                    displayEmpty>
                                     {dataTypeMenuItems.map((menuItem, i) => {
                                         return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
                                     })}
                                 </Select>
-                                <FormHelperText style={{"color": "red"}}>{this.state.errorText3}</FormHelperText>
+                                <FormHelperText style={{ "color": "red" }}>{this.state.errorText3}</FormHelperText>
                             </FormControl>
                         </Grid>
                     </Grid>
-                    <br/>
+                    <br />
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
                             <TextField
@@ -268,24 +300,24 @@ class SendDocumentView extends React.Component {
                                 name="message"
                                 floatingLabelText="Message"
                                 floatingLabelFixed={true}
-                                style={{"float": "left", "textAlign": "left"}}
+                                style={{ "float": "left", "textAlign": "left" }}
                                 hintText=""
                                 multiLine={true}
                                 rows={2}
                                 rowsMax={4}
                                 fullWidth={true}
                                 errorText={this.state.errorText4}
-                                errorStyle={{"float": "left"}}
+                                errorStyle={{ "float": "left" }}
                             />
                         </Grid>
                     </Grid>
-                    <br/>
+                    <br />
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
                             <MuiThemeProvider theme={buttonThemeYellow}>
                                 <Button type="submit" value="Submit" variant="contained" color="primary"
-                                        fullWidth={true} disabled={!formComplete}
-                                        onClick={this.handleSendDocumentForReview}>
+                                    fullWidth={true} disabled={!formComplete}
+                                    onClick={this.handleSendDocumentForReview}>
                                     Send Document for Review
                                 </Button>
                             </MuiThemeProvider>
@@ -297,7 +329,7 @@ class SendDocumentView extends React.Component {
                     message={this.state.snackbar.message}
                     autoHideDuration={this.state.snackbar.autoHideDuration}
                     onRequestClose={this.handleSnackbarClose}
-                    bodyStyle={{backgroundColor: this.state.snackbar.sbColor}}
+                    bodyStyle={{ backgroundColor: this.state.snackbar.sbColor }}
                 />
             </form>
 
@@ -317,7 +349,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         createDocumentEntryByUniqueID: (url, body) => dispatch(createDocumentEntryByUniqueID(url, body)),
         getUserMessageDataByUserID: (url, body) => dispatch(getUserMessageDataByUserID(url)),
-        updateUserMessageDataByUserID: (url, body) => dispatch(updateUserMessageDataByUserID(url, body))
+        updateUserMessageDataByUserID: (url, body) => dispatch(updateUserMessageDataByUserID(url, body)),
+        uploadFileByUserId: (url, body) => dispatch(uploadFileByUserId(url, body))
     };
 };
 

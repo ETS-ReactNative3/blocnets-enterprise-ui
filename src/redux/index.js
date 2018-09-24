@@ -9,6 +9,7 @@ import { sarReducer } from './reducers/SAR/sar.reducer';
 import { prdReducer } from './reducers/PRD/prd.reducer';
 import { dreReducer } from './reducers/DRE/dre.reducer';
 import { umaReducer } from './reducers/UMA/uma.reducer';
+import { fileReducer } from './reducers/FILE/file.reducer';
 
 export default combineReducers({
   authReducer,
@@ -17,5 +18,6 @@ export default combineReducers({
   sarReducer,
   prdReducer,
   dreReducer,
-  umaReducer
+  umaReducer,
+  fileReducer
 });
