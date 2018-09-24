@@ -33,6 +33,7 @@ class SendDocumentView extends React.Component {
         super(props);
         this.state = {
             showProgressLogo: false,
+            fileKey: '',
             file: '',
             recipientUserName: '',
             errorText1: 'This is a required field.',
@@ -104,12 +105,66 @@ class SendDocumentView extends React.Component {
         }
     };
 
+    handleUploadError = (event) => {
+        switch (event.target.error.code) {
+            case event.target.error.NOT_FOUND_ERR:
+                alert('File Not Found!');
+                break;
+            case event.target.error.NOT_READABLE_ERR:
+                alert('File is unreadable!');
+                break;
+            case event.target.error.ABORT_ERR:
+                break;
+            default:
+                alert('Error occurred while reading file!');
+        };
+    }
+
+    handleProgressBar = (event) => {
+        if (event.lengthComputable) {
+            var percentLoaded = Math.round((event.loaded / event.total) * 100);
+            if (percentLoaded < 100) {
+                console.log(percentLoaded + '%');
+                //progress.style.width = percentLoaded + '%';
+                //progress.textContent = percentLoaded + '%';
+            }
+        }
+    }
+
+    handleBase64File = (event) => {
+        Promise.resolve(this.setState({ fileKey: this.guid(), file: event }))
+            .then(() => {
+                console.log("State Change Log: " + this.state.file);
+            })
+            .catch(() => {
+                console.log("State failed to set..");
+            })
+    }
+
     handleFileChange = (event) => {
+        //progress.style.width = '0%';
+        //progress.textContent = '0%';
         let files = event.target.files;
         var file = files[0];
-        this.setState({
-            file: file
-        })
+        let base64Result = (string) => {
+            this.handleBase64File(string);
+        };
+        var reader = new FileReader();
+        reader.onerror = this.handleUploadError;
+        reader.onprogress = this.handleProgressBar;
+        reader.onabort = function (e) {
+            alert('File read cancelled');
+        };
+        reader.onloadstart = function (e) {
+            // TODO: Write a mechanism that begins 'loading' - icon/progress bar
+        };
+        reader.onload = function () {
+            // Binary String
+            // var binaryString = reader.result;
+            // console.log(btoa(binaryString));
+            base64Result(reader.result);
+        };
+        reader.readAsDataURL(file);
     }
 
     handleSendDocumentForReview = (event) => {
@@ -117,18 +172,18 @@ class SendDocumentView extends React.Component {
         this.props.data.umaReducer.getUserMessageDataByUserIDError = '';
         this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess = '';
         this.setState({ showProgressLogo: true });
-        let fileURL = this.guid();
+        let fileURL = this.state.fileKey
         let fileBody = {
             file: this.state.file,
             creatorID: 'Admin'
-        }
+        };
         let dreURL = this.guid();
         let dreBody = {
             text: this.state.message,
             status: "pending",
             type: this.state.messageType,
             desc: this.state.dataType,
-            fileId: this.state.fileKey
+            fileId: fileURL
         };
         let oldMessages = [];
         let allMessages = [];
@@ -137,7 +192,6 @@ class SendDocumentView extends React.Component {
             userMessages: ["string"],
             archivedMessages: ["string"]
         };
-        console.log(this.state.file);
         Promise.resolve(this.props.uploadFileByUserId(fileURL, fileBody))
             .then(() => {
                 Promise.resolve(this.props.createDocumentEntryByUniqueID(dreURL, dreBody))
@@ -265,6 +319,7 @@ class SendDocumentView extends React.Component {
                                             value="Upload"
                                             variant="contained"
                                             color="primary"
+                                            style={{ 'margin': 'theme.spacing.unit' }}
                                             component="span">
                                             Upload
                                             <CloudUploadIcon style={{ 'marginLeft': 'theme.spacing.unit' }} />

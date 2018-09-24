@@ -18,23 +18,7 @@ export function uploadFileByUserId(url, body) {
             payload: true
         })
         if (body.file) {
-            let fileToBase64 = {
-                file: body.file,
-                creatorID: body.creatorID
-            }
-            // Base64 String
-            var reader = new FileReader();
-            reader.readAsDataURL(body.file);
-            fileToBase64.file = reader.result;
-            console.log(reader.result);
-            // Binary String
-            /*  var binaryString = reader.result;
-             console.log(btoa(binaryString));
-             reader.onerror = function (error) {
-                 alert('Error: ', error);
-             }; */
-
-            await axios.post(config.chaincodes.Default + config.chaincodes.FILE + url, fileToBase64, { headers })
+            await axios.post(config.chaincodes.Default + config.chaincodes.FILE + url, body, { headers })
                 .then(() => {
                     dispatch({
                         type: "UPLOAD_NEW_FILE_BY_USER_ID_SUCCESS",
