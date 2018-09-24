@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import {
     BrowserRouter as Router,
     Route
 } from 'react-router-dom';
-import {authenticate} from './redux/actions/authentication.action';
-import {connect} from 'react-redux';
+import { authenticate } from './redux/actions/authentication.action';
+import { connect } from 'react-redux';
 import TrackAndTraceResultsView from './components/track-and-trace/views/track-and-trace.results.view';
 import DocumentDashboardView
     from './components/document-review-and-entry/document-dashboard/document.dashboard.view';
@@ -16,11 +16,11 @@ import StartProductionView from './components/production/views/start.production.
 import CompleteProductionView from './components/production/views/complete.production.view';
 import TrackAndTraceView from './components/track-and-trace/views/track-and-trace.view';
 import SendDocumentView from './components/document-review-and-entry/document-send/document.send.view';
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import AppBar from 'material-ui/AppBar';
 import Grid from '@material-ui/core/Grid';
-import {Toolbar, ToolbarTitle} from 'material-ui/Toolbar'
-import {FormControl} from '@material-ui/core';
+import { Toolbar, ToolbarTitle } from 'material-ui/Toolbar'
+import { FormControl } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -51,7 +51,7 @@ import {
 import {
     getShippingDataByShipmentID
 } from './redux/actions/shipping.and.receiving.actions';
-import {getEachMessageForUserID} from './redux/actions/user.message.array.action';
+import { getEachMessageForUserID } from './redux/actions/user.message.array.action';
 
 const theme = createMuiTheme({
     palette: {
@@ -91,7 +91,7 @@ let counter = 0;
 
 function createData(info1, info2) {
     counter += 1;
-    return {id: counter, info1, info2};
+    return { id: counter, info1, info2 };
 }
 
 class App extends Component {
@@ -100,7 +100,7 @@ class App extends Component {
     componentDidMount() {
         this.props.authenticate();
         setInterval(() => {
-            this.setState({currentDateAndTime: new Date().toUTCString()})
+            this.setState({ currentDateAndTime: new Date().toUTCString() })
         }, 1000)
         /* setInterval(() => {
             let user = 'Guest';
@@ -129,7 +129,7 @@ class App extends Component {
         };
     }
 
-    handleToggle = () => this.setState({open: !this.state.open});
+    handleToggle = () => this.setState({ open: !this.state.open });
 
     showMainView = () => {
         this.setState({
@@ -285,12 +285,12 @@ class App extends Component {
                 openSearch: false
             });
         } else {
-            this.setState({openSearch: true});
+            this.setState({ openSearch: true });
         }
     };
 
     handleSearchClose = () => {
-        this.setState({openSearch: false});
+        this.setState({ openSearch: false });
     };
 
     handleSearch = (event, searchCriteria) => {
@@ -455,36 +455,36 @@ class App extends Component {
         switch (this.state.show) {
             case 'trackandtraceresultsview':
                 content = (<TrackAndTraceResultsView materialID={this.state.materialID}
-                                                     snackbar={this.state.snackbar}
-                                                     tatData={this.state.tatData}
+                    snackbar={this.state.snackbar}
+                    tatData={this.state.tatData}
                 />);
                 break;
             case 'billofmaterials':
-                content = (<BillOfMaterials/>);
+                content = (<BillOfMaterials />);
                 break;
             case 'shippingview':
-                content = (<ShippingView/>);
+                content = (<ShippingView />);
                 break;
             case 'receivingview':
-                content = (<ReceivingView/>);
+                content = (<ReceivingView />);
                 break;
             case 'startproductionview':
-                content = (<StartProductionView/>);
+                content = (<StartProductionView />);
                 break;
             case 'completeproductionview':
-                content = (<CompleteProductionView/>);
+                content = (<CompleteProductionView />);
                 break;
             case 'trackandtraceview':
-                content = (<TrackAndTraceView/>);
+                content = (<TrackAndTraceView />);
                 break;
             case 'senddocumentview':
-                content = (<SendDocumentView/>);
+                content = (<SendDocumentView />);
                 break;
             default:
                 content = (
                     <Router>
                         <div>
-                            <Route exact path="/" component={DocumentDashboardView}/>
+                            <Route exact path="/" component={DocumentDashboardView} />
                         </div>
                     </Router>);
         }
@@ -494,12 +494,12 @@ class App extends Component {
                 <MuiThemeProvider theme={theme}>
                     {/* Main navigation bar menu for components */}
                     <AppBar position="static" className="App-header"
-                            iconClassNameRight="muidocs-icon-navigation-expand-more"
-                            onLeftIconButtonClick={this.handleToggle}>
+                        iconClassNameRight="muidocs-icon-navigation-expand-more"
+                        onLeftIconButtonClick={this.handleToggle}>
                         <Grid container spacing={24}>
                             <Grid item xs={3}>
                                 <ToolbarTitle
-                                    text={<img src={logo} className="App-logo" alt="logo"/>}
+                                    text={<img src={logo} className="App-logo" alt="logo" />}
                                     alt="Blocnets"
                                 />
                             </Grid>
@@ -523,48 +523,48 @@ class App extends Component {
                                                 <InputAdornment position="end">
                                                     <SearchIcon
                                                         onClick={this.showTrackAndTraceResultsView}
-                                                        style={{"cursor": "pointer"}}
+                                                        style={{ "cursor": "pointer" }}
                                                     />
                                                 </InputAdornment> :
                                                 <InputAdornment position="end">
                                                     <SearchIcon
-                                                        style={{"fill": "black"}}
+                                                        style={{ "fill": "black" }}
                                                     />
                                                 </InputAdornment>
                                         }
                                         onChange={this.handleSearchKey}
                                     />
                                     <Popper open={this.state.openSearch} transition disablePortal
-                                            style={{"position": "relative"}}>
-                                        {({TransitionProps, placement}) => (
+                                        style={{ "position": "relative" }}>
+                                        {({ TransitionProps, placement }) => (
                                             <Grow
                                                 {...TransitionProps}
                                                 id="menu-list-grow"
-                                                style={{transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'}}
+                                                style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
                                             >
                                                 <Paper>
                                                     <ClickAwayListener onClickAway={this.handleSearchClose}>
-                                                        <MenuList style={{"textAlign": "left"}}>
+                                                        <MenuList style={{ "textAlign": "left" }}>
                                                             <MenuItem className="menuList"
-                                                                      onClick={event => this.handleSearch(event, "Material ID")}>Material
+                                                                onClick={event => this.handleSearch(event, "Material ID")}>Material
                                                                 ID: {this.state.searchKey}</MenuItem>
                                                             <MenuItem className="menuList"
-                                                                      onClick={event => this.handleSearch(event, "Material Name")}>Material
+                                                                onClick={event => this.handleSearch(event, "Material Name")}>Material
                                                                 Name: {this.state.searchKey}</MenuItem>
                                                             <MenuItem className="menuList"
-                                                                      onClick={event => this.handleSearch(event, "Material Description")}>Material
+                                                                onClick={event => this.handleSearch(event, "Material Description")}>Material
                                                                 Description: {this.state.searchKey}</MenuItem>
                                                             <MenuItem className="menuList"
-                                                                      onClick={event => this.handleSearch(event, "Part No.")}>Part
+                                                                onClick={event => this.handleSearch(event, "Part No.")}>Part
                                                                 No.: {this.state.searchKey}</MenuItem>
                                                             <MenuItem className="menuList"
-                                                                      onClick={event => this.handleSearch(event, "Part Name")}>Part
+                                                                onClick={event => this.handleSearch(event, "Part Name")}>Part
                                                                 Name: {this.state.searchKey}</MenuItem>
                                                             <MenuItem className="menuList"
-                                                                      onClick={event => this.handleSearch(event, "Part Description")}>Part
+                                                                onClick={event => this.handleSearch(event, "Part Description")}>Part
                                                                 Description: {this.state.searchKey}</MenuItem>
                                                             <MenuItem className="menuList"
-                                                                      onClick={event => this.handleSearch(event, "Shipment ID")}>Shipment
+                                                                onClick={event => this.handleSearch(event, "Shipment ID")}>Shipment
                                                                 ID: {this.state.searchKey}</MenuItem>
                                                         </MenuList>
                                                     </ClickAwayListener>
@@ -577,7 +577,7 @@ class App extends Component {
                             <Grid item xs={3}>
                                 <IconButton aria-label="pending messages" onClick={this.showMainView}>
                                     <Badge badgeContent={12} color="secondary" style={messageIconStyle}>
-                                        <MailIcon/>
+                                        <MailIcon />
                                     </Badge>
                                 </IconButton>
                             </Grid>
@@ -593,63 +593,62 @@ class App extends Component {
                 </MuiThemeProvider>
                 {/* Side Drawer's navigation bar menu for viewing content */}
                 <Drawer docked={false} width={250} open={this.state.open}
-                        onRequestChange={(open) => this.setState({open})}>
+                    onRequestChange={(open) => this.setState({ open })}>
                     <AppBar
                         className="App-bar"
                         onClick={this.handleToggle}
-                        title={<img src={logo} style={appBarLogoStyle} alt="Blocnets"/>}
+                        title={<img src={logo} style={appBarLogoStyle} alt="Blocnets" />}
                     />
-                    <MenuItem id="showBillOfMaterialsId" onClick={this.showBillOfMaterials}>Engineering Bill of
-                        Materials</MenuItem>
-                    <hr/>
+                    <MenuItem id="showBillOfMaterialsId" onClick={this.showBillOfMaterials}>Master Material Data</MenuItem>
+                    <hr />
                     <MenuItem id="showShippingViewId" onClick={this.showShippingView}>Shipping</MenuItem>
-                    <hr/>
+                    <hr />
                     <MenuItem id="showReceivingViewId" onClick={this.showReceivingView}>Receiving</MenuItem>
-                    <hr/>
+                    <hr />
                     <MenuItem id="showStartProductionViewId" onClick={this.showStartProductionView}>Start
-                        Production</MenuItem>
-                    <hr/>
-                    <MenuItem id="showCompleteProductionViewId" onClick={this.showCompleteProductionView}>Complete
-                        Production</MenuItem>
-                    <hr/>
+                        Production Tracking</MenuItem>
+                    <hr />
+                    <MenuItem id="showCompleteProductionViewId" onClick={this.showCompleteProductionView}>Stop Production Tracking</MenuItem>
+                    <hr />
                     <MenuItem id="showTrackAndTraceViewId" onClick={this.showTrackAndTraceView}>Track and
                         Trace</MenuItem>
-                    <hr/>
-                    <MenuItem id="showSendDocumentViewId" onClick={this.showSendDocumentView}>Document Review and
-                        Entry</MenuItem>
+                    <hr />
+                    <MenuItem id="showSendDocumentViewId" onClick={this.showSendDocumentView}>Send a Document</MenuItem>
+                    <hr />
+                    <MenuItem id="showSendDocumentViewId" onClick={this.showSendDocumentView}>Save a Document</MenuItem>
                 </Drawer>
                 {/* Page View with content loaded */}
                 <Paper className="White-theme" style={paperStyle} zDepth={5}>
-                    <Toolbar style={{"justifyContent": "center", "height": 80}}>
+                    <Toolbar style={{ "justifyContent": "center", "height": 80 }}>
                         <ToolbarTitle
-                            text={<img src={paperLogo} style={paperLogoStyle} alt="Blocnets"/>}
+                            text={<img src={paperLogo} style={paperLogoStyle} alt="Blocnets" />}
                         />
                     </Toolbar>
                     {content}
                 </Paper>
                 <div>
                     {this.state.showProgressLogo ?
-                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt=""/>
+                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt="" />
                         </div> : ""}
                 </div>
-                <div style={{padding: 24}}>
+                <div style={{ padding: 24 }}>
                     <Grid container spacing={24}>
                         <MuiThemeProvider theme={theme}>
                             <Grid container item xs={12}>
                                 <Grid container item xs>
-                                    <Typography align="right" style={{"width": "100%"}}>
+                                    <Typography align="right" style={{ "width": "100%" }}>
                                         {this.state.transactionCode} | System Number
                                     </Typography>
                                 </Grid>
                             </Grid>
                             <Grid container item xs={12}>
                                 <Grid container item xs>
-                                    <Typography align="left" style={{"width": "100%"}}>
+                                    <Typography align="left" style={{ "width": "100%" }}>
                                         © 2018 ALL RIGHTS RESERVED.
                                     </Typography>
                                 </Grid>
                                 <Grid container item xs>
-                                    <Typography align="right" style={{"width": "100%"}}>
+                                    <Typography align="right" style={{ "width": "100%" }}>
                                         {this.state.currentDateAndTime}
                                     </Typography>
                                 </Grid>

@@ -403,7 +403,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         createDocumentEntryByUniqueID: (url, body) => dispatch(createDocumentEntryByUniqueID(url, body)),
-        getUserMessageDataByUserID: (url, body) => dispatch(getUserMessageDataByUserID(url)),
+        getUserMessageDataByUserID: (url) => dispatch(getUserMessageDataByUserID(url)),
         updateUserMessageDataByUserID: (url, body) => dispatch(updateUserMessageDataByUserID(url, body)),
         uploadFileByUserId: (url, body) => dispatch(uploadFileByUserId(url, body))
     };
