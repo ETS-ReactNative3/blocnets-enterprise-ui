@@ -116,7 +116,11 @@ class App extends Component {
         setInterval(() => {
             Promise.resolve(this.props.getEachMessageForUserID('BadData'))
                 .then(() => {
-                    this.setState({badgeContent: this.props.data.umaReducer.getEachMessageForUserIDSuccess.length})
+                    if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
+                        this.setState({badgeContent: this.props.data.umaReducer.getEachMessageForUserIDSuccess.length})
+                    } else {
+                        this.setState({badgeContent: 0})
+                    }
                 })
         }, 30000);
     }
@@ -517,10 +521,13 @@ class App extends Component {
         if (refreshBadgeContent === true) {
             Promise.resolve(this.props.getEachMessageForUserID('BadData'))
                 .then(() => {
-                    this.setState({badgeContent: this.props.data.umaReducer.getEachMessageForUserIDSuccess.length})
+                    if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
+                        this.setState({badgeContent: this.props.data.umaReducer.getEachMessageForUserIDSuccess.length})
+                    } else {
+                        this.setState({badgeContent: 0})
+                    }
                 })
         }
-
     };
 
     render() {

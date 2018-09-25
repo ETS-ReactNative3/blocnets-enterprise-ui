@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
-import blocnetsLogo from "../../blocknetwhite-1.png";
+import blocnetsLogo from '../../blocknetwhite-1.png';
 import Grid from '@material-ui/core/Grid';
-import FormLabel from "@material-ui/core/FormLabel/FormLabel";
+import FormLabel from '@material-ui/core/FormLabel/FormLabel';
 import TextField from 'material-ui/TextField';
-import FormControl from "@material-ui/core/FormControl/FormControl";
-import Select from "@material-ui/core/Select/Select";
-import Input from "@material-ui/core/Input/Input";
-import MenuItem from "@material-ui/core/MenuItem/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
+import FormControl from '@material-ui/core/FormControl/FormControl';
+import Select from '@material-ui/core/Select/Select';
+import Input from '@material-ui/core/Input/Input';
+import MenuItem from '@material-ui/core/MenuItem/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText/FormHelperText';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Divider from "@material-ui/core/Divider/Divider";
+import Divider from '@material-ui/core/Divider/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -72,22 +72,22 @@ class ShippingView extends Component {
 
     handleMaterialIDChange = (event) => {
         if (event.target.value) {
-            let eBOMData = [];
             this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess = '';
-            let addressMenuItemsLength = '';
+            let eBOMData = [];
             this.setState({showProgressLogo: true});
             Promise.resolve(this.props.getBillOfMaterialsByMaterialID(event.target.value))
                 .then(() => {
-                    eBOMData = this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess;
-                    if (eBOMData) {
-                        this.setState({
-                            showProgressLogo: false,
-                            addressMenuItems: eBOMData.material.materialMvmtShippedTo,
-                            ipAddress: eBOMData.material.materialMvmtLocation
-                        });
-                        addressMenuItemsLength = this.state.addressMenuItems.replace(/\s+/g, '').length;
-                        if (addressMenuItemsLength === 0) {
+                    if (this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess) {
+                        eBOMData = this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess;
+                        if (eBOMData !== []) {
                             this.setState({
+                                showProgressLogo: false,
+                                addressMenuItems: eBOMData.material.materialMvmtShippedTo,
+                                ipAddress: eBOMData.material.materialMvmtLocation
+                            });
+                        } else {
+                            this.setState({
+                                showProgressLogo: false,
                                 addressMenuItems: '',
                                 ipAddress: '',
                                 snackbar: {
@@ -95,7 +95,7 @@ class ShippingView extends Component {
                                     message: 'Address cannot be found!',
                                     open: true,
                                     sbColor: 'red'
-                                },
+                                }
                             });
                         }
                     } else {
@@ -108,7 +108,7 @@ class ShippingView extends Component {
                                 message: 'Address cannot be found!',
                                 open: true,
                                 sbColor: 'red'
-                            },
+                            }
                         });
                     }
                 });
@@ -202,7 +202,7 @@ class ShippingView extends Component {
                                 message: 'Master Data does not exist for ' + childMaterialID + '.',
                                 open: true,
                                 sbColor: 'red'
-                            },
+                            }
                         });
                     }
                 });
@@ -355,7 +355,7 @@ class ShippingView extends Component {
 
     createTableContent = () => {
         let shipmentID = '';
-        if (!this.state.shipmentIDTyped) {
+        if (this.state.shipmentIDTyped === '') {
             shipmentID = this.guid();
             this.setState({shipmentID: shipmentID});
         } else {
@@ -385,20 +385,20 @@ class ShippingView extends Component {
                 message: '',
                 open: false,
                 sbColor: 'black'
-            },
+            }
         });
     };
 
     render() {
 
         const addCircleIconStyle = {
-            color: "black",
-            transform: "scale(1.8)"
+            color: 'black',
+            transform: 'scale(1.8)'
         };
 
         const deleteIconStyle = {
-            color: "black",
-            transform: "scale(1.6)"
+            color: 'black',
+            transform: 'scale(1.6)'
         };
 
         const buttonThemeYellow = createMuiTheme({

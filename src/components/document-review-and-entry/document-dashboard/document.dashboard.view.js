@@ -76,10 +76,17 @@ class DocumentDashboardView extends React.Component {
     componentDidMount() {
         Promise.resolve(this.props.getEachMessageForUserID('BadData'))
             .then(() => {
-                this.setState({
-                    showProgressLogo: false,
-                    data: this.createTableContent()
-                })
+                if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
+                    this.setState({
+                        showProgressLogo: false,
+                        data: this.createTableContent()
+                    })
+                } else {
+                    this.setState({
+                        showProgressLogo: false,
+                        data: []
+                    })
+                }
             })
     }
 
@@ -328,7 +335,7 @@ class DocumentDashboardView extends React.Component {
                                     />
                                     <label>
                                         <Button type="submit" value="Upload" variant="contained"
-                                            color="primary" disabled={true}>
+                                                color="primary" disabled={true}>
                                             Upload
                                             <CloudUploadIcon style={{'marginLeft': '12'}}/>
                                         </Button>
