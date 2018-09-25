@@ -189,7 +189,7 @@ class BillOfMaterialsReview extends React.Component {
                         showProgressLogo: false,
                         snackbar: {
                             autoHideDuration: 5000,
-                            message: 'Error in creating the Master Data! Please check the' + eBOMError + ' , then try again.',
+                            message: 'Error in creating the Master Data! Please check the' + eBOMError + ', then try again.',
                             open: true,
                             sbColor: 'red'
                         }

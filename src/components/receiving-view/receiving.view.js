@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import blocnetsLogo from "../../blocknetwhite-1.png";
+import blocnetsLogo from '../../blocknetwhite-1.png';
 import Grid from '@material-ui/core/Grid';
 import TextField from 'material-ui/TextField';
 import Button from '@material-ui/core/Button';
@@ -55,8 +55,7 @@ class ReceivingView extends Component {
                 message: '',
                 open: false,
                 sbColor: 'black'
-            },
-
+            }
         };
     }
 
@@ -88,8 +87,8 @@ class ReceivingView extends Component {
             let url = this.state.materialID;
             Promise.resolve(this.props.getShippingDataByMaterialID(url))
                 .then(() => {
-                    dataByMaterialID = this.props.data.sarReducer.getShippingDataByMaterialIDSuccess;
-                    if (dataByMaterialID) {
+                    if (this.props.data.sarReducer.getShippingDataByMaterialIDSuccess) {
+                        dataByMaterialID = this.props.data.sarReducer.getShippingDataByMaterialIDSuccess;
                         if (dataByMaterialID.manuallyShipped === true) {
                             dataByMaterialIDManuallyShipped = 'YES'
                         }
@@ -124,8 +123,8 @@ class ReceivingView extends Component {
             let url = this.state.shipmentID;
             Promise.resolve(this.props.getShippingDataByShipmentID(url))
                 .then(() => {
-                    dataByShipmentID = this.props.data.sarReducer.getShippingDataByShipmentIDSuccess;
-                    if (dataByShipmentID) {
+                    if (this.props.data.sarReducer.getShippingDataByShipmentIDSuccess) {
+                        dataByShipmentID = this.props.data.sarReducer.getShippingDataByShipmentIDSuccess;
                         if (dataByShipmentID.manuallyShipped === true) {
                             dataByShipmentIDManuallyShipped = 'YES'
                         }

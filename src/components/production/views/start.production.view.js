@@ -9,7 +9,7 @@ import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
 import red from '@material-ui/core/colors/red';
 import Dialog from '@material-ui/core/Dialog';
-import blocnetsLogo from "../../../blocknetwhite-1.png";
+import blocnetsLogo from '../../../blocknetwhite-1.png';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -27,13 +27,13 @@ import {
     from '../../../redux/actions/production.actions';
 
 const addCircleIconStyle = {
-    color: "black",
-    transform: "scale(1.8)"
+    color: 'black',
+    transform: 'scale(1.8)'
 };
 
 const deleteIconStyle = {
-    color: "black",
-    transform: "scale(1.6)"
+    color: 'black',
+    transform: 'scale(1.6)'
 };
 
 let counter = 0;
@@ -145,7 +145,7 @@ class StartProduction extends Component {
             tmp.push(data.oldMaterialID[0].materialID);
             this.state.materialID.forEach(element => tmp.push(element));
             if (tmp) {
-                this.props.getAndUpdateSARListByMaterialID(tmp, this.state.productionOrderNo);
+                Promise.resolve(this.props.getAndUpdateSARListByMaterialID(tmp, this.state.productionOrderNo));
             }
         }
         for (let i = 0; i < this.state.materialID.length; i++) {

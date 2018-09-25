@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import blocnetsLogo from "../../../blocknetwhite-1.png";
+import blocnetsLogo from '../../../blocknetwhite-1.png';
 import Grid from '@material-ui/core/Grid';
 import TextField from 'material-ui/TextField';
 import Button from '@material-ui/core/Button';
@@ -12,7 +12,7 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
-import Switch from "@material-ui/core/Switch/Switch";
+import Switch from '@material-ui/core/Switch/Switch';
 import Snackbar from 'material-ui/Snackbar';
 import {connect} from 'react-redux';
 import {getShippingDataByMaterialID} from '../../../redux/actions/shipping.and.receiving.actions';
@@ -67,24 +67,10 @@ class TrackAndTraceView extends Component {
             this.setState({errorTextMaterialID: 'This is a required field.'})
         }
         if ([event.target.name].toString() === 'showMaterialMapSwitch' && event.target.checked === true) {
-            if (this.props.data.spawnConstructReducer.construct !== '' && this.props.data.spawnConstructReducer.construct !== undefined) {
-                this.setState({
-                    showMaterialMap: true,
-                    showMaterialMapSwitch: true
-                });
-            } else {
-                this.setState({
-                    tree: '',
-                    showMaterialMap: false,
-                    showMaterialMapSwitch: false,
-                    snackbar: {
-                        autoHideDuration: 2000,
-                        message: 'Material Map does not exist!',
-                        open: true,
-                        sbColor: 'red'
-                    },
-                });
-            }
+            this.setState({
+                showMaterialMap: true,
+                showMaterialMapSwitch: true
+            });
         } else if ([event.target.name].toString() === 'showMaterialMapSwitch' && event.target.checked === false) {
             this.setState({
                 showMaterialMap: false,
@@ -95,7 +81,8 @@ class TrackAndTraceView extends Component {
 
     handleTrack = (event) => {
         event.preventDefault();
-        tree = []; // Clean Tree
+        data = [];
+        tree = [];
         this.props.data.sarReducer.getShippingDataByMaterialIDSuccess = '';
         this.props.data.spawnConstructReducer.construct = '';
         this.setState({
@@ -106,12 +93,13 @@ class TrackAndTraceView extends Component {
         });
         Promise.resolve(this.props.getShippingDataByMaterialID(this.state.materialID))
             .then(() => {
-                this.props.createConstruct(this.state.materialID);
-                setTimeout(
-                    function () {
+                Promise.resolve(this.props.createConstruct(this.state.materialID))
+                    .then(() => {
                         if (this.props.data.sarReducer.getShippingDataByMaterialIDSuccess) {
                             data = this.props.data.sarReducer.getShippingDataByMaterialIDSuccess;
-                            tree.push(this.props.data.spawnConstructReducer.construct);
+                            if (this.props.data.spawnConstructReducer.construct !== '' && this.props.data.spawnConstructReducer.construct !== undefined) {
+                                tree.push(this.props.data.spawnConstructReducer.construct);
+                            }
                             if (data.manuallyShipped === true) {
                                 dataManualShipping = 'YES'
                             }
@@ -164,12 +152,11 @@ class TrackAndTraceView extends Component {
                                     autoHideDuration: 2000,
                                     sbColor: 'red'
                                 },
-                                openDialog: false
+                                openDialog: false,
+                                tree: ''
                             });
                         }
-                    }
-                        .bind(this),
-                    1000);
+                    });
             });
     };
 
@@ -212,7 +199,7 @@ class TrackAndTraceView extends Component {
             },
         });
 
-        const treeExisting = this.props.data.spawnConstructReducer.construct !== '' && this.props.data.spawnConstructReducer.construct !== undefined;
+        let treeExisting = this.props.data.spawnConstructReducer.construct !== '' && this.props.data.spawnConstructReducer.construct !== undefined;
 
         return (
             <form>

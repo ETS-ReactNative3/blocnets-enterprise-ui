@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import blocnetsLogo from "../../../blocknetwhite-1.png";
+import blocnetsLogo from '../../../blocknetwhite-1.png';
 import Grid from '@material-ui/core/Grid';
 import TextField from 'material-ui/TextField';
 import Button from '@material-ui/core/Button';
@@ -10,7 +10,7 @@ import Dialog from '@material-ui/core/Dialog';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Fade from "@material-ui/core/Fade/Fade";
+import Fade from '@material-ui/core/Fade/Fade';
 import Snackbar from 'material-ui/Snackbar';
 import {connect} from 'react-redux';
 import {
@@ -88,7 +88,7 @@ class CompleteProduction extends Component {
             openDialog: true,
             showProgressLogoDialog: false,
             productionCompleted: false,
-            quantity: '',
+            quantity: ''
         });
         Promise.resolve(this.props.getProductionOrderByProdOrderNo(this.state.productionOrderNo))
             .then(() => {
@@ -143,7 +143,7 @@ class CompleteProduction extends Component {
                         ipAddress: '',
                         errorTextIPAddress: 'This is a required field.',
                         productionCompleted: false,
-                        quantity: '',
+                        quantity: ''
                     });
                 } else {
                     this.setState({
