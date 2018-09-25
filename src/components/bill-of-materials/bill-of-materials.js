@@ -32,15 +32,21 @@ class BillOfMaterials extends React.Component {
         return (
             <div id="billOfMaterials">
                 {this.state.showBillOfMaterialsForm === true ?
-                    <BillOfMaterialsForm showBillOfMaterialsForm={this.state.showBillOfMaterialsForm}
-                                         showBillOfMaterialsReview={this.state.showBillOfMaterialsReview}
-                                         eBOMData={this.state.eBOMData} snackbar={this.state.snackbar}
-                                         viewHandler={this.handleData}/> : ""}
+                    <BillOfMaterialsForm
+                        showBillOfMaterialsForm={this.state.showBillOfMaterialsForm}
+                        showBillOfMaterialsReview={this.state.showBillOfMaterialsReview}
+                        eBOMData={this.state.eBOMData}
+                        snackbar={this.state.snackbar}
+                        viewHandler={this.handleData}/>
+                    : ""}
                 {this.state.showBillOfMaterialsReview === true ?
-                    <BillOfMaterialsReview showBillOfMaterialsForm={this.state.showBillOfMaterialsForm}
-                                           showBillOfMaterialsReview={this.state.showBillOfMaterialsReview}
-                                           eBOMData={this.state.eBOMData} snackbar={this.state.snackbar}
-                                           viewHandler={this.handleData}/> : ""}
+                    <BillOfMaterialsReview
+                        showBillOfMaterialsForm={this.state.showBillOfMaterialsForm}
+                        showBillOfMaterialsReview={this.state.showBillOfMaterialsReview}
+                        eBOMData={this.state.eBOMData}
+                        snackbar={this.state.snackbar}
+                        viewHandler={this.handleData}/>
+                    : ""}
             </div>
         )
     }

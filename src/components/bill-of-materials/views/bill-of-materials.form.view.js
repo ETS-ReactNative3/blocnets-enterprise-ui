@@ -4,12 +4,14 @@ import TextField from 'material-ui/TextField';
 import Button from '@material-ui/core/Button';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
-import FormLabel from "@material-ui/core/FormLabel/FormLabel";
-import Divider from "@material-ui/core/Divider/Divider";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import FormLabel from '@material-ui/core/FormLabel/FormLabel';
+import Divider from '@material-ui/core/Divider/Divider';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from 'material-ui/Checkbox';
-import Snackbar from "material-ui/Snackbar";
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
 
 class BillOfMaterialsForm extends React.Component {
 
@@ -246,10 +248,17 @@ class BillOfMaterialsForm extends React.Component {
                         <Grid container item xs={12} sm={3} justify="flex-end">
                             <Grid>
                                 <MuiThemeProvider theme={buttonThemeYellow}>
-                                    <Button type="submit" value="Upload" variant="contained"
-                                            color="primary" disabled>
-                                        Upload...
-                                    </Button>
+                                    <input
+                                        style={{'display': 'none'}}
+                                        type="file"
+                                    />
+                                    <label>
+                                        <Button type="submit" value="Upload" variant="contained"
+                                                color="primary" disabled={true}>
+                                            Upload
+                                            <CloudUploadIcon style={{'marginLeft': '12'}}/>
+                                        </Button>
+                                    </label>
                                 </MuiThemeProvider>
                             </Grid>
                         </Grid>
@@ -1111,13 +1120,14 @@ class BillOfMaterialsForm extends React.Component {
                         </Grid>
                     </Grid>
                 </div>
-                <Snackbar
-                    open={this.props.snackbar.open}
-                    message={this.props.snackbar.message}
-                    autoHideDuration={this.props.snackbar.autoHideDuration}
-                    onRequestClose={this.handleSnackbarClose}
-                    bodyStyle={{backgroundColor: this.props.snackbar.sbColor}}
-                />
+                <Snackbar open={this.props.snackbar.open} autoHideDuration={this.props.snackbar.autoHideDuration}
+                          onClose={this.handleSnackbarClose}>
+                    <SnackbarContent
+                        message={this.props.snackbar.message}
+                        style={{backgroundColor: this.props.snackbar.sbColor}}
+                    />
+                </Snackbar>
+
             </div>
         );
     }

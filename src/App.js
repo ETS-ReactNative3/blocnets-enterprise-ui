@@ -373,7 +373,7 @@ class App extends Component {
                     createData('Supplier Order Policy', bomData.supplier.supplierOrderedLeadTime)
                 ]
             });
-            if (bomData.material.materialNumber) {
+            if (bomData.material.materialNumber !== '') {
                 Promise.resolve(this.props.createConstruct(bomData.material.materialNumber))
                     .then(() => {
                         if (this.props.data.spawnConstructReducer.construct !== '' && this.props.data.spawnConstructReducer.construct !== undefined) {

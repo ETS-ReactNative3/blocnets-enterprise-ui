@@ -1,10 +1,10 @@
 import React from 'react';
-import Grid from "@material-ui/core/Grid";
+import Grid from '@material-ui/core/Grid';
 import Tree from 'react-d3-tree';
-import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import red from "../../../../node_modules/@material-ui/core/colors/red";
-import Snackbar from "material-ui/Snackbar";
+import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import red from '../../../../node_modules/@material-ui/core/colors/red';
+import Snackbar from 'material-ui/Snackbar';
 
 const myTreeData = [
     {
@@ -64,28 +64,6 @@ const containerStyles = {
 
 class BillOfMaterialsTree extends React.Component {
 
-    state = {};
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            snackbar: {
-                autoHideDuration: 2000,
-                message: 'Success!',
-                open: true,
-                sbColor: 'black'
-            }
-        };
-        /*this.setState({
-            snackbar: {
-                autoHideDuration: 2000,
-                message: 'Error',
-                open: true,
-                sbColor: 'red'
-            }
-        }); to show error message */
-    }
-
     componentDidMount = () => {
         const dimensions = this.treeContainer.getBoundingClientRect();
         this.setState({
@@ -95,6 +73,12 @@ class BillOfMaterialsTree extends React.Component {
             }
         });
     };
+
+    state = {};
+
+    constructor(props) {
+        super(props);
+    }
 
     handleSnackbarClose = () => {
         this.setState({

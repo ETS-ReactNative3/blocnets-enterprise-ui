@@ -1,15 +1,14 @@
 import React from 'react';
-import blocnetsLogo from "../../../blocknetwhite-1.png";
+import blocnetsLogo from '../../../blocknetwhite-1.png';
 import Grid from '@material-ui/core/Grid';
 import Paper from 'material-ui/Paper';
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
 import Button from '@material-ui/core/Button';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
-import yellow from '@material-ui/core/colors/yellow';
-import red from "@material-ui/core/colors/red";
+import red from '@material-ui/core/colors/red';
 import {connect} from 'react-redux';
 import {
     createMasterDataKeys
@@ -33,7 +32,13 @@ class BillOfMaterialsReview extends React.Component {
     }
 
     handleSubmit = () => {
-        this.props.data.bomReducer.createMasterDataKeysSuccess = '';
+        this.props.data.bomReducer.createMasterDataMaterialIdKeyError = '';
+        this.props.data.bomReducer.createMasterDataMaterialNameKeyError = '';
+        this.props.data.bomReducer.createMasterDataMaterialDescKeyError = '';
+        this.props.data.bomReducer.createMasterDataPartNoError = '';
+        this.props.data.bomReducer.createMasterDataPartNameError = '';
+        this.props.data.bomReducer.createMasterDataPartDescError = '';
+        let eBOMError = [];
         this.setState({showProgressLogo: true});
         let data = {
             text: "string",
@@ -150,7 +155,25 @@ class BillOfMaterialsReview extends React.Component {
         };
         Promise.resolve(this.props.createMasterDataKeys(data))
             .then(() => {
-                if (this.props.data.bomReducer.createMasterDataKeysSuccess === true) {
+                if (this.props.data.bomReducer.createMasterDataMaterialIdKeyError !== '') {
+                    eBOMError.push(' Material ID');
+                }
+                if (this.props.data.bomReducer.createMasterDataMaterialNameKeyError !== '') {
+                    eBOMError.push(' Material Name');
+                }
+                if (this.props.data.bomReducer.createMasterDataMaterialDescKeyError !== '') {
+                    eBOMError.push(' Material Description');
+                }
+                if (this.props.data.bomReducer.createMasterDataPartNoError !== '') {
+                    eBOMError.push(' Part No.');
+                }
+                if (this.props.data.bomReducer.createMasterDataPartNameError !== '') {
+                    eBOMError.push(' Part Name');
+                }
+                if (this.props.data.bomReducer.createMasterDataPartDescError !== '') {
+                    eBOMError.push(' Part Description');
+                }
+                if (eBOMError.length === 0) {
                     this.setState({
                         showProgressLogo: false,
                         snackbar: {
@@ -161,6 +184,17 @@ class BillOfMaterialsReview extends React.Component {
                         }
                     });
                     this.props.viewHandler(true, false, '', this.state.snackbar);
+                } else {
+                    this.setState({
+                        showProgressLogo: false,
+                        snackbar: {
+                            autoHideDuration: 5000,
+                            message: 'Error in creating the Master Data! Please check the' + eBOMError + ' , then try again.',
+                            open: true,
+                            sbColor: 'red'
+                        }
+                    });
+                    this.props.viewHandler(true, false, this.props.eBOMData, this.state.snackbar);
                 }
             })
     };
@@ -234,12 +268,6 @@ class BillOfMaterialsReview extends React.Component {
             createData('Supplier Order Policy', this.props.eBOMData.supOrderPolicy)
         ];
 
-        const buttonThemeYellow = createMuiTheme({
-            palette: {
-                primary: yellow
-            },
-        });
-
         const buttonThemeRed = createMuiTheme({
             palette: {
                 primary: red
@@ -282,19 +310,23 @@ class BillOfMaterialsReview extends React.Component {
                     </Grid>
                     <br/>
                     <Grid container spacing={24}>
-                        <Grid container item xs={12} sm={3}>
+                        <Grid container item xs={12} sm={6}>
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
                             <Grid container item xs>
-                                <MuiThemeProvider theme={buttonThemeYellow}>
-                                    <Button type="submit" value="OK" variant="contained" color="primary"
-                                            onClick={this.handleSubmit}>
+                                <MuiThemeProvider theme={buttonThemeRed}>
+                                    <Button type="submit" value="OK" variant="flat" color="primary"
+                                            onClick={this.handleSubmit} fullWidth={true}>
                                         OK
                                     </Button>
                                 </MuiThemeProvider>
                             </Grid>
                             <Grid container item xs>
                                 <MuiThemeProvider theme={buttonThemeRed}>
-                                    <Button type="submit" value="Cancel" variant="contained" color="primary"
-                                            onClick={this.handleCancel}>
+                                    <Button type="submit" value="Cancel" variant="flat" color="primary"
+                                            onClick={this.handleCancel} fullWidth={true}>
                                         Cancel
                                     </Button>
                                 </MuiThemeProvider>
