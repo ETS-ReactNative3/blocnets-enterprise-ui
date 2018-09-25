@@ -38,7 +38,7 @@ import UserIcon from '@material-ui/icons/AccountCircleRounded';
 import Drawer from 'material-ui/Drawer';
 import logo from './blocknetwhite-1.png';
 import paperLogo from './blocnets-logo.png'
-import blocnetsLogo from "./blocknetwhite-1.png";
+import blocnetsLogo from './blocknetwhite-1.png';
 import Typography from '@material-ui/core/Typography';
 import {
     getBillOfMaterialsByMaterialID,
@@ -51,6 +51,7 @@ import {
 import {
     getShippingDataByShipmentID
 } from './redux/actions/shipping.and.receiving.actions';
+import {createConstruct} from './redux/actions/tree.spawn.action';
 import {getEachMessageForUserID} from './redux/actions/user.message.array.action';
 
 const theme = createMuiTheme({
@@ -66,16 +67,16 @@ const appBarLogoStyle = {
 };
 
 const messageIconStyle = {
-    transform: "scale(1.0)"
+    transform: 'scale(1.0)'
 };
 
 const userIconStyle = {
-    color: "white",
-    transform: "scale(2.1)"
+    color: 'white',
+    transform: 'scale(2.1)'
 };
 
 const paperStyle = {
-    width: "70%",
+    width: '70%',
     height: '85%',
     margin: '5%',
     textAlign: 'center',
@@ -94,6 +95,8 @@ function createData(info1, info2) {
     return {id: counter, info1, info2};
 }
 
+let tree = [];
+
 class App extends Component {
 
     /* Dev Note: Will automatically fire the prop actions, or http request, once component mounts */
@@ -101,7 +104,11 @@ class App extends Component {
         this.props.authenticate();
         Promise.resolve(this.props.getEachMessageForUserID('BadData'))
             .then(() => {
-                this.setState({badgeContent: this.props.data.umaReducer.getEachMessageForUserIDSuccess.length})
+                if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
+                    this.setState({badgeContent: this.props.data.umaReducer.getEachMessageForUserIDSuccess.length})
+                } else {
+                    this.setState({badgeContent: 0})
+                }
             })
         setInterval(() => {
             this.setState({currentDateAndTime: new Date().toUTCString()})
@@ -117,16 +124,16 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            show: 'home',
             open: false,
-            show: null,
             transactionCode: 'DRE02',
             showProgressLogo: false,
+            badgeContent: 0,
             searchKey: '',
             openSearch: false,
             searchCriteria: '',
             tatData: [],
-            materialID: '',
-            badgeContent: 0,
+            tree: [],
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
@@ -154,13 +161,15 @@ class App extends Component {
         this.props.data.bomReducer.getBillOfMaterialsByPartNameSuccess = '';
         this.props.data.bomReducer.getBillOfMaterialsByPartDescSuccess = '';
         this.props.data.sarReducer.getShippingDataByShipmentIDSuccess = '';
+        this.props.data.spawnConstructReducer.construct = '';
+        tree = [];
+        let bomData = [];
+        let shippingData = [];
         this.setState({
             showProgressLogo: true,
             tatData: [],
-            materialID: ''
+            tree: []
         });
-        let bomData = [];
-        let shippingData = [];
         if (this.state.searchCriteria === 'Material ID') {
             Promise.resolve(this.props.getBillOfMaterialsByMaterialID(this.state.searchKey))
                 .then(() => {
@@ -218,11 +227,6 @@ class App extends Component {
                     this.handleShippingData(shippingData);
                 });
         }
-        this.setState({
-            show: 'trackandtraceresultsview',
-            open: false,
-            transactionCode: 'TAT02'
-        });
     };
 
     showBillOfMaterials = () => {
@@ -289,6 +293,8 @@ class App extends Component {
         if (event.target.value === '') {
             this.setState({
                 show: 'home',
+                open: false,
+                transactionCode: 'DRE02',
                 openSearch: false
             });
         } else {
@@ -316,7 +322,6 @@ class App extends Component {
             let magnetic = bomData.material.materialOther[2].substr(10, 1) === 't' ? 'YES' : 'NO';
             counter = 0;
             this.setState({
-                showProgressLogo: false,
                 tatData: [
                     createData('Material ID', bomData.material.materialNumber),
                     createData('Material Name', bomData.material.materialSerialNumber),
@@ -366,20 +371,65 @@ class App extends Component {
                     createData('Material Supplied Per IP Address', bomData.supplier.supplierMaterialNumber),
                     createData('Supplier Payment Terms', bomData.supplier.supplierProductionCapacityCommittedToNetwork),
                     createData('Supplier Order Policy', bomData.supplier.supplierOrderedLeadTime)
-                ],
-                materialID: bomData.material.materialNumber,
-                snackbar: {
-                    autoHideDuration: 2000,
-                    message: 'Successfully tracked a block!',
-                    open: true,
-                    sbColor: '#23CE6B'
-                }
+                ]
             });
+            if (bomData.material.materialNumber) {
+                Promise.resolve(this.props.createConstruct(bomData.material.materialNumber))
+                    .then(() => {
+                        if (this.props.data.spawnConstructReducer.construct !== '' && this.props.data.spawnConstructReducer.construct !== undefined) {
+                            tree.push(this.props.data.spawnConstructReducer.construct);
+                            this.setState({
+                                show: 'trackandtraceresultsview',
+                                open: false,
+                                transactionCode: 'TAT02',
+                                showProgressLogo: false,
+                                tree: tree,
+                                snackbar: {
+                                    autoHideDuration: 2000,
+                                    message: 'Successfully tracked a block!',
+                                    open: true,
+                                    sbColor: '#23CE6B'
+                                }
+                            });
+                        } else {
+                            this.setState({
+                                show: 'trackandtraceresultsview',
+                                open: false,
+                                transactionCode: 'TAT02',
+                                showProgressLogo: false,
+                                tree: [],
+                                snackbar: {
+                                    autoHideDuration: 2000,
+                                    message: 'Successfully tracked a block!',
+                                    open: true,
+                                    sbColor: '#23CE6B'
+                                }
+                            });
+                        }
+                    });
+            } else {
+                this.setState({
+                    show: 'trackandtraceresultsview',
+                    open: false,
+                    transactionCode: 'TAT02',
+                    showProgressLogo: false,
+                    tree: [],
+                    snackbar: {
+                        autoHideDuration: 2000,
+                        message: 'Successfully tracked a block!',
+                        open: true,
+                        sbColor: '#23CE6B'
+                    }
+                });
+            }
         } else {
             this.setState({
+                show: 'trackandtraceresultsview',
+                open: false,
+                transactionCode: 'TAT02',
                 showProgressLogo: false,
                 tatData: [],
-                materialID: '',
+                tree: [],
                 snackbar: {
                     autoHideDuration: 2000,
                     message: 'Error tracking a block!',
@@ -419,6 +469,9 @@ class App extends Component {
             }
             counter = 0;
             this.setState({
+                show: 'trackandtraceresultsview',
+                open: false,
+                transactionCode: 'TAT02',
                 showProgressLogo: false,
                 tatData: [
                     createData('Material ID', shippingData.materialID),
@@ -434,6 +487,7 @@ class App extends Component {
                     createData('Received Shipment', dataReceivedShipent),
                     createData('Received Order', dataReceivedOrder)
                 ],
+                tree: [],
                 snackbar: {
                     autoHideDuration: 2000,
                     message: 'Successfully tracked a block!',
@@ -443,8 +497,12 @@ class App extends Component {
             });
         } else {
             this.setState({
+                show: 'trackandtraceresultsview',
+                open: false,
+                transactionCode: 'TAT02',
                 showProgressLogo: false,
                 tatData: [],
+                tree: [],
                 snackbar: {
                     autoHideDuration: 2000,
                     message: 'Error tracking a block!',
@@ -471,10 +529,10 @@ class App extends Component {
 
         switch (this.state.show) {
             case 'trackandtraceresultsview':
-                content = (<TrackAndTraceResultsView materialID={this.state.materialID}
-                                                     snackbar={this.state.snackbar}
-                                                     tatData={this.state.tatData}
-                />);
+                content = (<TrackAndTraceResultsView
+                    snackbar={this.state.snackbar}
+                    tatData={this.state.tatData}
+                    tree={this.state.tree}/>);
                 break;
             case 'billofmaterials':
                 content = (<BillOfMaterials/>);
@@ -495,7 +553,8 @@ class App extends Component {
                 content = (<TrackAndTraceView/>);
                 break;
             case 'senddocumentview':
-                content = (<SendDocumentView viewHandler={this.handleDREData}/>);
+                content = (<SendDocumentView
+                    viewHandler={this.handleDREData}/>);
                 break;
             default:
                 content = (
@@ -683,12 +742,6 @@ class App extends Component {
 
 }
 
-/*
-App.propTypes = {
-  authenticate: PropTypes.func.isRequired,
-};
- */
-
 const mapStateToProps = (state) => {
     return {
         data: state
@@ -706,6 +759,7 @@ const mapDispatchToProps = (dispatch) => {
         getBillOfMaterialsByPartName: (url) => dispatch(getBillOfMaterialsByPartName(url)),
         getBillOfMaterialsByPartDesc: (url) => dispatch(getBillOfMaterialsByPartDesc(url)),
         getShippingDataByShipmentID: (url) => dispatch(getShippingDataByShipmentID(url)),
+        createConstruct: (materialID) => dispatch(createConstruct(materialID)),
         getEachMessageForUserID: (user) => dispatch(getEachMessageForUserID(user))
     };
 };

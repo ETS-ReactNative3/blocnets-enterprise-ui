@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import blocnetsLogo from "../../../blocknetwhite-1.png";
+import blocnetsLogo from '../../../blocknetwhite-1.png';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -10,12 +10,13 @@ import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import Checkbox from '@material-ui/core/Checkbox';
 import TablePagination from '@material-ui/core/TablePagination';
-import Button from "@material-ui/core/Button/Button";
-import {createMuiTheme, MuiThemeProvider} from "@material-ui/core";
-import yellow from "@material-ui/core/colors/yellow";
-import red from "@material-ui/core/colors/red";
-import Dialog from "@material-ui/core/Dialog/Dialog";
-import Snackbar from "material-ui/Snackbar";
+import Button from '@material-ui/core/Button/Button';
+import {createMuiTheme, MuiThemeProvider} from '@material-ui/core';
+import yellow from '@material-ui/core/colors/yellow';
+import red from '@material-ui/core/colors/red';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import Dialog from '@material-ui/core/Dialog/Dialog';
+import Snackbar from 'material-ui/Snackbar';
 import {connect} from 'react-redux';
 import {
     getEachMessageForUserID
@@ -35,8 +36,8 @@ const rows = [
 let dialogCounter = 0;
 
 function createDialogData(info1, info2) {
-    counter += 1;
-    return {id: counter, info1, info2};
+    dialogCounter += 1;
+    return {id: dialogCounter, info1, info2};
 }
 
 class TableHeader extends React.Component {
@@ -87,7 +88,7 @@ class DocumentDashboardView extends React.Component {
         this.state = {
             showProgressLogo: true,
             selected: [],
-            data: this.createTableContent(),
+            data: [],
             page: 0,
             rowsPerPage: 10,
             openDialog: false,
@@ -186,47 +187,9 @@ class DocumentDashboardView extends React.Component {
     };
 
     handleApprove = (event) => {
-        //this.setState({showProgressLogo: true}); to show blocnetsLogo before submit
-        //this.setState({showProgressLogo: false}); to show blocnetsLogo after receiving response
-        /*this.setState({
-            snackbar: {
-                autoHideDuration: 2000,
-                message: 'Success',
-                open: true,
-                sbColor: '#23CE6B'
-            }
-        }); to show success message */
-        /*this.setState({
-            snackbar: {
-                autoHideDuration: 2000,
-                message: 'Error',
-                open: true,
-                sbColor: 'red'
-            }
-        }); to show error message */
-        event.preventDefault();
     };
 
     handleReject = (event) => {
-        //this.setState({showProgressLogo: true}); to show blocnetsLogo before submit
-        //this.setState({showProgressLogo: false}); to show blocnetsLogo after receiving response
-        /*this.setState({
-            snackbar: {
-                autoHideDuration: 2000,
-                message: 'Success',
-                open: true,
-                sbColor: '#23CE6B'
-            }
-        }); to show success message */
-        /*this.setState({
-            snackbar: {
-                autoHideDuration: 2000,
-                message: 'Error',
-                open: true,
-                sbColor: 'red'
-            }
-        }); to show error message */
-        event.preventDefault();
     };
 
     handleDialogClose = () => {
@@ -234,49 +197,9 @@ class DocumentDashboardView extends React.Component {
     };
 
     handleDialogApprove = (event) => {
-        //this.setState({showProgressLogo: true}); to show blocnetsLogo before submit
-        //this.setState({showProgressLogo: false}); to show blocnetsLogo after receiving response
-        /*this.setState({
-            snackbar: {
-                autoHideDuration: 2000,
-                message: 'Success',
-                open: true,
-                sbColor: '#23CE6B'
-            }
-        }); to show success message */
-        /*this.setState({
-            snackbar: {
-                autoHideDuration: 2000,
-                message: 'Error',
-                open: true,
-                sbColor: 'red'
-            }
-        }); to show error message */
-        this.setState({openDialog: false});
-        event.preventDefault();
     };
 
     handleDialogReject = (event) => {
-        //this.setState({showProgressLogo: true}); to show blocnetsLogo before submit
-        //this.setState({showProgressLogo: false}); to show blocnetsLogo after receiving response
-        /*this.setState({
-            snackbar: {
-                autoHideDuration: 2000,
-                message: 'Success',
-                open: true,
-                sbColor: '#23CE6B'
-            }
-        }); to show success message */
-        /*this.setState({
-            snackbar: {
-                autoHideDuration: 2000,
-                message: 'Error',
-                open: true,
-                sbColor: 'red'
-            }
-        }); to show error message */
-        this.setState({openDialog: false});
-        event.preventDefault();
     };
 
     render() {
@@ -399,10 +322,17 @@ class DocumentDashboardView extends React.Component {
                         <Grid container item xs={12} sm={3}>
                             <Grid>
                                 <MuiThemeProvider theme={buttonThemeYellow}>
-                                    <Button type="submit" value="Upload" variant="contained"
-                                            color="primary" disabled>
-                                        Upload...
-                                    </Button>
+                                    <input
+                                        style={{'display': 'none'}}
+                                        type="file"
+                                    />
+                                    <label>
+                                        <Button type="submit" value="Upload" variant="contained"
+                                            color="primary" disabled={true}>
+                                            Upload
+                                            <CloudUploadIcon style={{'marginLeft': '12'}}/>
+                                        </Button>
+                                    </label>
                                 </MuiThemeProvider>
                             </Grid>
                         </Grid>
@@ -419,7 +349,7 @@ class DocumentDashboardView extends React.Component {
                                 </MuiThemeProvider>
                             </Grid>
                             <Grid container item xs justify="flex-end">
-                                <MuiThemeProvider theme={buttonThemeYellow}>
+                                <MuiThemeProvider theme={buttonThemeRed}>
                                     <Button type="submit" value="Reject" variant="contained"
                                             color="primary" disabled={true}
                                             onClick={this.handleReject}>
@@ -470,7 +400,7 @@ class DocumentDashboardView extends React.Component {
                             <Grid container item xs={4} sm={4}>
                             </Grid>
                             <Grid container item xs={4} sm={4}>
-                                <MuiThemeProvider theme={buttonThemeRed}>
+                                <MuiThemeProvider theme={buttonThemeYellow}>
                                     <Button type="submit" value="Approve" variant="flat" color="primary"
                                             fullWidth={true} disabled={true}
                                             onClick={this.handleDialogApprove}>

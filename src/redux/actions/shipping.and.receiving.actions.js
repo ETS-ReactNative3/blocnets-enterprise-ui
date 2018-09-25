@@ -165,12 +165,12 @@ export function getAndUpdateSARListByMaterialID(ListOfMaterialIDs, prdKey) {
         });
         for (let i = 0; i < ListOfMaterialIDs.length; i++) {
             await axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + ListOfMaterialIDs[i], { headers })
-                .then((response) => {
+                .then(async (response) => {
 
                     let obj = response.data;
                     obj.receivedOrder = true;
                     obj.prdKey = prdKey;
-                    axios.put(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + ListOfMaterialIDs[i], obj, { headers })
+                    await axios.put(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + ListOfMaterialIDs[i], obj, { headers })
                         .then(() => {
                             return dispatch({
                                 type: "UPDATE_SAR_DATA_LIST_BY_MATERIAL_ID_SUCCESS",
@@ -268,13 +268,13 @@ export function syncSARDataAndBindKeys(payload) {
 
             for (let i = 0; i < shipKeyData.listOfKeys.length; i++) {
                 await axios.head(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + shipKeyData.listOfKeys[i].materialID, { headers })
-                    .then(() => {
+                    .then(async () => {
                         dispatch({
                             type: "CHECKED_SAR_DATA_BY_MATERIAL_ID_DOES_EXIST",
                             payload: true
                         });
-                        axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + shipKeyData.listOfKeys[i].materialID, { headers })
-                            .then((response) => {
+                        await axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + shipKeyData.listOfKeys[i].materialID, { headers })
+                            .then(async (response) => {
                                 dispatch({
                                     type: "GET_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
                                     payload: true
@@ -316,7 +316,7 @@ export function syncSARDataAndBindKeys(payload) {
                                             };
                                             updatedObj.listOfKeys.push(obj);
                                         }
-                                        axios.put(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + updatedObj.materialID, updatedObj, { headers })
+                                        await axios.put(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + updatedObj.materialID, updatedObj, { headers })
                                             .then(() => {
                                                 return dispatch({
                                                     type: "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",

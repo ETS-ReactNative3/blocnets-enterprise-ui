@@ -31,11 +31,11 @@ export function createConstruct(materialID) {
             payload: true
         });
         await axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + materialID, { headers })
-            .then((response) => {
+            .then(async (response) => {
                 let obj = response.data;
                 let key = obj.prdKey;
                 if (key) {
-                    axios.get(config.chaincodes.Default + config.chaincodes.PRD + key, { headers })
+                    await axios.get(config.chaincodes.Default + config.chaincodes.PRD + key, { headers })
                         .then((response) => {
                             let construct = {
                                 name: key,

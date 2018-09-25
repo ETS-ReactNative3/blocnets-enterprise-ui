@@ -8,8 +8,6 @@ const containerStyles = {
 
 class TrackAndTraceTreeView extends React.Component {
 
-    state = {};
-
     componentDidMount = () => {
         const dimensions = this.treeContainer.getBoundingClientRect();
         this.setState({
@@ -19,6 +17,8 @@ class TrackAndTraceTreeView extends React.Component {
             }
         });
     };
+
+    state = {};
 
     render() {
         return (

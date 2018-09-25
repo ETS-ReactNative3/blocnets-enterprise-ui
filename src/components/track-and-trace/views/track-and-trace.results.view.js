@@ -1,21 +1,18 @@
 import React, {Component} from 'react';
-import Grid from "@material-ui/core/Grid/Grid";
-import Paper from "material-ui/Paper";
-import Table from "@material-ui/core/Table/Table";
-import TableBody from "@material-ui/core/TableBody/TableBody";
-import TableRow from "@material-ui/core/TableRow/TableRow";
-import TableCell from "@material-ui/core/TableCell/TableCell";
+import Grid from '@material-ui/core/Grid/Grid';
+import Paper from 'material-ui/Paper';
+import Table from '@material-ui/core/Table/Table';
+import TableBody from '@material-ui/core/TableBody/TableBody';
+import TableRow from '@material-ui/core/TableRow/TableRow';
+import TableCell from '@material-ui/core/TableCell/TableCell';
 import Typography from '@material-ui/core/Typography';
-import Switch from "@material-ui/core/Switch/Switch";
-import {createMuiTheme, MuiThemeProvider} from "@material-ui/core";
-import red from "@material-ui/core/colors/red";
-import Dialog from "material-ui/Dialog";
-import Snackbar from "material-ui/Snackbar";
+import Switch from '@material-ui/core/Switch/Switch';
+import {createMuiTheme, MuiThemeProvider} from '@material-ui/core';
+import red from '@material-ui/core/colors/red';
+import Dialog from 'material-ui/Dialog';
+import Snackbar from 'material-ui/Snackbar';
 import {connect} from 'react-redux';
-import {createConstruct} from '../../../redux/actions/tree.spawn.action';
 import TrackAndTraceTreeView from './track-and-trace.tree.view';
-
-let tree = [];
 
 class TrackAndTraceResultsView extends Component {
 
@@ -24,48 +21,22 @@ class TrackAndTraceResultsView extends Component {
         this.state = {
             showMaterialMap: false,
             showMaterialMapSwitch: false,
-            tree: '',
+            tree: this.props.tree,
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
                 open: false,
                 sbColor: 'black'
-            },
+            }
         };
     };
 
     handleChange = (event) => {
-        tree = [];
-        this.props.data.spawnConstructReducer.construct = '';
         if ([event.target.name].toString() === 'showMaterialMapSwitch' && event.target.checked === true) {
             this.setState({
+                showMaterialMap: true,
                 showMaterialMapSwitch: true
             });
-            this.props.createConstruct(this.props.materialID);
-            setTimeout(
-                function () {
-                    if (this.props.data.spawnConstructReducer.construct !== '') {
-                        tree.push(this.props.data.spawnConstructReducer.construct);
-                        this.setState({
-                            tree: tree,
-                            showMaterialMap: true
-                        });
-                    } else {
-                        this.setState({
-                            tree: '',
-                            showMaterialMap: false,
-                            showMaterialMapSwitch: false,
-                            snackbar: {
-                                autoHideDuration: 2000,
-                                message: 'Material Map does not exist!',
-                                open: true,
-                                sbColor: 'red'
-                            },
-                        });
-                    }
-                }
-                    .bind(this),
-                1000);
         } else if ([event.target.name].toString() === 'showMaterialMapSwitch' && event.target.checked === false) {
             this.setState({
                 showMaterialMap: false,
@@ -144,7 +115,7 @@ class TrackAndTraceResultsView extends Component {
                             </Grid>
                         }
                         <br/>
-                        {this.props.materialID ?
+                        {this.props.tree.length !== 0 ?
                             <Grid container>
                                 <Grid item>
                                     <MuiThemeProvider theme={buttonThemeRed}>
@@ -203,9 +174,7 @@ const mapStateToProps = (state) => {
 
 // This way, we can call our action creator by doing this.props.fetchData(url);
 const mapDispatchToProps = (dispatch) => {
-    return {
-        createConstruct: (materialID) => dispatch(createConstruct(materialID))
-    };
+    return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrackAndTraceResultsView);
