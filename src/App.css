@@ -1,108 +1,250 @@
 body {
-    background-color: #1f1f1f;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 100 100'%3E%3Crect x='0' y='0' width='58' height='58' fill='%23121212'/%3E%3C/svg%3E");
+background-color: #1f1f1f;
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 100 100'%3E%3Crect x='0' y='0' width='58' height='58' fill='%23121212'/%3E%3C/svg%3E");
 }
 
 .node {
-    cursor: pointer;
+cursor: pointer;
 }
 
 .node circle {
-    fill: #fff;
-    stroke: yellow;
-    stroke-width: 3px;
+fill: #fff;
+stroke: yellow;
+stroke-width: 3px;
 }
 
 .node text {
-    font: 12px sans-serif;
+font: 12px sans-serif;
 }
 
 .link {
-    fill: none;
-    stroke: #ccc;
-    stroke-width: 2px;
+fill: none;
+stroke: #ccc;
+stroke-width: 2px;
 }
 
 .App {
-    text-align: center;
+text-align: center;
 }
 
 .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-    height: 50px;
+animation: App-logo-spin infinite 20s linear;
+height: 50px;
 }
 
 .App-logo-progress {
-    animation: App-logo-spin infinite 5s linear;
-    height: 40px;
-    display: block;
-    position: absolute;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
-    right: 0;
-    bottom: 50%;
+animation: App-logo-spin infinite 5s linear;
+height: 40px;
+display: block;
+position: absolute;
+margin-left: auto;
+margin-right: auto;
+left: 0;
+right: 0;
+bottom: 50%;
 }
 
 .App-header {
-    background-color: #222 !important;
-    height: 115px;
-    padding: 20px;
-    color: white;
+background-color: #222 !important;
+height: 115px;
+padding: 20px;
+color: white;
 }
 
 .App-bar {
-    background-color: #222 !important;
-    height: 115px !important;
+background-color: #222 !important;
+height: 115px !important;
 }
 
 .App-title {
-    font-size: 1.5em;
+font-size: 1.5em;
 }
 
 .App-intro {
-    font-size: large;
+font-size: large;
 }
 
 .White-theme {
-    background-color: #ffffff !important;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 100 100'%3E%3Crect x='0' y='0' width='30' height='30' fill-opacity='0.33' fill='%23ededed'/%3E%3C/svg%3E") !important;
+background-color: #ffffff !important;
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 100 100'%3E%3Crect x='0' y='0' width='30' height='30' fill-opacity='0.33' fill='%23ededed'/%3E%3C/svg%3E") !important;
 }
 
 @keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+from {
+transform: rotate(0deg);
+}
+to {
+transform: rotate(360deg);
+}
 }
 
 .overlay {
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    background: black;
-    opacity: 0.5;
-    z-index: 1000;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
+position: fixed;
+height: 100%;
+width: 100%;
+background: black;
+opacity: 0.5;
+z-index: 1000;
+left: 0;
+right: 0;
+top: 0;
+bottom: 0;
+}
+
+.center-view {
+position: fixed;
+top: 50%;
+left: 50%;
+margin-top: -50px;
+margin-left: -100px;
+}
+
+/* Custom Splash View CSS */
+*:after, *:before {
+box-sizing: inherit;
+}
+:root {
+--sinSerif: sans-serif;
+/* hexagon */
+--gap: 2vmin;
+--radio: calc(inherit / 3);
+--width: calc(var(--radio) * .866);
+--height: var(--radio);
+/* colors */
+--blackO: #1d1f20;
+--blackM: #292f33;
+--blackC: #444448;
+--grey: #999;
+--whiteS: #e1e8ed;
+}
+
+/* Hexagon Grid for multiple hexagons*/
+.hex-grid {
+display: grid;
+grid-template-columns: repeat(6, 1fr);
+grid-gap: 2vmin;
+max-width: 100vmin;
+padding: 2vmin;
+margin: .5rem auto;
+}
+/* Hexagon section for a single hexagon*/
+.hex-section {
+background: var(--blackC);
+width: var(--weight); 
+height: var(--height);
+overflow: hidden;
+transition: 1s;
+clip-path: url(#hexa-v);
+clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+filter: drop-shadow(0 0 1px #fff);
+}
+
+/* Hexagon Honeycomb */
+.hex-section:nth-of-type(1) {	
+grid-column: 2 / span 2;
+grid-row: 1;	
+}
+.hex-section:nth-of-type(2) {	
+grid-column: 4 / span 2;
+grid-row: 1;	
+}
+.hex-section:nth-of-type(3) {	
+grid-column: 1 / span 2;
+grid-row: 2;	
+}
+.hex-section:nth-of-type(4) {	
+grid-column: 3 / span 2;
+grid-row: 2;	
+}
+.hex-section:nth-of-type(5) {	
+grid-column: 5 / span 2;
+grid-row: 2;	
+}
+.hex-section:nth-of-type(6) {	
+grid-column: 2 / span 2;
+grid-row: 3;	
+}
+.hex-section:nth-of-type(7) {	
+grid-column: 4 / span 2;
+grid-row: 3;	
+}
+
+/* A small adjustment in the vertical */
+.hex-section:nth-of-type(-n+2) {
+margin-bottom: calc(var(--height) * -.2);
+}
+.hex-section:nth-of-type(n+6):nth-of-type(-n+7) {
+margin-top: calc(var(--height) * -.2);
+}
+
+/* Ornamentales */
+figure {
+display: flex;
+flex-direction: column;
+flex-wrap: nowrap;
+justify-content: center;
+height: 100%;
+font-size: calc(1rem + 1vmin);
+line-height: 1.2;
+transition: .75s .05s;
+hyphens: auto;
+text-align: center;
+}
+.hex-img,
+[class*='svg-icon'] {
+background: #fff;
+min-width: var(--radio);
+min-height: var(--radio);
+max-width: var(--width);
+max-height: var(--height);
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+transform-origin: 50% 0%;
+transition: 1s;
+clip-path: url(#hexagono);
+clip-path: inherit;
+z-index:  10;
+}
+.hex-section:hover [class*='svg-icon'] {
+transform: translate(-50%, -50%) rotateY(.25turn);
+}
+figure p {
+font-size: 70%;
+line-height: 1.2;
+font-weight: 100;
+width: 100%;
+}
+svg {
+min-width: var(--radio);
+min-height: var(--radio);
+max-width: var(--width);
+max-height: var(--height);
+clip-rule: evenodd;
+fill-rule: evenodd;
+clip-rule: evenodd;
+image-rendering: optimizequality;
+shape-rendering: geometricprecision;
+text-rendering: geometricprecision;
+/* filter: drop-shadow(0 0 30px #333); */
+}
+[class*='-dre01'] {
+fill: #000;
 }
 
 @media screen and (max-width: 500px) {
-    span.menuList {
-        font-size: 8px !important;
-        line-height: 24px !important;
-        white-space: normal !important;
-        word-wrap: break-word !important;
-    }
+span.menuList {
+font-size: 8px !important;
+line-height: 24px !important;
+white-space: normal !important;
+word-wrap: break-word !important;
+}
 }
 
 @media screen and (min-width: 501px) {
-    span.menuList {
-        white-space: normal !important;
-        word-wrap: break-word !important;
-    }
+span.menuList {
+white-space: normal !important;
+word-wrap: break-word !important;
+}
 }

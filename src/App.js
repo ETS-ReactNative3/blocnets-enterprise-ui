@@ -19,7 +19,7 @@ import SendDocumentView from './components/document-review-and-entry/document-se
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import AppBar from 'material-ui/AppBar';
 import Grid from '@material-ui/core/Grid';
-import {Toolbar, ToolbarTitle} from 'material-ui/Toolbar'
+import {Toolbar, ToolbarTitle} from 'material-ui/Toolbar';
 import {FormControl} from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
