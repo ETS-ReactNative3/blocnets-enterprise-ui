@@ -138,12 +138,12 @@ class LoginView extends Component {
                     </Grid>
                     <Grid item xs>
                         <Typography align="center" style={{ "color": "white" }}>
-                            {this.state.currentDateAndTime}
+                            Network Status: <Typography align="center" style={{ "color": "orange" }}>Full Use</Typography>
                         </Typography>
                     </Grid>
                     <Grid item xs>
                         <Typography align="center" style={{ "color": "white" }}>
-                            {this.state.currentDateAndTime}
+                            Your Status:  <Typography align="center" style={{ "color": "orange" }}>Connected to Network</Typography>
                         </Typography>
                     </Grid>
                 </Grid>

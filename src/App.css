@@ -1,5 +1,6 @@
 body {
 background: url('../src/img/Texture.svg');
+background-size: cover;
 }
 
 .node {
