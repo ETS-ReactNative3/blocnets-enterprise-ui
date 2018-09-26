@@ -3,27 +3,13 @@ import { connect } from 'react-redux';
 import Paper from '@material-ui/core/Paper';
 import { Toolbar, ToolbarTitle } from 'material-ui/Toolbar';
 import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import UserIcon from '@material-ui/icons/AccountCircleRounded';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import BlueHex from '../img/Hexagon_Blue.svg';
 import RedHex from '../img/Hexagon_Red.svg';
 import GreenHex from '../img/Hexagon_Green.svg';
-import PropTypes from 'prop-types';
-import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
-import paperLogo from '../blocnets-logo.png';
-import blocnetsLogo from "../blocknetwhite-1.png";
 import Button from "@material-ui/core/Button/Button";
-import Table from "@material-ui/core/Table/Table";
-import TableBody from "@material-ui/core/TableBody/TableBody";
-import TableRow from "@material-ui/core/TableRow/TableRow";
-import TableCell from "@material-ui/core/TableCell/TableCell";
-import Dialog from "@material-ui/core/Dialog/Dialog";
-import animatedLogo from '../Blocnets-Logo-Animated-Version-2.mp4'
-
-import Zoom from '@material-ui/core/Zoom';
+import animatedLogo from '../Blocnets-Logo-Animated-Version-2.mp4';
 
 const paperStyle = {
     width: '100%',
@@ -109,6 +95,23 @@ class SplashView extends Component {
                             <div style={{ padding: 24 }}>
                             </div>
                         </Paper>
+                    </Grid>
+                    <Grid container spacing={24}>
+                        <Grid item xs>
+                            <Typography align="center" style={{ "color": "white" }}>
+                                {this.state.currentDateAndTime}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs>
+                            <Typography align="center" style={{ "color": "white" }}>
+                                {this.state.currentDateAndTime}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs>
+                            <Typography align="center" style={{ "color": "white" }}>
+                                {this.state.currentDateAndTime}
+                            </Typography>
+                        </Grid>
                     </Grid>
                 </div>
                 :

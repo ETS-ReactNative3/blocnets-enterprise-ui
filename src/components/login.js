@@ -1,11 +1,12 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import TextField from 'material-ui/TextField';
 import logo from '../icon-only.jpg';
 import Button from '@material-ui/core/Button';
-import {connect} from 'react-redux';
-import {getEachMessageForUserID} from '../redux/actions/user.message.array.action';
+import Typography from '@material-ui/core/Typography';
+import { connect } from 'react-redux';
+import { getEachMessageForUserID } from '../redux/actions/user.message.array.action';
 
 const paperStyle = {
     width: '100%',
@@ -29,9 +30,17 @@ const imageStyle = {
 
 class LoginView extends Component {
 
+    componentDidMount() {
+
+        setInterval(() => {
+            this.setState({ currentDateAndTime: new Date().toUTCString() })
+        }, 1000)
+    }
+
     constructor(props) {
         super(props);
         this.state = {
+            currentDateAndTime: '',
             transactionCode: '',   // The variable that stores which module should render after login
             userName: '',
             passwordEntered: false
@@ -39,13 +48,13 @@ class LoginView extends Component {
     }
 
     handleUsername = (event) => {
-        this.setState({userName: event.target.value});
+        this.setState({ userName: event.target.value });
     };
 
     handlePassword = (event) => {
-        this.setState({passwordEntered: false});
+        this.setState({ passwordEntered: false });
         if (event.target.value) {
-            this.setState({passwordEntered: true});
+            this.setState({ passwordEntered: true });
         }
     };
 
@@ -61,18 +70,18 @@ class LoginView extends Component {
             <div>
                 <Grid container spacing={24}>
                     <Paper elevation={24} style={paperStyle} zdepth={5}>
-                        <div style={{padding: 48}}>
+                        <div style={{ padding: 48 }}>
                         </div>
-                        <div style={{padding: 24}}>
+                        <div style={{ padding: 24 }}>
                             <Grid container spacing={24}>
                                 <Grid container item xs={12} justify="center">
                                     <Paper style={logoStyle}>
-                                        <img src={logo} style={imageStyle} alt=""/>
+                                        <img src={logo} style={imageStyle} alt="" />
                                     </Paper>
                                 </Grid>
                             </Grid>
                         </div>
-                        <div style={{padding: 24}}>
+                        <div style={{ padding: 24 }}>
                             <Grid container spacing={24}>
                                 <Grid container item xs={12} justify="center">
                                     <TextField
@@ -80,7 +89,7 @@ class LoginView extends Component {
                                         onChange={this.handleUsername}
                                         type="text"
                                         name="userName"
-                                        style={{"float": "left", "textAlign": "left"}}
+                                        style={{ "float": "left", "textAlign": "left" }}
                                         hintText="User Name"
                                     />
                                 </Grid>
@@ -91,18 +100,18 @@ class LoginView extends Component {
                                         onChange={this.handlePassword}
                                         type="password"
                                         name="password"
-                                        style={{"float": "left", "textAlign": "left"}}
+                                        style={{ "float": "left", "textAlign": "left" }}
                                         hintText="Password"
                                     />
                                 </Grid>
                             </Grid>
-                            <br/>
+                            <br />
                             {formComplete ?
                                 <Grid container spacing={24}>
                                     <Grid container item xs={12} justify="center">
                                         <Button type="submit" value="submit" variant="contained"
-                                                onClick={this.handleView} style={{"backgroundColor": "#ffb000"}}>
-                                                Log In
+                                            onClick={this.handleView} style={{ "backgroundColor": "#ffb000" }}>
+                                            Log In
                                         </Button>
                                     </Grid>
                                 </Grid>
@@ -110,16 +119,33 @@ class LoginView extends Component {
                                 <Grid container spacing={24}>
                                     <Grid container item xs={12} justify="center">
                                         <Button type="submit" value="submit" variant="contained"
-                                                onClick={this.handleView} style={{"backgroundColor": "#898989"}}>
-                                                Log In
+                                            onClick={this.handleView} style={{ "backgroundColor": "#898989" }}>
+                                            Log In
                                         </Button>
                                     </Grid>
                                 </Grid>
                             }
-                            <div style={{padding: 48}}>
+                            <div style={{ padding: 48 }}>
                             </div>
                         </div>
                     </Paper>
+                </Grid>
+                <Grid container spacing={24}>
+                    <Grid item xs>
+                        <Typography align="center" style={{ "color": "white" }}>
+                            {this.state.currentDateAndTime}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs>
+                        <Typography align="center" style={{ "color": "white" }}>
+                            {this.state.currentDateAndTime}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs>
+                        <Typography align="center" style={{ "color": "white" }}>
+                            {this.state.currentDateAndTime}
+                        </Typography>
+                    </Grid>
                 </Grid>
             </div>
 

@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-import {
-    BrowserRouter as Router,
-    Route
-} from 'react-router-dom';
-import { authenticate } from './redux/actions/authentication.action';
-import { connect } from 'react-redux';
 import SplashView from './components/splash';
 import LoginView from './components/login';
 import App from './App';
@@ -71,6 +65,7 @@ class Home extends Component {
                 break;
             case 'splash':
                 content = (<SplashView viewHandler={this.handleSelectedTransactionCode} />)
+                break;
             default:
                 content = (<SplashView viewHandler={this.handleSelectedTransactionCode} />);
         }
