@@ -7,6 +7,8 @@ import IconButton from '@material-ui/core/IconButton';
 import UserIcon from '@material-ui/icons/AccountCircleRounded';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import BlueHex from '../img/Hexagon_Blue.svg';
+import RedHex from '../img/Hexagon_Red.svg';
+import GreenHex from '../img/Hexagon_Green.svg';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -51,126 +53,148 @@ class SplashView extends Component {
                             </Toolbar>
                         </Paper>
                         <br /><br /><br />
-                        <Grid container spacing={24} style={{'marginBottom': 'inherit'}}>
-                        <Grid item xs>
-                                <ul id="grid" class="clear">
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                </ul>
+                        <Grid container spacing={24} style={{ 'marginBottom': '10px' }}>
+                            <Grid container spacing={24}>
+                                <Grid item xs>
+                                    <ul id="grid" className="clear">
+                                        <li>
+                                            <div className="hexagon">
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className="hexagon">
+                                                <object type="image/svg+xml" data={BlueHex} className="hex-shadow" aria-label="">
+                                                </object>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className="hexagon">
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </Grid>
+                                <Grid item xs>
+                                    <ul id="grid" className="clear">
+                                        <li>
+                                            <div className="hexagon">
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className="hexagon">
+                                                <object type="image/svg+xml" data={RedHex} className="hex-shadow" aria-label="">
+                                                </object>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className="hexagon">
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </Grid>
+                                <Grid item xs>
+                                    <ul id="grid" className="clear">
+                                        <li>
+                                            <div className="hexagon">
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className="hexagon">
+                                                <object type="image/svg+xml" data={GreenHex} className="hex-shadow" aria-label="">
+                                                </object>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className="hexagon">
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </Grid>
                             </Grid>
-                            <Grid item xs>
-                                <ul id="grid" class="clear">
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                </ul>
+                            <Grid container spacing={24}>
+                                <Grid item xs>
+                                    <ul id="grid" className="clear">
+                                        <li>
+                                            <div className="hexagon">
+                                                <object type="image/svg+xml" data={BlueHex} className="hex-shadow" aria-label="">
+                                                </object>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className="hexagon">
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className="hexagon">
+                                                <object type="image/svg+xml" data={BlueHex} className="hex-shadow" aria-label="">
+                                                </object>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </Grid>
+                                <Grid item xs>
+                                    <ul id="grid" className="clear">
+                                        <li>
+                                            <div className="hexagon">
+                                                <object type="image/svg+xml" data={RedHex} className="hex-shadow" aria-label="">
+                                                </object>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className="hexagon">
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className="hexagon">
+                                                <object type="image/svg+xml" data={RedHex} className="hex-shadow" aria-label="">
+                                                </object>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </Grid>
+                                <Grid item xs>
+                                    <ul id="grid" className="clear">
+                                        <li>
+                                            <div className="hexagon">
+                                                <object type="image/svg+xml" data={GreenHex} className="hex-shadow" aria-label="">
+                                                </object>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className="hexagon">
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className="hexagon">
+                                                <object type="image/svg+xml" data={GreenHex} className="hex-shadow" aria-label="">
+                                                </object>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </Grid>
                             </Grid>
-                            <Grid item xs>
-                                <ul id="grid" class="clear">
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                    <li>
-                                        <div class="hexagon"></div>
-                                    </li>
-                                </ul>
+                            <Grid container spacing={24}>
+                                <Grid item xs>
+                                </Grid>
+                                <Grid item xs>
+                                    <ul id="grid" className="clear">
+                                        <li>
+                                            <div className="hexagon">
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className="hexagon">
+                                                <object type="image/svg+xml" data={RedHex} className="hex-shadow" aria-label="">
+                                                </object>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className="hexagon">
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </Grid>
+                                <Grid item xs>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </Paper>
