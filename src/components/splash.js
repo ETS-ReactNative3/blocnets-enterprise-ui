@@ -10,7 +10,6 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import BlueHex from '../img/Hexagon_Blue.svg';
 import RedHex from '../img/Hexagon_Red.svg';
 import GreenHex from '../img/Hexagon_Green.svg';
-import {MuiThemeProvider} from "@material-ui/core";
 
 const paperStyle = {
     width: '100%',
@@ -87,7 +86,7 @@ class SplashView extends Component {
                             <div style={{ padding: 24 }}>
                                 <Grid container spacing={24}>
                                     <Grid container item xs={12} justify="center">
-                                        <video width="320" height="240" autoPlay controls loop>
+                                        <video width="320" height="240" autoPlay={true} controls loop>
                                             <source src={animatedLogo} type="video/mp4" />
                                         </video>
                                     </Grid>
