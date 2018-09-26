@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Paper from 'material-ui/Paper';
+import Paper from '@material-ui/core/Paper';
 import { Toolbar, ToolbarTitle } from 'material-ui/Toolbar';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import UserIcon from '@material-ui/icons/AccountCircleRounded';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import BlueHex from '../img/Hexagon_Blue.svg';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -14,11 +15,12 @@ import paperLogo from '../blocnets-logo.png';
 import blocnetsLogo from "../blocknetwhite-1.png";
 
 const paperStyle = {
-    width: "70%",
+    width: "100%",
     height: '85%',
     margin: '5%',
     textAlign: 'center',
     display: 'inline-block',
+    borderRadius: 10 + 'px'
 };
 
 class SplashView extends Component {
@@ -38,161 +40,139 @@ class SplashView extends Component {
     render() {
 
         return (
-            <div style={{'width':'100%'}}>
-                <Grid container spacing={24}>
-                    <Paper className="White-theme" elevation={24} style={paperStyle} zDepth={5}>
-                        <Toolbar style={{ "justifyContent": "center", "height": 80 }}>
-                            <ToolbarTitle
-                                text={"Hello World"}
-                            />
-                        </Toolbar>
-                        <Grid container spacing={24}>
-                            <Grid item xs>
-                                <Paper>
-                                    <div className="hex-grid">
-                                        <div className="hex-section" style={{ }}>
-                                            <figure>
-                                                <IconButton aria-label="" onClick={this.handleView}>
-                                                    <UserIcon />
-                                                </IconButton>
-                                            </figure>
-                                            <svg className='svg-icon-dre01'>
-                                            </svg>
-                                        </div>
-                                        <div className="hex-section">
-                                            <figure>
-                                                <IconButton aria-label="" onClick={this.handleView}>
-                                                    <UserIcon />
-                                                </IconButton>
-                                            </figure>
-                                            <svg className='svg-icon-dre01'>
-                                            </svg>
-                                        </div>
-                                        <div className="hex-section">
-                                            <figure>
-                                                <IconButton aria-label="" onClick={this.handleView}>
-                                                    <UserIcon />
-                                                </IconButton>
-                                            </figure>
-                                            <svg className='svg-icon-dre01'>
-                                            </svg>
-                                        </div>
-                                        <div className="hex-section">
-                                            <figure>
-                                                <IconButton aria-label="" onClick={this.handleView}>
-                                                    <UserIcon />
-                                                </IconButton>
-                                            </figure>
-                                            <svg className='svg-icon-dre01'>
-                                            </svg>
-                                        </div>
-                                        <div className="hex-section">
-                                            <figure>
-                                                <IconButton aria-label="" onClick={this.handleView}>
-                                                    <UserIcon />
-                                                </IconButton>
-                                            </figure>
-                                            <svg className='svg-icon-dre01'>
-                                            </svg>
-                                        </div>
-                                        <div className="hex-section">
-                                            <figure>
-                                                <IconButton aria-label="" onClick={this.handleView}>
-                                                    <UserIcon />
-                                                </IconButton>
-                                            </figure>
-                                            <svg className='svg-icon-dre01'>
-                                            </svg>
-                                        </div>
-                                        <div className="hex-section">
-                                            <figure>
-                                                <IconButton aria-label="" onClick={this.handleView}>
-                                                    <UserIcon />
-                                                </IconButton>
-                                            </figure>
-                                            <svg className='svg-icon-dre01'>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </Paper>
+            <div>
+                <Grid container spacing={24} style={{ 'borderRadius': '10px' }}>
+                    <Paper elevation={24} style={paperStyle} zdepth={5}>
+                        <Paper elevation={24} zdepth={5} style={{ 'borderRadius': '10px' }}>
+                            <Toolbar style={{ "justifyContent": "center", "height": 170, 'backgroundColor': 'white', 'borderRadius': '10px' }} elevation={24}>
+                                <ToolbarTitle
+                                    text={"WHAT CAN BLOCNETS DO FOR YOU?"}
+                                />
+                            </Toolbar>
+                        </Paper>
+                        <br /><br /><br />
+                        <Grid container spacing={24} style={{'marginBottom': 'inherit'}}>
+                        <Grid item xs>
+                                <ul id="grid" class="clear">
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                </ul>
                             </Grid>
                             <Grid item xs>
-                                <Paper>
-                                    <div className="hex-grid">
-                                        <div className="hex-section">
-                                            <figure>
-                                                <IconButton aria-label="" onClick={this.handleView}>
-                                                    <UserIcon />
-                                                </IconButton>
-                                            </figure>
-                                            <svg className='svg-icon-dre01'>
-                                            </svg>
-                                        </div>
-                                        <div className="hex-section">
-                                            <figure>
-                                                <IconButton aria-label="" onClick={this.handleView}>
-                                                    <UserIcon />
-                                                </IconButton>
-                                            </figure>
-                                            <svg className='svg-icon-dre01'>
-                                            </svg>
-                                        </div>
-                                        <div className="hex-section">
-                                            <figure>
-                                                <IconButton aria-label="" onClick={this.handleView}>
-                                                    <UserIcon />
-                                                </IconButton>
-                                            </figure>
-                                            <svg className='svg-icon-dre01'>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </Paper>
+                                <ul id="grid" class="clear">
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                </ul>
                             </Grid>
                             <Grid item xs>
-                                <Paper>
-                                    <div className="hex-grid">
-                                        <div className="hex-section">
-                                            <figure>
-                                                <IconButton aria-label="" onClick={this.handleView}>
-                                                    <UserIcon />
-                                                </IconButton>
-                                            </figure>
-                                            <svg className='svg-icon-dre01'>
-                                            </svg>
-                                        </div>
-                                        <div className="hex-section">
-                                            <figure>
-                                                <IconButton aria-label="" onClick={this.handleView}>
-                                                    <UserIcon />
-                                                </IconButton>
-                                            </figure>
-                                            <svg className='svg-icon-dre01'>
-                                            </svg>
-                                        </div>
-                                        <div className="hex-section">
-                                            <figure>
-                                                <IconButton aria-label="" onClick={this.handleView}>
-                                                    <UserIcon />
-                                                </IconButton>
-                                            </figure>
-                                            <svg className='svg-icon-dre01'>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </Paper>
+                                <ul id="grid" class="clear">
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                    <li>
+                                        <div class="hexagon"></div>
+                                    </li>
+                                </ul>
                             </Grid>
                         </Grid>
-                        <svg width="inherit" height="inherit">
-                            <defs>
-                                <clipPath id="hexa-v" clipPathUnits="objectBoundingBox">
-                                    <polygon points=".5 0, 1 .25, 1 .75, .5 1, 0 .75, 0 .25" />
-                                </clipPath>
-                                <clipPath id="hexa-h" clipPathUnits="objectBoundingBox">
-                                    <polygon points=".25 0, .75 0, 1 .5, .75 1, .25 1, 0 .5" />
-                                </clipPath>
-                            </defs>
-                        </svg>
                     </Paper>
                 </Grid>
             </div>
