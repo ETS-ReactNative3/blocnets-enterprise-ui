@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './App.css';
 import SplashView from './components/splash';
 import LoginView from './components/login';
 import App from './App';
-
 
 class Home extends Component {
 
@@ -12,41 +11,33 @@ class Home extends Component {
         this.state = {
             show: 'home',
             open: false,
-            transactionCode: '',
-            loginUser: '',
-            showProgressLogo: false,
-            snackbar: {
-                autoHideDuration: 2000,
-                message: '',
-                open: false,
-                sbColor: 'black'
-            }
+            transactionCode: ''
         };
     }
 
     showApp = () => {
-        Promise.resolve(this.setState({ show: 'app', open: false }))
+        Promise.resolve(this.setState({show: 'app', open: false}))
     };
 
     showLoginView = () => {
-        Promise.resolve(this.setState({ show: 'login', open: false }))
+        Promise.resolve(this.setState({show: 'login', open: false}))
     };
 
-    handleLogin = (transactionCode, userName) => {
+    handleLoginView = (transactionCode, userName) => {
         let appView = () => {
             this.showApp();
-        }
-        Promise.resolve(this.setState({ loginUser: userName }))
+        };
+        Promise.resolve(this.setState({loginUser: userName}))
             .then(() => {
                 appView();
             })
-    }
+    };
 
-    handleSelectedTransactionCode = (code) => {
+    handleSplashView = (code) => {
         let nextView = () => {
             this.showLoginView();
-        }
-        Promise.resolve(this.setState({ transactionCode: code }))
+        };
+        Promise.resolve(this.setState({transactionCode: code}))
             .then(() => {
                 nextView();
             })
@@ -57,17 +48,17 @@ class Home extends Component {
         let content = null;
 
         switch (this.state.show) {
+            case 'splash':
+                content = (<SplashView viewHandler={this.handleSplashView}/>);
+                break;
             case 'login':
-                content = (<LoginView viewHandler={this.handleLogin} />);
+                content = (<LoginView viewHandler={this.handleLoginView}/>);
                 break;
             case 'app':
-                content = (<App />);
-                break;
-            case 'splash':
-                content = (<SplashView viewHandler={this.handleSelectedTransactionCode} />)
+                content = (<App viewHandler={this.handleAppView}/>);
                 break;
             default:
-                content = (<SplashView viewHandler={this.handleSelectedTransactionCode} />);
+                content = (<SplashView viewHandler={this.handleSplashView}/>);
         }
 
         return (
@@ -75,6 +66,7 @@ class Home extends Component {
                 {content}
             </div>
         );
+
     }
 
 }

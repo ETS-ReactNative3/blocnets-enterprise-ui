@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Paper from '@material-ui/core/Paper';
-import { Toolbar, ToolbarTitle } from 'material-ui/Toolbar';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import animatedLogo from '../Blocnets-Logo-Animated-Version-2.mp4';
+import { Toolbar, ToolbarTitle } from 'material-ui/Toolbar';
+import Button from "@material-ui/core/Button/Button";
 import ButtonBase from '@material-ui/core/ButtonBase';
 import BlueHex from '../img/Hexagon_Blue.svg';
 import RedHex from '../img/Hexagon_Red.svg';
 import GreenHex from '../img/Hexagon_Green.svg';
-import Typography from '@material-ui/core/Typography';
-import Button from "@material-ui/core/Button/Button";
-import animatedLogo from '../Blocnets-Logo-Animated-Version-2.mp4';
+import {MuiThemeProvider} from "@material-ui/core";
 
 const paperStyle = {
     width: '100%',
@@ -20,32 +21,31 @@ const paperStyle = {
     borderRadius: '10 px'
 };
 
+const titleStyle = {
+    fontFamily: 'Inter UI, sans-serif',
+    fontStyle: 'normal',
+    fontSize: '28pt'
+};
+
+let viewWelcomeVideo = true;
+
 class SplashView extends Component {
 
     componentDidMount() {
-
-        setInterval(() => {
-            this.setState({ currentDateAndTime: new Date().toUTCString() })
-        }, 1000)
-
         setTimeout(
             function () {
-                this.setState({
-                    viewWelcomeVideo: false
-                });
+                viewWelcomeVideo = false;
             }
-                .bind(this),
-            10000);
+            , 10000);
+        setInterval(() => {
+            this.setState({ currentDateAndTime: new Date().toUTCString() })
+        }, 1000);
     }
 
     constructor(props) {
         super(props);
         this.state = {
-            currentDateAndTime: '',
-            code: 'SAR01',
-            show: null,
-            openDialog: false,
-            viewWelcomeVideo: true,
+            currentDateAndTime: ''
         };
     }
 
@@ -60,16 +60,17 @@ class SplashView extends Component {
 
                 .bind(this),
             1000);
-
-
     };
 
     render() {
 
         return (
 
-            this.state.viewWelcomeVideo ?
-                <div>
+            <div>
+
+                { viewWelcomeVideo ?
+
+                <div style={{padding: 24}}>
                     <Grid container spacing={24}>
                         <Paper elevation={24} style={paperStyle} zdepth={5}>
                             <div style={{ padding: 24 }}>
@@ -77,7 +78,7 @@ class SplashView extends Component {
                             <div style={{ padding: 24 }}>
                                 <Grid container spacing={24}>
                                     <Grid container item xs={12} justify="center">
-                                        <Typography style={{ "fontFamily": "Inter UI, sans-serif", "fontStyle": "normal", "fontSize": "28pt" }}>
+                                        <Typography style={titleStyle}>
                                             WELCOME TO BLOCNETS
                                         </Typography>
                                     </Grid>
@@ -96,26 +97,11 @@ class SplashView extends Component {
                             </div>
                         </Paper>
                     </Grid>
-                    <Grid container spacing={24}>
-                        <Grid item xs>
-                            <Typography align="center" style={{ "color": "white" }}>
-                                {this.state.currentDateAndTime}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs>
-                            <Typography align="center" style={{ "color": "white" }}>
-                                {this.state.currentDateAndTime}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs>
-                            <Typography align="center" style={{ "color": "white" }}>
-                                {this.state.currentDateAndTime}
-                            </Typography>
-                        </Grid>
-                    </Grid>
                 </div>
+
                 :
-                <div>
+
+                <div style={{padding: 24}}>
                     <Grid container spacing={24}>
                         <Paper elevation={24} style={paperStyle} zdepth={5}>
                             <Paper elevation={24} zdepth={5} style={{ 'borderRadius': '10px' }}>
@@ -314,24 +300,42 @@ class SplashView extends Component {
                             </Grid>
                         </Paper>
                     </Grid>
+                </div>
+
+                }
+
+                <div style={{padding: 48}}>
                     <Grid container spacing={24}>
-                        <Grid item xs>
-                            <Typography align="center" style={{ "color": "white" }}>
-                                {this.state.currentDateAndTime}
+                        <Grid container item xs justify="center">
+                            <Typography>
+                                <span style={{ "color": "white" }}>{this.state.currentDateAndTime ? this.state.currentDateAndTime : "Loading..."}</span>
                             </Typography>
                         </Grid>
-                        <Grid item xs>
-                            <Typography align="center" style={{ "color": "white" }}>
-                                Network Status: <Typography align="center" style={{ "color": "orange" }}>Full Use</Typography>
+                        <Grid container item xs justify="center">
+                            <Typography>
+                                <span style={{ "color": "white" }}>Network Status: </span>
+                                <span style={{ "color": "#ffb000" }}>Full Use</span>
                             </Typography>
                         </Grid>
-                        <Grid item xs>
-                            <Typography align="center" style={{ "color": "white" }}>
-                                Your Status:  <Typography align="center" style={{ "color": "orange" }}>Connected to Network</Typography>
+                        <Grid container item xs justify="center">
+                            <Typography>
+                                <span style={{ "color": "white" }}>Your Status: </span>
+                                <span style={{ "color": "#ffb000" }}>Attached to Network</span>
                             </Typography>
                         </Grid>
                     </Grid>
                 </div>
+                <div style={{padding: 24}}>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={12} justify="left">
+                            <Typography>
+                                <span style={{ "color": "white" }}>Copyright 2018. ALL RIGHTS RESERVED.</span>
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                </div>
+
+            </div>
         );
     }
 }
@@ -341,6 +345,5 @@ const mapStateToProps = (state) => {
         data: state
     };
 };
-
 
 export default connect(mapStateToProps)(SplashView);
