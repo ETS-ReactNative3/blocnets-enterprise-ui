@@ -42,10 +42,10 @@ class Home extends Component {
         let appView = () => {
             this.showApp();
         }
-        Promise.resolve(this.setState({ loginUser: username}))
-        .then(() =>{
-            appView();
-        })
+        Promise.resolve(this.setState({ loginUser: username }))
+            .then(() => {
+                appView();
+            })
     }
 
     handleSelectedTransactionCode = (code) => {
@@ -64,7 +64,7 @@ class Home extends Component {
 
         switch (this.state.show) {
             case 'login':
-                content = (<LoginView viewHandler={this.handleUsername}/>);
+                content = (<LoginView viewHandler={this.handleUsername} />);
                 break;
             case 'app':
                 content = (<App />);
@@ -76,7 +76,9 @@ class Home extends Component {
         }
 
         return (
+            <div>
                 {content}
+            </div>
         );
     }
 
