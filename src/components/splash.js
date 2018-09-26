@@ -15,12 +15,12 @@ import paperLogo from '../blocnets-logo.png';
 import blocnetsLogo from "../blocknetwhite-1.png";
 
 const paperStyle = {
-    width: "100%",
+    width: '100%',
     height: '85%',
     margin: '5%',
     textAlign: 'center',
     display: 'inline-block',
-    borderRadius: 10 + 'px'
+    borderRadius: '10 px'
 };
 
 class SplashView extends Component {
@@ -41,7 +41,7 @@ class SplashView extends Component {
 
         return (
             <div>
-                <Grid container spacing={24} style={{ 'borderRadius': '10px' }}>
+                <Grid container spacing={24}>
                     <Paper elevation={24} style={paperStyle} zdepth={5}>
                         <Paper elevation={24} zdepth={5} style={{ 'borderRadius': '10px' }}>
                             <Toolbar style={{ "justifyContent": "center", "height": 170, 'backgroundColor': 'white', 'borderRadius': '10px' }} elevation={24}>
