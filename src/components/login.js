@@ -1,36 +1,30 @@
-import React, { Component } from 'react';
-import {
-    BrowserRouter as Router,
-    Route
-} from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import { Toolbar, ToolbarTitle } from 'material-ui/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import TextField from 'material-ui/TextField';
-import Button from '@material-ui/core/Button';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import yellow from '@material-ui/core/colors/yellow';
-import Dialog from '@material-ui/core/Dialog';
-import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
-import Snackbar from 'material-ui/Snackbar';
+import React, {Component} from 'react';
 import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import UserIcon from '@material-ui/icons/AccountCircleRounded';
-import { getEachMessageForUserID } from '../redux/actions/user.message.array.action';
-import { connect } from 'react-redux';
+import Paper from '@material-ui/core/Paper';
+import TextField from 'material-ui/TextField';
+import logo from '../icon-only.jpg';
+import Button from '@material-ui/core/Button';
+import {connect} from 'react-redux';
+import {getEachMessageForUserID} from '../redux/actions/user.message.array.action';
 
 const paperStyle = {
-    width: "70%",
+    width: '100%',
     height: '85%',
     margin: '5%',
     textAlign: 'center',
     display: 'inline-block',
+    borderRadius: '10 px'
+};
+
+const logoStyle = {
+    height: '55px',
+    width: '60px',
+    borderRadius: '8px',
+    paddingTop: '5px'
+};
+
+const imageStyle = {
+    height: '50px'
 };
 
 class LoginView extends Component {
@@ -38,63 +32,97 @@ class LoginView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            open: false,
-            show: null,
             transactionCode: '',   // The variable that stores which module should render after login
-            username: '',
-            snackbar: {
-                autoHideDuration: 2000,
-                message: '',
-                open: false,
-                sbColor: 'black'
-            }
+            userName: '',
+            passwordEntered: false
         };
     }
 
     handleUsername = (event) => {
-        Promise.resolve(this.setState({ username: event }))
-    }
+        this.setState({userName: event.target.value});
+    };
+
+    handlePassword = (event) => {
+        this.setState({passwordEntered: false});
+        if (event.target.value) {
+            this.setState({passwordEntered: true});
+        }
+    };
 
     handleView = () => {
-        this.props.viewHandler(this.state.code, this.state.username)
-    }
+        this.props.viewHandler(this.state.transactionCode, this.state.userName);
+    };
 
     render() {
+
+        const formComplete = this.state.userName && this.state.passwordEntered;
+
         return (
-            <Paper className="White-theme" elevation={24} style={paperStyle} zDepth={5}>
-                <Toolbar style={{ "justifyContent": "center", "height": 80 }}>
-                    <ToolbarTitle
-                        text={"Hello World"}
-                    />
-                </Toolbar>
+            <div>
                 <Grid container spacing={24}>
-                    <TextField
-                        onChange={this.handleUsername}
-                        type="text"
-                        name="Username"
-                        floatingLabelText="Username"
-                        floatingLabelFixed={true}
-                        style={{ "float": "left", "textAlign": "left" }}
-                        hintText=""
-                    />
+                    <Paper elevation={24} style={paperStyle} zdepth={5}>
+                        <div style={{padding: 48}}>
+                        </div>
+                        <div style={{padding: 24}}>
+                            <Grid container spacing={24}>
+                                <Grid container item xs={12} justify="center">
+                                    <Paper style={logoStyle}>
+                                        <img src={logo} style={imageStyle} alt=""/>
+                                    </Paper>
+                                </Grid>
+                            </Grid>
+                        </div>
+                        <div style={{padding: 24}}>
+                            <Grid container spacing={24}>
+                                <Grid container item xs={12} justify="center">
+                                    <TextField
+                                        value={this.state.userName}
+                                        onChange={this.handleUsername}
+                                        type="text"
+                                        name="userName"
+                                        style={{"float": "left", "textAlign": "left"}}
+                                        hintText="User Name"
+                                    />
+                                </Grid>
+                            </Grid>
+                            <Grid container spacing={24}>
+                                <Grid container item xs={12} justify="center">
+                                    <TextField
+                                        onChange={this.handlePassword}
+                                        type="password"
+                                        name="password"
+                                        style={{"float": "left", "textAlign": "left"}}
+                                        hintText="Password"
+                                    />
+                                </Grid>
+                            </Grid>
+                            <br/>
+                            {formComplete ?
+                                <Grid container spacing={24}>
+                                    <Grid container item xs={12} justify="center">
+                                        <Button type="submit" value="submit" variant="contained"
+                                                onClick={this.handleView} style={{"backgroundColor": "#ffb000"}}>
+                                                Log In
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                                :
+                                <Grid container spacing={24}>
+                                    <Grid container item xs={12} justify="center">
+                                        <Button type="submit" value="submit" variant="contained"
+                                                onClick={this.handleView} style={{"backgroundColor": "#898989"}}>
+                                                Log In
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            }
+                            <div style={{padding: 48}}>
+                            </div>
+                        </div>
+                    </Paper>
                 </Grid>
-                <Grid container spacing={24}>
-                    <TextField
-                        type="text"
-                        label="Password"
-                        name="Password"
-                        type="password"
-                        autoComplete="current-password"
-                        floatingLabelText="Password"
-                        floatingLabelFixed={true}
-                        style={{ "float": "left", "textAlign": "left" }}
-                        hintText=""
-                    />
-                </Grid>
-                <IconButton aria-label="" onClick={this.handleView}>
-                    <UserIcon />
-                </IconButton>
-            </Paper>
+            </div>
+
         );
     }
 }

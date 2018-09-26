@@ -15,20 +15,20 @@ export function resolver(error) {
                     }
                     case 404: {
                         if (error.response.config.method === 'head') {
-                            alert("Validated ID: Does not exist: " + error.response.config.url);
+                            //alert("Validated ID: Does not exist: " + error.response.config.url);
                             return error.response;
                         } else if (error.response.config.method === 'get') {
-                            alert("Error 404: Attempted to GET a nonexistent path: " + error.response.config.url);
+                            //alert("Error 404: Attempted to GET a nonexistent path: " + error.response.config.url);
                             return error.response;
                         } else if (error.response.config.method === 'put') {
-                            alert("Error 404: Unable to UPDATE path: " + error.response.config.url);
+                            //alert("Error 404: Unable to UPDATE path: " + error.response.config.url);
                             return error.response;
                         }
                         break;
                     }
                     case 409: {
                         if (error.response.config.method === 'post') {
-                            alert("Error 409: Cannot CREATE data that already exists: " + error.response.config.url)
+                            //alert("Error 409: Cannot CREATE data that already exists: " + error.response.config.url)
                             return error.response;
                         }
                         break;
