@@ -308,18 +308,15 @@ class SplashView extends Component {
                         </Grid>
                     </Grid>
                 </div>
-                <footer style={{ 'position': 'absolute', 'bottom': '0' }}>
-                    <div style={{ padding: 24 }}>
-                        <Grid container spacing={24}>
-                            <Grid container item xs={12} justify="left">
-                                <Typography>
-                                    <span style={{ "color": "white" }}>Copyright 2018. ALL RIGHTS RESERVED.</span>
-                                </Typography>
-                            </Grid>
+                <div style={{padding: 24}}>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={12} justify="left">
+                            <Typography>
+                                <span style={{"color": "white"}}>Copyright 2018. ALL RIGHTS RESERVED.</span>
+                            </Typography>
                         </Grid>
-                    </div>
-                </footer>
-
+                    </Grid>
+                </div>
             </div>
         );
     }
