@@ -278,7 +278,7 @@ class App extends Component {
         this.setState({
             show: 'trackandtraceview',
             open: false,
-            transactionCode: 'TT01'
+            transactionCode: 'TAT01'
         });
     };
 
@@ -386,7 +386,7 @@ class App extends Component {
                             this.setState({
                                 show: 'trackandtraceresultsview',
                                 open: false,
-                                transactionCode: 'TT02',
+                                transactionCode: 'TAT02',
                                 showProgressLogo: false,
                                 tree: tree,
                                 snackbar: {
@@ -400,7 +400,7 @@ class App extends Component {
                             this.setState({
                                 show: 'trackandtraceresultsview',
                                 open: false,
-                                transactionCode: 'TT02',
+                                transactionCode: 'TAT02',
                                 showProgressLogo: false,
                                 tree: [],
                                 snackbar: {
@@ -416,7 +416,7 @@ class App extends Component {
                 this.setState({
                     show: 'trackandtraceresultsview',
                     open: false,
-                    transactionCode: 'TT02',
+                    transactionCode: 'TAT02',
                     showProgressLogo: false,
                     tree: [],
                     snackbar: {
@@ -431,7 +431,7 @@ class App extends Component {
             this.setState({
                 show: 'trackandtraceresultsview',
                 open: false,
-                transactionCode: 'TT02',
+                transactionCode: 'TAT02',
                 showProgressLogo: false,
                 tatData: [],
                 tree: [],
@@ -476,7 +476,7 @@ class App extends Component {
             this.setState({
                 show: 'trackandtraceresultsview',
                 open: false,
-                transactionCode: 'TT02',
+                transactionCode: 'TAT02',
                 showProgressLogo: false,
                 tatData: [
                     createData('Material ID', shippingData.materialID),
@@ -504,7 +504,7 @@ class App extends Component {
             this.setState({
                 show: 'trackandtraceresultsview',
                 open: false,
-                transactionCode: 'TT02',
+                transactionCode: 'TAT02',
                 showProgressLogo: false,
                 tatData: [],
                 tree: [],
