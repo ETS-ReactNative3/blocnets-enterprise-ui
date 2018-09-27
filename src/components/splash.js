@@ -32,7 +32,7 @@ class SplashView extends Component {
             function () {
                 viewWelcomeVideo = false;
             }
-            , 10000);
+            , 6000);
         setInterval(() => {
             this.setState({ currentDateAndTime: new Date().toUTCString() })
         }, 1000);
@@ -46,7 +46,7 @@ class SplashView extends Component {
     }
 
     handleView = (event, transactionCode) => {
-        this.props.viewHandler('login', false, transactionCode, '');
+        this.props.viewHandler('login', false, transactionCode, this.props.userName);
     };
 
     render() {

@@ -532,7 +532,7 @@ class App extends Component {
         }
     };
 
-    handleSplash = (refreshBadgeContent) => {
+    handleSplash = () => {
         this.props.viewHandler('splash', false, '', this.props.userName);
     };
 
