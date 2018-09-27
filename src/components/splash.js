@@ -72,9 +72,7 @@ class SplashView extends Component {
                                 <div style={{ padding: 24 }}>
                                     <Grid container spacing={24}>
                                         <Grid container item xs={12} justify="center">
-                                            <video width="320" height="240" autoPlay controls loop>
-                                                <source src={animatedLogo} type="video/mp4" />
-                                            </video>
+                                            <img src={animatedLogo} alt=""/>
                                         </Grid>
                                     </Grid>
                                 </div>

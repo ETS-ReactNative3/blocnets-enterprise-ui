@@ -687,25 +687,52 @@ class App extends Component {
                         onClick={this.handleToggle}
                         title={<img src={logo} style={appBarLogoStyle} alt="Blocnets"/>}
                     />
-                    <MenuItem id="showBillOfMaterialsId" onClick={this.showBillOfMaterials}>Master Material
-                        Data</MenuItem>
+                    <MenuItem id="showBillOfMaterialsId" onClick={this.showBillOfMaterials} style={{"textAlign": "left"}}>
+                        <span><i className="material-icons">list_alt</i></span>
+                        <span>   Master Material Data   </span>
+                    </MenuItem>
                     <hr/>
-                    <MenuItem id="showShippingViewId" onClick={this.showShippingView}>Shipping</MenuItem>
+                    <MenuItem id="showShippingViewId" onClick={this.showShippingView} style={{"textAlign": "left"}}>
+                        <span><i className="material-icons">local_shipping</i></span>
+                        <span>   Shipping   </span>
+
+                    </MenuItem>
                     <hr/>
-                    <MenuItem id="showReceivingViewId" onClick={this.showReceivingView}>Receiving</MenuItem>
+                    <MenuItem id="showReceivingViewId" onClick={this.showReceivingView} style={{"textAlign": "left"}}>
+                        <span><i className="material-icons">domain</i></span>
+                        <span>   Receiving   </span>
+
+                    </MenuItem>
                     <hr/>
-                    <MenuItem id="showStartProductionViewId" onClick={this.showStartProductionView}>Start
-                        Production Tracking</MenuItem>
+                    <MenuItem id="showStartProductionViewId" onClick={this.showStartProductionView} style={{"textAlign": "left"}}>
+                        <span><i className="material-icons">play_arrow</i></span>
+                        <span>   Start Production Tracking   </span>
+
+                    </MenuItem>
                     <hr/>
-                    <MenuItem id="showCompleteProductionViewId" onClick={this.showCompleteProductionView}>Stop
-                        Production Tracking</MenuItem>
+                    <MenuItem id="showCompleteProductionViewId" onClick={this.showCompleteProductionView} style={{"textAlign": "left"}}>
+                        <span><i className="material-icons">stop</i></span>
+                        <span>   Stop Production Tracking   </span>
+
+                    </MenuItem>
                     <hr/>
-                    <MenuItem id="showTrackAndTraceViewId" onClick={this.showTrackAndTraceView}>Track and
-                        Trace</MenuItem>
+                    <MenuItem id="showTrackAndTraceViewId" onClick={this.showTrackAndTraceView} style={{"textAlign": "left"}}>
+                        <span><i className="material-icons">location_on</i></span>
+                        <span>   Track and Trace   </span>
+
+                    </MenuItem>
                     <hr/>
-                    <MenuItem id="showSendDocumentViewId" onClick={this.showSendDocumentView}>Send a Document</MenuItem>
+                    <MenuItem id="showSendDocumentViewId" onClick={this.showSendDocumentView} style={{"textAlign": "left"}}>
+                        <span><i className="material-icons">send</i></span>
+                        <span>   Send a Document   </span>
+
+                    </MenuItem>
                     <hr/>
-                    <MenuItem id="showSendDocumentViewId" onClick={this.showSendDocumentView}>Save a Document</MenuItem>
+                    <MenuItem id="showSendDocumentViewId" onClick={this.showSendDocumentView} style={{"textAlign": "left"}}>
+                        <span><i className="material-icons">cloud_upload</i></span>
+                        <span>   Save a Document   </span>
+
+                    </MenuItem>
                 </Drawer>
                 {/* Page View with content loaded */}
                 <Paper className="White-theme" style={paperStyle} zDepth={5}>
