@@ -5,6 +5,8 @@ import Typography from '@material-ui/core/Typography';
 import animatedLogo from '../blocnets.gif';
 import Toolbar from 'material-ui/Toolbar';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import Tooltip from '@material-ui/core/Tooltip';
+
 
 const paperStyle = {
     width: '100%',
@@ -72,7 +74,7 @@ class SplashView extends Component {
                                 <div style={{ padding: 24 }}>
                                     <Grid container spacing={24}>
                                         <Grid container item xs={12} justify="center">
-                                            <img src={animatedLogo} alt=""/>
+                                            <img src={animatedLogo} alt="" />
                                         </Grid>
                                     </Grid>
                                 </div>
@@ -111,42 +113,38 @@ class SplashView extends Component {
                                     <Grid container spacing={24}>
                                         <Grid item xs>
                                             <ul id="grid" className="clear">
-                                                <li>
-                                                    <div className="hexagon">
-                                                    </div>
-                                                </li>
+                                                <li></li>
                                                 <li>
                                                     <div className="hexagon-blue">
-                                                        <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                            onClick={event => this.handleView(event, 'DRE01')}>
-                                                            Send a Document
+                                                        <Tooltip title="Send a Document">
+                                                            <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
+                                                                onClick={event => this.handleView(event, 'DRE01')}>
+                                                                <span>
+                                                                    <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>send</i>
+                                                                </span>
                                                             </ButtonBase>
+                                                        </Tooltip>
                                                     </div>
                                                 </li>
-                                                <li>
-                                                    <div className="hexagon">
-                                                    </div>
-                                                </li>
+                                                <li></li>
                                             </ul>
                                         </Grid>
                                         <Grid item xs>
                                             <ul id="grid" className="clear">
-                                                <li>
-                                                    <div className="hexagon">
-                                                    </div>
-                                                </li>
+                                                <li></li>
                                                 <li>
                                                     <div className="hexagon-red">
-                                                        <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                            onClick={event => this.handleView(event, 'DRE02')}>
-                                                            Preview Pending Network Actions
-                                                        </ButtonBase>
+                                                        <Tooltip title="Review Pending Network Actions">
+                                                            <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
+                                                                onClick={event => this.handleView(event, 'DRE02')}>
+                                                                <span>
+                                                                    <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>notification_important</i>
+                                                                </span>
+                                                            </ButtonBase>
+                                                        </Tooltip>
                                                     </div>
                                                 </li>
-                                                <li>
-                                                    <div className="hexagon">
-                                                    </div>
-                                                </li>
+                                                <li></li>
                                             </ul>
                                         </Grid>
                                         <Grid item xs>
@@ -154,10 +152,14 @@ class SplashView extends Component {
                                                 <li></li>
                                                 <li>
                                                     <div className="hexagon-green">
-                                                        <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                            onClick={event => this.handleView(event, 'TT02')}>
-                                                            Track a Shipment
-                                                        </ButtonBase>
+                                                        <Tooltip title="Track a Shipment">
+                                                            <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
+                                                                onClick={event => this.handleView(event, 'TT02')}>
+                                                                <span>
+                                                                    <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>location_on</i>
+                                                                </span>
+                                                            </ButtonBase>
+                                                        </Tooltip>
                                                     </div>
                                                 </li>
                                                 <li></li>
@@ -169,19 +171,27 @@ class SplashView extends Component {
                                             <ul id="grid" className="clear">
                                                 <li>
                                                     <div className="hexagon-blue">
-                                                        <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                            onClick={event => this.handleView(event, 'DRE01')}>
-                                                            Save Production Data
-                                                        </ButtonBase>
+                                                        <Tooltip title="Save Production Data">
+                                                            <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
+                                                                onClick={event => this.handleView(event, 'DRE01')}>
+                                                                <span>
+                                                                    <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>folder_shared</i>
+                                                                </span>
+                                                            </ButtonBase>
+                                                        </Tooltip>
                                                     </div>
                                                 </li>
                                                 <li></li>
                                                 <li>
                                                     <div className="hexagon-blue">
-                                                        <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                            onClick={event => this.handleView(event, 'DRE01')}>
-                                                            Save a Document
-                                                        </ButtonBase>
+                                                        <Tooltip title="Save a Document">
+                                                            <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
+                                                                onClick={event => this.handleView(event, 'DRE01')}>
+                                                                <span>
+                                                                    <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>cloud_upload</i>
+                                                                </span>
+                                                            </ButtonBase>
+                                                        </Tooltip>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -190,19 +200,27 @@ class SplashView extends Component {
                                             <ul id="grid" className="clear">
                                                 <li>
                                                     <div className="hexagon-red">
-                                                        <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                            onClick={event => this.handleView(event, 'TT02')}>
-                                                            Search for Material
-                                                        </ButtonBase>
+                                                        <Tooltip title="Search for Material">
+                                                            <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
+                                                                onClick={event => this.handleView(event, 'TT02')}>
+                                                                <span>
+                                                                    <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>search</i>
+                                                                </span>
+                                                            </ButtonBase>
+                                                        </Tooltip>
                                                     </div>
                                                 </li>
                                                 <li></li>
                                                 <li>
                                                     <div className="hexagon-red">
-                                                        <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                            onClick={event => this.handleView(event, 'eBOM01')}>
-                                                            Material Master Data
-                                                        </ButtonBase>
+                                                        <Tooltip title="Material Master Data">
+                                                            <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
+                                                                onClick={event => this.handleView(event, 'eBOM01')}>
+                                                                <span>
+                                                                    <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>list_alt</i>
+                                                                </span>
+                                                            </ButtonBase>
+                                                        </Tooltip>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -211,19 +229,27 @@ class SplashView extends Component {
                                             <ul id="grid" className="clear">
                                                 <li>
                                                     <div className="hexagon-green">
-                                                        <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                            onClick={event => this.handleView(event, 'PRD01')}>
-                                                            Start Production Tracking
-                                                        </ButtonBase>
+                                                        <Tooltip title="Start Production Tracking">
+                                                            <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
+                                                                onClick={event => this.handleView(event, 'PRD01')}>
+                                                                <span>
+                                                                    <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>play_arrow</i>
+                                                                </span>
+                                                            </ButtonBase>
+                                                        </Tooltip>
                                                     </div>
                                                 </li>
                                                 <li></li>
                                                 <li>
                                                     <div className="hexagon-green">
-                                                        <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                            onClick={event => this.handleView(event, 'PRD02')}>
-                                                            End Production Tracking
-                                                        </ButtonBase>
+                                                        <Tooltip title="End Production Tracking">
+                                                            <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
+                                                                onClick={event => this.handleView(event, 'PRD02')}>
+                                                                <span>
+                                                                    <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>stop</i>
+                                                                </span>
+                                                            </ButtonBase>
+                                                        </Tooltip>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -237,10 +263,14 @@ class SplashView extends Component {
                                                 <li></li>
                                                 <li>
                                                     <div className="hexagon-red">
-                                                        <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                            onClick={event => this.handleView(event, 'TT02')}>
-                                                            View Material History
-                                                        </ButtonBase>
+                                                        <Tooltip title="View Material History">
+                                                            <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
+                                                                onClick={event => this.handleView(event, 'TT02')}>
+                                                                <span>
+                                                                    <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>av_timer</i>
+                                                                </span>
+                                                            </ButtonBase>
+                                                        </Tooltip>
                                                     </div>
                                                 </li>
                                                 <li></li>
