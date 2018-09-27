@@ -36,9 +36,14 @@ class LoginView extends Component {
 
     componentDidMount() {
         setInterval(() => {
-            this.setState({currentDateAndTime: new Date().toUTCString()})
-        }, 1000)
+            !this.isCancelled &&
+            this.setState({ currentDateAndTime: new Date().toUTCString() })
+        }, 1000);
     }
+
+    componentWillUnmount() {
+        this.isCancelled = true;
+    };
 
     constructor(props) {
         super(props);

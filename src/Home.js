@@ -3,6 +3,8 @@ import './App.css';
 import SplashView from './components/splash';
 import LoginView from './components/login';
 import App from './App';
+import { authenticate } from './redux/actions/authentication.action';
+import connect from "react-redux/es/connect/connect";
 
 class Home extends Component {
 
@@ -15,6 +17,10 @@ class Home extends Component {
             transactionCode: '',
             userName: ''
         };
+    }
+
+    componentDidMount() {
+        this.props.authenticate();
     }
 
     handleSplashView = (show, open, transactionCode, userName) => {
@@ -146,4 +152,16 @@ class Home extends Component {
 
 }
 
-export default (Home);
+const mapStateToProps = (state) => {
+    return {
+        data: state
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        authenticate: () => dispatch(authenticate())
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

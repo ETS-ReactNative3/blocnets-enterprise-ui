@@ -4,7 +4,6 @@ import {
     BrowserRouter as Router,
     Route
 } from 'react-router-dom';
-import { authenticate } from './redux/actions/authentication.action';
 import { connect } from 'react-redux';
 import TrackAndTraceResultsView from './components/track-and-trace/views/track-and-trace.results.view';
 import DocumentDashboardView
@@ -102,7 +101,6 @@ class App extends Component {
 
     /* Dev Note: Will automatically fire the prop actions, or http request, once component mounts */
     componentDidMount() {
-        this.props.authenticate();
         Promise.resolve(this.props.getEachMessageForUserID(this.props.userName))
             .then(() => {
                 if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
@@ -806,7 +804,6 @@ const mapStateToProps = (state) => {
 // This way, we can call our action creator by doing this.props.authenticate();
 const mapDispatchToProps = (dispatch) => {
     return {
-        authenticate: () => dispatch(authenticate()),
         getBillOfMaterialsByMaterialID: (url) => dispatch(getBillOfMaterialsByMaterialID(url)),
         getBillOfMaterialsByMaterialName: (url) => dispatch(getBillOfMaterialsByMaterialName(url)),
         getBillOfMaterialsByMaterialDesc: (url) => dispatch(getBillOfMaterialsByMaterialDesc(url)),
