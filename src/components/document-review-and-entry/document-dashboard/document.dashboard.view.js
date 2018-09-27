@@ -74,7 +74,7 @@ TableHeader.propTypes = {
 class DocumentDashboardView extends React.Component {
 
     componentDidMount() {
-        Promise.resolve(this.props.getEachMessageForUserID('BadData'))
+        Promise.resolve(this.props.getEachMessageForUserID(this.props.userName))
             .then(() => {
                 if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
                     this.setState({

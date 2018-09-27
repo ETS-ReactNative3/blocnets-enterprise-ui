@@ -9,38 +9,72 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            show: 'home',
+            show: 'splash',
+            showApp: '',
             open: false,
-            transactionCode: ''
+            transactionCode: '',
+            userName: ''
         };
     }
 
-    showApp = () => {
-        Promise.resolve(this.setState({show: 'app', open: false}))
+    handleSplashView = (show, open, transactionCode, userName) => {
+        this.setState({
+            show: show,
+            showApp: '',
+            open: open,
+            transactionCode: transactionCode,
+            userName: userName
+        });
     };
 
-    showLoginView = () => {
-        Promise.resolve(this.setState({show: 'login', open: false}))
-    };
-
-    handleLoginView = (transactionCode, userName) => {
-        let appView = () => {
-            this.showApp();
-        };
-        Promise.resolve(this.setState({loginUser: userName}))
-            .then(() => {
-                appView();
-            })
-    };
-
-    handleSplashView = (code) => {
-        let nextView = () => {
-            this.showLoginView();
-        };
-        Promise.resolve(this.setState({transactionCode: code}))
-            .then(() => {
-                nextView();
-            })
+    handleLoginView = (show, open, transactionCode, userName) => {
+        if (transactionCode === 'TT02') {
+            this.setState({
+                showApp: 'home'
+            });
+        } else if (transactionCode === 'DRE02') {
+            this.setState({
+                showApp: 'home'
+            });
+        } else if (transactionCode === 'eBOM01') {
+            this.setState({
+                showApp: 'billofmaterials'
+            });
+        } else if (transactionCode === 'SAR01') {
+            this.setState({
+                showApp: 'shippingview'
+            });
+        } else if (transactionCode === 'SAR02') {
+            this.setState({
+                showApp: 'receivingview'
+            });
+        } else if (transactionCode === 'PRD01') {
+            this.setState({
+                showApp: 'startproductionview'
+            });
+        } else if (transactionCode === 'PRD02') {
+            this.setState({
+                showApp: 'completeproductionview'
+            });
+        } else if (transactionCode === 'TT01') {
+            this.setState({
+                showApp: 'trackandtraceview'
+            });
+        } else if (transactionCode === 'DRE01') {
+            this.setState({
+                showApp: 'senddocumentview'
+            });
+        } else {
+            this.setState({
+                showApp: 'home'
+            });
+        }
+        this.setState({
+            show: show,
+            open: open,
+            transactionCode: transactionCode,
+            userName: userName
+        });
     };
 
     render() {
@@ -49,16 +83,42 @@ class Home extends Component {
 
         switch (this.state.show) {
             case 'splash':
-                content = (<SplashView viewHandler={this.handleSplashView}/>);
+                content = (
+                    <SplashView
+                        viewHandler={this.handleSplashView}
+                        show={this.state.show}
+                        showApp={this.state.showApp}
+                        open={this.state.open}
+                        transactionCode={this.state.transactionCode}
+                        userName={this.state.userName}
+                    />
+                );
                 break;
             case 'login':
-                content = (<LoginView viewHandler={this.handleLoginView}/>);
+                content = (
+                    <LoginView
+                        viewHandler={this.handleLoginView}
+                        show={this.state.show}
+                        showApp={this.state.showApp}
+                        open={this.state.open}
+                        transactionCode={this.state.transactionCode}
+                        userName={this.state.userName}
+                    />);
                 break;
             case 'app':
-                content = (<App viewHandler={this.handleAppView}/>);
+                content = (
+                    <App
+                        show={this.state.show}
+                        showApp={this.state.showApp}
+                        open={this.state.open}
+                        transactionCode={this.state.transactionCode}
+                        userName={this.state.userName}
+                    />);
                 break;
             default:
-                content = (<SplashView viewHandler={this.handleSplashView}/>);
+                content = (
+                    <SplashView
+                    />);
         }
 
         return (

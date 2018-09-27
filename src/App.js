@@ -102,19 +102,19 @@ class App extends Component {
     /* Dev Note: Will automatically fire the prop actions, or http request, once component mounts */
     componentDidMount() {
         this.props.authenticate();
-        Promise.resolve(this.props.getEachMessageForUserID('BadData'))
+        Promise.resolve(this.props.getEachMessageForUserID(this.props.userName))
             .then(() => {
                 if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
                     this.setState({badgeContent: this.props.data.umaReducer.getEachMessageForUserIDSuccess.length})
                 } else {
                     this.setState({badgeContent: 0})
                 }
-            })
+            });
         setInterval(() => {
             this.setState({currentDateAndTime: new Date().toUTCString()})
-        }, 1000)
+        }, 1000);
         setInterval(() => {
-            Promise.resolve(this.props.getEachMessageForUserID('BadData'))
+            Promise.resolve(this.props.getEachMessageForUserID(this.props.userName))
                 .then(() => {
                     if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
                         this.setState({badgeContent: this.props.data.umaReducer.getEachMessageForUserIDSuccess.length})
@@ -128,9 +128,10 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            show: 'home',
-            open: false,
-            transactionCode: 'DRE02',
+            show: this.props.showApp,
+            open: this.props.open,
+            transactionCode: this.props.transactionCode,
+            userName: this.props.userName,
             showProgressLogo: false,
             badgeContent: 0,
             searchKey: '',
@@ -567,7 +568,10 @@ class App extends Component {
                 content = (
                     <Router>
                         <div>
-                            <Route exact path="/" component={DocumentDashboardView}/>
+                            <Route
+                                path="/"
+                                render={(props) => <DocumentDashboardView {...props} userName={this.state.userName}/>}
+                            />
                         </div>
                     </Router>);
         }
