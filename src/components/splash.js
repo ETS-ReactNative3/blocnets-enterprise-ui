@@ -34,9 +34,14 @@ class SplashView extends Component {
             }
             , 6000);
         setInterval(() => {
+            !this.isCancelled &&
             this.setState({ currentDateAndTime: new Date().toUTCString() })
         }, 1000);
     }
+
+    componentWillUnmount() {
+        this.isCancelled = true;
+    };
 
     constructor(props) {
         super(props);
