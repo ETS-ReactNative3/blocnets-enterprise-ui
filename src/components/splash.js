@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import animatedLogo from '../Blocnets-Logo-Animated-Version-2.mp4';
+import animatedLogo from '../blocnets.gif';
 import Toolbar from 'material-ui/Toolbar';
 import ButtonBase from '@material-ui/core/ButtonBase';
 
@@ -153,10 +153,7 @@ class SplashView extends Component {
                                         </Grid>
                                         <Grid item xs>
                                             <ul id="grid" className="clear">
-                                                <li>
-                                                    <div className="hexagon">
-                                                    </div>
-                                                </li>
+                                                <li></li>
                                                 <li>
                                                     <div className="hexagon-green">
                                                         <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
@@ -165,10 +162,7 @@ class SplashView extends Component {
                                                         </ButtonBase>
                                                     </div>
                                                 </li>
-                                                <li>
-                                                    <div className="hexagon">
-                                                    </div>
-                                                </li>
+                                                <li></li>
                                             </ul>
                                         </Grid>
                                     </Grid>
@@ -183,10 +177,7 @@ class SplashView extends Component {
                                                         </ButtonBase>
                                                     </div>
                                                 </li>
-                                                <li>
-                                                    <div className="hexagon">
-                                                    </div>
-                                                </li>
+                                                <li></li>
                                                 <li>
                                                     <div className="hexagon-blue">
                                                         <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
@@ -207,10 +198,7 @@ class SplashView extends Component {
                                                         </ButtonBase>
                                                     </div>
                                                 </li>
-                                                <li>
-                                                    <div className="hexagon">
-                                                    </div>
-                                                </li>
+                                                <li></li>
                                                 <li>
                                                     <div className="hexagon-red">
                                                         <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
@@ -231,10 +219,7 @@ class SplashView extends Component {
                                                         </ButtonBase>
                                                     </div>
                                                 </li>
-                                                <li>
-                                                    <div className="hexagon">
-                                                    </div>
-                                                </li>
+                                                <li></li>
                                                 <li>
                                                     <div className="hexagon-green">
                                                         <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
@@ -251,10 +236,7 @@ class SplashView extends Component {
                                         </Grid>
                                         <Grid item xs>
                                             <ul id="grid" className="clear">
-                                                <li>
-                                                    <div className="hexagon">
-                                                    </div>
-                                                </li>
+                                                <li></li>
                                                 <li>
                                                     <div className="hexagon-red">
                                                         <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
@@ -263,10 +245,7 @@ class SplashView extends Component {
                                                         </ButtonBase>
                                                     </div>
                                                 </li>
-                                                <li>
-                                                    <div className="hexagon">
-                                                    </div>
-                                                </li>
+                                                <li></li>
                                             </ul>
                                         </Grid>
                                         <Grid item xs>
