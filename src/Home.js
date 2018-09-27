@@ -18,13 +18,17 @@ class Home extends Component {
     }
 
     handleSplashView = (show, open, transactionCode, userName) => {
-        this.setState({
-            show: show,
-            showApp: '',
-            open: open,
-            transactionCode: transactionCode,
-            userName: userName
-        });
+        if (userName) {
+            this.handleLoginView('app', false, transactionCode, userName);
+        } else {
+            this.setState({
+                show: show,
+                showApp: '',
+                open: open,
+                transactionCode: transactionCode,
+                userName: userName
+            });
+        }
     };
 
     handleLoginView = (show, open, transactionCode, userName) => {
@@ -77,6 +81,16 @@ class Home extends Component {
         });
     };
 
+    handleAppView = (show, open, transactionCode, userName) => {
+        this.setState({
+            show: show,
+            showApp: '',
+            open: open,
+            transactionCode: transactionCode,
+            userName: userName
+        });
+    };
+
     render() {
 
         let content = null;
@@ -108,6 +122,7 @@ class Home extends Component {
             case 'app':
                 content = (
                     <App
+                        viewHandler={this.handleAppView}
                         show={this.state.show}
                         showApp={this.state.showApp}
                         open={this.state.open}

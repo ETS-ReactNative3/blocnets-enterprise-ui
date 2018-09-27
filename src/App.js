@@ -531,6 +531,10 @@ class App extends Component {
         }
     };
 
+    handleSplash = (refreshBadgeContent) => {
+        this.props.viewHandler('splash', false, '', this.props.userName);
+    };
+
     render() {
 
         let content = null;
@@ -587,7 +591,7 @@ class App extends Component {
                             <Grid item xs={3}>
                                 <ToolbarTitle
                                     text={<img src={logo} className="App-logo" alt="logo"/>}
-                                    alt="Blocnets"
+                                    alt="Blocnets" onClick={event => this.handleSplash()} style={{"cursor": "pointer"}}
                                 />
                             </Grid>
                             <Grid item xs={4}>
@@ -687,7 +691,8 @@ class App extends Component {
                         onClick={this.handleToggle}
                         title={<img src={logo} style={appBarLogoStyle} alt="Blocnets"/>}
                     />
-                    <MenuItem id="showBillOfMaterialsId" onClick={this.showBillOfMaterials} style={{"textAlign": "left"}}>
+                    <MenuItem id="showBillOfMaterialsId" onClick={this.showBillOfMaterials}
+                              style={{"textAlign": "left"}}>
                         <span><i className="material-icons">list_alt</i></span>
                         <span>   Master Material Data   </span>
                     </MenuItem>
@@ -704,31 +709,36 @@ class App extends Component {
 
                     </MenuItem>
                     <hr/>
-                    <MenuItem id="showStartProductionViewId" onClick={this.showStartProductionView} style={{"textAlign": "left"}}>
+                    <MenuItem id="showStartProductionViewId" onClick={this.showStartProductionView}
+                              style={{"textAlign": "left"}}>
                         <span><i className="material-icons">play_arrow</i></span>
                         <span>   Start Production Tracking   </span>
 
                     </MenuItem>
                     <hr/>
-                    <MenuItem id="showCompleteProductionViewId" onClick={this.showCompleteProductionView} style={{"textAlign": "left"}}>
+                    <MenuItem id="showCompleteProductionViewId" onClick={this.showCompleteProductionView}
+                              style={{"textAlign": "left"}}>
                         <span><i className="material-icons">stop</i></span>
                         <span>   Stop Production Tracking   </span>
 
                     </MenuItem>
                     <hr/>
-                    <MenuItem id="showTrackAndTraceViewId" onClick={this.showTrackAndTraceView} style={{"textAlign": "left"}}>
+                    <MenuItem id="showTrackAndTraceViewId" onClick={this.showTrackAndTraceView}
+                              style={{"textAlign": "left"}}>
                         <span><i className="material-icons">location_on</i></span>
                         <span>   Track and Trace   </span>
 
                     </MenuItem>
                     <hr/>
-                    <MenuItem id="showSendDocumentViewId" onClick={this.showSendDocumentView} style={{"textAlign": "left"}}>
+                    <MenuItem id="showSendDocumentViewId" onClick={this.showSendDocumentView}
+                              style={{"textAlign": "left"}}>
                         <span><i className="material-icons">send</i></span>
                         <span>   Send a Document   </span>
 
                     </MenuItem>
                     <hr/>
-                    <MenuItem id="showSendDocumentViewId" onClick={this.showSendDocumentView} style={{"textAlign": "left"}}>
+                    <MenuItem id="showSendDocumentViewId" onClick={this.showSendDocumentView}
+                              style={{"textAlign": "left"}}>
                         <span><i className="material-icons">cloud_upload</i></span>
                         <span>   Save a Document   </span>
 
