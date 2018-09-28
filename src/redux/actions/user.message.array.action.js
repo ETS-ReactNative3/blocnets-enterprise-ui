@@ -81,6 +81,13 @@ export function updateUserMessageDataByUserID(url, body) {
 }
 
 export function getEachMessageForUserID(user) {
+    const token = localStorage.getItem('Token');
+    const headers = {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'withCredentials': true
+    };
     return async (dispatch) => {
         dispatch({
             type: "LOADING_UMA_VIEW",
