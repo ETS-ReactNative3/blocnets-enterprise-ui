@@ -1,15 +1,7 @@
 import axios from 'axios';
 import config from '../config.json';
 import { resolver } from '../../services/callback.resolver';
-
-const token = localStorage.getItem('Token');
-
-const headers = {
-    'Authorization': 'Bearer ' + token,
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'withCredentials': true
-}
+import {tokenResolver} from "../../services/token.resolver";
 
 export function createDocumentEntryByUniqueID(url, body) {
     return async (dispatch) => {
@@ -17,6 +9,7 @@ export function createDocumentEntryByUniqueID(url, body) {
             type: "LOADING_DRE_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.post(config.chaincodes.Default + config.chaincodes.DRE + url, body, { headers })
             .then(() => {
                 return dispatch({
@@ -40,6 +33,7 @@ export function getDocumentEntryByUniqueID(url) {
             type: "LOADING_DRE_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.get(config.chaincodes.Default + config.chaincodes.DRE + url, { headers })
             .then((response) => {
                 return dispatch({
@@ -63,6 +57,7 @@ export function updateDocumentEntryByUniqueID(url, body) {
             type: "LOADING_DRE_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.put(config.chaincodes.Default + config.chaincodes.SAR + url, body, { headers })
             .then(() => {
                 return dispatch({

@@ -1,16 +1,7 @@
 import axios from 'axios';
 import config from '../config.json';
 import { resolver } from '../../services/callback.resolver';
-
-
-const token = localStorage.getItem('Token');
-
-const headers = {
-    'Authorization': 'Bearer ' + token,
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'withCredentials': true
-}
+import {tokenResolver} from "../../services/token.resolver";
 
 export function createShippingDataByShipmentID(url, body) {
     return async (dispatch) => {
@@ -18,6 +9,7 @@ export function createShippingDataByShipmentID(url, body) {
             type: "LOADING_SAR_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.post(config.chaincodes.Default + config.chaincodes.SAR + 'shipmentId=' + url, body, { headers })
             .then(() => {
                 return dispatch({
@@ -41,6 +33,7 @@ export function getShippingDataByShipmentID(url) {
             type: "LOADING_SAR_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'shipmentId=' + url, { headers })
             .then((response) => {
                 return dispatch({
@@ -64,6 +57,7 @@ export function updateShippingDataByShipmentID(url, body) {
             type: "LOADING_SAR_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.put(config.chaincodes.Default + config.chaincodes.SAR + 'shipmentId=' + url, body, { headers })
             .then(() => {
                 return dispatch({
@@ -87,6 +81,7 @@ export function createShippingDataByMaterialID(url, body) {
             type: "LOADING_SAR_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.post(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + url, body, { headers })
             .then(() => {
                 return dispatch({
@@ -110,6 +105,7 @@ export function getShippingDataByMaterialID(url) {
             type: "LOADING_SAR_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + url, { headers })
             .then((response) => {
                 return dispatch({
@@ -133,6 +129,7 @@ export function updateShippingDataByMaterialID(url, body) {
             type: "LOADING_SAR_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.put(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + url, body, { headers })
             .then(() => {
                 return dispatch({
@@ -163,6 +160,7 @@ export function getAndUpdateSARListByMaterialID(ListOfMaterialIDs, prdKey) {
             type: "LOADING_SAR_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         for (let i = 0; i < ListOfMaterialIDs.length; i++) {
             await axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + ListOfMaterialIDs[i], { headers })
                 .then(async (response) => {
@@ -206,6 +204,7 @@ export function syncSARDataAndBindKeys(payload) {
             type: "LOADING_SAR_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         if (payload.materialID && payload.shipmentID) {
 
             let materialKeyData = {

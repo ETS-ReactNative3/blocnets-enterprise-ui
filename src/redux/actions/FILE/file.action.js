@@ -1,15 +1,7 @@
 import axios from 'axios';
 import config from '../../config.json';
 import { resolver } from '../../../services/callback.resolver';
-
-const token = localStorage.getItem('Token');
-
-const headers = {
-    'Authorization': 'Bearer ' + token,
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'withCredentials': true
-}
+import {tokenResolver} from '../../../services/token.resolver';
 
 export function uploadFileByUserId(url, body) {
     return async (dispatch) => {
@@ -17,6 +9,7 @@ export function uploadFileByUserId(url, body) {
             type: "LOADING_FILE_VIEW",
             payload: true
         })
+        const headers = tokenResolver();
         if (body.file) {
             await axios.post(config.chaincodes.Default + config.chaincodes.FILE + url, body, { headers })
                 .then(() => {
@@ -42,7 +35,7 @@ export function retrieveFileByUserId(url) {
             type: "LOADING_FILE_VIEW",
             payload: true
         });
-
+        const headers = tokenResolver();
         await axios.get(config.chaincodes.Default + config.chaincodes.FILE + url, { headers })
             .then((response) => {
                 console.log(response.data);

@@ -1,15 +1,8 @@
 import axios from 'axios';
 import config from '../config.json';
 import { resolver } from '../../services/callback.resolver';
+import {tokenResolver} from "../../services/token.resolver";
 
-const token = localStorage.getItem('Token');
-
-const headers = {
-    'Authorization': 'Bearer ' + token,
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'withCredentials': true
-}
 /**
  * PRD data by Production Order Number
  * @param {*} url Production Order Number
@@ -21,6 +14,7 @@ export function createProductionOrderByProdOrderNo(url, body) {
             type: "LOADING_PRD_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.post(config.chaincodes.Default + config.chaincodes.PRD + url, body, { headers })
             .then(() => {
                 return dispatch({
@@ -44,6 +38,7 @@ export function getProductionOrderByProdOrderNo(url) {
             type: "LOADING_PRD_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.get(config.chaincodes.Default + config.chaincodes.PRD + url, { headers })
             .then((response) => {
                 return dispatch({
@@ -67,6 +62,7 @@ export function updateProductionOrderByProdOrderNo(url, body) {
             type: "LOADING_PRD_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.put(config.chaincodes.Default + config.chaincodes.PRD + url, body, { headers })
             .then(() => {
                 return dispatch({

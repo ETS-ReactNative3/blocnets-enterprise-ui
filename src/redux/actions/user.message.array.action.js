@@ -1,15 +1,7 @@
 import axios from 'axios';
 import config from '../config.json';
 import { resolver } from '../../services/callback.resolver';
-
-const token = localStorage.getItem('Token');
-
-const headers = {
-    'Authorization': 'Bearer ' + token,
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'withCredentials': true
-}
+import {tokenResolver} from '../../services/token.resolver';
 
 export function createUserMessageDataByUserID(url, body) {
     return async (dispatch) => {
@@ -17,6 +9,7 @@ export function createUserMessageDataByUserID(url, body) {
             type: "LOADING_UMA_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.post(config.chaincodes.Default + config.chaincodes.UMA + url, body, { headers })
             .then(() => {
                 return dispatch({
@@ -40,6 +33,7 @@ export function getUserMessageDataByUserID(url) {
             type: "LOADING_UMA_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.get(config.chaincodes.Default + config.chaincodes.UMA + url, { headers })
             .then((response) => {
                 return dispatch({
@@ -63,6 +57,7 @@ export function updateUserMessageDataByUserID(url, body) {
             type: "LOADING_UMA_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.put(config.chaincodes.Default + config.chaincodes.UMA + url, body, { headers })
             .then(() => {
                 return dispatch({
@@ -86,6 +81,7 @@ export function getEachMessageForUserID(user) {
             type: "LOADING_UMA_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.get(config.chaincodes.Default + config.chaincodes.UMA + user, { headers })
             .then(async (response) => {
                 let inbox = [];

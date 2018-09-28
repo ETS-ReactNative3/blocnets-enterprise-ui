@@ -1,15 +1,8 @@
 import axios from 'axios';
 import config from '../../config.json';
 import { resolver } from '../../../services/callback.resolver';
+import {tokenResolver} from '../../../services/token.resolver';
 
-const token = localStorage.getItem('Token');
-
-const headers = {
-    'Authorization': 'Bearer ' + token,
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'withCredentials': true
-}
 /**
  * BOM data by Material ID
  * @param {*} url 
@@ -21,6 +14,7 @@ export function createBillOfMaterialsByMaterialID(url, body) {
             type: "LOADING_BOM_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.post(config.chaincodes.Default + config.chaincodes.BOM + url, body, { headers })
             .then(() => {
                 return dispatch({
@@ -44,6 +38,7 @@ export function getBillOfMaterialsByMaterialID(url) {
             type: "LOADING_BOM_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.get(config.chaincodes.Default + config.chaincodes.BOM + url, { headers })
             .then((response) => {
                 return dispatch({
@@ -68,6 +63,7 @@ export function updateBillOfMaterialsByMaterialID(url, body) {
             type: "LOADING_BOM_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.put(config.chaincodes.Default + config.chaincodes.BOM + url, body, { headers })
             .then(() => {
                 return dispatch({
@@ -95,6 +91,7 @@ export function createBillOfMaterialsByMaterialName(url, body) {
             type: "LOADING_BOM_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "materialName=" + url, body, { headers })
             .then(() => {
                 return dispatch({
@@ -118,6 +115,7 @@ export function getBillOfMaterialsByMaterialName(url) {
             type: "LOADING_BOM_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.get(config.chaincodes.Default + config.chaincodes.BOM + "materialName=" + url, { headers })
             .then((response) => {
                 return dispatch({
@@ -141,6 +139,7 @@ export function updateBillOfMaterialsByMaterialName(url, body) {
             type: "LOADING_BOM_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.put(config.chaincodes.Default + config.chaincodes.BOM + "materialName=" + url, body, { headers })
             .then(() => {
                 return dispatch({
@@ -166,6 +165,7 @@ export function createBillOfMaterialsByMaterialDesc(url, body) {
             type: "LOADING_BOM_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "materialDesc=" + url, body, { headers })
             .then(() => {
                 return dispatch({
@@ -189,6 +189,7 @@ export function getBillOfMaterialsByMaterialDesc(url) {
             type: "LOADING_BOM_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.get(config.chaincodes.Default + config.chaincodes.BOM + "materialDesc=" + url, { headers })
             .then((response) => {
                 return dispatch({
@@ -212,6 +213,7 @@ export function updateBillOfMaterialsByMaterialDesc(url, body) {
             type: "LOADING_BOM_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.put(config.chaincodes.Default + config.chaincodes.BOM + "materialDesc=" + url, body, { headers })
             .then(() => {
                 return dispatch({
@@ -239,6 +241,7 @@ export function createBillOfMaterialsByPartNumber(url, body) {
             type: "LOADING_BOM_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "partNumber=" + url, body, { headers })
             .then(() => {
                 return dispatch({
@@ -262,6 +265,7 @@ export function getBillOfMaterialsByPartNumber(url) {
             type: "LOADING_BOM_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.get(config.chaincodes.Default + config.chaincodes.BOM + "partNumber=" + url, { headers })
             .then((response) => {
                 return dispatch({
@@ -285,6 +289,7 @@ export function updateBillOfMaterialsByPartNumber(url, body) {
             type: "LOADING_BOM_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.put(config.chaincodes.Default + config.chaincodes.BOM + "partNumber=" + url, body, { headers })
             .then(() => {
                 return dispatch({
@@ -312,6 +317,7 @@ export function createBillOfMaterialsByPartName(url, body) {
             type: "LOADING_BOM_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "partName=" + url, body, { headers })
             .then(() => {
                 return dispatch({
@@ -335,6 +341,7 @@ export function getBillOfMaterialsByPartName(url) {
             type: "LOADING_BOM_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.get(config.chaincodes.Default + config.chaincodes.BOM + "partName=" + url, { headers })
             .then((response) => {
                 return dispatch({
@@ -358,6 +365,7 @@ export function updateBillOfMaterialsByPartName(url, body) {
             type: "LOADING_BOM_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.put(config.chaincodes.Default + config.chaincodes.BOM + "partName=" + url, body, { headers })
             .then(() => {
                 return dispatch({
@@ -385,6 +393,7 @@ export function createBillOfMaterialsByPartDesc(url, body) {
             type: "LOADING_BOM_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "partDesc=" + url, body, { headers })
             .then(() => {
                 return dispatch({
@@ -408,6 +417,7 @@ export function getBillOfMaterialsByPartDesc(url) {
             type: "LOADING_BOM_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.get(config.chaincodes.Default + config.chaincodes.BOM + "partDesc=" + url, { headers })
             .then((response) => {
                 return dispatch({
@@ -431,6 +441,7 @@ export function updateBillOfMaterialsByPartDesc(url, body) {
             type: "LOADING_BOM_VIEW",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.put(config.chaincodes.Default + config.chaincodes.BOM + "partDesc=" + url, body, { headers })
             .then(() => {
                 return dispatch({

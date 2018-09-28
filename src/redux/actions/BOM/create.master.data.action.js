@@ -1,15 +1,7 @@
 import axios from 'axios';
 import config from '../../config.json';
 import { resolver } from '../../../services/callback.resolver';
-
-const token = localStorage.getItem('Token');
-
-const headers = {
-    'Authorization': 'Bearer ' + token,
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'withCredentials': true
-}
+import {tokenResolver} from '../../../services/token.resolver';
 
 export function createMasterDataKeys(data) {
     return async (dispatch) => {
@@ -17,7 +9,7 @@ export function createMasterDataKeys(data) {
             type: "LOADING_VIEW",
             payload: true
         });
-
+        const headers = tokenResolver();
         await axios.post(config.chaincodes.Default + config.chaincodes.BOM + data.material.materialNumber, data, { headers })
             .then(() => {
                 return dispatch({

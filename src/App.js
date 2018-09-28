@@ -519,7 +519,7 @@ class App extends Component {
 
     handleDREData = (refreshBadgeContent) => {
         if (refreshBadgeContent === true) {
-            Promise.resolve(this.props.getEachMessageForUserID('BadData'))
+            Promise.resolve(this.props.getEachMessageForUserID(this.props.userName))
                 .then(() => {
                     if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
                         this.setState({ badgeContent: this.props.data.umaReducer.getEachMessageForUserIDSuccess.length })

@@ -1,15 +1,8 @@
 import axios from 'axios';
 import config from '../config.json';
 import { resolver } from '../../services/callback.resolver';
+import {tokenResolver} from "../../services/token.resolver";
 
-const token = localStorage.getItem('Token');
-
-const headers = {
-    'Authorization': 'Bearer ' + token,
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'withCredentials': true
-}
 /**
  * Root = [
  * name: "string",
@@ -30,6 +23,7 @@ export function createConstruct(materialID) {
             type: "LOADING_CONSTRUCT",
             payload: true
         });
+        const headers = tokenResolver();
         await axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + materialID, { headers })
             .then(async (response) => {
                 let obj = response.data;
