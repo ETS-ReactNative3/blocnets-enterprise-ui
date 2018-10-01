@@ -66,12 +66,16 @@ class BillOfMaterialsTree extends React.Component {
 
     componentDidMount = () => {
         const dimensions = this.treeContainer.getBoundingClientRect();
-        this.setState({
+        !this.isCancelled && this.setState({
             translate: {
                 x: dimensions.width / 3,
                 y: dimensions.height / 3
             }
         });
+    };
+
+    componentWillUnmount() {
+        this.isCancelled = true;
     };
 
     state = {};

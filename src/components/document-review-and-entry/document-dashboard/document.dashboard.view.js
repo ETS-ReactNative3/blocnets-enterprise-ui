@@ -74,7 +74,7 @@ TableHeader.propTypes = {
 class DocumentDashboardView extends React.Component {
 
     componentDidMount() {
-        Promise.resolve(this.props.getEachMessageForUserID(this.props.userName))
+        !this.isCancelled && Promise.resolve(this.props.getEachMessageForUserID(this.props.userName))
             .then(() => {
                 if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
                     this.setState({
@@ -89,6 +89,10 @@ class DocumentDashboardView extends React.Component {
                 }
             })
     }
+
+    componentWillUnmount() {
+        this.isCancelled = true;
+    };
 
     constructor(props) {
         super(props);
