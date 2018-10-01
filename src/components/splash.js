@@ -95,24 +95,21 @@ class SplashView extends Component {
                         <Grid container spacing={24}>
                             <Paper elevation={24} style={paperStyle} zdepth={5}>
                                 <Paper elevation={24} zdepth={5} style={{ 'borderRadius': '10px' }}>
-                                    <Toolbar style={{
-                                        "justifyContent": "center",
-                                        "height": 170,
-                                        'backgroundColor': 'white',
-                                        'borderRadius': '10px'
-                                    }} elevation={24}>
-                                        <div style={{ padding: 48 }}>
-                                            <Grid container spacing={24}>
-                                                <Grid container item xs={12} justify="center">
-                                                    <Typography style={titleStyle}>
-                                                        <span>WHAT CAN BL</span>
-                                                        <span style={{ "color": "#c60000" }}>O</span>
-                                                        <span>CNETS DO FOR YOU?</span>
-                                                    </Typography>
-                                                </Grid>
+                                    <div style={{padding: 24}}>
+                                    </div>
+                                    <div style={{padding: 24}}>
+                                        <Grid container spacing={24}>
+                                            <Grid container item xs={12} justify="center">
+                                                <Typography style={titleStyle}>
+                                                    <span>WHAT CAN BL</span>
+                                                    <span style={{"color": "#c60000"}}>O</span>
+                                                    <span>CNETS DO FOR YOU?</span>
+                                                </Typography>
                                             </Grid>
-                                        </div>
-                                    </Toolbar>
+                                        </Grid>
+                                    </div>
+                                    <div style={{padding: 24}}>
+                                    </div>
                                 </Paper><br /><br /><br />
                                 <Grid container spacing={24} style={{ 'marginBottom': '10px' }}>
                                     <Grid container spacing={24}>
