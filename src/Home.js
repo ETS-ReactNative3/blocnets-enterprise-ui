@@ -38,9 +38,9 @@ class Home extends Component {
     };
 
     handleLoginView = (show, open, transactionCode, userName) => {
-        if (transactionCode === 'TAT02') {
+        if (transactionCode === 'TAT01') {
             this.setState({
-                showApp: 'home'
+                showApp: 'trackandtraceview'
             });
         } else if (transactionCode === 'DRE02') {
             this.setState({
@@ -65,10 +65,6 @@ class Home extends Component {
         } else if (transactionCode === 'PRD02') {
             this.setState({
                 showApp: 'completeproductionview'
-            });
-        } else if (transactionCode === 'TAT01') {
-            this.setState({
-                showApp: 'trackandtraceview'
             });
         } else if (transactionCode === 'DRE01') {
             this.setState({

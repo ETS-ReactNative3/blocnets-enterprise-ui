@@ -158,7 +158,7 @@ class SplashView extends Component {
                                                     <div className="hexagon-green">
                                                         <Tooltip title="Track a Shipment">
                                                             <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                                onClick={event => this.handleView(event, 'TAT02')}>
+                                                                onClick={event => this.handleView(event, 'TAT01')}>
                                                                 <span>
                                                                     <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>location_on</i>
                                                                 </span>
@@ -206,7 +206,7 @@ class SplashView extends Component {
                                                     <div className="hexagon-red">
                                                         <Tooltip title="Search for Material">
                                                             <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                                onClick={event => this.handleView(event, 'TAT02')}>
+                                                                onClick={event => this.handleView(event, 'TAT01')}>
                                                                 <span>
                                                                     <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>search</i>
                                                                 </span>
@@ -269,7 +269,7 @@ class SplashView extends Component {
                                                     <div className="hexagon-red">
                                                         <Tooltip title="View Material History">
                                                             <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                                onClick={event => this.handleView(event, 'TAT02')}>
+                                                                onClick={event => this.handleView(event, 'TAT01')}>
                                                                 <span>
                                                                     <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>av_timer</i>
                                                                 </span>
