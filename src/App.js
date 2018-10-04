@@ -211,6 +211,10 @@ class App extends Component {
         this.props.viewHandler('splash', false, '', this.props.userName);
     };
 
+    handlePrint = () => {
+        window.print();
+    };
+
     render() {
 
         let content = null;
@@ -286,6 +290,11 @@ class App extends Component {
                                 <Tooltip title="Home - Apps">
                                     <IconButton aria-label="apps" onClick={event => this.handleSplash()} style={{ "cursor": "pointer" }}>
                                         <i className="material-icons" style={{ 'fontSize': 'xx-large', 'color': 'white' }}>apps</i>
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Print">
+                                    <IconButton aria-label="print" onClick={event => this.handlePrint()} style={{ "cursor": "pointer" }}>
+                                        <i className="material-icons" style={{ 'fontSize': 'xx-large', 'color': 'white' }}>print</i>
                                     </IconButton>
                                 </Tooltip>
                             </Grid>
