@@ -37,7 +37,7 @@ class SplashView extends Component {
             , 6000);
         setInterval(() => {
             !this.isCancelled &&
-            this.setState({ currentDateAndTime: new Date().toUTCString() })
+                this.setState({ currentDateAndTime: new Date().toUTCString() })
         }, 1000);
     }
 
@@ -96,192 +96,195 @@ class SplashView extends Component {
                     <div style={{ padding: 24 }}>
                         <Grid container spacing={24}>
                             <Paper style={paperStyle}>
-                                <Paper style={{ 'borderRadius': '10px',  'backgroundColor': 'transparent', 'boxShadow': 'none'}}>
-                                    <div style={{padding: 24}}>
+                                <Paper style={{ 'borderRadius': '10px', 'backgroundColor': 'transparent', 'boxShadow': 'none' }}>
+                                    <div style={{ padding: 24 }}>
                                     </div>
-                                    <div style={{padding: 24}}>
+                                    <div style={{ padding: 24 }}>
                                         <Grid container spacing={24}>
                                             <Grid container item xs={12} justify="center">
                                                 <Typography style={titleStyle}>
                                                     <span>WHAT CAN BL</span>
-                                                    <span style={{"color": "#c60000"}}>O</span>
+                                                    <span style={{ "color": "#c60000" }}>O</span>
                                                     <span>CNETS DO FOR YOU?</span>
                                                 </Typography>
                                             </Grid>
                                         </Grid>
                                     </div>
-                                    <div style={{padding: 24}}>
+                                    <div style={{ padding: 24 }}>
                                     </div>
                                 </Paper><br /><br /><br />
                                 <Grid container spacing={24} style={{ 'marginBottom': '10px' }}>
                                     <Grid container spacing={24}>
-                                        <Grid item xs>
-                                            <ul id="grid" className="clear">
-                                                <li></li>
-                                                <li>
-                                                    <div className="hexagon-blue">
-                                                        <Tooltip title="Send a Document">
-                                                            <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                                onClick={event => this.handleView(event, 'DRE01')}>
-                                                                <span>
-                                                                    <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>send</i>
-                                                                </span>
-                                                            </ButtonBase>
-                                                        </Tooltip>
+                                        <ul id="hexGrid">
+                                            <li className="hex">
+                                                <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
+                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                    <div className="hexIn">
+                                                        <span className="hexLink">
+                                                            <div className="hexagon-green" />
+                                                            <h1>Review Pending Network Actions</h1>
+                                                            <p>Some sample text..</p>
+                                                        </span>
                                                     </div>
-                                                </li>
-                                                <li></li>
-                                            </ul>
-                                        </Grid>
-                                        <Grid item xs>
-                                            <ul id="grid" className="clear">
-                                                <li></li>
-                                                <li>
-                                                    <div className="hexagon-red">
-                                                        <Tooltip title="Review Pending Network Actions">
-                                                            <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                                onClick={event => this.handleView(event, 'DRE02')}>
-                                                                <span>
-                                                                    <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>notification_important</i>
-                                                                </span>
-                                                            </ButtonBase>
-                                                        </Tooltip>
+                                                </ButtonBase>
+                                            </li>
+                                            <li className="hex">
+                                                <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
+                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                    <div className="hexIn">
+                                                        <span className="hexLink">
+                                                            <div className="hexagon-green" />
+                                                            <h1>Enter Material Master Data</h1>
+                                                            <p>Some sample text..</p>
+                                                        </span>
                                                     </div>
-                                                </li>
-                                                <li></li>
-                                            </ul>
-                                        </Grid>
-                                        <Grid item xs>
-                                            <ul id="grid" className="clear">
-                                                <li></li>
-                                                <li>
-                                                    <div className="hexagon-green">
-                                                        <Tooltip title="Track a Shipment">
-                                                            <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                                onClick={event => this.handleView(event, 'TAT01')}>
-                                                                <span>
-                                                                    <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>location_on</i>
-                                                                </span>
-                                                            </ButtonBase>
-                                                        </Tooltip>
+                                                </ButtonBase>
+                                            </li>
+                                            <li className="hex">
+                                                <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
+                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                    <div className="hexIn">
+                                                        <span className="hexLink">
+                                                            <div className="hexagon-green" />
+                                                            <h1>Ship To Customer</h1>
+                                                            <p>Some sample text..</p>
+                                                        </span>
                                                     </div>
-                                                </li>
-                                                <li></li>
-                                            </ul>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid container spacing={24}>
-                                        <Grid item xs>
-                                            <ul id="grid" className="clear">
-                                                <li>
-                                                    <div className="hexagon-blue">
-                                                        <Tooltip title="Save Production Data">
-                                                            <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                                onClick={event => this.handleView(event, 'DRE01')}>
-                                                                <span>
-                                                                    <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>folder_shared</i>
-                                                                </span>
-                                                            </ButtonBase>
-                                                        </Tooltip>
+                                                </ButtonBase>
+                                            </li>
+                                            <li className="hex">
+                                                <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
+                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                    <div className="hexIn">
+                                                        <span className="hexLink">
+                                                            <div className="hexagon-green" />
+                                                            <h1>Receive Shipment</h1>
+                                                            <p>Some sample text..</p>
+                                                        </span>
                                                     </div>
-                                                </li>
-                                                <li></li>
-                                                <li>
-                                                    <div className="hexagon-blue">
-                                                        <Tooltip title="Save a Document">
-                                                            <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                                onClick={event => this.handleView(event, 'DRE01')}>
-                                                                <span>
-                                                                    <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>cloud_upload</i>
-                                                                </span>
-                                                            </ButtonBase>
-                                                        </Tooltip>
+                                                </ButtonBase>
+                                            </li>
+                                            <li className="hex">
+                                                <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
+                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                    <div className="hexIn">
+                                                        <span className="hexLink">
+                                                            <div className="hexagon-green" />
+                                                            <h1>View Material History</h1>
+                                                            <p>Some sample text..</p>
+                                                        </span>
                                                     </div>
-                                                </li>
-                                            </ul>
-                                        </Grid>
-                                        <Grid item xs>
-                                            <ul id="grid" className="clear">
-                                                <li>
-                                                    <div className="hexagon-red">
-                                                        <Tooltip title="Search for Material">
-                                                            <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                                onClick={event => this.handleView(event, 'TAT01')}>
-                                                                <span>
-                                                                    <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>search</i>
-                                                                </span>
-                                                            </ButtonBase>
-                                                        </Tooltip>
+                                                </ButtonBase>
+                                            </li>
+                                            <li className="hex">
+                                                <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
+                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                    <div className="hexIn">
+                                                        <span className="hexLink">
+                                                            <div className="hexagon-green" />
+                                                            <h1>Send a Document</h1>
+                                                            <p>Some sample text..</p>
+                                                        </span>
                                                     </div>
-                                                </li>
-                                                <li></li>
-                                                <li>
-                                                    <div className="hexagon-red">
-                                                        <Tooltip title="Material Master Data">
-                                                            <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                                onClick={event => this.handleView(event, 'eBOM01')}>
-                                                                <span>
-                                                                    <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>list_alt</i>
-                                                                </span>
-                                                            </ButtonBase>
-                                                        </Tooltip>
+                                                </ButtonBase>
+                                            </li>
+                                            <li className="hex">
+                                                <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
+                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                    <div className="hexIn">
+                                                        <span className="hexLink">
+                                                            <div className="hexagon-green" />
+                                                            <h1>Search for Material</h1>
+                                                            <p>Some sample text..</p>
+                                                        </span>
                                                     </div>
-                                                </li>
-                                            </ul>
-                                        </Grid>
-                                        <Grid item xs>
-                                            <ul id="grid" className="clear">
-                                                <li>
-                                                    <div className="hexagon-green">
-                                                        <Tooltip title="Start Production Tracking">
-                                                            <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                                onClick={event => this.handleView(event, 'PRD01')}>
-                                                                <span>
-                                                                    <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>play_arrow</i>
-                                                                </span>
-                                                            </ButtonBase>
-                                                        </Tooltip>
+                                                </ButtonBase>
+                                            </li>
+                                            <li className="hex">
+                                                <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
+                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                    <div className="hexIn">
+                                                        <span className="hexLink">
+                                                            <div className="hexagon-green" />
+                                                            <h1>Track a Shipment</h1>
+                                                            <p>Some sample text..</p>
+                                                        </span>
                                                     </div>
-                                                </li>
-                                                <li></li>
-                                                <li>
-                                                    <div className="hexagon-green">
-                                                        <Tooltip title="End Production Tracking">
-                                                            <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                                onClick={event => this.handleView(event, 'PRD02')}>
-                                                                <span>
-                                                                    <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>stop</i>
-                                                                </span>
-                                                            </ButtonBase>
-                                                        </Tooltip>
+                                                </ButtonBase>
+                                            </li>
+                                            <li className="hex">
+                                                <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
+                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                    <div className="hexIn">
+                                                        <span className="hexLink">
+                                                            <div className="hexagon-green" />
+                                                            <h1>Start Production Tracking</h1>
+                                                            <p>Some sample text..</p>
+                                                        </span>
                                                     </div>
-                                                </li>
-                                            </ul>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid container spacing={24}>
-                                        <Grid item xs>
-                                        </Grid>
-                                        <Grid item xs>
-                                            <ul id="grid" className="clear">
-                                                <li></li>
-                                                <li>
-                                                    <div className="hexagon-red">
-                                                        <Tooltip title="View Material History">
-                                                            <ButtonBase focusRipple style={{ 'width': 'inherit', 'height': 'inherit' }}
-                                                                onClick={event => this.handleView(event, 'TAT01')}>
-                                                                <span>
-                                                                    <i className="material-icons" style={{ 'fontSize': 'xx-large' }}>av_timer</i>
-                                                                </span>
-                                                            </ButtonBase>
-                                                        </Tooltip>
+                                                </ButtonBase>
+                                            </li>
+                                            <li className="hex">
+                                                <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
+                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                    <div className="hexIn">
+                                                        <span className="hexLink">
+                                                            <div className="hexagon-green" />
+                                                            <h1>Save Production Data</h1>
+                                                            <p>Some sample text..</p>
+                                                        </span>
                                                     </div>
-                                                </li>
-                                                <li></li>
-                                            </ul>
-                                        </Grid>
-                                        <Grid item xs>
-                                        </Grid>
+                                                </ButtonBase>
+                                            </li>
+                                            <li className="hex">
+                                                <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
+                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                    <div className="hexIn">
+                                                        <span className="hexLink">
+                                                            <div className="hexagon-green" />
+                                                            <h1>Save a Document</h1>
+                                                            <p>Some sample text..</p>
+                                                        </span>
+                                                    </div>
+                                                </ButtonBase>
+                                            </li>
+                                            <li className="hex">
+                                                <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
+                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                    <div className="hexIn">
+                                                        <span className="hexLink">
+                                                            <div className="hexagon-green" />
+                                                            <h1>End Production Tracking</h1>
+                                                            <p>Some sample text..</p>
+                                                        </span>
+                                                    </div>
+                                                </ButtonBase>
+                                            </li>
+                                            <li className="hex">
+                                                <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
+                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                    <div className="hexIn">
+                                                        <span className="hexLink">
+                                                            <div className="hexagon-green" />
+                                                            <h1>This is a title</h1>
+                                                            <p>Some sample text about the article this hexagon leads to</p>
+                                                        </span>
+                                                    </div>
+                                                </ButtonBase>
+                                            </li>
+                                            <li className="hex">
+                                                <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
+                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                    <div className="hexIn">
+                                                        <span className="hexLink">
+                                                            <div className="hexagon-green" />
+                                                            <h1>This is a title</h1>
+                                                            <p>Some sample text about the article this hexagon leads to</p>
+                                                        </span>
+                                                    </div>
+                                                </ButtonBase>
+                                            </li>
+                                        </ul>
                                     </Grid>
                                 </Grid>
                             </Paper>
@@ -323,7 +326,15 @@ class SplashView extends Component {
                         </Grid>
                     </div>
                 </div>
-
+                <div style={{ padding: 24 }}>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={12} justify="flex-start">
+                            <Typography>
+                                <span style={{ "color": "white" }}>Copyright 2018. ALL RIGHTS RESERVED.</span>
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                </div>
             </div>
         );
     }
