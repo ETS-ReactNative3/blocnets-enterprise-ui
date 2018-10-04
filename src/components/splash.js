@@ -96,7 +96,7 @@ class SplashView extends Component {
                     <div style={{ padding: 24 }}>
                         <Grid container spacing={24}>
                             <Paper style={paperStyle}>
-                                <Paper style={{ 'borderRadius': '10px',  'backgroundColor': 'transparent'}}>
+                                <Paper style={{ 'borderRadius': '10px',  'backgroundColor': 'transparent', 'boxShadow': 'none'}}>
                                     <div style={{padding: 24}}>
                                     </div>
                                     <div style={{padding: 24}}>
