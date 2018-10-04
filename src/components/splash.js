@@ -13,13 +13,15 @@ const paperStyle = {
     margin: '3%',
     textAlign: 'center',
     display: 'inline-block',
-    borderRadius: '10 px'
+    borderRadius: '10 px',
+    backgroundColor: 'transparent'
 };
 
 const titleStyle = {
     fontFamily: 'Inter UI, sans-serif',
     fontStyle: 'normal',
-    fontSize: '28pt'
+    fontSize: '28pt',
+    color: '#ffffff'
 };
 
 let viewWelcomeVideo = true;
@@ -93,7 +95,7 @@ class SplashView extends Component {
                     <div style={{ padding: 24 }}>
                         <Grid container spacing={24}>
                             <Paper elevation={24} style={paperStyle} zdepth={5}>
-                                <Paper elevation={24} zdepth={5} style={{ 'borderRadius': '10px' }}>
+                                <Paper elevation={24} zdepth={5} style={{ 'borderRadius': '10px',  'backgroundColor': 'transparent'}}>
                                     <div style={{padding: 24}}>
                                     </div>
                                     <div style={{padding: 24}}>
