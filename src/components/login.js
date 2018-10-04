@@ -195,19 +195,21 @@ class LoginView extends Component {
                         </Paper>
                     </Grid>
                 </div>
-                <div style={{padding: 48}}>
-                    <Grid container spacing={24}>
-                        <Grid container item xs justify="center">
+                <div style={{"bottom": "0", "position": "fixed", "width": "100%"}}>
+                    <div style={{padding: 48}}>
+                        <Grid container spacing={24}>
+                            <Grid container item xs justify="center">
+                            </Grid>
+                            <Grid container item xs justify="center">
+                                <Typography>
+                                    <span
+                                        style={{"color": "white"}}>{this.state.currentDateAndTime ? this.state.currentDateAndTime : "Loading..."}</span>
+                                </Typography>
+                            </Grid>
+                            <Grid container item xs justify="center">
+                            </Grid>
                         </Grid>
-                        <Grid container item xs justify="center">
-                            <Typography>
-                                <span
-                                    style={{"color": "white"}}>{this.state.currentDateAndTime ? this.state.currentDateAndTime : "Loading..."}</span>
-                            </Typography>
-                        </Grid>
-                        <Grid container item xs justify="center">
-                        </Grid>
-                    </Grid>
+                    </div>
                 </div>
                 <Snackbar
                     open={this.state.snackbar.open}

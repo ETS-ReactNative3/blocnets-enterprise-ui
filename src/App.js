@@ -378,30 +378,32 @@ class App extends Component {
                     </Toolbar>
                     {content}
                 </Paper>
-                <div style={{ padding: 24 }}>
-                    <Grid container spacing={24}>
-                        <MuiThemeProvider theme={theme}>
-                            <Grid container item xs={12}>
-                                <Grid container item xs>
-                                    <Typography align="right" style={{ "width": "100%" }}>
-                                        {this.state.transactionCode} | System Number
-                                    </Typography>
+                <div style={{"bottom": "0", "position": "fixed", "width": "100%"}}>
+                    <div style={{ padding: 24 }}>
+                        <Grid container spacing={24}>
+                            <MuiThemeProvider theme={theme}>
+                                <Grid container item xs={12}>
+                                    <Grid container item xs>
+                                        <Typography align="right" style={{ "width": "100%" }}>
+                                            {this.state.transactionCode} | System Number
+                                        </Typography>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                            <Grid container item xs={12}>
-                                <Grid container item xs>
-                                    <Typography align="left" style={{ "width": "100%" }}>
-                                        © 2018 ALL RIGHTS RESERVED.
-                                    </Typography>
+                                <Grid container item xs={12}>
+                                    <Grid container item xs>
+                                        <Typography align="left" style={{ "width": "100%" }}>
+                                            © 2018 ALL RIGHTS RESERVED.
+                                        </Typography>
+                                    </Grid>
+                                    <Grid container item xs>
+                                        <Typography align="right" style={{ "width": "100%" }}>
+                                            {this.state.currentDateAndTime}
+                                        </Typography>
+                                    </Grid>
                                 </Grid>
-                                <Grid container item xs>
-                                    <Typography align="right" style={{ "width": "100%" }}>
-                                        {this.state.currentDateAndTime}
-                                    </Typography>
-                                </Grid>
-                            </Grid>
-                        </MuiThemeProvider>
-                    </Grid>
+                            </MuiThemeProvider>
+                        </Grid>
+                    </div>
                 </div>
             </div>
         );

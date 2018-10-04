@@ -290,37 +290,40 @@ class SplashView extends Component {
 
                 }
 
-                <div style={{ padding: 48 }}>
-                    <Grid container spacing={24}>
-                        <Grid container item xs justify="center">
-                            <Typography>
-                                <span
-                                    style={{ "color": "white" }}>{this.state.currentDateAndTime ? this.state.currentDateAndTime : "Loading..."}</span>
-                            </Typography>
+                <div style={{"bottom": "0", "position": "fixed", "width": "100%"}}>
+                    <div style={{ padding: 48 }}>
+                        <Grid container spacing={24}>
+                            <Grid container item xs justify="center">
+                                <Typography>
+                                    <span
+                                        style={{ "color": "white" }}>{this.state.currentDateAndTime ? this.state.currentDateAndTime : "Loading..."}</span>
+                                </Typography>
+                            </Grid>
+                            <Grid container item xs justify="center">
+                                <Typography>
+                                    <span style={{ "color": "white" }}>Network Status: </span>
+                                    <span style={{ "color": "#ffb000" }}>Full Use</span>
+                                </Typography>
+                            </Grid>
+                            <Grid container item xs justify="center">
+                                <Typography>
+                                    <span style={{ "color": "white" }}>Your Status: </span>
+                                    <span style={{ "color": "#ffb000" }}>Attached to Network</span>
+                                </Typography>
+                            </Grid>
                         </Grid>
-                        <Grid container item xs justify="center">
-                            <Typography>
-                                <span style={{ "color": "white" }}>Network Status: </span>
-                                <span style={{ "color": "#ffb000" }}>Full Use</span>
-                            </Typography>
+                    </div>
+                    <div style={{padding: 24}}>
+                        <Grid container spacing={24}>
+                            <Grid container item xs={12} justify="flex-start">
+                                <Typography>
+                                    <span style={{"color": "white"}}>Copyright 2018. ALL RIGHTS RESERVED.</span>
+                                </Typography>
+                            </Grid>
                         </Grid>
-                        <Grid container item xs justify="center">
-                            <Typography>
-                                <span style={{ "color": "white" }}>Your Status: </span>
-                                <span style={{ "color": "#ffb000" }}>Attached to Network</span>
-                            </Typography>
-                        </Grid>
-                    </Grid>
+                    </div>
                 </div>
-                <div style={{padding: 24}}>
-                    <Grid container spacing={24}>
-                        <Grid container item xs={12} justify="flex-start">
-                            <Typography>
-                                <span style={{"color": "white"}}>Copyright 2018. ALL RIGHTS RESERVED.</span>
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                </div>
+
             </div>
         );
     }
