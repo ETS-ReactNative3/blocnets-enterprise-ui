@@ -14,7 +14,8 @@ const paperStyle = {
     textAlign: 'center',
     display: 'inline-block',
     borderRadius: '10 px',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    boxShadow: 'none'
 };
 
 const titleStyle = {
@@ -65,7 +66,7 @@ class SplashView extends Component {
 
                     <div style={{ padding: 24 }}>
                         <Grid container spacing={24}>
-                            <Paper elevation={24} style={paperStyle} zdepth={5}>
+                            <Paper style={paperStyle}>
                                 <div style={{ padding: 24 }}>
                                 </div>
                                 <div style={{ padding: 24 }}>
@@ -94,8 +95,8 @@ class SplashView extends Component {
 
                     <div style={{ padding: 24 }}>
                         <Grid container spacing={24}>
-                            <Paper elevation={24} style={paperStyle} zdepth={5}>
-                                <Paper elevation={24} zdepth={5} style={{ 'borderRadius': '10px',  'backgroundColor': 'transparent'}}>
+                            <Paper style={paperStyle}>
+                                <Paper style={{ 'borderRadius': '10px',  'backgroundColor': 'transparent'}}>
                                     <div style={{padding: 24}}>
                                     </div>
                                     <div style={{padding: 24}}>
