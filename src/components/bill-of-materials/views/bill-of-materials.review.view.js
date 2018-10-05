@@ -180,7 +180,7 @@ class BillOfMaterialsReview extends React.Component {
                             autoHideDuration: 2000,
                             message: 'Master Data successfully created!',
                             open: true,
-                            sbColor: '#23CE6B'
+                            sbColor: 'Module-Snackbar-Success'
                         }
                     });
                     this.props.viewHandler(true, false, '', this.state.snackbar);
@@ -191,7 +191,7 @@ class BillOfMaterialsReview extends React.Component {
                             autoHideDuration: 5000,
                             message: 'Error in creating the Master Data! Please check the' + eBOMError + ', then try again.',
                             open: true,
-                            sbColor: 'red'
+                            sbColor: 'Module-Snackbar-Error'
                         }
                     });
                     this.props.viewHandler(true, false, this.props.eBOMData, this.state.snackbar);

@@ -381,3 +381,53 @@ body {
         word-wrap: break-word !important;
     }
 }
+
+.Module {
+    padding: 24px;
+}
+
+.Module-TextField {
+    float: left;
+    text-align: left;
+}
+
+.Module-Button:enabled {
+    background-color: #ffb000 !important;
+    color: #000000 !important;
+}
+
+.Module-Button:disabled {
+    background-color: #898989 !important;
+    color: #000000 !important;
+}
+
+.Module-Button-Input {
+    display: none !important;
+}
+
+.Module-Button-Icon {
+    margin-left: 12px !important;
+}
+
+.Module-FormLabel {
+    color: #000000 !important;
+    font-weight: bold !important;
+    text-align: left !important;
+}
+
+.Module-Divider {
+    background-color: #000000 !important;
+    height: 1px !important;
+}
+
+.Module-Snackbar-Success {
+    background-color: #23CE6B !important;
+}
+
+.Module-Snackbar-Error {
+    background-color: #c60000 !important;
+}
+
+.Module-Snackbar-Message {
+    margin: auto !important;
+}
