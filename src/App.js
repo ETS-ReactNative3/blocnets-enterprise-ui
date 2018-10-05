@@ -225,6 +225,10 @@ class App extends Component {
         window.print();
     };
 
+    handleNewSession = () => {
+        window.open(window.location.href, "_blank");
+    };
+
     render() {
 
         let content = null;
@@ -310,6 +314,13 @@ class App extends Component {
                                                 style={{ "cursor": "pointer" }}>
                                         <i className="material-icons"
                                            style={{ 'fontSize': 'xx-large', 'color': 'white' }}>print</i>
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="New Session">
+                                    <IconButton aria-label="new session" onClick={event => this.handleNewSession()}
+                                                style={{ "cursor": "pointer" }}>
+                                        <i className="material-icons"
+                                           style={{ 'fontSize': 'xx-large', 'color': 'white' }}>open_in_new</i>
                                     </IconButton>
                                 </Tooltip>
                             </Grid>
