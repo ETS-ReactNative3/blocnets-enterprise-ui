@@ -22,6 +22,16 @@ import Grid from '@material-ui/core/Grid';
 import { Toolbar, ToolbarTitle } from 'material-ui/Toolbar';
 import Paper from 'material-ui/Paper';
 import MenuItem from 'material-ui/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListAlt from '@material-ui/icons/ListAlt';
+import LocalShipping from '@material-ui/icons/LocalShipping';
+import Domain from '@material-ui/icons/Domain';
+import PlayArrow from '@material-ui/icons/PlayArrow';
+import Stop from '@material-ui/icons/Stop';
+import LocationOn from '@material-ui/icons/LocationOn';
+import Send from '@material-ui/icons/Send';
+import CloudUpload from '@material-ui/icons/CloudUpload';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import MailIcon from '@material-ui/icons/Mail';
@@ -254,7 +264,8 @@ class App extends Component {
                         <div>
                             <Route
                                 path="/"
-                                render={(props) => <DocumentDashboardView {...props} userName={this.state.userName} />}
+                                render={(props) => <DocumentDashboardView {...props}
+                                                                          userName={this.state.userName} />}
                             />
                         </div>
                     </Router>);
@@ -265,8 +276,8 @@ class App extends Component {
                 <MuiThemeProvider theme={theme}>
                     {/* Main navigation bar menu for components */}
                     <AppBar position="static" className="App-header"
-                        iconClassNameRight="muidocs-icon-navigation-expand-more"
-                        onLeftIconButtonClick={this.handleToggle}>
+                            iconClassNameRight="muidocs-icon-navigation-expand-more"
+                            onLeftIconButtonClick={this.handleToggle}>
                         <Grid container spacing={24}>
                             <Grid item xs={3}>
                                 <ToolbarTitle
@@ -282,19 +293,23 @@ class App extends Component {
                                 <Tooltip title="Inbox">
                                     <IconButton aria-label="pending messages" onClick={this.showMainView}>
                                         <Badge badgeContent={this.state.badgeContent} color="secondary"
-                                            style={messageIconStyle}>
+                                               style={messageIconStyle}>
                                             <MailIcon />
                                         </Badge>
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title="Home - Apps">
-                                    <IconButton aria-label="apps" onClick={event => this.handleSplash()} style={{ "cursor": "pointer" }}>
-                                        <i className="material-icons" style={{ 'fontSize': 'xx-large', 'color': 'white' }}>apps</i>
+                                    <IconButton aria-label="apps" onClick={event => this.handleSplash()}
+                                                style={{ "cursor": "pointer" }}>
+                                        <i className="material-icons"
+                                           style={{ 'fontSize': 'xx-large', 'color': 'white' }}>apps</i>
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title="Print">
-                                    <IconButton aria-label="print" onClick={event => this.handlePrint()} style={{ "cursor": "pointer" }}>
-                                        <i className="material-icons" style={{ 'fontSize': 'xx-large', 'color': 'white' }}>print</i>
+                                    <IconButton aria-label="print" onClick={event => this.handlePrint()}
+                                                style={{ "cursor": "pointer" }}>
+                                        <i className="material-icons"
+                                           style={{ 'fontSize': 'xx-large', 'color': 'white' }}>print</i>
                                     </IconButton>
                                 </Tooltip>
                             </Grid>
@@ -309,64 +324,83 @@ class App extends Component {
                     </AppBar>
                 </MuiThemeProvider>
                 {/* Side Drawer's navigation bar menu for viewing content */}
-                <Drawer docked={false} width={250} open={this.state.open}
-                    onRequestChange={(open) => this.setState({ open })}>
+                <Drawer docked={false} width={300} open={this.state.open}
+                        onRequestChange={(open) => this.setState({ open })}>
                     <AppBar
                         className="App-bar"
                         onClick={this.handleToggle}
                         title={<img src={logo} style={appBarLogoStyle} alt="Blocnets" />}
                     />
                     <MenuItem id="showBillOfMaterialsId" onClick={this.showBillOfMaterials}
-                        style={{ "textAlign": "left" }}>
-                        <span><i className="material-icons">list_alt</i></span>
-                        <span>   Master Material Data   </span>
+                              style={{ "textAlign": "left" }}>
+                        <ListItemIcon style={{ "verticalAlign": "middle" }}>
+                            <ListAlt />
+                        </ListItemIcon>
+                        <ListItemText style={{ "display": "inline-block", "verticalAlign": "middle" }}
+                                      primary="Master Material Data" />
                     </MenuItem>
                     <hr />
-                    <MenuItem id="showShippingViewId" onClick={this.showShippingView} style={{ "textAlign": "left" }}>
-                        <span><i className="material-icons">local_shipping</i></span>
-                        <span>   Shipping   </span>
-
+                    <MenuItem id="showShippingViewId" onClick={this.showShippingView}
+                              style={{ "textAlign": "left" }}>
+                        <ListItemIcon style={{ "verticalAlign": "middle" }}>
+                            <LocalShipping />
+                        </ListItemIcon>
+                        <ListItemText style={{ "display": "inline-block", "verticalAlign": "middle" }}
+                                      primary="Shipping" />
                     </MenuItem>
                     <hr />
-                    <MenuItem id="showReceivingViewId" onClick={this.showReceivingView} style={{ "textAlign": "left" }}>
-                        <span><i className="material-icons">domain</i></span>
-                        <span>   Receiving   </span>
-
+                    <MenuItem id="showReceivingViewId" onClick={this.showReceivingView}
+                              style={{ "textAlign": "left" }}>
+                        <ListItemIcon style={{ "verticalAlign": "middle" }}>
+                            <Domain />
+                        </ListItemIcon>
+                        <ListItemText style={{ "display": "inline-block", "verticalAlign": "middle" }}
+                                      primary="Receiving" />
                     </MenuItem>
                     <hr />
                     <MenuItem id="showStartProductionViewId" onClick={this.showStartProductionView}
-                        style={{ "textAlign": "left" }}>
-                        <span><i className="material-icons">play_arrow</i></span>
-                        <span>   Start Production Tracking   </span>
-
+                              style={{ "textAlign": "left" }}>
+                        <ListItemIcon style={{ "verticalAlign": "middle" }}>
+                            <PlayArrow />
+                        </ListItemIcon>
+                        <ListItemText style={{ "display": "inline-block", "verticalAlign": "middle" }}
+                                      primary="Start Production Tracking" />
                     </MenuItem>
                     <hr />
                     <MenuItem id="showCompleteProductionViewId" onClick={this.showCompleteProductionView}
-                        style={{ "textAlign": "left" }}>
-                        <span><i className="material-icons">stop</i></span>
-                        <span>   Stop Production Tracking   </span>
-
+                              style={{ "textAlign": "left" }}>
+                        <ListItemIcon style={{ "verticalAlign": "middle" }}>
+                            <Stop />
+                        </ListItemIcon>
+                        <ListItemText style={{ "display": "inline-block", "verticalAlign": "middle" }}
+                                      primary="Stop Production Tracking" />
                     </MenuItem>
                     <hr />
                     <MenuItem id="showTrackAndTraceViewId" onClick={this.showTrackAndTraceView}
-                        style={{ "textAlign": "left" }}>
-                        <span><i className="material-icons">location_on</i></span>
-                        <span>   Track and Trace   </span>
-
+                              style={{ "textAlign": "left" }}>
+                        <ListItemIcon style={{ "verticalAlign": "middle" }}>
+                            <LocationOn />
+                        </ListItemIcon>
+                        <ListItemText style={{ "display": "inline-block", "verticalAlign": "middle" }}
+                                      primary="Track and Trace" />
                     </MenuItem>
                     <hr />
                     <MenuItem id="showSendDocumentViewId" onClick={this.showSendDocumentView}
-                        style={{ "textAlign": "left" }}>
-                        <span><i className="material-icons">send</i></span>
-                        <span>   Send a Document   </span>
-
+                              style={{ "textAlign": "left" }}>
+                        <ListItemIcon style={{ "verticalAlign": "middle" }}>
+                            <Send />
+                        </ListItemIcon>
+                        <ListItemText style={{ "display": "inline-block", "verticalAlign": "middle" }}
+                                      primary="Send a Document" />
                     </MenuItem>
                     <hr />
                     <MenuItem id="showSendDocumentViewId" onClick={this.showSendDocumentView}
-                        style={{ "textAlign": "left" }}>
-                        <span><i className="material-icons">cloud_upload</i></span>
-                        <span>   Save a Document   </span>
-
+                              style={{ "textAlign": "left" }}>
+                        <ListItemIcon style={{ "verticalAlign": "middle" }}>
+                            <CloudUpload />
+                        </ListItemIcon>
+                        <ListItemText style={{ "display": "inline-block", "verticalAlign": "middle" }}
+                                      primary="Save a Document" />
                     </MenuItem>
                 </Drawer>
                 {/* Page View with content loaded */}
@@ -378,7 +412,7 @@ class App extends Component {
                     </Toolbar>
                     {content}
                 </Paper>
-                <div style={{"bottom": "0", "position": "fixed", "width": "100%"}}>
+                <div style={{ "bottom": "0", "position": "fixed", "width": "100%" }}>
                     <div style={{ padding: 24 }}>
                         <Grid container spacing={24}>
                             <MuiThemeProvider theme={theme}>
