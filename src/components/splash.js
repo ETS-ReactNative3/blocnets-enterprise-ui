@@ -4,8 +4,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import animatedLogo from '../blocnets.gif';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import Tooltip from '@material-ui/core/Tooltip';
-
 
 const paperStyle = {
     width: '100%',
@@ -37,7 +35,7 @@ class SplashView extends Component {
             , 6000);
         setInterval(() => {
             !this.isCancelled &&
-                this.setState({ currentDateAndTime: new Date().toUTCString() })
+            this.setState({ currentDateAndTime: new Date().toUTCString() })
         }, 1000);
     }
 
@@ -96,7 +94,11 @@ class SplashView extends Component {
                     <div style={{ padding: 24 }}>
                         <Grid container spacing={24}>
                             <Paper style={paperStyle}>
-                                <Paper style={{ 'borderRadius': '10px', 'backgroundColor': 'transparent', 'boxShadow': 'none' }}>
+                                <Paper style={{
+                                    'borderRadius': '10px',
+                                    'backgroundColor': 'transparent',
+                                    'boxShadow': 'none'
+                                }}>
                                     <div style={{ padding: 24 }}>
                                     </div>
                                     <div style={{ padding: 24 }}>
@@ -118,7 +120,7 @@ class SplashView extends Component {
                                         <ul id="hexGrid">
                                             <li className="hex">
                                                 <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
-                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                            onClick={event => this.handleView(event, 'eBOM01')}>
                                                     <div className="hexIn">
                                                         <span className="hexLink">
                                                             <div className="hexagon-green" />
@@ -130,7 +132,7 @@ class SplashView extends Component {
                                             </li>
                                             <li className="hex">
                                                 <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
-                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                            onClick={event => this.handleView(event, 'eBOM01')}>
                                                     <div className="hexIn">
                                                         <span className="hexLink">
                                                             <div className="hexagon-green" />
@@ -142,7 +144,7 @@ class SplashView extends Component {
                                             </li>
                                             <li className="hex">
                                                 <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
-                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                            onClick={event => this.handleView(event, 'eBOM01')}>
                                                     <div className="hexIn">
                                                         <span className="hexLink">
                                                             <div className="hexagon-green" />
@@ -154,7 +156,7 @@ class SplashView extends Component {
                                             </li>
                                             <li className="hex">
                                                 <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
-                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                            onClick={event => this.handleView(event, 'eBOM01')}>
                                                     <div className="hexIn">
                                                         <span className="hexLink">
                                                             <div className="hexagon-green" />
@@ -166,7 +168,7 @@ class SplashView extends Component {
                                             </li>
                                             <li className="hex">
                                                 <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
-                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                            onClick={event => this.handleView(event, 'eBOM01')}>
                                                     <div className="hexIn">
                                                         <span className="hexLink">
                                                             <div className="hexagon-green" />
@@ -178,7 +180,7 @@ class SplashView extends Component {
                                             </li>
                                             <li className="hex">
                                                 <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
-                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                            onClick={event => this.handleView(event, 'eBOM01')}>
                                                     <div className="hexIn">
                                                         <span className="hexLink">
                                                             <div className="hexagon-green" />
@@ -190,7 +192,7 @@ class SplashView extends Component {
                                             </li>
                                             <li className="hex">
                                                 <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
-                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                            onClick={event => this.handleView(event, 'eBOM01')}>
                                                     <div className="hexIn">
                                                         <span className="hexLink">
                                                             <div className="hexagon-green" />
@@ -202,7 +204,7 @@ class SplashView extends Component {
                                             </li>
                                             <li className="hex">
                                                 <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
-                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                            onClick={event => this.handleView(event, 'eBOM01')}>
                                                     <div className="hexIn">
                                                         <span className="hexLink">
                                                             <div className="hexagon-green" />
@@ -214,7 +216,7 @@ class SplashView extends Component {
                                             </li>
                                             <li className="hex">
                                                 <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
-                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                            onClick={event => this.handleView(event, 'eBOM01')}>
                                                     <div className="hexIn">
                                                         <span className="hexLink">
                                                             <div className="hexagon-green" />
@@ -226,7 +228,7 @@ class SplashView extends Component {
                                             </li>
                                             <li className="hex">
                                                 <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
-                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                            onClick={event => this.handleView(event, 'eBOM01')}>
                                                     <div className="hexIn">
                                                         <span className="hexLink">
                                                             <div className="hexagon-green" />
@@ -238,7 +240,7 @@ class SplashView extends Component {
                                             </li>
                                             <li className="hex">
                                                 <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
-                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                            onClick={event => this.handleView(event, 'eBOM01')}>
                                                     <div className="hexIn">
                                                         <span className="hexLink">
                                                             <div className="hexagon-green" />
@@ -250,7 +252,7 @@ class SplashView extends Component {
                                             </li>
                                             <li className="hex">
                                                 <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
-                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                            onClick={event => this.handleView(event, 'eBOM01')}>
                                                     <div className="hexIn">
                                                         <span className="hexLink">
                                                             <div className="hexagon-green" />
@@ -262,7 +264,7 @@ class SplashView extends Component {
                                             </li>
                                             <li className="hex">
                                                 <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
-                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                            onClick={event => this.handleView(event, 'eBOM01')}>
                                                     <div className="hexIn">
                                                         <span className="hexLink">
                                                             <div className="hexagon-green" />
@@ -274,7 +276,7 @@ class SplashView extends Component {
                                             </li>
                                             <li className="hex">
                                                 <ButtonBase focusRipple style={{ 'width': '100%', 'height': '100%' }}
-                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                            onClick={event => this.handleView(event, 'eBOM01')}>
                                                     <div className="hexIn">
                                                         <span className="hexLink">
                                                             <div className="hexagon-green" />
@@ -293,7 +295,7 @@ class SplashView extends Component {
 
                 }
 
-                <div style={{"bottom": "0", "position": "fixed", "width": "100%"}}>
+                <div style={{ "bottom": "0", "position": "inherit", "width": "100%" }}>
                     <div style={{ padding: 48 }}>
                         <Grid container spacing={24}>
                             <Grid container item xs justify="center">
@@ -316,24 +318,15 @@ class SplashView extends Component {
                             </Grid>
                         </Grid>
                     </div>
-                    <div style={{padding: 24}}>
+                    <div style={{ padding: 24 }}>
                         <Grid container spacing={24}>
                             <Grid container item xs={12} justify="flex-start">
                                 <Typography>
-                                    <span style={{"color": "white"}}>Copyright 2018. ALL RIGHTS RESERVED.</span>
+                                    <span style={{ "color": "white" }}>Copyright 2018. ALL RIGHTS RESERVED.</span>
                                 </Typography>
                             </Grid>
                         </Grid>
                     </div>
-                </div>
-                <div style={{ padding: 24 }}>
-                    <Grid container spacing={24}>
-                        <Grid container item xs={12} justify="flex-start">
-                            <Typography>
-                                <span style={{ "color": "white" }}>Copyright 2018. ALL RIGHTS RESERVED.</span>
-                            </Typography>
-                        </Grid>
-                    </Grid>
                 </div>
             </div>
         );
