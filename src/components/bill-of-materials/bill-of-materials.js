@@ -37,7 +37,7 @@ class BillOfMaterials extends React.Component {
                         showBillOfMaterialsReview={this.state.showBillOfMaterialsReview}
                         eBOMData={this.state.eBOMData}
                         snackbar={this.state.snackbar}
-                        viewHandler={this.handleData}/>
+                        viewHandler={this.handleData} />
                     : ""}
                 {this.state.showBillOfMaterialsReview === true ?
                     <BillOfMaterialsReview
@@ -45,7 +45,7 @@ class BillOfMaterials extends React.Component {
                         showBillOfMaterialsReview={this.state.showBillOfMaterialsReview}
                         eBOMData={this.state.eBOMData}
                         snackbar={this.state.snackbar}
-                        viewHandler={this.handleData}/>
+                        viewHandler={this.handleData} />
                     : ""}
             </div>
         )

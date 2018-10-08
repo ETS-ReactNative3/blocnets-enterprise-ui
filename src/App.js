@@ -35,13 +35,13 @@ import CloudUpload from '@material-ui/icons/CloudUpload';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import MailIcon from '@material-ui/icons/Mail';
-import UserIcon from '@material-ui/icons/AccountCircleRounded';
 import Drawer from 'material-ui/Drawer';
 import logo from './blocknetwhite-1.png';
 import paperLogo from './blocnets-logo.png'
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import { getEachMessageForUserID } from './redux/actions/user.message.array.action';
+import SvgIcon from '@material-ui/core/SvgIcon';
 
 const theme = createMuiTheme({
     palette: {
@@ -57,11 +57,6 @@ const appBarLogoStyle = {
 
 const messageIconStyle = {
     transform: 'scale(1.0)'
-};
-
-const userIconStyle = {
-    color: 'white',
-    transform: 'scale(2.1)'
 };
 
 const paperStyle = {
@@ -293,7 +288,7 @@ class App extends Component {
                                     ttSearchData={this.state}
                                     viewHandler={this.handleTTSearchData} />
                             </Grid>
-                            <Grid item xs={3}>
+                            <Grid item xs={5}>
                                 <Tooltip title="Inbox">
                                     <IconButton aria-label="pending messages" onClick={this.showMainView}>
                                         <Badge badgeContent={this.state.badgeContent} color="secondary"
@@ -305,8 +300,8 @@ class App extends Component {
                                 <Tooltip title="Home - Apps">
                                     <IconButton aria-label="apps" onClick={event => this.handleSplash()}
                                                 style={{ "cursor": "pointer" }}>
-                                        <i className="material-icons"
-                                           style={{ 'fontSize': 'xx-large', 'color': 'white' }}>apps</i>
+                                        <SvgIcon className="Hexagon-Icon">
+                                        </SvgIcon>
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title="Print">
@@ -323,13 +318,6 @@ class App extends Component {
                                            style={{ 'fontSize': 'xx-large', 'color': 'white' }}>open_in_new</i>
                                     </IconButton>
                                 </Tooltip>
-                            </Grid>
-                            <Grid item xs={2}>
-                                <IconButton aria-label="User Account" onClick={this.showMainView}>
-                                    <UserIcon
-                                        style={userIconStyle}
-                                    />
-                                </IconButton>
                             </Grid>
                         </Grid>
                     </AppBar>

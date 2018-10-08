@@ -7,7 +7,7 @@ import FormLabel from '@material-ui/core/FormLabel/FormLabel';
 import Divider from '@material-ui/core/Divider/Divider';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from 'material-ui/Checkbox';
+import Checkbox from '@material-ui/core/Checkbox';
 import ListAlt from '@material-ui/icons/ListAlt';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
@@ -551,15 +551,17 @@ class BillOfMaterialsForm extends React.Component {
                                     control={
                                         <Checkbox
                                             name='alwaysUpright'
-                                            color='default'
                                             onClick={this.handleCheckboxChange}
                                             checked={this.state.alwaysUpright}
+                                            classes={{
+                                                root: 'Module-Checkbox-Root',
+                                                checked: 'Module-Checkbox-Checked'
+                                            }}
                                         />
                                     }
-                                    label=''
+                                    label='Always Upright'
                                 />
                             </FormGroup>
-                            Always Upright
                         </Grid>
                     </Grid>
                     <br /><br />
@@ -580,15 +582,17 @@ class BillOfMaterialsForm extends React.Component {
                                     control={
                                         <Checkbox
                                             name='metallic'
-                                            color='default'
                                             onClick={this.handleCheckboxChange}
                                             checked={this.state.metallic}
+                                            classes={{
+                                                root: 'Module-Checkbox-Root',
+                                                checked: 'Module-Checkbox-Checked'
+                                            }}
                                         />
                                     }
-                                    label=''
+                                    label='Metallic'
                                 />
                             </FormGroup>
-                            Metallic
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <FormGroup row>
@@ -596,15 +600,17 @@ class BillOfMaterialsForm extends React.Component {
                                     control={
                                         <Checkbox
                                             name='hazmat'
-                                            color='default'
                                             onClick={this.handleCheckboxChange}
                                             checked={this.state.hazmat}
+                                            classes={{
+                                                root: 'Module-Checkbox-Root',
+                                                checked: 'Module-Checkbox-Checked'
+                                            }}
                                         />
                                     }
-                                    label=''
+                                    label='Hazmat'
                                 />
                             </FormGroup>
-                            Hazmat
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <FormGroup row>
@@ -612,15 +618,17 @@ class BillOfMaterialsForm extends React.Component {
                                     control={
                                         <Checkbox
                                             name='magnetic'
-                                            color='default'
                                             onClick={this.handleCheckboxChange}
                                             checked={this.state.magnetic}
+                                            classes={{
+                                                root: 'Module-Checkbox-Root',
+                                                checked: 'Module-Checkbox-Checked'
+                                            }}
                                         />
                                     }
-                                    label=''
+                                    label='Magnetic'
                                 />
                             </FormGroup>
-                            Magnetic
                         </Grid>
                     </Grid>
                     <br /><br />
@@ -1113,6 +1121,7 @@ class BillOfMaterialsForm extends React.Component {
                 </Snackbar>
             </div>
         );
+
     }
 }
 

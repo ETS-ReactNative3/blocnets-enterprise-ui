@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import blocnetsLogo from '../blocknetwhite-1.png';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -7,7 +7,7 @@ import TextField from 'material-ui/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Snackbar from 'material-ui/Snackbar';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import {
     getEachMessageForUserID
 } from '../redux/actions/user.message.array.action';
@@ -66,7 +66,7 @@ class LoginView extends Component {
     }
 
     handleUsername = (event) => {
-        this.setState({userName: event.target.value});
+        this.setState({ userName: event.target.value });
     };
 
     handlePassword = (event) => {
@@ -75,16 +75,16 @@ class LoginView extends Component {
             passwordEntered: false
         });
         if (event.target.value) {
-            this.setState({passwordEntered: true});
+            this.setState({ passwordEntered: true });
         }
     };
 
     handleView = (event) => {
-        this.setState({showProgressLogo: true});
+        this.setState({ showProgressLogo: true });
         Promise.resolve(this.props.getEachMessageForUserID(this.state.userName))
             .then(() => {
                 if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
-                    this.setState({showProgressLogoDialog: false});
+                    this.setState({ showProgressLogoDialog: false });
                     this.props.viewHandler('app', false, this.state.transactionCode, this.state.userName);
                 } else {
                     this.setState({
@@ -123,24 +123,24 @@ class LoginView extends Component {
             <div>
                 <div>
                     {this.state.showProgressLogo ?
-                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt=""/>
+                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt="" />
                         </div> : ""}
                 </div>
                 <div>
                     <Grid container spacing={24}>
                         <Paper elevation={24} style={paperStyle} zdepth={5}>
-                            <div style={{padding: 48}}>
+                            <div style={{ padding: 48 }}>
                             </div>
-                            <div style={{padding: 24}}>
+                            <div style={{ padding: 24 }}>
                                 <Grid container spacing={24}>
                                     <Grid container item xs={12} justify="center">
                                         <Paper style={logoStyle}>
-                                            <img src={logo} style={imageStyle} alt=""/>
+                                            <img src={logo} style={imageStyle} alt="" />
                                         </Paper>
                                     </Grid>
                                 </Grid>
                             </div>
-                            <div style={{padding: 24}}>
+                            <div style={{ padding: 24 }}>
                                 <Grid container spacing={24}>
                                     <Grid container item xs={12} justify="center">
                                         <TextField
@@ -148,10 +148,10 @@ class LoginView extends Component {
                                             onChange={this.handleUsername}
                                             type="text"
                                             name="userName"
-                                            style={{"float": "left", "textAlign": "left"}}
+                                            style={{ "float": "left", "textAlign": "left" }}
                                             hintText="User Name"
                                             errorText={this.state.errorTextUserName}
-                                            errorStyle={{"float": "left", "textAlign": "left"}}
+                                            errorStyle={{ "float": "left", "textAlign": "left" }}
                                         />
                                     </Grid>
                                 </Grid>
@@ -162,18 +162,18 @@ class LoginView extends Component {
                                             onChange={this.handlePassword}
                                             type="password"
                                             name="password"
-                                            style={{"float": "left", "textAlign": "left"}}
+                                            style={{ "float": "left", "textAlign": "left" }}
                                             hintText="Password"
                                         />
                                     </Grid>
                                 </Grid>
-                                <br/>
+                                <br />
                                 {formComplete ?
                                     <Grid container spacing={24}>
                                         <Grid container item xs={12} justify="center">
                                             <Button type="submit" value="submit" variant="contained"
                                                     onClick={event => this.handleView(event)}
-                                                    style={{"backgroundColor": "#ffb000"}}>
+                                                    style={{ "backgroundColor": "#fce400" }}>
                                                 Log In
                                             </Button>
                                         </Grid>
@@ -183,27 +183,27 @@ class LoginView extends Component {
                                         <Grid container item xs={12} justify="center">
                                             <Button type="submit" value="submit" variant="contained"
                                                     disabled
-                                                    style={{"backgroundColor": "#898989"}}>
+                                                    style={{ "backgroundColor": "#e0e0e0" }}>
                                                 Log In
                                             </Button>
                                         </Grid>
                                     </Grid>
                                 }
-                                <div style={{padding: 48}}>
+                                <div style={{ padding: 48 }}>
                                 </div>
                             </div>
                         </Paper>
                     </Grid>
                 </div>
-                <div style={{"bottom": "0", "position": "fixed", "width": "100%"}}>
-                    <div style={{padding: 48}}>
+                <div style={{ "bottom": "0", "position": "fixed", "width": "100%" }}>
+                    <div style={{ padding: 48 }}>
                         <Grid container spacing={24}>
                             <Grid container item xs justify="center">
                             </Grid>
                             <Grid container item xs justify="center">
                                 <Typography>
                                     <span
-                                        style={{"color": "white"}}>{this.state.currentDateAndTime ? this.state.currentDateAndTime : "Loading..."}</span>
+                                        style={{ "color": "white" }}>{this.state.currentDateAndTime ? this.state.currentDateAndTime : "Loading..."}</span>
                                 </Typography>
                             </Grid>
                             <Grid container item xs justify="center">
@@ -216,7 +216,7 @@ class LoginView extends Component {
                     message={this.state.snackbar.message}
                     autoHideDuration={this.state.snackbar.autoHideDuration}
                     onRequestClose={this.handleSnackbarClose}
-                    bodyStyle={{backgroundColor: this.state.snackbar.sbColor}}
+                    bodyStyle={{ backgroundColor: this.state.snackbar.sbColor }}
                 />
             </div>
         );
