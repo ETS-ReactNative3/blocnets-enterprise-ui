@@ -1,15 +1,15 @@
 import React from 'react';
 import blocnetsLogo from '../../../blocknetwhite-1.png';
 import Grid from '@material-ui/core/Grid';
-import Paper from 'material-ui/Paper';
+import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Button from '@material-ui/core/Button';
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
-import red from '@material-ui/core/colors/red';
-import {connect} from 'react-redux';
+import Save from '@material-ui/icons/Save';
+import Cancel from '@material-ui/icons/Cancel';
+import { connect } from 'react-redux';
 import {
     createMasterDataKeys
 } from '../../../redux/actions/BOM/create.master.data.action';
@@ -18,7 +18,7 @@ let counter = 0;
 
 function createData(info1, info2) {
     counter += 1;
-    return {id: counter, info1, info2};
+    return { id: counter, info1, info2 };
 }
 
 class BillOfMaterialsReview extends React.Component {
@@ -39,23 +39,23 @@ class BillOfMaterialsReview extends React.Component {
         this.props.data.bomReducer.createMasterDataPartNameError = '';
         this.props.data.bomReducer.createMasterDataPartDescError = '';
         let eBOMError = [];
-        this.setState({showProgressLogo: true});
+        this.setState({ showProgressLogo: true });
         let data = {
-            text: "string",
-            file: "string",
+            text: 'string',
+            file: 'string',
             supplier: {
                 supplierName: this.props.eBOMData.paymentTerms,
                 supplierCageCode: this.props.eBOMData.ipAddress,
                 suppliers: [
                     {
-                        supplierIpAddress: "string",
-                        supplierIpAddressDesc: "string",
-                        supplierMaterialAddress: "string",
-                        supplierMaterialNumber: "string",
-                        supplierCageCode: "string"
+                        supplierIpAddress: 'string',
+                        supplierIpAddressDesc: 'string',
+                        supplierMaterialAddress: 'string',
+                        supplierMaterialNumber: 'string',
+                        supplierCageCode: 'string'
                     }
                 ],
-                supplierBillingAddress: "string",
+                supplierBillingAddress: 'string',
                 supplierLocationAddress: this.props.eBOMData.addressLine1 + ' '
                     + this.props.eBOMData.addressLine2 + ' ' + this.props.eBOMData.city
                     + ' ' + this.props.eBOMData.addressState + ' ' + this.props.eBOMData.postalCode + ' '
@@ -65,31 +65,31 @@ class BillOfMaterialsReview extends React.Component {
                     + this.props.eBOMData.shipToAddressLine2 + ' ' + this.props.eBOMData.shipToCity
                     + ' ' + this.props.eBOMData.shipToAddressState + ' ' + this.props.eBOMData.shipToPostalCode + ' '
                     + this.props.eBOMData.shipToCountry,
-                supplierCustomerShipToCageCode: "string",
+                supplierCustomerShipToCageCode: 'string',
                 supplierCustomerShipToIPAddress: this.props.eBOMData.shipToIPAddress,
                 supplierCustomerBillToAddress: this.props.eBOMData.billToAddressLine1 + ' '
                     + this.props.eBOMData.billToAddressLine2 + ' ' + this.props.eBOMData.billToCity
                     + ' ' + this.props.eBOMData.billToAddressState + ' ' + this.props.eBOMData.billToPostalCode + ' '
                     + this.props.eBOMData.billToCountry,
-                supplierCustomerBillToCageCode: "string",
+                supplierCustomerBillToCageCode: 'string',
                 supplierCustomerBillToIPAddress: this.props.eBOMData.billToIPAddress,
                 supplierProductionCapacityCommittedToNetwork: this.props.eBOMData.supPaymentTerms,
                 supplierOrderedLeadTime: this.props.eBOMData.supOrderPolicy,
                 supplierMaterialQualityInputSystem: [
-                    "string"
+                    'string'
                 ],
                 supplierMinimumEconomicOrderQuantity: this.props.eBOMData.minEOQuantities,
                 supplierMaximumEconomicOrderQuantity: this.props.eBOMData.maxEOQuantities,
                 supplierMaximumEconomicProductWithdrawRate: this.props.eBOMData.maxEPWithdrawRate,
-                supplierOrderExpiditeFee: "string",
-                supplierOrderSlowDownFee: "string",
-                supplierMaximumOrderLeadTime: "string",
+                supplierOrderExpiditeFee: 'string',
+                supplierOrderSlowDownFee: 'string',
+                supplierMaximumOrderLeadTime: 'string',
                 supplierMinimumOrderLeadTime: this.props.eBOMData.minOrderLeadTimes,
-                supplierLeadTimeViolationFee: "string"
+                supplierLeadTimeViolationFee: 'string'
             },
             material: {
                 materialMvmtOrderType: [
-                    "string"
+                    'string'
                 ],
                 materialMvmtLocation: this.props.eBOMData.materialIPAddress,
                 materialMvmtShippedTo: this.props.eBOMData.materialAddressLine1 + ' '
@@ -99,58 +99,58 @@ class BillOfMaterialsReview extends React.Component {
                 materialMvmtShippedFrom: this.props.eBOMData.materialCompanyName,
                 materialMvmtCageCode: this.props.eBOMData.partName,
                 materialMvmtSupplierName: this.props.eBOMData.partDescription,
-                materialMvmtSerialNumber: "string",
+                materialMvmtSerialNumber: 'string',
                 materialMvmtMaterialNumber: this.props.eBOMData.partNo,
-                materialMvmtEndItemNumber: "string",
+                materialMvmtEndItemNumber: 'string',
                 materialAffiliates: [
-                    "string"
+                    'string'
                 ],
                 materialNumber: this.props.eBOMData.materialID,
                 materialSerialNumber: this.props.eBOMData.materialName,
                 materialDescription: this.props.eBOMData.materialDescription,
                 materialVolume: this.props.eBOMData.volume,
-                materialVolumeUnits: "string",
+                materialVolumeUnits: 'string',
                 materialWeight: this.props.eBOMData.weight,
-                materialWeightUnits: "string",
+                materialWeightUnits: 'string',
                 materialLength: this.props.eBOMData.materialLength,
-                materialLengthUnits: "string",
+                materialLengthUnits: 'string',
                 materialWidth: this.props.eBOMData.width,
-                materialWidthUnits: "string",
+                materialWidthUnits: 'string',
                 materialHeight: this.props.eBOMData.height,
-                materialHeightUnits: "string",
+                materialHeightUnits: 'string',
                 materialTempLimits: this.props.eBOMData.temperatureLimits,
                 materialVibrationLimits: this.props.eBOMData.shockVibration,
                 materialAlwaysUpRight: this.props.eBOMData.alwaysUpright,
                 materialAltitudeRestrictions: this.props.eBOMData.altitudeRestrictions,
                 materialCompressionRestrictions: this.props.eBOMData.compressionRestrictions,
                 materialOther: [
-                    "metallic: " + this.props.eBOMData.metallic,
-                    "hazmat: " + this.props.eBOMData.hazmat,
-                    "magnetic: " + this.props.eBOMData.magnetic
+                    'metallic: ' + this.props.eBOMData.metallic,
+                    'hazmat: ' + this.props.eBOMData.hazmat,
+                    'magnetic: ' + this.props.eBOMData.magnetic
                 ],
                 materialLengthTolerance: this.props.eBOMData.lengthTolerance,
                 materialRoundTolerance: this.props.eBOMData.roundTolerance,
                 materialNonSkidTolerance: this.props.eBOMData.nonSkidTolerance,
-                materialGoesInto: "string",
-                materialProductionYield: "string",
-                materialOrderLeadTime: "string",
-                materialShippingLeadTime: "string",
-                materialProductionSetupTime: "string",
-                materialProductionChangeOverTime: "string",
-                materialProductionRate: "string",
-                materialCADFile: "string",
-                materialCAMFile: "string",
-                materialPrinterFile: "string",
+                materialGoesInto: 'string',
+                materialProductionYield: 'string',
+                materialOrderLeadTime: 'string',
+                materialShippingLeadTime: 'string',
+                materialProductionSetupTime: 'string',
+                materialProductionChangeOverTime: 'string',
+                materialProductionRate: 'string',
+                materialCADFile: 'string',
+                materialCAMFile: 'string',
+                materialPrinterFile: 'string',
                 materialQualitySpec: [
-                    "string"
+                    'string'
                 ],
-                materialMinimumEconomicProductionQuantity: "string",
-                materialMaximumEconomicProductionQuantity: "string",
-                materialProductionExpiditeFee: "string",
-                materialProductionSlowDownFee: "string",
-                materialMaximumProductionLeadTime: "string",
-                materialMinimumProductionLeadTime: "string",
-                materialLeadTimeViolationFee: "string"
+                materialMinimumEconomicProductionQuantity: 'string',
+                materialMaximumEconomicProductionQuantity: 'string',
+                materialProductionExpiditeFee: 'string',
+                materialProductionSlowDownFee: 'string',
+                materialMaximumProductionLeadTime: 'string',
+                materialMinimumProductionLeadTime: 'string',
+                materialLeadTimeViolationFee: 'string'
             }
         };
         Promise.resolve(this.props.createMasterDataKeys(data))
@@ -268,32 +268,26 @@ class BillOfMaterialsReview extends React.Component {
             createData('Supplier Order Policy', this.props.eBOMData.supOrderPolicy)
         ];
 
-        const buttonThemeRed = createMuiTheme({
-            palette: {
-                primary: red
-            },
-        });
-
         return (
             <div>
                 <div>
                     {this.state.showProgressLogo ?
-                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt=""/>
-                        </div> : ""}
+                        <div className='overlay'><img src={blocnetsLogo} className='App-logo-progress' alt='' />
+                        </div> : ''}
                 </div>
-                <div style={{padding: 24}}>
+                <div className='Module'>
                     <Grid container>
                         <Grid container item xs={12}>
                             Please confirm information.
                         </Grid>
                     </Grid>
-                    <br/>
-                    <Grid container justify="center">
+                    <br />
+                    <Grid container justify='center'>
                         <Grid container item xs={12}>
-                            <Paper style={{"width": "100%"}}>
-                                <div style={{"overflowX": "auto"}}>
-                                    <Table style={{"tableLayout": "fixed"}}>
-                                        <TableBody style={{"overflowWrap": "break-word"}}>
+                            <Paper className='Module-Paper'>
+                                <div className='Module-Paper-Div'>
+                                    <Table className='Module-Table'>
+                                        <TableBody className='Module-TableBody'>
                                             {rows.map(row => {
                                                 return (
                                                     <TableRow key={row.id}>
@@ -308,7 +302,7 @@ class BillOfMaterialsReview extends React.Component {
                             </Paper>
                         </Grid>
                     </Grid>
-                    <br/>
+                    <br />
                     <Grid container spacing={24}>
                         <Grid container item xs={12} sm={6}>
                         </Grid>
@@ -316,30 +310,30 @@ class BillOfMaterialsReview extends React.Component {
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <Grid container item xs>
-                                <MuiThemeProvider theme={buttonThemeRed}>
-                                    <Button type="submit" value="OK" variant="flat" color="primary"
-                                            onClick={this.handleSubmit} fullWidth={true}>
-                                        OK
-                                    </Button>
-                                </MuiThemeProvider>
+                                <Button type='submit' value='OK' variant='contained' className='Module-Button'
+                                        onClick={this.handleSubmit}>
+                                    OK
+                                    <Save className='Module-Button-Icon' />
+                                </Button>
                             </Grid>
                             <Grid container item xs>
-                                <MuiThemeProvider theme={buttonThemeRed}>
-                                    <Button type="submit" value="Cancel" variant="flat" color="primary"
-                                            onClick={this.handleCancel} fullWidth={true}>
-                                        Cancel
-                                    </Button>
-                                </MuiThemeProvider>
+                                <Button type='button' value='Cancel' variant='contained'
+                                        className='Module-Button-Cancel'
+                                        onClick={this.handleCancel}>
+                                    Cancel
+                                    <Cancel className='Module-Button-Icon' />
+                                </Button>
                             </Grid>
                         </Grid>
                     </Grid>
-                    <br/>
-                    <br/>
+                    <br />
+                    <br />
                 </div>
             </div>
-
         );
+
     }
+
 }
 
 

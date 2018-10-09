@@ -1,10 +1,10 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Tree from 'react-d3-tree';
-import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import red from '../../../../node_modules/@material-ui/core/colors/red';
-import Snackbar from 'material-ui/Snackbar';
+import Cancel from '@material-ui/icons/Cancel';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
 
 const myTreeData = [
     {
@@ -57,11 +57,6 @@ const myTreeData = [
     },
 ];
 
-const containerStyles = {
-    width: '100%',
-    height: '100vh',
-};
-
 class BillOfMaterialsTree extends React.Component {
 
     componentDidMount = () => {
@@ -90,7 +85,7 @@ class BillOfMaterialsTree extends React.Component {
                 autoHideDuration: 2000,
                 message: '',
                 open: false,
-                sbColor: 'black'
+                sbColor: ''
             },
         });
     };
@@ -107,33 +102,33 @@ class BillOfMaterialsTree extends React.Component {
         });
 
         return (
-            <div style={{padding: 24}}>
+            <div className='Module'>
                 <div>
-                    <div style={containerStyles} ref={tc => (this.treeContainer = tc)}>
-                        <Tree data={myTreeData} translate={this.state.translate} orientation={'horizontal'}/>
+                    <div className='Module-Container' ref={tc => (this.treeContainer = tc)}>
+                        <Tree data={myTreeData} translate={this.state.translate} orientation={'horizontal'} />
                     </div>
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
-                            <MuiThemeProvider theme={buttonTheme}>
-                                <Button type="submit" value="Close" variant="contained" color="primary"
-                                        fullWidth={true} onClick={this.handleClose}>
-                                    Close
-                                </Button>
-                            </MuiThemeProvider>
+                            <Button type='button' value='Close' variant='contained'
+                                    className='Module-Button-Cancel' fullWidth={true}
+                                    onClick={this.handleClose}>
+                                Close
+                                <Cancel className='Module-Button-Icon' />
+                            </Button>
                         </Grid>
                     </Grid>
                 </div>
-                <Snackbar
-                    open={this.state.snackbar.open}
-                    message={this.state.snackbar.message}
-                    autoHideDuration={this.state.snackbar.autoHideDuration}
-                    onRequestClose={this.handleSnackbarClose}
-                    bodyStyle={{backgroundColor: this.state.snackbar.sbColor}}
-                />
+                <Snackbar open={this.props.snackbar.open} autoHideDuration={this.props.snackbar.autoHideDuration}
+                          onClose={this.handleSnackbarClose}>
+                    <SnackbarContent
+                        message={this.props.snackbar.message}
+                        className={this.props.snackbar.sbColor}
+                        classes={{ message: 'Module-Snackbar-Message' }}
+                    />
+                </Snackbar>
             </div>
         )
 
     }
-}
 
-export default BillOfMaterialsTree;
+}

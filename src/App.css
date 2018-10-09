@@ -401,6 +401,11 @@ body {
     color: rgba(0, 0, 0, 0.26) !important;
 }
 
+.Module-Button-Cancel {
+    background-color: #e32c1c !important;
+    color: #ffffff !important;
+}
+
 .Module-Button-Input {
     display: none !important;
 }
@@ -425,7 +430,7 @@ body {
 }
 
 .Module-Snackbar-Error {
-    background-color: #c60000 !important;
+    background-color: #e32c1c !important;
 }
 
 .Module-Snackbar-Message {
@@ -437,6 +442,27 @@ body {
 }
 
 .Module-Checkbox-Checked {
+}
+
+.Module-Paper {
+    width: 100% !important;
+}
+
+.Module-Paper-Div {
+    overflow-x: auto !important;
+}
+
+.Module-Table {
+    table-layout: fixed !important;
+}
+
+.Module-TableBody {
+    overflow-wrap: break-word !important;
+}
+
+.Module-Container {
+    width: 100% !important;
+    height: 100vh !important;
 }
 
 .Hexagon-Icon {

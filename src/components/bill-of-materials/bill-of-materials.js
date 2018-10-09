@@ -14,7 +14,7 @@ class BillOfMaterials extends React.Component {
                 autoHideDuration: 2000,
                 message: '',
                 open: false,
-                sbColor: 'black'
+                sbColor: ''
             }
         };
     }
@@ -30,7 +30,7 @@ class BillOfMaterials extends React.Component {
 
     render() {
         return (
-            <div id="billOfMaterials">
+            <div id='billOfMaterials'>
                 {this.state.showBillOfMaterialsForm === true ?
                     <BillOfMaterialsForm
                         showBillOfMaterialsForm={this.state.showBillOfMaterialsForm}
@@ -38,7 +38,7 @@ class BillOfMaterials extends React.Component {
                         eBOMData={this.state.eBOMData}
                         snackbar={this.state.snackbar}
                         viewHandler={this.handleData} />
-                    : ""}
+                    : ''}
                 {this.state.showBillOfMaterialsReview === true ?
                     <BillOfMaterialsReview
                         showBillOfMaterialsForm={this.state.showBillOfMaterialsForm}
@@ -46,7 +46,7 @@ class BillOfMaterials extends React.Component {
                         eBOMData={this.state.eBOMData}
                         snackbar={this.state.snackbar}
                         viewHandler={this.handleData} />
-                    : ""}
+                    : ''}
             </div>
         )
     }
