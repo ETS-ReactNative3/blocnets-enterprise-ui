@@ -477,6 +477,7 @@ body {
 
 .Transparent-Theme {
     background-color: transparent !important;
+    box-shadow: none !important;
 }
 
 .TT-Logo {
