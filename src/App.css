@@ -461,8 +461,8 @@ body {
 }
 
 .Module-Container {
-    width: 100% !important;
     height: 100vh !important;
+    width: 100% !important;
 }
 
 .Hexagon-Icon {
@@ -485,16 +485,39 @@ body {
 
 .TT-Title {
     font-family: SCcustom, sans-serif !important;
-    font-style: normal !important;
     font-size: 40pt !important;
+    font-style: normal !important;
 }
 
 .TT-Font-White {
     color: #ffffff !important;
-    letter-spacing: 1px;
 }
 
 .TT-Font-Red {
     color: #e32c1c !important;
-    letter-spacing: 1px;
+}
+
+.Module-Title {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    display: inline-block !important;
+    height: 85% !important;
+    margin-left: 5% !important;
+    margin-right: 5% !important;
+    margin-top: 3% !important;
+    text-align: left !important;
+    width: 70% !important;
+}
+
+.Module-Title-Toolbar {
+    background-color: transparent !important;
+    height: 100% !important;
+    padding: 0 !important;
+}
+
+.Module-Title-Content {
+    color: #ffffff !important;
+    font-family: SCcustom, sans-serif !important;
+    font-size: 20pt !important;
+    font-style: normal !important;
 }

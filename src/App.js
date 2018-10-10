@@ -62,14 +62,16 @@ const messageIconStyle = {
 const paperStyle = {
     width: '70%',
     height: '85%',
-    margin: '5%',
+    marginLeft: '5%',
+    marginRight: '5%',
+    marginBottom: '5%',
     textAlign: 'center',
     display: 'inline-block',
 };
 
 const paperLogoStyle = {
     maxHeight: 65,
-    paddingTop: 10
+    paddingTop: 15
 };
 
 class App extends Component {
@@ -188,6 +190,14 @@ class App extends Component {
         });
     };
 
+    showSaveDocumentView = () => {
+        this.setState({
+            show: 'savedocumentview',
+            open: false,
+            transactionCode: 'DRE03'
+        });
+    };
+
     handleTTSearchData = (show, open, transactionCode, tatData, tree, snackbar) => {
         this.setState({
             show: show,
@@ -239,6 +249,7 @@ class App extends Component {
     render() {
 
         let content = null;
+        let contentTitle = '';
 
         switch (this.state.show) {
             case 'trackandtraceresultsview':
@@ -246,29 +257,42 @@ class App extends Component {
                     snackbar={this.state.snackbar}
                     tatData={this.state.tatData}
                     tree={this.state.tree} />);
+                contentTitle = '';
                 break;
             case 'billofmaterials':
                 content = (<BillOfMaterials />);
+                contentTitle = 'ENTER MATERIAL AND SUPPLIER MASTER DATA';
                 break;
             case 'shippingview':
                 content = (<ShippingView />);
+                contentTitle = 'SHIPPING';
                 break;
             case 'receivingview':
                 content = (<ReceivingView />);
+                contentTitle = 'RECEIVE SHIPMENT';
                 break;
             case 'startproductionview':
                 content = (<StartProductionView />);
+                contentTitle = 'ENTER MATERIALS REQUIRED FOR PRODUCTION';
                 break;
             case 'completeproductionview':
                 content = (<CompleteProductionView />);
+                contentTitle = 'ENTER NEW MATERIAL PRODUCED FROM PRODUCTION ORDER';
                 break;
             case 'trackandtraceview':
                 content = (<TrackAndTraceView
                     viewHandler={this.handleTrackAndTraceData} />);
+                contentTitle = '';
                 break;
             case 'senddocumentview':
                 content = (<SendDocumentView
                     viewHandler={this.handleDREData} />);
+                contentTitle = 'SEND A DOCUMENT';
+                break;
+            case 'savedocumentview':
+                content = (<SendDocumentView
+                    viewHandler={this.handleDREData} />);
+                contentTitle = 'SAVE A DOCUMENT';
                 break;
             default:
                 content = (
@@ -281,6 +305,7 @@ class App extends Component {
                             />
                         </div>
                     </Router>);
+                contentTitle = '';
         }
 
         return (
@@ -413,7 +438,7 @@ class App extends Component {
                                       primary='Send a Document' />
                     </MenuItem>
                     <hr />
-                    <MenuItem id='showSendDocumentViewId' onClick={this.showSendDocumentView}
+                    <MenuItem id='showSaveDocumentViewId' onClick={this.showSaveDocumentView}
                               style={{ 'textAlign': 'left' }}>
                         <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
                             <CloudUpload />
@@ -422,6 +447,13 @@ class App extends Component {
                                       primary='Save a Document' />
                     </MenuItem>
                 </Drawer>
+                <Paper className='Module-Title'>
+                    <Toolbar className='Module-Title-Toolbar'>
+                        <Typography className='Module-Title-Content'>
+                            {contentTitle}
+                        </Typography>
+                    </Toolbar>
+                </Paper>
                 {/* Page View with content loaded */}
                 {this.state.transactionCode === 'TAT01' ?
                     <Paper className='Transparent-Theme' style={paperStyle} zDepth={5}>
@@ -429,7 +461,7 @@ class App extends Component {
                     </Paper>
                     :
                     <Paper className='White-theme' style={paperStyle} zDepth={5}>
-                        <Toolbar style={{ 'justifyContent': 'center', 'height': 80 }}>
+                        <Toolbar style={{ 'justifyContent': 'center', 'height': 100 }}>
                             <ToolbarTitle
                                 text={<img src={paperLogo} style={paperLogoStyle} alt='Blocnets' />}
                             />

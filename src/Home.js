@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import SplashView from './components/splash';
 import LoginView from './components/login';
 import App from './App';
 import { authenticate } from './redux/actions/authentication.action';
-import connect from "react-redux/es/connect/connect";
+import connect from 'react-redux/es/connect/connect';
 
 class Home extends Component {
 
@@ -69,6 +69,10 @@ class Home extends Component {
         } else if (transactionCode === 'DRE01') {
             this.setState({
                 showApp: 'senddocumentview'
+            });
+        } else if (transactionCode === 'DRE03') {
+            this.setState({
+                showApp: 'savedocumentview'
             });
         } else {
             this.setState({
