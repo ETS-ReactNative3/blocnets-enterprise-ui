@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import blocnetsLogo from '../../../blocknetwhite-1.png';
 import { FormControl } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -10,7 +10,7 @@ import Grow from '@material-ui/core/Grow';
 import Paper from 'material-ui/Paper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MenuList from '@material-ui/core/MenuList';
-import MenuItem from "material-ui/MenuItem";
+import MenuItem from 'material-ui/MenuItem';
 import {
     getBillOfMaterialsByMaterialID,
     getBillOfMaterialsByMaterialName,
@@ -22,14 +22,14 @@ import {
 import {
     getShippingDataByShipmentID
 } from '../../../redux/actions/shipping.and.receiving.actions';
-import {createConstruct} from '../../../redux/actions/tree.spawn.action';
-import {connect} from 'react-redux';
+import { createConstruct } from '../../../redux/actions/tree.spawn.action';
+import { connect } from 'react-redux';
 
 let counter = 0;
 
 function createData(info1, info2) {
     counter += 1;
-    return {id: counter, info1, info2};
+    return { id: counter, info1, info2 };
 }
 
 let tree = [];
@@ -62,12 +62,12 @@ class TrackAndTraceSearchView extends Component {
         if (event.target.value === '') {
             this.props.viewHandler('home', false, 'DRE02');
         } else {
-            this.setState({openSearch: true});
+            this.setState({ openSearch: true });
         }
     };
 
     handleSearchClose = () => {
-        this.setState({openSearch: false});
+        this.setState({ openSearch: false });
     };
 
     handleSearch = (event, searchCriteria) => {
@@ -344,74 +344,74 @@ class TrackAndTraceSearchView extends Component {
 
         return (
 
-            <div>
+            <div style={{ 'width': 'inherit' }}>
                 <div>
                     {this.state.showProgressLogo ?
-                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt=""/>
-                        </div> : ""}
+                        <div className='overlay'><img src={blocnetsLogo} className='App-logo-progress' alt='' />
+                        </div> : ''}
                 </div>
                 <div>
                     <FormControl fullWidth={true}>
-                        <InputLabel htmlFor="search-with-icon-adornment">Search</InputLabel>
+                        <InputLabel htmlFor='search-with-icon-adornment'>Search</InputLabel>
                         <Input
                             value={this.state.searchKey}
-                            name="searchKey"
-                            id="search-with-icon-adornment"
-                            type="search"
+                            name='searchKey'
+                            id='search-with-icon-adornment'
+                            type='search'
                             startAdornment={
                                 this.state.searchCriteria ?
-                                    <InputAdornment position="start">
+                                    <InputAdornment position='start'>
                                         {this.state.searchCriteria}:
                                     </InputAdornment>
                                     : ''
                             }
                             endAdornment={
                                 this.state.searchCriteria && this.state.searchKey ?
-                                    <InputAdornment position="end">
+                                    <InputAdornment position='end'>
                                         <SearchIcon
                                             onClick={this.showTrackAndTraceResultsView}
-                                            style={{"cursor": "pointer"}}
+                                            style={{ 'cursor': 'pointer' }}
                                         />
                                     </InputAdornment> :
-                                    <InputAdornment position="end">
+                                    <InputAdornment position='end'>
                                         <SearchIcon
-                                            style={{"fill": "black"}}
+                                            style={{ 'fill': 'black' }}
                                         />
                                     </InputAdornment>
                             }
                             onChange={this.handleSearchKey}
                         />
                         <Popper open={this.state.openSearch} transition disablePortal
-                                style={{"position": "relative"}}>
-                            {({TransitionProps, placement}) => (
+                                style={{ 'position': 'relative' }}>
+                            {({ TransitionProps, placement }) => (
                                 <Grow
                                     {...TransitionProps}
-                                    id="menu-list-grow"
-                                    style={{transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'}}
+                                    id='menu-list-grow'
+                                    style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
                                 >
                                     <Paper>
                                         <ClickAwayListener onClickAway={this.handleSearchClose}>
-                                            <MenuList style={{"textAlign": "left"}}>
-                                                <MenuItem className="menuList"
-                                                          onClick={event => this.handleSearch(event, "Material ID")}>Material
+                                            <MenuList style={{ 'textAlign': 'left' }}>
+                                                <MenuItem className='menuList'
+                                                          onClick={event => this.handleSearch(event, 'Material ID')}>Material
                                                     ID: {this.state.searchKey}</MenuItem>
-                                                <MenuItem className="menuList"
-                                                          onClick={event => this.handleSearch(event, "Material Name")}>Material
+                                                <MenuItem className='menuList'
+                                                          onClick={event => this.handleSearch(event, 'Material Name')}>Material
                                                     Name: {this.state.searchKey}</MenuItem>
-                                                <MenuItem className="menuList"
-                                                          onClick={event => this.handleSearch(event, "Material Description")}>Material
+                                                <MenuItem className='menuList'
+                                                          onClick={event => this.handleSearch(event, 'Material Description')}>Material
                                                     Description: {this.state.searchKey}</MenuItem>
-                                                <MenuItem className="menuList"
-                                                          onClick={event => this.handleSearch(event, "Part No.")}>Part
+                                                <MenuItem className='menuList'
+                                                          onClick={event => this.handleSearch(event, 'Part No.')}>Part
                                                     No.: {this.state.searchKey}</MenuItem>
-                                                <MenuItem className="menuList"
-                                                          onClick={event => this.handleSearch(event, "Part Name")}>Part
+                                                <MenuItem className='menuList'
+                                                          onClick={event => this.handleSearch(event, 'Part Name')}>Part
                                                     Name: {this.state.searchKey}</MenuItem>
-                                                <MenuItem className="menuList"
-                                                          onClick={event => this.handleSearch(event, "Part Description")}>Part
+                                                <MenuItem className='menuList'
+                                                          onClick={event => this.handleSearch(event, 'Part Description')}>Part
                                                     Description: {this.state.searchKey}</MenuItem>
-                                                <MenuItem className="menuList"
-                                                          onClick={event => this.handleSearch(event, "Shipment ID")}>Shipment
+                                                <MenuItem className='menuList'
+                                                          onClick={event => this.handleSearch(event, 'Shipment ID')}>Shipment
                                                     ID: {this.state.searchKey}</MenuItem>
                                             </MenuList>
                                         </ClickAwayListener>

@@ -199,6 +199,17 @@ class App extends Component {
         });
     };
 
+    handleTrackAndTraceData = (show, open, transactionCode, tatData, tree, snackbar) => {
+        this.setState({
+            show: show,
+            open: open,
+            transactionCode: transactionCode,
+            tatData: tatData,
+            tree: tree,
+            snackbar: snackbar
+        });
+    };
+
     handleDREData = (refreshBadgeContent) => {
         if (refreshBadgeContent === true) {
             Promise.resolve(this.props.getEachMessageForUserID(this.props.userName))
@@ -221,8 +232,9 @@ class App extends Component {
     };
 
     handleNewSession = () => {
-        window.open(window.location.href, "_blank");
+        window.open(window.location.href, '_blank');
     };
+
 
     render() {
 
@@ -251,7 +263,8 @@ class App extends Component {
                 content = (<CompleteProductionView />);
                 break;
             case 'trackandtraceview':
-                content = (<TrackAndTraceView />);
+                content = (<TrackAndTraceView
+                    viewHandler={this.handleTrackAndTraceData} />);
                 break;
             case 'senddocumentview':
                 content = (<SendDocumentView
@@ -262,7 +275,7 @@ class App extends Component {
                     <Router>
                         <div>
                             <Route
-                                path="/"
+                                path='/'
                                 render={(props) => <DocumentDashboardView {...props}
                                                                           userName={this.state.userName} />}
                             />
@@ -271,51 +284,58 @@ class App extends Component {
         }
 
         return (
-            <div className="App">
+            <div className='App'>
                 <MuiThemeProvider theme={theme}>
                     {/* Main navigation bar menu for components */}
-                    <AppBar position="static" className="App-header"
-                            iconClassNameRight="muidocs-icon-navigation-expand-more"
+                    <AppBar position='static' className='App-header'
+                            iconClassNameRight='muidocs-icon-navigation-expand-more'
                             onLeftIconButtonClick={this.handleToggle}>
                         <Grid container spacing={24}>
                             <Grid item xs={3}>
                                 <ToolbarTitle
-                                    text={<img src={logo} className="App-logo" alt="logo" />}
-                                    alt="Blocnets" />
+                                    text={<img src={logo} className='App-logo' alt='logo' />}
+                                    alt='Blocnets' />
                             </Grid>
                             <Grid item xs={4}>
                                 <TrackAndTraceSearchView
-                                    ttSearchData={this.state}
                                     viewHandler={this.handleTTSearchData} />
                             </Grid>
                             <Grid item xs={5}>
-                                <Tooltip title="Inbox">
-                                    <IconButton aria-label="pending messages" onClick={this.showMainView}>
-                                        <Badge badgeContent={this.state.badgeContent} color="secondary"
+                                <Tooltip title='Inbox'>
+                                    <IconButton aria-label='pending messages' onClick={this.showMainView}>
+                                        <Badge badgeContent={this.state.badgeContent} color='secondary'
                                                style={messageIconStyle}>
                                             <MailIcon />
                                         </Badge>
                                     </IconButton>
                                 </Tooltip>
-                                <Tooltip title="Home - Apps">
-                                    <IconButton aria-label="apps" onClick={event => this.handleSplash()}
-                                                style={{ "cursor": "pointer" }}>
-                                        <SvgIcon className="Hexagon-Icon">
+                                <Tooltip title='Home - Apps'>
+                                    <IconButton aria-label='apps' onClick={event => this.handleSplash()}
+                                                style={{ 'cursor': 'pointer' }}>
+                                        <SvgIcon className='Hexagon-Icon'>
+                                            <path d='' />
                                         </SvgIcon>
                                     </IconButton>
                                 </Tooltip>
-                                <Tooltip title="Print">
-                                    <IconButton aria-label="print" onClick={event => this.handlePrint()}
-                                                style={{ "cursor": "pointer" }}>
-                                        <i className="material-icons"
+                                <Tooltip title='Print'>
+                                    <IconButton aria-label='print' onClick={event => this.handlePrint()}
+                                                style={{ 'cursor': 'pointer' }}>
+                                        <i className='material-icons'
                                            style={{ 'fontSize': 'xx-large', 'color': 'white' }}>print</i>
                                     </IconButton>
                                 </Tooltip>
-                                <Tooltip title="New Session">
-                                    <IconButton aria-label="new session" onClick={event => this.handleNewSession()}
-                                                style={{ "cursor": "pointer" }}>
-                                        <i className="material-icons"
+                                <Tooltip title='New Session'>
+                                    <IconButton aria-label='new session' onClick={event => this.handleNewSession()}
+                                                style={{ 'cursor': 'pointer' }}>
+                                        <i className='material-icons'
                                            style={{ 'fontSize': 'xx-large', 'color': 'white' }}>open_in_new</i>
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title='User'>
+                                    <IconButton aria-label='user' onClick={event => this.showMainView()}
+                                                style={{ 'cursor': 'pointer' }}>
+                                        <i className='material-icons'
+                                           style={{ 'fontSize': 'xx-large', 'color': 'white' }}>account_circle</i>
                                     </IconButton>
                                 </Tooltip>
                             </Grid>
@@ -326,110 +346,116 @@ class App extends Component {
                 <Drawer docked={false} width={300} open={this.state.open}
                         onRequestChange={(open) => this.setState({ open })}>
                     <AppBar
-                        className="App-bar"
+                        className='App-bar'
                         onClick={this.handleToggle}
-                        title={<img src={logo} style={appBarLogoStyle} alt="Blocnets" />}
+                        title={<img src={logo} style={appBarLogoStyle} alt='Blocnets' />}
                     />
-                    <MenuItem id="showBillOfMaterialsId" onClick={this.showBillOfMaterials}
-                              style={{ "textAlign": "left" }}>
-                        <ListItemIcon style={{ "verticalAlign": "middle" }}>
+                    <MenuItem id='showBillOfMaterialsId' onClick={this.showBillOfMaterials}
+                              style={{ 'textAlign': 'left' }}>
+                        <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
                             <ListAlt />
                         </ListItemIcon>
-                        <ListItemText style={{ "display": "inline-block", "verticalAlign": "middle" }}
-                                      primary="Master Material Data" />
+                        <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
+                                      primary='Master Material Data' />
                     </MenuItem>
                     <hr />
-                    <MenuItem id="showShippingViewId" onClick={this.showShippingView}
-                              style={{ "textAlign": "left" }}>
-                        <ListItemIcon style={{ "verticalAlign": "middle" }}>
+                    <MenuItem id='showShippingViewId' onClick={this.showShippingView}
+                              style={{ 'textAlign': 'left' }}>
+                        <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
                             <LocalShipping />
                         </ListItemIcon>
-                        <ListItemText style={{ "display": "inline-block", "verticalAlign": "middle" }}
-                                      primary="Shipping" />
+                        <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
+                                      primary='Shipping' />
                     </MenuItem>
                     <hr />
-                    <MenuItem id="showReceivingViewId" onClick={this.showReceivingView}
-                              style={{ "textAlign": "left" }}>
-                        <ListItemIcon style={{ "verticalAlign": "middle" }}>
+                    <MenuItem id='showReceivingViewId' onClick={this.showReceivingView}
+                              style={{ 'textAlign': 'left' }}>
+                        <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
                             <Domain />
                         </ListItemIcon>
-                        <ListItemText style={{ "display": "inline-block", "verticalAlign": "middle" }}
-                                      primary="Receiving" />
+                        <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
+                                      primary='Receiving' />
                     </MenuItem>
                     <hr />
-                    <MenuItem id="showStartProductionViewId" onClick={this.showStartProductionView}
-                              style={{ "textAlign": "left" }}>
-                        <ListItemIcon style={{ "verticalAlign": "middle" }}>
+                    <MenuItem id='showStartProductionViewId' onClick={this.showStartProductionView}
+                              style={{ 'textAlign': 'left' }}>
+                        <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
                             <PlayArrow />
                         </ListItemIcon>
-                        <ListItemText style={{ "display": "inline-block", "verticalAlign": "middle" }}
-                                      primary="Start Production Tracking" />
+                        <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
+                                      primary='Start Production Tracking' />
                     </MenuItem>
                     <hr />
-                    <MenuItem id="showCompleteProductionViewId" onClick={this.showCompleteProductionView}
-                              style={{ "textAlign": "left" }}>
-                        <ListItemIcon style={{ "verticalAlign": "middle" }}>
+                    <MenuItem id='showCompleteProductionViewId' onClick={this.showCompleteProductionView}
+                              style={{ 'textAlign': 'left' }}>
+                        <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
                             <Stop />
                         </ListItemIcon>
-                        <ListItemText style={{ "display": "inline-block", "verticalAlign": "middle" }}
-                                      primary="Stop Production Tracking" />
+                        <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
+                                      primary='Stop Production Tracking' />
                     </MenuItem>
                     <hr />
-                    <MenuItem id="showTrackAndTraceViewId" onClick={this.showTrackAndTraceView}
-                              style={{ "textAlign": "left" }}>
-                        <ListItemIcon style={{ "verticalAlign": "middle" }}>
+                    <MenuItem id='showTrackAndTraceViewId' onClick={this.showTrackAndTraceView}
+                              style={{ 'textAlign': 'left' }}>
+                        <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
                             <LocationOn />
                         </ListItemIcon>
-                        <ListItemText style={{ "display": "inline-block", "verticalAlign": "middle" }}
-                                      primary="Track and Trace" />
+                        <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
+                                      primary='Track and Trace' />
                     </MenuItem>
                     <hr />
-                    <MenuItem id="showSendDocumentViewId" onClick={this.showSendDocumentView}
-                              style={{ "textAlign": "left" }}>
-                        <ListItemIcon style={{ "verticalAlign": "middle" }}>
+                    <MenuItem id='showSendDocumentViewId' onClick={this.showSendDocumentView}
+                              style={{ 'textAlign': 'left' }}>
+                        <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
                             <Send />
                         </ListItemIcon>
-                        <ListItemText style={{ "display": "inline-block", "verticalAlign": "middle" }}
-                                      primary="Send a Document" />
+                        <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
+                                      primary='Send a Document' />
                     </MenuItem>
                     <hr />
-                    <MenuItem id="showSendDocumentViewId" onClick={this.showSendDocumentView}
-                              style={{ "textAlign": "left" }}>
-                        <ListItemIcon style={{ "verticalAlign": "middle" }}>
+                    <MenuItem id='showSendDocumentViewId' onClick={this.showSendDocumentView}
+                              style={{ 'textAlign': 'left' }}>
+                        <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
                             <CloudUpload />
                         </ListItemIcon>
-                        <ListItemText style={{ "display": "inline-block", "verticalAlign": "middle" }}
-                                      primary="Save a Document" />
+                        <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
+                                      primary='Save a Document' />
                     </MenuItem>
                 </Drawer>
                 {/* Page View with content loaded */}
-                <Paper className="White-theme" style={paperStyle} zDepth={5}>
-                    <Toolbar style={{ "justifyContent": "center", "height": 80 }}>
-                        <ToolbarTitle
-                            text={<img src={paperLogo} style={paperLogoStyle} alt="Blocnets" />}
-                        />
-                    </Toolbar>
-                    {content}
-                </Paper>
-                <div style={{ "bottom": "0", "position": "fixed", "width": "100%" }}>
+                {this.state.transactionCode === 'TAT01' ?
+                    <Paper className='Transparent-Theme' style={paperStyle} zDepth={5}>
+                        {content}
+                    </Paper>
+                    :
+                    <Paper className='White-theme' style={paperStyle} zDepth={5}>
+                        <Toolbar style={{ 'justifyContent': 'center', 'height': 80 }}>
+                            <ToolbarTitle
+                                text={<img src={paperLogo} style={paperLogoStyle} alt='Blocnets' />}
+                            />
+                        </Toolbar>
+                        {content}
+                    </Paper>
+                }
+                <div style={{ 'bottom': '0', 'position': 'fixed', 'width': '100%' }}>
                     <div style={{ padding: 24 }}>
                         <Grid container spacing={24}>
                             <MuiThemeProvider theme={theme}>
                                 <Grid container item xs={12}>
                                     <Grid container item xs>
-                                        <Typography align="right" style={{ "width": "100%" }}>
+                                        <Typography align='right' style={{ 'width': '100%' }}>
                                             {this.state.transactionCode} | System Number
                                         </Typography>
                                     </Grid>
                                 </Grid>
                                 <Grid container item xs={12}>
                                     <Grid container item xs>
-                                        <Typography align="left" style={{ "width": "100%" }}>
+                                        <Typography align='left' style={{ 'width': '100%' }}>
                                             © 2018 ALL RIGHTS RESERVED.
                                         </Typography>
                                     </Grid>
                                     <Grid container item xs>
-                                        <Typography align="right" style={{ "width": "100%" }}>
+                                        <Typography align='right' style={{ 'width': '100%' }}>
                                             {this.state.currentDateAndTime}
                                         </Typography>
                                     </Grid>

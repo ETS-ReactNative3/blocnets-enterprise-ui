@@ -1,322 +1,59 @@
-import React, {Component} from 'react';
-import blocnetsLogo from '../../../blocknetwhite-1.png';
+import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
-import TextField from 'material-ui/TextField';
-import Button from '@material-ui/core/Button';
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
-import yellow from '@material-ui/core/colors/yellow';
-import red from '@material-ui/core/colors/red';
-import Dialog from 'material-ui/Dialog';
-import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
-import Switch from '@material-ui/core/Switch/Switch';
-import Snackbar from 'material-ui/Snackbar';
-import {connect} from 'react-redux';
-import {getShippingDataByMaterialID} from '../../../redux/actions/shipping.and.receiving.actions';
-import {createConstruct} from '../../../redux/actions/tree.spawn.action';
-import TrackAndTraceTreeView from './track-and-trace.tree.view';
-
-let data = [];
-let tree = [];
-
-let dataManualShipping = 'NO';
-let dataShipmentSent = 'NO';
-let dataShipmentCompleted = 'NO';
-let dataShipped = 'NO';
-let dataReceivedShipent = 'NO';
-let dataReceivedOrder = 'NO';
-
-let rows = [];
-
-let counter = 0;
-
-function createData(info1, info2) {
-    counter += 1;
-    return {id: counter, info1, info2};
-}
+import blocnetsLogo from '../../../blocknetwhite-1.png';
+import Typography from '@material-ui/core/Typography/Typography';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import TrackAndTraceSearchView from './track-and-trace-search.view';
+import { connect } from 'react-redux';
 
 class TrackAndTraceView extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            showProgressLogo: false,
-            materialID: '',
-            errorTextMaterialID: 'This is a required field.',
-            openDialog: false,
-            showMaterialMap: false,
-            showMaterialMapSwitch: false,
-            tree: '',
-            snackbar: {
-                autoHideDuration: 2000,
-                message: '',
-                open: false,
-                sbColor: 'black'
-            }
-        };
-    }
-
-    handleChange = (event) => {
-        this.setState({[event.target.name]: event.target.value});
-        if ([event.target.name].toString() === 'materialID' && event.target.value) {
-            this.setState({errorTextMaterialID: ''});
-        } else if ([event.target.name].toString() === 'materialID' && !event.target.value) {
-            this.setState({errorTextMaterialID: 'This is a required field.'})
+    handleTTSearchData = (show, open, transactionCode, tatData, tree, snackbar) => {
+        if (transactionCode !== 'DRE02') {
+            this.props.viewHandler(show, open, transactionCode, tatData, tree, snackbar);
         }
-        if ([event.target.name].toString() === 'showMaterialMapSwitch' && event.target.checked === true) {
-            this.setState({
-                showMaterialMap: true,
-                showMaterialMapSwitch: true
-            });
-        } else if ([event.target.name].toString() === 'showMaterialMapSwitch' && event.target.checked === false) {
-            this.setState({
-                showMaterialMap: false,
-                showMaterialMapSwitch: false
-            });
-        }
-    };
-
-    handleTrack = (event) => {
-        event.preventDefault();
-        data = [];
-        tree = [];
-        this.props.data.sarReducer.getShippingDataByMaterialIDSuccess = '';
-        this.props.data.spawnConstructReducer.construct = '';
-        this.setState({
-            showProgressLogo: true,
-            openDialog: false,
-            showMaterialMap: false,
-            showMaterialMapSwitch: false
-        });
-        Promise.resolve(this.props.getShippingDataByMaterialID(this.state.materialID))
-            .then(() => {
-                Promise.resolve(this.props.createConstruct(this.state.materialID))
-                    .then(() => {
-                        if (this.props.data.sarReducer.getShippingDataByMaterialIDSuccess) {
-                            data = this.props.data.sarReducer.getShippingDataByMaterialIDSuccess;
-                            if (this.props.data.spawnConstructReducer.construct !== '' && this.props.data.spawnConstructReducer.construct !== undefined) {
-                                tree.push(this.props.data.spawnConstructReducer.construct);
-                            }
-                            if (data.manuallyShipped === true) {
-                                dataManualShipping = 'YES'
-                            }
-                            if (data.shipmentSent === true) {
-                                dataShipmentSent = 'YES'
-                            }
-                            if (data.shipmentCompleted === true) {
-                                dataShipmentCompleted = 'YES'
-                            }
-                            if (data.shipped === true) {
-                                dataShipped = 'YES'
-                            }
-                            if (data.receivedShipment === true) {
-                                dataReceivedShipent = 'YES'
-                            }
-                            if (data.receivedOrder === true) {
-                                dataReceivedOrder = 'YES'
-                            }
-                            rows = [
-                                createData('Material ID', this.state.materialID),
-                                createData('Shipment ID', data.shipmentID),
-                                createData('Address', data.address1 + ' ' + data.address2 + ' ' + data.city + ' ' + data.state + ' ' + data.country + ' ' + data.postalCode),
-                                createData('IP Address', data.ipAddress),
-                                createData('Manual Shipping', dataManualShipping),
-                                createData('Delivery Order No.', data.deliverOrderNo),
-                                createData('Shipment Quantity', data.shipmentQuantity),
-                                createData('Shipment Sent', dataShipmentSent),
-                                createData('Shipment Completed', dataShipmentCompleted),
-                                createData('Shipped', dataShipped),
-                                createData('Received Shipment', dataReceivedShipent),
-                                createData('Received Order', dataReceivedOrder),
-                            ];
-                            this.setState({
-                                showProgressLogo: false,
-                                snackbar: {
-                                    autoHideDuration: 2000,
-                                    message: 'Successfully tracked a block!',
-                                    open: true,
-                                    sbColor: '#23CE6B'
-                                },
-                                openDialog: true,
-                                tree: tree
-                            });
-                        } else {
-                            this.setState({
-                                showProgressLogo: false,
-                                snackbar: {
-                                    open: true,
-                                    message: 'Error tracking a block!',
-                                    autoHideDuration: 2000,
-                                    sbColor: 'red'
-                                },
-                                openDialog: false,
-                                tree: ''
-                            });
-                        }
-                    });
-            });
-    };
-
-    handleDialogClose = () => {
-        this.setState({
-            showProgressLogo: false,
-            openDialog: false
-        });
-    };
-
-    handleTreeClose = () => {
-        this.setState({
-            showMaterialMap: false,
-            showMaterialMapSwitch: false
-        });
-    };
-
-    handleSnackbarClose = () => {
-        this.setState({
-            snackbar: {
-                autoHideDuration: 2000,
-                message: '',
-                open: false,
-                sbColor: 'black'
-            }
-        });
     };
 
     render() {
 
-        const buttonThemeYellow = createMuiTheme({
+        const theme = createMuiTheme({
             palette: {
-                primary: yellow
+                type: 'dark'
             },
         });
-
-        const buttonThemeRed = createMuiTheme({
-            palette: {
-                primary: red
-            },
-        });
-
-        let treeExisting = this.props.data.spawnConstructReducer.construct !== '' && this.props.data.spawnConstructReducer.construct !== undefined;
 
         return (
             <form>
-                <div>
-                    {this.state.showProgressLogo ?
-                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt=""/>
-                        </div> : ""}
-                </div>
-                <div style={{padding: 24}}>
+                <div className='Module'>
                     <Grid container spacing={24}>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                value={this.state.materialID}
-                                onChange={this.handleChange}
-                                type="text"
-                                name="materialID"
-                                floatingLabelText="Material ID"
-                                floatingLabelFixed={true}
-                                style={{"float": "left", "textAlign": "left"}}
-                                hintText=""
-                                errorText={this.state.errorTextMaterialID}
-                                errorStyle={{"float": "left", "textAlign": "left"}}
-                            />
+                        <Grid container item xs={12} justify='center'>
+                            <img src={blocnetsLogo} className='TT-Logo' alt='' />
                         </Grid>
                     </Grid>
-                    <br/><br/>
+                    <br /><br />
                     <Grid container spacing={24}>
-                        <Grid container item xs={12}>
-                            <MuiThemeProvider theme={buttonThemeYellow}>
-                                <Button type="submit" value="Track" variant="contained" color="primary"
-                                        fullWidth={true} onClick={this.handleTrack}
-                                        disabled={!this.state.materialID}>
-                                    Track
-                                </Button>
-                            </MuiThemeProvider>
+                        <Grid container item xs={12} justify='center'>
+                            <Typography className='TT-Title'>
+                                <span className='TT-Font-White'>BL</span>
+                                <span className='TT-Font-Red'>O</span>
+                                <span className='TT-Font-White'>CNETS</span>
+                            </Typography>
                         </Grid>
                     </Grid>
+                    <br /><br />
+                    <MuiThemeProvider theme={theme}>
+                        <Grid container spacing={24}>
+                            <Grid container item xs>
+                            </Grid>
+                            <Grid container item xs={8} justify='center'>
+                                <TrackAndTraceSearchView
+                                    viewHandler={this.handleTTSearchData} />
+                            </Grid>
+                            <Grid container item xs>
+                            </Grid>
+                        </Grid>
+                    </MuiThemeProvider>
                 </div>
-                <Dialog open={this.state.openDialog} onClose={this.handleDialogClose}
-                        autoScrollBodyContent={true}>
-                    <div style={{padding: 24}}>
-                        <Grid container justify="flex-end">
-                            <Grid item>
-                                <i className="material-icons" style={{"cursor": "pointer"}}
-                                   onClick={this.handleDialogClose}>close</i>
-                            </Grid>
-                        </Grid>
-                        <br/>
-                        <Grid container>
-                            <Grid container item xs={12}>
-                                Block Information
-                            </Grid>
-                        </Grid>
-                        <br/>
-                        <Grid container justify="center">
-                            <Grid item xs={12}>
-                                <Paper style={{"width": "100%"}}>
-                                    <div>
-                                        {this.state.showProgressLogoDialog ?
-                                            <div className="overlay"><img src={blocnetsLogo}
-                                                                          className="App-logo-progress" alt=""/>
-                                            </div> : ""}
-                                    </div>
-                                    <div style={{"overflowX": "auto"}}>
-                                        <Table style={{"tableLayout": "fixed"}}>
-                                            <TableBody style={{"overflowWrap": "break-word"}}>
-                                                {rows.map(row => {
-                                                    return (
-                                                        <TableRow key={row.id}>
-                                                            <TableCell>{row.info1}</TableCell>
-                                                            <TableCell>{row.info2}</TableCell>
-                                                        </TableRow>
-                                                    );
-                                                })}
-                                            </TableBody>
-                                        </Table>
-                                    </div>
-                                </Paper>
-                            </Grid>
-                        </Grid>
-                        <br/>
-                        {treeExisting ?
-                            <Grid container>
-                                <Grid item>
-                                    <MuiThemeProvider theme={buttonThemeRed}>
-                                        <Switch
-                                            onChange={this.handleChange}
-                                            name="showMaterialMapSwitch"
-                                            checked={this.state.showMaterialMapSwitch}
-                                        />
-                                        Show Material Map
-                                    </MuiThemeProvider>
-                                </Grid>
-                            </Grid>
-                            : ''}
-                        <br/>
-                        <Dialog open={this.state.showMaterialMap} onClose={this.handleTreeClose}>
-                            <Grid container justify="flex-end">
-                                <Grid item>
-                                    <i className="material-icons" style={{"cursor": "pointer"}}
-                                       onClick={this.handleTreeClose}>close</i>
-                                </Grid>
-                            </Grid>
-                            <br/>
-                            <div>
-                                <TrackAndTraceTreeView data={this.state}/>
-                            </div>
-                        </Dialog>
-                    </div>
-                </Dialog>
-                <Snackbar
-                    open={this.state.snackbar.open}
-                    message={this.state.snackbar.message}
-                    autoHideDuration={this.state.snackbar.autoHideDuration}
-                    onRequestClose={this.handleSnackbarClose}
-                    bodyStyle={{backgroundColor: this.state.snackbar.sbColor}}
-                />
             </form>
         );
     }
@@ -328,12 +65,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-// This way, we can call our action creator by doing this.props.fetchData(url);
-const mapDispatchToProps = (dispatch) => {
-    return {
-        getShippingDataByMaterialID: (url) => dispatch(getShippingDataByMaterialID(url)),
-        createConstruct: (materialID) => dispatch(createConstruct(materialID))
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(TrackAndTraceView);
+export default connect(mapStateToProps)(TrackAndTraceView);

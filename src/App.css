@@ -383,12 +383,12 @@ body {
 }
 
 .Module {
-    padding: 24px;
+    padding: 24px !important;;
 }
 
 .Module-TextField {
-    float: left;
-    text-align: left;
+    float: left !important;;
+    text-align: left !important;;
 }
 
 .Module-Button:enabled {
@@ -473,4 +473,28 @@ body {
 @font-face {
     font-family: SCcustom;
     src: url('fonts/sc-custom.woff') format('woff');
+}
+
+.Transparent-Theme {
+    background-color: transparent !important;
+}
+
+.TT-Logo {
+    height: 150px !important;
+}
+
+.TT-Title {
+    font-family: SCcustom, sans-serif !important;
+    font-style: normal !important;
+    font-size: 40pt !important;
+}
+
+.TT-Font-White {
+    color: #ffffff !important;
+    letter-spacing: 1px;
+}
+
+.TT-Font-Red {
+    color: #e32c1c !important;
+    letter-spacing: 1px;
 }
