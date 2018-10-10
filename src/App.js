@@ -16,6 +16,7 @@ import StartProductionView from './components/production/views/start.production.
 import CompleteProductionView from './components/production/views/complete.production.view';
 import TrackAndTraceView from './components/track-and-trace/views/track-and-trace.view';
 import SendDocumentView from './components/document-review-and-entry/document-send/document.send.view';
+import MapContainer from './components/geolocation/views/google.maps.view';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import AppBar from 'material-ui/AppBar';
 import Grid from '@material-ui/core/Grid';
@@ -31,7 +32,8 @@ import PlayArrow from '@material-ui/icons/PlayArrow';
 import Stop from '@material-ui/icons/Stop';
 import LocationOn from '@material-ui/icons/LocationOn';
 import Send from '@material-ui/icons/Send';
-import CloudUpload from '@material-ui/icons/CloudUpload';
+import SearchIcon from '@material-ui/icons/Search';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import MailIcon from '@material-ui/icons/Mail';
@@ -198,6 +200,14 @@ class App extends Component {
         });
     };
 
+    showMapContainer = () => {
+        this.setState({
+            show: 'mapcontainer',
+            transactionCode: 'GEO',
+            open: false,
+        });
+    };
+
     handleTTSearchData = (show, open, transactionCode, tatData, tree, snackbar) => {
         this.setState({
             show: show,
@@ -293,6 +303,10 @@ class App extends Component {
                 content = (<SendDocumentView
                     viewHandler={this.handleDREData} />);
                 contentTitle = 'SAVE A DOCUMENT';
+                break;
+            case 'mapcontainer':
+                content = (<MapContainer />);
+                contentTitle = 'GEO MAPPING';
                 break;
             default:
                 content = (
@@ -423,7 +437,7 @@ class App extends Component {
                     <MenuItem id='showTrackAndTraceViewId' onClick={this.showTrackAndTraceView}
                               style={{ 'textAlign': 'left' }}>
                         <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
-                            <LocationOn />
+                            <SearchIcon />
                         </ListItemIcon>
                         <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
                                       primary='Track and Trace' />
@@ -441,10 +455,19 @@ class App extends Component {
                     <MenuItem id='showSaveDocumentViewId' onClick={this.showSaveDocumentView}
                               style={{ 'textAlign': 'left' }}>
                         <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
-                            <CloudUpload />
+                            <CloudUploadIcon />
                         </ListItemIcon>
                         <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
                                       primary='Save a Document' />
+                    </MenuItem>
+                    <hr />
+                    <MenuItem id='showMapContainerId' onClick={this.showMapContainer}
+                              style={{ 'textAlign': 'left' }}>
+                        <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
+                            <LocationOn />
+                        </ListItemIcon>
+                        <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
+                                      primary='Geo Mapping' />
                     </MenuItem>
                 </Drawer>
                 <Paper className='Module-Title'>
