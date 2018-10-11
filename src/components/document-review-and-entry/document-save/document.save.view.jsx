@@ -154,9 +154,9 @@ const mapStateToProps = (state) => {
 // This way, we can call our action creator by doing this.props.fetchData(url);
 const mapDispatchToProps = (dispatch) => {
     return {
-        getUserMessageDataByUserID: (url) => dispatch(getUserMessageDataByUserID(url)),
+        /* getUserMessageDataByUserID: (url) => dispatch(getUserMessageDataByUserID(url)),
         updateUserMessageDataByUserID: (url, body) => dispatch(updateUserMessageDataByUserID(url, body)),
-        uploadFileByUserId: (url, body) => dispatch(uploadFileByUserId(url, body))
+        uploadFileByUserId: (url, body) => dispatch(uploadFileByUserId(url, body)) */
     };
 };
 

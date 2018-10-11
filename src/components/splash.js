@@ -235,7 +235,7 @@ class SplashView extends Component {
                                                     <span className='hex-container'>
                                                         <div className='hexagon-green'>
                                                             <span><i className='material-icons'
-                                                                     id='hex-icon'>location_on</i></span>
+                                                                     id='hex-icon'>center_focus_strong</i></span>
                                                         </div>
                                                         <ButtonBase focusRipple
                                                                     style={{ 'width': '100%', 'height': '100%' }}
@@ -265,13 +265,7 @@ class SplashView extends Component {
                                             <li className='hex'>
                                                 <div className='hexIn'>
                                                     <span className='hex-container'>
-                                                    </span>
-                                                </div>
-                                            </li>
-                                            <li className='hex'>
-                                                <div className='hexIn'>
-                                                    <span className='hex-container'>
-                                                        <div className='hexagon-blue'>
+                                                        <div className='hexagon-black'>
                                                             <span><i className='material-icons'
                                                                      id='hex-icon'>folder_shared</i></span>
                                                         </div>
@@ -287,7 +281,7 @@ class SplashView extends Component {
                                             <li className='hex'>
                                                 <div className='hexIn'>
                                                     <span className='hex-container'>
-                                                        <div className='hexagon-blue'>
+                                                        <div className='hexagon-black'>
                                                             <span><i className='material-icons'
                                                                      id='hex-icon'>cloud_upload</i></span>
                                                         </div>
@@ -303,7 +297,13 @@ class SplashView extends Component {
                                             <li className='hex'>
                                                 <div className='hexIn'>
                                                     <span className='hex-container'>
-                                                        <div className='hexagon-blue'>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                            <li className='hex'>
+                                                <div className='hexIn'>
+                                                    <span className='hex-container'>
+                                                        <div className='hexagon-black'>
                                                             <span><i className='material-icons'
                                                                      id='hex-icon'>send</i></span>
                                                         </div>
@@ -319,6 +319,16 @@ class SplashView extends Component {
                                             <li className='hex'>
                                                 <div className='hexIn'>
                                                     <span className='hex-container'>
+                                                        <div className='hexagon-black'>
+                                                            <span><i className='material-icons'
+                                                                     id='hex-icon'>location_on</i></span>
+                                                        </div>
+                                                        <ButtonBase focusRipple
+                                                                    style={{ 'width': '100%', 'height': '100%' }}
+                                                                    onClick={event => this.handleView(event, 'GEO')}>
+                                                            <h1>Geo Mapping</h1>
+                                                            <p></p>
+                                                        </ButtonBase>
                                                     </span>
                                                 </div>
                                             </li>

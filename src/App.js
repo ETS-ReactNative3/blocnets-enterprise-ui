@@ -16,6 +16,7 @@ import StartProductionView from './components/production/views/start.production.
 import CompleteProductionView from './components/production/views/complete.production.view';
 import TrackAndTraceView from './components/track-and-trace/views/track-and-trace.view';
 import SendDocumentView from './components/document-review-and-entry/document-send/document.send.view';
+import SaveDocumentView from './components/document-review-and-entry/document-save/document.save.view';
 import MapContainer from './components/geolocation/views/google.maps.view';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import AppBar from 'material-ui/AppBar';
@@ -300,8 +301,7 @@ class App extends Component {
                 contentTitle = 'SEND A DOCUMENT';
                 break;
             case 'savedocumentview':
-                content = (<SendDocumentView
-                    viewHandler={this.handleDREData} />);
+                content = (<SaveDocumentView />);
                 contentTitle = 'SAVE A DOCUMENT';
                 break;
             case 'mapcontainer':
@@ -315,7 +315,7 @@ class App extends Component {
                             <Route
                                 path='/'
                                 render={(props) => <DocumentDashboardView {...props}
-                                                                          userName={this.state.userName} />}
+                                    userName={this.state.userName} />}
                             />
                         </div>
                     </Router>);
@@ -327,8 +327,8 @@ class App extends Component {
                 <MuiThemeProvider theme={theme}>
                     {/* Main navigation bar menu for components */}
                     <AppBar position='static' className='App-header'
-                            iconClassNameRight='muidocs-icon-navigation-expand-more'
-                            onLeftIconButtonClick={this.handleToggle}>
+                        iconClassNameRight='muidocs-icon-navigation-expand-more'
+                        onLeftIconButtonClick={this.handleToggle}>
                         <Grid container spacing={24}>
                             <Grid item xs={3}>
                                 <ToolbarTitle
@@ -343,14 +343,14 @@ class App extends Component {
                                 <Tooltip title='Inbox'>
                                     <IconButton aria-label='pending messages' onClick={this.showMainView}>
                                         <Badge badgeContent={this.state.badgeContent} color='secondary'
-                                               style={messageIconStyle}>
+                                            style={messageIconStyle}>
                                             <MailIcon />
                                         </Badge>
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title='Home - Apps'>
                                     <IconButton aria-label='apps' onClick={event => this.handleSplash()}
-                                                style={{ 'cursor': 'pointer' }}>
+                                        style={{ 'cursor': 'pointer' }}>
                                         <SvgIcon className='Hexagon-Icon'>
                                             <path d='' />
                                         </SvgIcon>
@@ -358,23 +358,23 @@ class App extends Component {
                                 </Tooltip>
                                 <Tooltip title='Print'>
                                     <IconButton aria-label='print' onClick={event => this.handlePrint()}
-                                                style={{ 'cursor': 'pointer' }}>
+                                        style={{ 'cursor': 'pointer' }}>
                                         <i className='material-icons'
-                                           style={{ 'fontSize': 'xx-large', 'color': 'white' }}>print</i>
+                                            style={{ 'fontSize': 'xx-large', 'color': 'white' }}>print</i>
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title='New Session'>
                                     <IconButton aria-label='new session' onClick={event => this.handleNewSession()}
-                                                style={{ 'cursor': 'pointer' }}>
+                                        style={{ 'cursor': 'pointer' }}>
                                         <i className='material-icons'
-                                           style={{ 'fontSize': 'xx-large', 'color': 'white' }}>open_in_new</i>
+                                            style={{ 'fontSize': 'xx-large', 'color': 'white' }}>open_in_new</i>
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title='User'>
                                     <IconButton aria-label='user' onClick={event => this.showMainView()}
-                                                style={{ 'cursor': 'pointer' }}>
+                                        style={{ 'cursor': 'pointer' }}>
                                         <i className='material-icons'
-                                           style={{ 'fontSize': 'xx-large', 'color': 'white' }}>account_circle</i>
+                                            style={{ 'fontSize': 'xx-large', 'color': 'white' }}>account_circle</i>
                                     </IconButton>
                                 </Tooltip>
                             </Grid>
@@ -383,91 +383,91 @@ class App extends Component {
                 </MuiThemeProvider>
                 {/* Side Drawer's navigation bar menu for viewing content */}
                 <Drawer docked={false} width={300} open={this.state.open}
-                        onRequestChange={(open) => this.setState({ open })}>
+                    onRequestChange={(open) => this.setState({ open })}>
                     <AppBar
                         className='App-bar'
                         onClick={this.handleToggle}
                         title={<img src={logo} style={appBarLogoStyle} alt='Blocnets' />}
                     />
                     <MenuItem id='showBillOfMaterialsId' onClick={this.showBillOfMaterials}
-                              style={{ 'textAlign': 'left' }}>
+                        style={{ 'textAlign': 'left' }}>
                         <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
                             <ListAlt />
                         </ListItemIcon>
                         <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                      primary='Master Material Data' />
+                            primary='Master Material Data' />
                     </MenuItem>
                     <hr />
                     <MenuItem id='showShippingViewId' onClick={this.showShippingView}
-                              style={{ 'textAlign': 'left' }}>
+                        style={{ 'textAlign': 'left' }}>
                         <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
                             <LocalShipping />
                         </ListItemIcon>
                         <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                      primary='Shipping' />
+                            primary='Shipping' />
                     </MenuItem>
                     <hr />
                     <MenuItem id='showReceivingViewId' onClick={this.showReceivingView}
-                              style={{ 'textAlign': 'left' }}>
+                        style={{ 'textAlign': 'left' }}>
                         <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
                             <Domain />
                         </ListItemIcon>
                         <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                      primary='Receiving' />
+                            primary='Receiving' />
                     </MenuItem>
                     <hr />
                     <MenuItem id='showStartProductionViewId' onClick={this.showStartProductionView}
-                              style={{ 'textAlign': 'left' }}>
+                        style={{ 'textAlign': 'left' }}>
                         <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
                             <PlayArrow />
                         </ListItemIcon>
                         <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                      primary='Start Production Tracking' />
+                            primary='Start Production Tracking' />
                     </MenuItem>
                     <hr />
                     <MenuItem id='showCompleteProductionViewId' onClick={this.showCompleteProductionView}
-                              style={{ 'textAlign': 'left' }}>
+                        style={{ 'textAlign': 'left' }}>
                         <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
                             <Stop />
                         </ListItemIcon>
                         <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                      primary='Stop Production Tracking' />
+                            primary='Stop Production Tracking' />
                     </MenuItem>
                     <hr />
                     <MenuItem id='showTrackAndTraceViewId' onClick={this.showTrackAndTraceView}
-                              style={{ 'textAlign': 'left' }}>
+                        style={{ 'textAlign': 'left' }}>
                         <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
                             <SearchIcon />
                         </ListItemIcon>
                         <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                      primary='Track and Trace' />
+                            primary='Track and Trace' />
                     </MenuItem>
                     <hr />
                     <MenuItem id='showSendDocumentViewId' onClick={this.showSendDocumentView}
-                              style={{ 'textAlign': 'left' }}>
+                        style={{ 'textAlign': 'left' }}>
                         <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
                             <Send />
                         </ListItemIcon>
                         <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                      primary='Send a Document' />
+                            primary='Send a Document' />
                     </MenuItem>
                     <hr />
                     <MenuItem id='showSaveDocumentViewId' onClick={this.showSaveDocumentView}
-                              style={{ 'textAlign': 'left' }}>
+                        style={{ 'textAlign': 'left' }}>
                         <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
                             <CloudUploadIcon />
                         </ListItemIcon>
                         <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                      primary='Save a Document' />
+                            primary='Save a Document' />
                     </MenuItem>
                     <hr />
                     <MenuItem id='showMapContainerId' onClick={this.showMapContainer}
-                              style={{ 'textAlign': 'left' }}>
+                        style={{ 'textAlign': 'left' }}>
                         <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
                             <LocationOn />
                         </ListItemIcon>
                         <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                      primary='Geo Mapping' />
+                            primary='Geo Mapping' />
                     </MenuItem>
                 </Drawer>
                 <Paper className='Module-Title'>
