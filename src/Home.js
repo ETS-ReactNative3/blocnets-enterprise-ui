@@ -74,6 +74,10 @@ class Home extends Component {
             this.setState({
                 showApp: 'savedocumentview'
             });
+        } else if (transactionCode === 'GEO') {
+            this.setState({
+                showApp: 'mapcontainer'
+            });
         } else {
             this.setState({
                 showApp: 'home'
