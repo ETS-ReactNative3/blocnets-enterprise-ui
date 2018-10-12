@@ -268,7 +268,7 @@ class App extends Component {
                     snackbar={this.state.snackbar}
                     tatData={this.state.tatData}
                     tree={this.state.tree} />);
-                contentTitle = '';
+                contentTitle = 'SEARCH RESULTS';
                 break;
             case 'billofmaterials':
                 content = (<BillOfMaterials />);
@@ -319,7 +319,7 @@ class App extends Component {
                             />
                         </div>
                     </Router>);
-                contentTitle = '';
+                contentTitle = 'INBOX';
         }
 
         return (
