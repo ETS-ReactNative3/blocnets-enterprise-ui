@@ -9,17 +9,16 @@ import MenuItem from '@material-ui/core/MenuItem/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText/FormHelperText';
 import TextField from 'material-ui/TextField';
 import Button from '@material-ui/core/Button';
-import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Snackbar from 'material-ui/Snackbar';
-import {connect} from 'react-redux';
-import {createDocumentEntryByUniqueID} from '../../../redux/actions/document.review.entry.actions';
+import { connect } from 'react-redux';
+import { createDocumentEntryByUniqueID } from '../../../redux/actions/document.review.entry.actions';
 import {
     getUserMessageDataByUserID,
     updateUserMessageDataByUserID
 } from '../../../redux/actions/user.message.array.action';
-import {uploadFileByUserId} from '../../../redux/actions/FILE/file.action';
+import { uploadFileByUserId } from '../../../redux/actions/FILE/file.action';
 //Temporary Only
 import response from './messageData.json';
 
@@ -53,13 +52,7 @@ class SendDocumentView extends React.Component {
     }
 
     handleBase64File = (event) => {
-        Promise.resolve(this.setState({fileKey: this.guid(), file: event}))
-            .then(() => {
-                console.log('State Change Log: ' + this.state.file);
-            })
-            .catch(() => {
-                console.log('State Failed to Set!');
-            })
+        Promise.resolve(this.setState({ fileKey: this.guid(), file: event }))
     }
 
     handleUploadError = (event) => {
@@ -116,26 +109,26 @@ class SendDocumentView extends React.Component {
     }
 
     handleChange = (event) => {
-        this.setState({[event.target.name]: event.target.value});
+        this.setState({ [event.target.name]: event.target.value });
         if ([event.target.name].toString() === 'recipientUserName' && event.target.value) {
-            this.setState({errorTextRecipientUserName: ''});
+            this.setState({ errorTextRecipientUserName: '' });
         } else if ([event.target.name].toString() === 'recipientUserName' && !event.target.value) {
-            this.setState({errorTextRecipientUserName: 'This is a required field.'});
+            this.setState({ errorTextRecipientUserName: 'This is a required field.' });
         }
         if ([event.target.name].toString() === 'messageType' && event.target.value) {
-            this.setState({errorTextMessageType: ''});
+            this.setState({ errorTextMessageType: '' });
         } else if ([event.target.name].toString() === 'messageType' && !event.target.value) {
-            this.setState({errorTextMessageType: 'This is a required field.'});
+            this.setState({ errorTextMessageType: 'This is a required field.' });
         }
         if ([event.target.name].toString() === 'dataType' && event.target.value) {
-            this.setState({errorTextDataType: ''});
+            this.setState({ errorTextDataType: '' });
         } else if ([event.target.name].toString() === 'dataType' && !event.target.value) {
-            this.setState({errorTextDataType: 'This is a required field.'});
+            this.setState({ errorTextDataType: 'This is a required field.' });
         }
         if ([event.target.name].toString() === 'message' && event.target.value) {
-            this.setState({errorTextMessage: ''});
+            this.setState({ errorTextMessage: '' });
         } else if ([event.target.name].toString() === 'message' && !event.target.value) {
-            this.setState({errorTextMessage: 'This is a required field.'});
+            this.setState({ errorTextMessage: 'This is a required field.' });
         }
     };
 
@@ -186,7 +179,7 @@ class SendDocumentView extends React.Component {
         this.props.data.dreReducer.createDocumentEntryByUniqueIDSuccess = '';
         this.props.data.umaReducer.getUserMessageDataByUserIDError = '';
         this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess = '';
-        this.setState({showProgressLogo: true});
+        this.setState({ showProgressLogo: true });
         let fileURL = this.state.fileKey
         let fileBody = {
             file: this.state.file,
@@ -269,86 +262,77 @@ class SendDocumentView extends React.Component {
             <form>
                 <div>
                     {this.state.showProgressLogo ?
-                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt=""/>
+                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt="" />
                         </div> : ""}
                 </div>
-                <div style={{padding: 24}}>
+                <div style={{ padding: 24 }}>
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
-                            <FormLabel style={{"textAlign": "left"}}>Recipient User Name</FormLabel>
+                            <FormLabel style={{ "textAlign": "left" }}>Recipient User Name</FormLabel>
                         </Grid>
                         <Grid container item xs={6} sm={3}>
-                            <FormLabel style={{"textAlign": "left"}}>Message Type</FormLabel>
+                            <FormLabel style={{ "textAlign": "left" }}>Message Type</FormLabel>
                         </Grid>
                     </Grid>
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <FormControl fullWidth={true}>
                                 <Select value={this.state.recipientUserName} onChange={this.handleChange}
-                                        input={<Input name="recipientUserName" style={{"textAlign": "left"}}/>}
-                                        displayEmpty>
+                                    input={<Input name="recipientUserName" style={{ "textAlign": "left" }} />}
+                                    displayEmpty>
                                     {userIDMenuItems.map((menuItem, i) => {
                                         return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
                                     })}
                                 </Select>
                                 <FormHelperText
-                                    style={{"color": "red"}}>{this.state.errorTextRecipientUserName}</FormHelperText>
+                                    style={{ "color": "red" }}>{this.state.errorTextRecipientUserName}</FormHelperText>
                             </FormControl>
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <FormControl fullWidth={true}>
                                 <Select value={this.state.messageType} onChange={this.handleChange}
-                                        input={<Input name="messageType" style={{"textAlign": "left"}}/>}
-                                        displayEmpty>
+                                    input={<Input name="messageType" style={{ "textAlign": "left" }} />}
+                                    displayEmpty>
                                     {messageTypeMenuItems.map((menuItem, i) => {
                                         return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
                                     })}
                                 </Select>
                                 <FormHelperText
-                                    style={{"color": "red"}}>{this.state.errorTextMessageType}</FormHelperText>
+                                    style={{ "color": "red" }}>{this.state.errorTextMessageType}</FormHelperText>
                             </FormControl>
                         </Grid>
                         <Grid container item xs={12} sm={6} justify="flex-end">
                             <Grid>
-                                <MuiThemeProvider theme={buttonThemeYellow}>
-                                    <input
-                                        style={{'display': 'none'}}
-                                        id="flat-button-file"
-                                        //multiple
-                                        type="file"
-                                        onChange={this.handleFileChange}
-                                    />
-                                    <label htmlFor="flat-button-file">
-                                        <Button type="submit" value="Upload" variant="contained"
-                                                color="primary" component="span">
-                                            Upload
-                                            <CloudUploadIcon style={{'marginLeft': '12'}}/>
-                                        </Button>
-                                    </label>
-                                </MuiThemeProvider>
+                                <input
+                                    /* style={{ 'display': 'none' }} */
+                                    id="flat-button-file"
+                                    //multiple
+                                    type="file"
+                                    onChange={this.handleFileChange}
+                                />
                             </Grid>
                         </Grid>
                     </Grid>
-                    <br/><br/>
+                    <br /><br />
                     <Grid container spacing={24}>
                         <Grid container item xs={6}>
-                            <FormLabel style={{"textAlign": "left"}}>Data Type</FormLabel>
+                            <FormLabel style={{ "textAlign": "left" }}>Data Type</FormLabel>
                             <FormControl fullWidth={true}>
                                 <Select value={this.state.dataType} onChange={this.handleChange}
-                                        input={<Input name="dataType" style={{"textAlign": "left"}}/>}
-                                        displayEmpty>
+                                    input={<Input name="dataType" style={{ "textAlign": "left" }} />}
+                                    displayEmpty>
                                     {dataTypeMenuItems.map((menuItem, i) => {
                                         return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
                                     })}
                                 </Select>
-                                <FormHelperText style={{"color": "red"}}>{this.state.errorTextDataType}</FormHelperText>
+                                <FormHelperText style={{ "color": "red" }}>{this.state.errorTextDataType}</FormHelperText>
                             </FormControl>
                         </Grid>
                     </Grid>
-                    <br/><br/>
+                    <br /><br />
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
-                            <FormLabel style={{"textAlign": "left"}}>Message</FormLabel>
+                            <FormLabel style={{ "textAlign": "left" }}>Message</FormLabel>
                         </Grid>
                     </Grid>
                     <Grid container spacing={24}>
@@ -358,24 +342,24 @@ class SendDocumentView extends React.Component {
                                 onChange={this.handleChange}
                                 type="text"
                                 name="message"
-                                style={{"float": "left", "textAlign": "left"}}
+                                style={{ "float": "left", "textAlign": "left" }}
                                 hintText=""
                                 multiLine={true}
                                 rows={2}
                                 rowsMax={4}
                                 fullWidth={true}
                                 errorText={this.state.errorTextMessage}
-                                errorStyle={{"float": "left", "textAlign": "left"}}
+                                errorStyle={{ "float": "left", "textAlign": "left" }}
                             />
                         </Grid>
                     </Grid>
-                    <br/><br/>
+                    <br /><br />
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
                             <MuiThemeProvider theme={buttonThemeYellow}>
                                 <Button type="submit" value="Submit" variant="contained" color="primary"
-                                        fullWidth={true} disabled={!formComplete}
-                                        onClick={this.handleSendDocumentForReview}>
+                                    fullWidth={true} disabled={!formComplete}
+                                    onClick={this.handleSendDocumentForReview}>
                                     Send Document for Review
                                 </Button>
                             </MuiThemeProvider>
@@ -387,7 +371,7 @@ class SendDocumentView extends React.Component {
                     message={this.state.snackbar.message}
                     autoHideDuration={this.state.snackbar.autoHideDuration}
                     onRequestClose={this.handleSnackbarClose}
-                    bodyStyle={{backgroundColor: this.state.snackbar.sbColor}}
+                    bodyStyle={{ backgroundColor: this.state.snackbar.sbColor }}
                 />
             </form>
 

@@ -22,6 +22,8 @@ class SaveDocumentView extends React.Component {
         this.state = {
             showProgressLogo: false,
             file: '',
+            fileName: '',
+            fileMetaData: '',
             userName: '',
             snackbar: {
                 autoHideDuration: 2000,
@@ -32,14 +34,22 @@ class SaveDocumentView extends React.Component {
         };
     }
 
+    handleFileMetaData = (event) => {
+        let data = {
+            lastModified: event.lastModified,
+            lastModifiedDate: event.lastModifiedDate,
+            name: event.name,
+            size: event.size,
+            type: event.type
+        }
+        Promise.resolve(this.setState({
+            fileName: data.name,
+            fileMetaData: JSON.stringify({ data })
+        }))
+    }
+
     handleBase64File = (event) => {
-        Promise.resolve(this.setState({ fileKey: this.guid(), file: event }))
-            .then(() => {
-                console.log('State Change Log: ' + this.state.file);
-            })
-            .catch(() => {
-                console.log('State Failed to Set!');
-            })
+        Promise.resolve(this.setState({ file: event }))
     }
 
     handleUploadError = (event) => {
@@ -93,6 +103,7 @@ class SaveDocumentView extends React.Component {
             base64Result(reader.result);
         };
         reader.readAsDataURL(file);
+        this.handleFileMetaData(file);
     }
 
     render() {
@@ -115,22 +126,25 @@ class SaveDocumentView extends React.Component {
                 </div>
                 <div style={{ padding: 24 }}>
                     <Grid container spacing={24}>
-                        <Grid container item xs={6} sm={3}>
-                            <FormLabel style={{ "textAlign": "left" }}>Recipient User Name</FormLabel>
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={24}>
                         <Grid container item xs={12} sm={6} justify="flex-end">
                             <Grid>
                                 <input
-                                    style={{ 'display': 'none' }}
+                                    /* style={{ 'display': 'none' }} */
                                     id="flat-button-file"
                                     //multiple
                                     type="file"
                                     onChange={this.handleFileChange}
                                 />
+                                <MuiThemeProvider theme={buttonThemeYellow}>
+                                    <Button type="submit" value="Upload" variant="contained"
+                                        color="primary" component="span">
+                                        Upload
+                                            <CloudUploadIcon style={{ 'marginLeft': '12' }} />
+                                    </Button>
+                                </MuiThemeProvider>
                             </Grid>
                         </Grid>
+
                     </Grid>
                 </div>
                 <Snackbar
