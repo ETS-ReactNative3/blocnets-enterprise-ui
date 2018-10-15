@@ -9,31 +9,12 @@ import LocalShipping from '@material-ui/icons/LocalShipping';
 import Domain from '@material-ui/icons/Domain';
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import Stop from '@material-ui/icons/Stop';
-import LocationOn from '@material-ui/icons/LocationOn';
-import Send from '@material-ui/icons/Send';
 import SearchIcon from '@material-ui/icons/Search';
+import Send from '@material-ui/icons/Send';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import LocationOn from '@material-ui/icons/LocationOn';
 
 class AppMenu extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            show: this.props.showApp,
-            open: this.props.open,
-            transactionCode: this.props.transactionCode,
-            userName: this.props.userName,
-            badgeContent: 0,
-            tatData: [],
-            tree: [],
-            snackbar: {
-                autoHideDuration: 2000,
-                message: '',
-                open: false,
-                sbColor: 'black'
-            }
-        };
-    }
 
     showBillOfMaterials = () => {
         this.props.viewHandler('showBillOfMaterialsId');
@@ -67,97 +48,81 @@ class AppMenu extends Component {
         this.props.viewHandler('showSaveDocumentViewId');
     };
 
-    showMapContainer = () => {
-        this.props.viewHandler('showMapContainerId');
+    showMapContainerView = () => {
+        this.props.viewHandler('showMapContainerViewId');
     };
 
     render() {
 
         return (
+
             <div>
-
-
-                <MenuItem id='showBillOfMaterialsId' onClick={this.showBillOfMaterials}
-                          style={{ 'textAlign': 'left' }}>
-                    <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
+                <MenuItem className='Mobile-MenuItem' id='showBillOfMaterialsId' onClick={this.showBillOfMaterials}>
+                    <ListItemIcon className='Mobile-ListItemIcon'>
                         <ListAlt />
                     </ListItemIcon>
-                    <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                  primary='Master Material Data' />
+                    <ListItemText className='Mobile-ListItemText' primary='Master Material Data' />
                 </MenuItem>
                 <hr />
-                <MenuItem id='showShippingViewId' onClick={this.showShippingView}
-                          style={{ 'textAlign': 'left' }}>
-                    <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
+                <MenuItem className='Mobile-MenuItem' id='showShippingViewId' onClick={this.showShippingView}>
+                    <ListItemIcon className='Mobile-ListItemIcon'>
                         <LocalShipping />
                     </ListItemIcon>
-                    <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                  primary='Shipping' />
+                    <ListItemText className='Mobile-ListItemText' primary='Shipping' />
                 </MenuItem>
                 <hr />
-                <MenuItem id='showReceivingViewId' onClick={this.showReceivingView}
-                          style={{ 'textAlign': 'left' }}>
-                    <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
+                <MenuItem className='Mobile-MenuItem' id='showReceivingViewId' onClick={this.showReceivingView}>
+                    <ListItemIcon className='Mobile-ListItemIcon'>
                         <Domain />
                     </ListItemIcon>
-                    <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                  primary='Receiving' />
+                    <ListItemText className='Mobile-ListItemText' primary='Receiving' />
                 </MenuItem>
                 <hr />
-                <MenuItem id='showStartProductionViewId' onClick={this.showStartProductionView}
-                          style={{ 'textAlign': 'left' }}>
-                    <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
+                <MenuItem className='Mobile-MenuItem' id='showStartProductionViewId'
+                          onClick={this.showStartProductionView}>
+                    <ListItemIcon className='Mobile-ListItemIcon'>
                         <PlayArrow />
                     </ListItemIcon>
-                    <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                  primary='Start Production Tracking' />
+                    <ListItemText className='Mobile-ListItemText' primary='Start Production Tracking' />
                 </MenuItem>
                 <hr />
-                <MenuItem id='showCompleteProductionViewId' onClick={this.showCompleteProductionView}
-                          style={{ 'textAlign': 'left' }}>
-                    <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
+                <MenuItem className='Mobile-MenuItem' id='showCompleteProductionViewId'
+                          onClick={this.showCompleteProductionView}>
+                    <ListItemIcon className='Mobile-ListItemIcon'>
                         <Stop />
                     </ListItemIcon>
-                    <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                  primary='Stop Production Tracking' />
+                    <ListItemText className='Mobile-ListItemText' primary='Stop Production Tracking' />
                 </MenuItem>
                 <hr />
-                <MenuItem id='showTrackAndTraceViewId' onClick={this.showTrackAndTraceView}
-                          style={{ 'textAlign': 'left' }}>
-                    <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
+                <MenuItem className='Mobile-MenuItem' id='showTrackAndTraceViewId' onClick={this.showTrackAndTraceView}>
+                    <ListItemIcon className='Mobile-ListItemIcon'>
                         <SearchIcon />
                     </ListItemIcon>
-                    <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                  primary='Track and Trace' />
+                    <ListItemText className='Mobile-ListItemText' primary='Track and Trace' />
                 </MenuItem>
                 <hr />
-                <MenuItem id='showSendDocumentViewId' onClick={this.showSendDocumentView}
-                          style={{ 'textAlign': 'left' }}>
-                    <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
+                <MenuItem className='Mobile-MenuItem' id='showSendDocumentViewId' onClick={this.showSendDocumentView}>
+                    <ListItemIcon className='Mobile-ListItemIcon'>
                         <Send />
                     </ListItemIcon>
-                    <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                  primary='Send a Document' />
+                    <ListItemText className='Mobile-ListItemText' primary='Send a Document' />
                 </MenuItem>
                 <hr />
-                <MenuItem id='showSaveDocumentViewId' onClick={this.showSaveDocumentView}
-                          style={{ 'textAlign': 'left' }}>
-                    <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
+                <MenuItem className='Mobile-MenuItem' id='showSaveDocumentViewId' onClick={this.showSaveDocumentView}>
+                    <ListItemIcon className='Mobile-ListItemIcon'>
                         <CloudUploadIcon />
                     </ListItemIcon>
-                    <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                  primary='Save a Document' />
+                    <ListItemText className='Mobile-ListItemText' primary='Save a Document' />
                 </MenuItem>
                 <hr />
-                <MenuItem id='showMapContainerId' onClick={this.showMapContainer}
-                          style={{ 'textAlign': 'left' }}>
-                    <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
+                <MenuItem className='Mobile-MenuItem' id='showMapContainerViewId' onClick={this.showMapContainerView}>
+                    <ListItemIcon className='Mobile-ListItemIcon'>
                         <LocationOn />
                     </ListItemIcon>
-                    <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                  primary='Geo Mapping' />
+                    <ListItemText className='Mobile-ListItemText' primary='Geo Mapping' />
                 </MenuItem>
             </div>
+
         );
 
     }
