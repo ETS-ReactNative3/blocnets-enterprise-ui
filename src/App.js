@@ -503,8 +503,7 @@ class App extends Component {
                             </Typography>
                         </div>
                         <div className={classes.sectionMobile}>
-                            <IconButton aria-haspopup="true" onClick={event => this.showMobileMenu(event)}
-                                        color="inherit">
+                            <IconButton aria-haspopup="true" onClick={event => this.showMobileMenu(event)}>
                                 <MoreIcon />
                             </IconButton>
                         </div>
