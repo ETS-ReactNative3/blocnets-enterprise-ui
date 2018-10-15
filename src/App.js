@@ -453,6 +453,7 @@ class App extends Component {
                             onLeftIconButtonClick={this.handleToggle}>
                         <div className='App-Bar-TT-Search'>
                             <TrackAndTraceSearchView
+                                trackButtonFlag={false}
                                 viewHandler={this.handleTTSearchData} />
                         </div>
                         <div className={classes.sectionDesktop}>

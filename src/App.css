@@ -698,3 +698,13 @@ body {
     color: #ffffff !important;
     padding: 12px !important;
 }
+
+.Module-Button-Search:enabled {
+    background-color: #fce400 !important;
+    color: #000000 !important;
+}
+
+.Module-Button-Search:disabled {
+    background-color: rgba(180, 180, 180, 1) !important;
+    color: rgba(0, 0, 0, 0.26) !important;
+}
