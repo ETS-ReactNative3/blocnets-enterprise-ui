@@ -26,15 +26,6 @@ import Paper from 'material-ui/Paper';
 import MenuItem from 'material-ui/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListAlt from '@material-ui/icons/ListAlt';
-import LocalShipping from '@material-ui/icons/LocalShipping';
-import Domain from '@material-ui/icons/Domain';
-import PlayArrow from '@material-ui/icons/PlayArrow';
-import Stop from '@material-ui/icons/Stop';
-import LocationOn from '@material-ui/icons/LocationOn';
-import Send from '@material-ui/icons/Send';
-import SearchIcon from '@material-ui/icons/Search';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import MailIcon from '@material-ui/icons/Mail';
@@ -45,6 +36,15 @@ import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import { getEachMessageForUserID } from './redux/actions/user.message.array.action';
 import SvgIcon from '@material-ui/core/SvgIcon';
+import MenuIcon from '@material-ui/icons/Menu';
+import { withStyles } from '@material-ui/core/styles';
+import MoreIcon from '@material-ui/icons/MoreVert';
+import PrintIcon from '@material-ui/icons/Print';
+import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AppMenu from "./components/App-Menu";
+import List from "@material-ui/core/List/List";
+import Menu from '@material-ui/core/Menu';
 
 const theme = createMuiTheme({
     palette: {
@@ -52,15 +52,20 @@ const theme = createMuiTheme({
     },
 });
 
-const appBarLogoStyle = {
-    maxWidth: 50,
-    maxHeight: 50,
-    paddingTop: 10
-};
-
-const messageIconStyle = {
-    transform: 'scale(1.0)'
-};
+const styles = theme => ({
+    sectionDesktop: {
+        display: 'none',
+        [theme.breakpoints.up('md')]: {
+            display: 'flex',
+        },
+    },
+    sectionMobile: {
+        display: 'flex',
+        [theme.breakpoints.up('md')]: {
+            display: 'none',
+        },
+    },
+});
 
 const paperStyle = {
     width: '70%',
@@ -123,7 +128,9 @@ class App extends Component {
                 message: '',
                 open: false,
                 sbColor: 'black'
-            }
+            },
+            showMobileMenu: false,
+            mobileMoreAnchorEl: null,
         };
     }
 
@@ -256,8 +263,60 @@ class App extends Component {
         window.open(window.location.href, '_blank');
     };
 
+    showMobileMenu = (event) => {
+        this.setState({
+            open: false,
+            showMobileMenu: true,
+            mobileMoreAnchorEl: event.currentTarget
+        });
+    };
+
+    handleMobileMenuClose = () => {
+        this.setState({
+            showMobileMenu: false,
+            mobileMoreAnchorEl: null
+        });
+    };
+
+    handleMenu = (id) => {
+        switch (id) {
+            case 'showBillOfMaterialsId':
+                this.showBillOfMaterials();
+                break;
+            case 'showShippingViewId':
+                this.showShippingView();
+                break;
+            case 'showReceivingViewId':
+                this.showReceivingView();
+                break;
+            case 'showStartProductionViewId':
+                this.showStartProductionView();
+                break;
+            case 'showCompleteProductionViewId':
+                this.showCompleteProductionView();
+                break;
+            case 'showTrackAndTraceViewId':
+                this.showTrackAndTraceView();
+                break;
+            case 'showSendDocumentViewId':
+                this.showSendDocumentView();
+                break;
+            case 'showSaveDocumentViewId':
+                this.showSaveDocumentView();
+                break;
+            case 'showMapContainerId':
+                this.showMapContainer();
+                break;
+            default:
+                this.showMainView();
+                break;
+        }
+    };
+
 
     render() {
+
+        const { classes } = this.props;
 
         let content = null;
         let contentTitle = '';
@@ -322,153 +381,152 @@ class App extends Component {
                 contentTitle = 'INBOX';
         }
 
+        const renderMobileMenu = (
+            <Menu
+                anchorEl={this.state.mobileMoreAnchorEl}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                open={this.state.showMobileMenu}
+                onClose={this.handleMobileMenuClose}
+            >
+                <MenuItem onClick={this.showMainView}
+                          style={{ 'textAlign': 'left' }}>
+                    <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
+                        <Badge badgeContent={this.state.badgeContent}
+                               classes={{
+                                   root: 'App-Bar-Badge',
+                                   badge: 'App-Bar-Badge-Color'
+                               }}>
+                            <MailIcon />
+                        </Badge>
+                    </ListItemIcon>
+                    <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
+                                  primary='Messages' />
+                </MenuItem>
+                <hr />
+                <MenuItem onClick={this.handleSplash}
+                          style={{ 'textAlign': 'left' }}>
+                    <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
+                        <SvgIcon className='App-Bar-HexagonIcon'>
+                            <path d='' />
+                        </SvgIcon>
+                    </ListItemIcon>
+                    <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
+                                  primary='Home' />
+                </MenuItem>
+                <hr />
+                <MenuItem onClick={this.handlePrint}
+                          style={{ 'textAlign': 'left' }}>
+                    <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
+                        <PrintIcon />
+                    </ListItemIcon>
+                    <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
+                                  primary='Print' />
+                </MenuItem>
+                <hr />
+                <MenuItem onClick={this.handleNewSession}
+                          style={{ 'textAlign': 'left' }}>
+                    <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
+                        <OpenInNewIcon />
+                    </ListItemIcon>
+                    <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
+                                  primary='New Session' />
+                </MenuItem>
+                <hr />
+                <MenuItem onClick={this.showMainView}
+                          style={{ 'textAlign': 'left' }}>
+                    <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
+                        <AccountCircleIcon />
+                    </ListItemIcon>
+                    <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
+                                  primary='User Profile' />
+                </MenuItem>
+            </Menu>
+        );
+
         return (
             <div className='App'>
                 <MuiThemeProvider theme={theme}>
                     {/* Main navigation bar menu for components */}
                     <AppBar position='static' className='App-header'
-                        iconClassNameRight='muidocs-icon-navigation-expand-more'
-                        onLeftIconButtonClick={this.handleToggle}>
-                        <Grid container spacing={24}>
-                            <Grid item xs={3}>
-                                <ToolbarTitle
-                                    text={<img src={logo} className='App-logo' alt='logo' />}
-                                    alt='Blocnets' />
-                            </Grid>
-                            <Grid item xs={4}>
-                                <TrackAndTraceSearchView
-                                    viewHandler={this.handleTTSearchData} />
-                            </Grid>
-                            <Grid item xs={5}>
-                                <Tooltip title='Inbox'>
-                                    <IconButton aria-label='pending messages' onClick={this.showMainView}>
-                                        <Badge badgeContent={this.state.badgeContent} color='secondary'
-                                            style={messageIconStyle}>
-                                            <MailIcon />
-                                        </Badge>
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title='Home - Apps'>
-                                    <IconButton aria-label='apps' onClick={event => this.handleSplash()}
-                                        style={{ 'cursor': 'pointer' }}>
-                                        <SvgIcon className='Hexagon-Icon'>
-                                            <path d='' />
-                                        </SvgIcon>
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title='Print'>
-                                    <IconButton aria-label='print' onClick={event => this.handlePrint()}
-                                        style={{ 'cursor': 'pointer' }}>
-                                        <i className='material-icons'
-                                            style={{ 'fontSize': 'xx-large', 'color': 'white' }}>print</i>
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title='New Session'>
-                                    <IconButton aria-label='new session' onClick={event => this.handleNewSession()}
-                                        style={{ 'cursor': 'pointer' }}>
-                                        <i className='material-icons'
-                                            style={{ 'fontSize': 'xx-large', 'color': 'white' }}>open_in_new</i>
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title='User'>
-                                    <IconButton aria-label='user' onClick={event => this.showMainView()}
-                                        style={{ 'cursor': 'pointer' }}>
-                                        <i className='material-icons'
-                                            style={{ 'fontSize': 'xx-large', 'color': 'white' }}>account_circle</i>
-                                    </IconButton>
-                                </Tooltip>
-                            </Grid>
-                        </Grid>
+                            iconClassNameRight='muidocs-icon-navigation-expand-more'
+                            onLeftIconButtonClick={this.handleToggle}>
+                        <div className='App-Bar-TT-Search'>
+                            <TrackAndTraceSearchView
+                                viewHandler={this.handleTTSearchData} />
+                        </div>
+                        <div className={classes.sectionDesktop}>
+                            <Tooltip title='Messages'>
+                                <IconButton onClick={this.showMainView}>
+                                    <Badge badgeContent={this.state.badgeContent}
+                                           classes={{
+                                               root: 'App-Bar-Badge',
+                                               badge: 'App-Bar-Badge-Color'
+                                           }}>
+                                        <MailIcon />
+                                    </Badge>
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title='Home'>
+                                <IconButton onClick={event => this.handleSplash()}>
+                                    <SvgIcon className='App-Bar-HexagonIcon'>
+                                        <path d='' />
+                                    </SvgIcon>
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title='Print'>
+                                <IconButton onClick={event => this.handlePrint()}>
+                                    <PrintIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title='New Session'>
+                                <IconButton onClick={event => this.handleNewSession()}>
+                                    <OpenInNewIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title='User Profile'>
+                                <IconButton onClick={event => this.showMainView()}>
+                                    <AccountCircleIcon />
+                                </IconButton>
+                            </Tooltip>
+                            <Typography className='App-Bar-Title'>
+                                {this.state.userName ? this.state.userName : 'Guest'}
+                            </Typography>
+                            <ToolbarTitle
+                                className='App-Bar-Toolbar-Title'
+                                text={<img src={logo} className='App-Bar-Logo' alt='logo' />}
+                                alt='Blocnets' />
+                            <Typography className='App-Bar-Title-Custom'>
+                                <span>BL</span>
+                                <span style={{ 'color': '#e32c1c' }}>O</span>
+                                <span>CNETS</span>
+                            </Typography>
+                        </div>
+                        <div className={classes.sectionMobile}>
+                            <IconButton aria-haspopup="true" onClick={event => this.showMobileMenu(event)}
+                                        color="inherit">
+                                <MoreIcon />
+                            </IconButton>
+                        </div>
                     </AppBar>
                 </MuiThemeProvider>
-                {/* Side Drawer's navigation bar menu for viewing content */}
                 <Drawer docked={false} width={300} open={this.state.open}
-                    onRequestChange={(open) => this.setState({ open })}>
-                    <AppBar
-                        className='App-bar'
-                        onClick={this.handleToggle}
-                        title={<img src={logo} style={appBarLogoStyle} alt='Blocnets' />}
-                    />
-                    <MenuItem id='showBillOfMaterialsId' onClick={this.showBillOfMaterials}
-                        style={{ 'textAlign': 'left' }}>
-                        <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
-                            <ListAlt />
-                        </ListItemIcon>
-                        <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                            primary='Master Material Data' />
-                    </MenuItem>
-                    <hr />
-                    <MenuItem id='showShippingViewId' onClick={this.showShippingView}
-                        style={{ 'textAlign': 'left' }}>
-                        <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
-                            <LocalShipping />
-                        </ListItemIcon>
-                        <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                            primary='Shipping' />
-                    </MenuItem>
-                    <hr />
-                    <MenuItem id='showReceivingViewId' onClick={this.showReceivingView}
-                        style={{ 'textAlign': 'left' }}>
-                        <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
-                            <Domain />
-                        </ListItemIcon>
-                        <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                            primary='Receiving' />
-                    </MenuItem>
-                    <hr />
-                    <MenuItem id='showStartProductionViewId' onClick={this.showStartProductionView}
-                        style={{ 'textAlign': 'left' }}>
-                        <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
-                            <PlayArrow />
-                        </ListItemIcon>
-                        <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                            primary='Start Production Tracking' />
-                    </MenuItem>
-                    <hr />
-                    <MenuItem id='showCompleteProductionViewId' onClick={this.showCompleteProductionView}
-                        style={{ 'textAlign': 'left' }}>
-                        <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
-                            <Stop />
-                        </ListItemIcon>
-                        <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                            primary='Stop Production Tracking' />
-                    </MenuItem>
-                    <hr />
-                    <MenuItem id='showTrackAndTraceViewId' onClick={this.showTrackAndTraceView}
-                        style={{ 'textAlign': 'left' }}>
-                        <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
-                            <SearchIcon />
-                        </ListItemIcon>
-                        <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                            primary='Track and Trace' />
-                    </MenuItem>
-                    <hr />
-                    <MenuItem id='showSendDocumentViewId' onClick={this.showSendDocumentView}
-                        style={{ 'textAlign': 'left' }}>
-                        <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
-                            <Send />
-                        </ListItemIcon>
-                        <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                            primary='Send a Document' />
-                    </MenuItem>
-                    <hr />
-                    <MenuItem id='showSaveDocumentViewId' onClick={this.showSaveDocumentView}
-                        style={{ 'textAlign': 'left' }}>
-                        <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
-                            <CloudUploadIcon />
-                        </ListItemIcon>
-                        <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                            primary='Save a Document' />
-                    </MenuItem>
-                    <hr />
-                    <MenuItem id='showMapContainerId' onClick={this.showMapContainer}
-                        style={{ 'textAlign': 'left' }}>
-                        <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
-                            <LocationOn />
-                        </ListItemIcon>
-                        <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                            primary='Geo Mapping' />
-                    </MenuItem>
+                        onRequestChange={(open) => this.setState({ open })}>
+                    <List style={{ 'backgroundColor': '#222222' }}>
+                        <Paper style={{
+                            'backgroundColor': '#222222',
+                            'boxShadow': 'none',
+                            'height': '56px',
+                            'textAlign': 'left'
+                        }}>
+                            <IconButton style={{ 'marginLeft': '1%', 'color': 'white' }} onClick={this.handleToggle}>
+                                <MenuIcon />
+                            </IconButton>
+                        </Paper>
+                    </List>
+                    <List>
+                        <AppMenu viewHandler={this.handleMenu} />
+                    </List>
                 </Drawer>
                 <Paper className='Module-Title'>
                     <Toolbar className='Module-Title-Toolbar'>
@@ -479,11 +537,11 @@ class App extends Component {
                 </Paper>
                 {/* Page View with content loaded */}
                 {this.state.transactionCode === 'TAT01' ?
-                    <Paper className='Transparent-Theme' style={paperStyle} zDepth={5}>
+                    <Paper className='Transparent-Theme' style={paperStyle} elevation={5}>
                         {content}
                     </Paper>
                     :
-                    <Paper className='White-theme' style={paperStyle} zDepth={5}>
+                    <Paper className='White-theme' style={paperStyle} elevation={5}>
                         <Toolbar style={{ 'justifyContent': 'center', 'height': 100 }}>
                             <ToolbarTitle
                                 text={<img src={paperLogo} style={paperLogoStyle} alt='Blocnets' />}
@@ -519,6 +577,7 @@ class App extends Component {
                         </Grid>
                     </div>
                 </div>
+                {renderMobileMenu}
             </div>
         );
 
@@ -539,4 +598,5 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(App));
