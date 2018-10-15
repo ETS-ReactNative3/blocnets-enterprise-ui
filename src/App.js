@@ -126,7 +126,9 @@ class App extends Component {
         this.setState({
             show: 'home',
             open: false,
-            transactionCode: 'DRE02'
+            transactionCode: 'DRE02',
+            mobileMoreAnchorEl: null,
+            showMobileMenu: false,
         });
     };
 
@@ -243,10 +245,18 @@ class App extends Component {
 
     handlePrint = () => {
         window.print();
+        this.setState({
+            mobileMoreAnchorEl: null,
+            showMobileMenu: false
+        });
     };
 
     handleNewSession = () => {
         window.open(window.location.href, '_blank');
+        this.setState({
+            mobileMoreAnchorEl: null,
+            showMobileMenu: false
+        });
     };
 
     showMobileMenu = (event) => {
