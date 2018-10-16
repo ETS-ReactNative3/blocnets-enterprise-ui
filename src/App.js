@@ -516,11 +516,11 @@ class App extends Component {
                 </Paper>
                 {/* Page View with content loaded */}
                 {this.state.transactionCode === 'TAT01' ?
-                    <Paper className='Transparent-Theme' elevation={5}>
+                    <Paper className='Transparent-Theme' elevation={24}>
                         {content}
                     </Paper>
                     :
-                    <Paper className='White-theme' elevation={5}>
+                    <Paper className='White-theme' elevation={24}>
                         <Toolbar className='App-Toolbar'>
                             <ToolbarTitle
                                 text={<img alt='Blocnets' className='App-ToolbarTitle' src={paperLogo} />}
@@ -529,7 +529,6 @@ class App extends Component {
                         {content}
                     </Paper>
                 }
-
                 <div className='App-Footer'>
                     <div className='Module'>
                         <Grid container spacing={24}>
