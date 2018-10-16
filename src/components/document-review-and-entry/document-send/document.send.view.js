@@ -105,7 +105,9 @@ class SendDocumentView extends React.Component {
             // console.log(btoa(binaryString));
             base64Result(reader.result);
         };
-        reader.readAsDataURL(file);
+        if(file) {
+            reader.readAsDataURL(file);
+        }
     }
 
     handleChange = (event) => {
