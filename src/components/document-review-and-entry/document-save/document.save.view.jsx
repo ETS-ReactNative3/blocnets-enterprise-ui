@@ -19,7 +19,7 @@ class SaveDocumentView extends React.Component {
             base64File: '',
             fileName: '',
             fileMetaData: '',
-            userName: '',
+            userName: this.props.userName,
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
@@ -97,8 +97,10 @@ class SaveDocumentView extends React.Component {
             // console.log(btoa(binaryString));
             base64Result(reader.result);
         };
-        reader.readAsDataURL(file);
-        this.handleFileMetaData(file);
+        if(file) {
+            reader.readAsDataURL(file);
+            this.handleFileMetaData(file);
+        }
     }
 
     handleDREValidation = () => {
@@ -144,14 +146,14 @@ class SaveDocumentView extends React.Component {
         let fileBody = {
             file: this.state.base64File,
             fileName: this.state.fileName,
-            creatorID: 'Guest',
+            creatorID: this.state.userName,
             contentType: this.state.data.type,
             contentDisposition: '',
             contentLength: this.state.data.size
         }
         let oldFiles = [];
         let allFiles = [];
-        let umaURL = 'Guest';
+        let umaURL = this.state.userName;
         let umaBody = {
             userFiles: ["string"],
             userMessages: ["string"],

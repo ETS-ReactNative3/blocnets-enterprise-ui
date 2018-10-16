@@ -352,7 +352,8 @@ class App extends Component {
                 contentTitle = 'SEND A DOCUMENT';
                 break;
             case 'savedocumentview':
-                content = (<SaveDocumentView />);
+                content = (<SaveDocumentView
+                    userName={this.state.userName} />);
                 contentTitle = 'SAVE A DOCUMENT';
                 break;
             case 'mapcontainerview':
