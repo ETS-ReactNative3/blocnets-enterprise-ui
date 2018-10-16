@@ -29,7 +29,7 @@ export function uploadFileByUserId(url, body) {
     }
 }
 
-export function retrieveFileByUserId(url) {
+export function retrieveFileByKey(url) {
     return async (dispatch) => {
         dispatch({
             type: "LOADING_FILE_VIEW",
@@ -53,14 +53,14 @@ export function retrieveFileByUserId(url) {
                 }
                 let file = base64ToFile(response.data.file);
                 dispatch({
-                    type: "RETRIEVE_FILE_BY_USER_ID_SUCCESS",
+                    type: "RETRIEVE_FILE_BY_KEY_SUCCESS",
                     payload: file
                 });
             })
             .catch((error) => {
                 let errorData = resolver(error);
                 dispatch({
-                    type: "RETRIEVE_FILE_BY_USER_ID_FAILED",
+                    type: "RETRIEVE_FILE_BY_KEY_FAILED",
                     payload: errorData
                 });
             })

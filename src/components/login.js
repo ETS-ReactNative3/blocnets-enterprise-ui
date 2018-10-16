@@ -10,7 +10,7 @@ import Snackbar from 'material-ui/Snackbar';
 import { connect } from 'react-redux';
 import {
     getEachMessageForUserID
-} from '../redux/actions/user.message.array.action';
+} from '../redux/actions/UMA/user.message.array.action';
 
 const paperStyle = {
     width: '100%',

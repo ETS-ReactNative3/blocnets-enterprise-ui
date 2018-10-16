@@ -34,7 +34,7 @@ import logo from './blocknetwhite-1.png';
 import paperLogo from './blocnets-logo.png'
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
-import { getEachMessageForUserID } from './redux/actions/user.message.array.action';
+import { getEachMessageForUserID } from './redux/actions/UMA/user.message.array.action';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import MenuIcon from '@material-ui/icons/Menu';
 import { withStyles } from '@material-ui/core/styles';

@@ -20,7 +20,7 @@ import Snackbar from 'material-ui/Snackbar';
 import {connect} from 'react-redux';
 import {
     getEachMessageForUserID
-} from '../../../redux/actions/user.message.array.action';
+} from '../../../redux/actions/UMA/user.message.array.action';
 
 let counter = 0;
 

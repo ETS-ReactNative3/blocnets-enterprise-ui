@@ -17,7 +17,7 @@ import { createDocumentEntryByUniqueID } from '../../../redux/actions/document.r
 import {
     getUserMessageDataByUserID,
     updateUserMessageDataByUserID
-} from '../../../redux/actions/user.message.array.action';
+} from '../../../redux/actions/UMA/user.message.array.action';
 import { uploadFileByUserId } from '../../../redux/actions/FILE/file.action';
 //Temporary Only
 import response from './messageData.json';
@@ -160,7 +160,6 @@ class SendDocumentView extends React.Component {
                 dataType: '',
                 message: ''
             });
-            this.props.viewHandler(true);
         } else {
             this.setState({
                 showProgressLogo: false,
@@ -171,13 +170,12 @@ class SendDocumentView extends React.Component {
                     sbColor: 'red'
                 }
             })
-            this.props.viewHandler(false);
         }
     }
 
     handleSendDocumentForReview = (event) => {
         this.props.data.dreReducer.createDocumentEntryByUniqueIDSuccess = '';
-        this.props.data.umaReducer.getUserMessageDataByUserIDError = '';
+        this.props.data.umaReducer.getUserMessageDataByUserIDError = '';    // Clean-up: unused Validation
         this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess = '';
         this.setState({ showProgressLogo: true });
         let fileURL = this.state.fileKey

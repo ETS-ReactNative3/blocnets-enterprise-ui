@@ -1,19 +1,13 @@
 import React from 'react';
 import blocnetsLogo from '../../../blocknetwhite-1.png';
 import Grid from '@material-ui/core/Grid';
-import FormControl from '@material-ui/core/FormControl/FormControl';
-import FormLabel from '@material-ui/core/FormLabel/FormLabel';
-import Select from '@material-ui/core/Select/Select';
-import Input from '@material-ui/core/Input/Input';
-import MenuItem from '@material-ui/core/MenuItem/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText/FormHelperText';
-import TextField from 'material-ui/TextField';
-import Button from '@material-ui/core/Button';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 import yellow from '@material-ui/core/colors/yellow';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import Button from '@material-ui/core/Button';
 import Snackbar from 'material-ui/Snackbar';
 import { connect } from 'react-redux';
+import { uploadFileByUserId } from '../../../redux/actions/FILE/file.action';
+import { getUserMessageDataByUserID, updateUserMessageDataByUserID } from '../../../redux/actions/UMA/user.message.array.action';
 
 class SaveDocumentView extends React.Component {
 
@@ -21,7 +15,8 @@ class SaveDocumentView extends React.Component {
         super(props);
         this.state = {
             showProgressLogo: false,
-            file: '',
+            data: {},
+            base64File: '',
             fileName: '',
             fileMetaData: '',
             userName: '',
@@ -35,21 +30,21 @@ class SaveDocumentView extends React.Component {
     }
 
     handleFileMetaData = (event) => {
-        let data = {
-            lastModified: event.lastModified,
-            lastModifiedDate: event.lastModifiedDate,
-            name: event.name,
-            size: event.size,
-            type: event.type
-        }
         Promise.resolve(this.setState({
-            fileName: data.name,
-            fileMetaData: JSON.stringify({ data })
+            data: {
+                lastModified: event.lastModified,
+                lastModifiedDate: event.lastModifiedDate,
+                name: event.name,
+                size: event.size,
+                type: event.type
+            },
+            fileName: event.name,
+            fileMetaData: JSON.stringify({ event })
         }))
     }
 
     handleBase64File = (event) => {
-        Promise.resolve(this.setState({ file: event }))
+        Promise.resolve(this.setState({ base64File: event }))
     }
 
     handleUploadError = (event) => {
@@ -106,6 +101,113 @@ class SaveDocumentView extends React.Component {
         this.handleFileMetaData(file);
     }
 
+    handleDREValidation = () => {
+        if (this.props.data.fileReducer.uploadFileByUserIdSuccess === true) {
+            this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess = '';
+            this.props.data.umaReducer.getUserMessageDataByUserIDSuccess = '';
+            this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess = '';
+            this.setState({
+                showProgressLogo: false,
+                snackbar: {
+                    autoHideDuration: 2000,
+                    message: 'Document Saved Successfully!',
+                    open: true,
+                    sbColor: '#23CE6B'
+                },
+                data: {},
+                base64File: '',
+                fileName: '',
+                fileMetaData: '',
+            });
+        } else {
+            this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess = '';
+            this.props.data.umaReducer.getUserMessageDataByUserIDSuccess = '';
+            this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess = '';
+            this.setState({
+                showProgressLogo: false,
+                snackbar: {
+                    autoHideDuration: 2000,
+                    message: 'Error saving document! Please try again.',
+                    open: true,
+                    sbColor: 'red'
+                }
+            })
+        }
+    }
+
+    handleFileUpload = (event) => {
+        this.props.data.dreReducer.uploadFileByUserIdSuccess = '';
+        this.props.data.umaReducer.getUserMessageDataByUserIDSuccess = '';
+        this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess = '';
+        this.setState({ showProgressLogo: true });
+        let fileURL = this.state.fileName;
+        let fileBody = {
+            file: this.state.base64File,
+            fileName: this.state.fileName,
+            creatorID: 'Guest',
+            contentType: this.state.data.type,
+            contentDisposition: '',
+            contentLength: this.state.data.size
+        }
+        let oldFiles = [];
+        let allFiles = [];
+        let umaURL = 'Guest';
+        let umaBody = {
+            userFiles: ["string"],
+            userMessages: ["string"],
+            archivedMessages: ["string"]
+        };
+        let newUserFile = this.state.fileMetaData;
+        console.log(fileBody);
+        Promise.resolve(this.props.uploadFileByUserId(fileURL, fileBody))
+            .then(() => {
+                Promise.resolve(this.props.getUserMessageDataByUserID(umaURL))
+                    .then(() => {
+                        if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess) {
+                            oldFiles = this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles;
+                            allFiles = [newUserFile];
+                            for (let i = 0; i < oldFiles.length; i++) {
+                                allFiles.push(oldFiles[i]);
+                            }
+                            umaBody = {
+                                userFiles: allFiles,
+                                userMessages: this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages,
+                                archivedMessages: ["string"]        // Change later to be dynamic
+                            };
+                            Promise.resolve(this.props.updateUserMessageDataByUserID(umaURL, umaBody))
+                                .then(() => {
+                                    this.handleDREValidation();
+                                })
+                            this.setState({
+                                showProgressLogo: false
+                            })
+                        } else {
+                            umaBody = {
+                                userFiles:[newUserFile],
+                                userMessages: ["string"],
+                                archivedMessages: ["string"]
+                            };
+                            Promise.resolve(this.props.updateUserMessageDataByUserID(umaURL, umaBody))
+                                .then(() => {
+                                    this.handleDREValidation();
+                                })
+                        }
+                    })
+            })
+        event.preventDefault();
+    }
+
+    handleSnackbarClose = () => {
+        this.setState({
+            snackbar: {
+                autoHideDuration: 2000,
+                message: '',
+                open: false,
+                sbColor: 'black'
+            },
+        });
+    };
+
     render() {
 
         const buttonThemeYellow = createMuiTheme({
@@ -114,8 +216,8 @@ class SaveDocumentView extends React.Component {
             },
         });
 
-        const formComplete = this.state.recipientUserName && this.state.messageType
-            && this.state.dataType && this.state.message;
+        const formComplete = this.state.fileMetaData && this.state.fileName
+            && this.state.base64File;
 
         return (
             <form>
@@ -129,22 +231,25 @@ class SaveDocumentView extends React.Component {
                         <Grid container item xs={12} sm={6} justify="flex-end">
                             <Grid>
                                 <input
-                                    /* style={{ 'display': 'none' }} */
                                     id="flat-button-file"
                                     //multiple
                                     type="file"
                                     onChange={this.handleFileChange}
                                 />
-                                <MuiThemeProvider theme={buttonThemeYellow}>
-                                    <Button type="submit" value="Upload" variant="contained"
-                                        color="primary" component="span">
-                                        Upload
-                                            <CloudUploadIcon style={{ 'marginLeft': '12' }} />
-                                    </Button>
-                                </MuiThemeProvider>
                             </Grid>
                         </Grid>
-
+                    </Grid>
+                    <br /><br />
+                    <Grid container spacing={24}>
+                        <Grid container item xs={12}>
+                            <MuiThemeProvider theme={buttonThemeYellow}>
+                                <Button type="submit" value="Submit" variant="contained" color="primary"
+                                    fullWidth={true} disabled={!formComplete}
+                                    onClick={this.handleFileUpload}>
+                                    Save and Upload
+                                </Button>
+                            </MuiThemeProvider>
+                        </Grid>
                     </Grid>
                 </div>
                 <Snackbar
@@ -168,9 +273,9 @@ const mapStateToProps = (state) => {
 // This way, we can call our action creator by doing this.props.fetchData(url);
 const mapDispatchToProps = (dispatch) => {
     return {
-        /* getUserMessageDataByUserID: (url) => dispatch(getUserMessageDataByUserID(url)),
+        getUserMessageDataByUserID: (url) => dispatch(getUserMessageDataByUserID(url)),
         updateUserMessageDataByUserID: (url, body) => dispatch(updateUserMessageDataByUserID(url, body)),
-        uploadFileByUserId: (url, body) => dispatch(uploadFileByUserId(url, body)) */
+        uploadFileByUserId: (url, body) => dispatch(uploadFileByUserId(url, body))
     };
 };
 
