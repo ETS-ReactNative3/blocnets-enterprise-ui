@@ -45,7 +45,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { getEachMessageForUserID } from './redux/actions/user.message.array.action';
+import { getEachMessageForUserID } from './redux/actions/UMA/user.message.array.action';
 
 const theme = createMuiTheme({
     palette: {
