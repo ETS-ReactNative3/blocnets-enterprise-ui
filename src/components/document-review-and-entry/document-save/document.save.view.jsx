@@ -30,6 +30,13 @@ class SaveDocumentView extends React.Component {
     }
 
     handleFileMetaData = (event) => {
+        let data = {
+            lastModified: event.lastModified,
+            lastModifiedDate: event.lastModifiedDate,
+            name: event.name,
+            size: event.size,
+            type: event.type
+        };
         Promise.resolve(this.setState({
             data: {
                 lastModified: event.lastModified,
@@ -39,7 +46,7 @@ class SaveDocumentView extends React.Component {
                 type: event.type
             },
             fileName: event.name,
-            fileMetaData: JSON.stringify({ event })
+            fileMetaData: JSON.stringify({ data })
         }))
     }
 
