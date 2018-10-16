@@ -47,6 +47,7 @@ class TrackAndTraceView extends Component {
                             </Grid>
                             <Grid container item xs={8} justify='center'>
                                 <TrackAndTraceSearchView
+                                    trackButtonFlag={true}
                                     viewHandler={this.handleTTSearchData} />
                             </Grid>
                             <Grid container item xs>

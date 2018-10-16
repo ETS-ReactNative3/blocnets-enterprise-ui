@@ -325,7 +325,7 @@ class SplashView extends Component {
                                                         </div>
                                                         <ButtonBase focusRipple
                                                                     style={{ 'width': '100%', 'height': '100%' }}
-                                                                    onClick={event => this.handleView(event, 'GEO')}>
+                                                                    onClick={event => this.handleView(event, 'GEO01')}>
                                                             <h1>Geo Mapping</h1>
                                                             <p></p>
                                                         </ButtonBase>

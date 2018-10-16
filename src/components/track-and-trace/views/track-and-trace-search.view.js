@@ -11,6 +11,8 @@ import Paper from 'material-ui/Paper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from 'material-ui/MenuItem';
+import Grid from '@material-ui/core/Grid/Grid';
+import Button from '@material-ui/core/Button/Button';
 import {
     getBillOfMaterialsByMaterialID,
     getBillOfMaterialsByMaterialName,
@@ -77,7 +79,8 @@ class TrackAndTraceSearchView extends Component {
         });
     };
 
-    showTrackAndTraceResultsView = () => {
+    showTrackAndTraceResultsView = (event) => {
+        event.preventDefault();
         this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess = '';
         this.props.data.bomReducer.getBillOfMaterialsByMaterialNameSuccess = '';
         this.props.data.bomReducer.getBillOfMaterialsByMaterialDescSuccess = '';
@@ -380,6 +383,7 @@ class TrackAndTraceSearchView extends Component {
                                     </InputAdornment>
                             }
                             onChange={this.handleSearchKey}
+                            autoComplete='off'
                         />
                         <Popper open={this.state.openSearch} transition disablePortal
                                 style={{ 'position': 'relative' }}>
@@ -420,6 +424,21 @@ class TrackAndTraceSearchView extends Component {
                             )}
                         </Popper>
                     </FormControl>
+                    <br /><br /><br />
+                    {this.props.trackButtonFlag === true ?
+                        <Grid container spacing={24}>
+                            <Grid container item xs={12} justify='center'>
+                                <Button type='submit' value='Submit' variant='contained'
+                                        onClick={event => this.showTrackAndTraceResultsView(event)}
+                                        disabled={!this.state.searchCriteria || !this.state.searchKey}
+                                        className='Module-Button-Search'>
+                                    Search
+                                </Button>
+                            </Grid>
+                        </Grid>
+                        :
+                        ''
+                    }
                 </div>
             </div>
         );

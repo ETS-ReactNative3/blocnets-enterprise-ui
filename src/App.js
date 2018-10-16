@@ -5,6 +5,8 @@ import {
     Route
 } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { withStyles } from '@material-ui/core/styles';
+import AppMenu from './components/App-Menu';
 import TrackAndTraceSearchView from './components/track-and-trace/views/track-and-trace-search.view';
 import TrackAndTraceResultsView from './components/track-and-trace/views/track-and-trace.results.view';
 import DocumentDashboardView
@@ -17,39 +19,38 @@ import CompleteProductionView from './components/production/views/complete.produ
 import TrackAndTraceView from './components/track-and-trace/views/track-and-trace.view';
 import SendDocumentView from './components/document-review-and-entry/document-send/document.send.view';
 import SaveDocumentView from './components/document-review-and-entry/document-save/document.save.view';
-import MapContainer from './components/geolocation/views/google.maps.view';
+import MapContainerView from './components/geolocation/views/google.maps.view';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import AppBar from 'material-ui/AppBar';
-import Grid from '@material-ui/core/Grid';
-import { Toolbar, ToolbarTitle } from 'material-ui/Toolbar';
-import Paper from 'material-ui/Paper';
-import MenuItem from 'material-ui/MenuItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import Tooltip from '@material-ui/core/Tooltip';
 import Badge from '@material-ui/core/Badge';
 import MailIcon from '@material-ui/icons/Mail';
-import Drawer from 'material-ui/Drawer';
-import logo from './blocknetwhite-1.png';
-import paperLogo from './blocnets-logo.png'
-import Typography from '@material-ui/core/Typography';
-import Tooltip from '@material-ui/core/Tooltip';
-import { getEachMessageForUserID } from './redux/actions/UMA/user.message.array.action';
 import SvgIcon from '@material-ui/core/SvgIcon';
-import MenuIcon from '@material-ui/icons/Menu';
-import { withStyles } from '@material-ui/core/styles';
-import MoreIcon from '@material-ui/icons/MoreVert';
 import PrintIcon from '@material-ui/icons/Print';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import AppMenu from "./components/App-Menu";
-import List from "@material-ui/core/List/List";
+import Typography from '@material-ui/core/Typography';
+import { ToolbarTitle } from 'material-ui/Toolbar';
+import logo from './blocknetwhite-1.png';
+import MoreIcon from '@material-ui/icons/MoreVert';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List/List';
+import Paper from '@material-ui/core/Paper';
+import paperLogo from './blocnets-logo.png'
+import Grid from '@material-ui/core/Grid';
 import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import { getEachMessageForUserID } from './redux/actions/user.message.array.action';
 
 const theme = createMuiTheme({
     palette: {
         type: 'dark'
-    },
+    }
 });
 
 const styles = theme => ({
@@ -66,21 +67,6 @@ const styles = theme => ({
         },
     },
 });
-
-const paperStyle = {
-    width: '70%',
-    height: '85%',
-    marginLeft: '5%',
-    marginRight: '5%',
-    marginBottom: '5%',
-    textAlign: 'center',
-    display: 'inline-block',
-};
-
-const paperLogoStyle = {
-    maxHeight: 65,
-    paddingTop: 15
-};
 
 class App extends Component {
 
@@ -121,6 +107,8 @@ class App extends Component {
             transactionCode: this.props.transactionCode,
             userName: this.props.userName,
             badgeContent: 0,
+            mobileMoreAnchorEl: null,
+            showMobileMenu: false,
             tatData: [],
             tree: [],
             snackbar: {
@@ -128,9 +116,7 @@ class App extends Component {
                 message: '',
                 open: false,
                 sbColor: 'black'
-            },
-            showMobileMenu: false,
-            mobileMoreAnchorEl: null,
+            }
         };
     }
 
@@ -140,7 +126,9 @@ class App extends Component {
         this.setState({
             show: 'home',
             open: false,
-            transactionCode: 'DRE02'
+            transactionCode: 'DRE02',
+            mobileMoreAnchorEl: null,
+            showMobileMenu: false,
         });
     };
 
@@ -208,10 +196,10 @@ class App extends Component {
         });
     };
 
-    showMapContainer = () => {
+    showMapContainerView = () => {
         this.setState({
-            show: 'mapcontainer',
-            transactionCode: 'GEO',
+            show: 'mapcontainerview',
+            transactionCode: 'GEO01',
             open: false,
         });
     };
@@ -257,24 +245,31 @@ class App extends Component {
 
     handlePrint = () => {
         window.print();
+        this.setState({
+            mobileMoreAnchorEl: null,
+            showMobileMenu: false
+        });
     };
 
     handleNewSession = () => {
         window.open(window.location.href, '_blank');
+        this.setState({
+            mobileMoreAnchorEl: null,
+            showMobileMenu: false
+        });
     };
 
     showMobileMenu = (event) => {
         this.setState({
-            open: false,
+            mobileMoreAnchorEl: event.currentTarget,
             showMobileMenu: true,
-            mobileMoreAnchorEl: event.currentTarget
         });
     };
 
     handleMobileMenuClose = () => {
         this.setState({
-            showMobileMenu: false,
-            mobileMoreAnchorEl: null
+            mobileMoreAnchorEl: null,
+            showMobileMenu: false
         });
     };
 
@@ -304,8 +299,8 @@ class App extends Component {
             case 'showSaveDocumentViewId':
                 this.showSaveDocumentView();
                 break;
-            case 'showMapContainerId':
-                this.showMapContainer();
+            case 'showMapContainerViewId':
+                this.showMapContainerView();
                 break;
             default:
                 this.showMainView();
@@ -313,10 +308,7 @@ class App extends Component {
         }
     };
 
-
     render() {
-
-        const { classes } = this.props;
 
         let content = null;
         let contentTitle = '';
@@ -363,8 +355,8 @@ class App extends Component {
                 content = (<SaveDocumentView />);
                 contentTitle = 'SAVE A DOCUMENT';
                 break;
-            case 'mapcontainer':
-                content = (<MapContainer />);
+            case 'mapcontainerview':
+                content = (<MapContainerView />);
                 contentTitle = 'GEO MAPPING';
                 break;
             default:
@@ -374,24 +366,21 @@ class App extends Component {
                             <Route
                                 path='/'
                                 render={(props) => <DocumentDashboardView {...props}
-                                    userName={this.state.userName} />}
+                                                                          userName={this.state.userName} />}
                             />
                         </div>
                     </Router>);
                 contentTitle = 'INBOX';
         }
 
+        const { classes } = this.props;
+
         const renderMobileMenu = (
-            <Menu
-                anchorEl={this.state.mobileMoreAnchorEl}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                open={this.state.showMobileMenu}
-                onClose={this.handleMobileMenuClose}
-            >
-                <MenuItem onClick={this.showMainView}
-                          style={{ 'textAlign': 'left' }}>
-                    <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
+            <Menu anchorEl={this.state.mobileMoreAnchorEl} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                  onClose={this.handleMobileMenuClose} open={this.state.showMobileMenu}
+                  transformOrigin={{ vertical: 'top', horizontal: 'right' }}>
+                <MenuItem className='Mobile-MenuItem' onClick={this.showMainView}>
+                    <ListItemIcon className='Mobile-ListItemIcon'>
                         <Badge badgeContent={this.state.badgeContent}
                                classes={{
                                    root: 'App-Bar-Badge',
@@ -400,125 +389,116 @@ class App extends Component {
                             <MailIcon />
                         </Badge>
                     </ListItemIcon>
-                    <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                  primary='Messages' />
+                    <ListItemText className='Mobile-ListItemText' primary='Messages' />
                 </MenuItem>
                 <hr />
-                <MenuItem onClick={this.handleSplash}
-                          style={{ 'textAlign': 'left' }}>
-                    <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
+                <MenuItem className='Mobile-MenuItem' onClick={this.handleSplash}>
+                    <ListItemIcon className='Mobile-ListItemIcon'>
                         <SvgIcon className='App-Bar-HexagonIcon'>
                             <path d='' />
                         </SvgIcon>
                     </ListItemIcon>
-                    <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                  primary='Home' />
+                    <ListItemText className='Mobile-ListItemText' primary='Home' />
                 </MenuItem>
                 <hr />
-                <MenuItem onClick={this.handlePrint}
-                          style={{ 'textAlign': 'left' }}>
-                    <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
+                <MenuItem className='Mobile-MenuItem' onClick={this.handlePrint}>
+                    <ListItemIcon className='Mobile-ListItemIcon'>
                         <PrintIcon />
                     </ListItemIcon>
-                    <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                  primary='Print' />
+                    <ListItemText className='Mobile-ListItemText' primary='Print' />
                 </MenuItem>
                 <hr />
-                <MenuItem onClick={this.handleNewSession}
-                          style={{ 'textAlign': 'left' }}>
-                    <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
+                <MenuItem className='Mobile-MenuItem' onClick={this.handleNewSession}>
+                    <ListItemIcon className='Mobile-ListItemIcon'>
                         <OpenInNewIcon />
                     </ListItemIcon>
-                    <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                  primary='New Session' />
+                    <ListItemText className='Mobile-ListItemText' primary='New Session' />
                 </MenuItem>
                 <hr />
-                <MenuItem onClick={this.showMainView}
-                          style={{ 'textAlign': 'left' }}>
-                    <ListItemIcon style={{ 'verticalAlign': 'middle' }}>
+                <MenuItem className='Mobile-MenuItem' onClick={this.showMainView}>
+                    <ListItemIcon className='Mobile-ListItemIcon'>
                         <AccountCircleIcon />
                     </ListItemIcon>
-                    <ListItemText style={{ 'display': 'inline-block', 'verticalAlign': 'middle' }}
-                                  primary='User Profile' />
+                    <ListItemText className='Mobile-ListItemText' primary='User Profile' />
                 </MenuItem>
             </Menu>
         );
 
         return (
+
             <div className='App'>
                 <MuiThemeProvider theme={theme}>
                     {/* Main navigation bar menu for components */}
-                    <AppBar position='static' className='App-header'
-                            iconClassNameRight='muidocs-icon-navigation-expand-more'
-                            onLeftIconButtonClick={this.handleToggle}>
-                        <div className='App-Bar-TT-Search'>
-                            <TrackAndTraceSearchView
-                                viewHandler={this.handleTTSearchData} />
-                        </div>
-                        <div className={classes.sectionDesktop}>
-                            <Tooltip title='Messages'>
-                                <IconButton onClick={this.showMainView}>
-                                    <Badge badgeContent={this.state.badgeContent}
-                                           classes={{
-                                               root: 'App-Bar-Badge',
-                                               badge: 'App-Bar-Badge-Color'
-                                           }}>
-                                        <MailIcon />
-                                    </Badge>
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title='Home'>
-                                <IconButton onClick={event => this.handleSplash()}>
-                                    <SvgIcon className='App-Bar-HexagonIcon'>
-                                        <path d='' />
-                                    </SvgIcon>
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title='Print'>
-                                <IconButton onClick={event => this.handlePrint()}>
-                                    <PrintIcon />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title='New Session'>
-                                <IconButton onClick={event => this.handleNewSession()}>
-                                    <OpenInNewIcon />
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip title='User Profile'>
-                                <IconButton onClick={event => this.showMainView()}>
-                                    <AccountCircleIcon />
-                                </IconButton>
-                            </Tooltip>
-                            <Typography className='App-Bar-Title'>
-                                {this.state.userName ? this.state.userName : 'Guest'}
-                            </Typography>
-                            <ToolbarTitle
-                                className='App-Bar-Toolbar-Title'
-                                text={<img src={logo} className='App-Bar-Logo' alt='logo' />}
-                                alt='Blocnets' />
-                            <Typography className='App-Bar-Title-Custom'>
-                                <span>BL</span>
-                                <span style={{ 'color': '#e32c1c' }}>O</span>
-                                <span>CNETS</span>
-                            </Typography>
-                        </div>
-                        <div className={classes.sectionMobile}>
-                            <IconButton aria-haspopup="true" onClick={event => this.showMobileMenu(event)}>
-                                <MoreIcon />
+                    <AppBar className='App-header' position='static'>
+                        <Toolbar className='App-Bar-ToolBar'>
+                            <IconButton className='App-Bar-IconButton' onClick={this.handleToggle}>
+                                <MenuIcon />
                             </IconButton>
-                        </div>
+                            <div className='App-Bar-TT-Search'>
+                                <TrackAndTraceSearchView
+                                    trackButtonFlag={false}
+                                    viewHandler={this.handleTTSearchData} />
+                            </div>
+                            <div className={classes.sectionDesktop}>
+                                <Tooltip title='Messages'>
+                                    <IconButton onClick={this.showMainView}>
+                                        <Badge badgeContent={this.state.badgeContent}
+                                               classes={{
+                                                   root: 'App-Bar-Badge',
+                                                   badge: 'App-Bar-Badge-Color'
+                                               }}>
+                                            <MailIcon />
+                                        </Badge>
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title='Home'>
+                                    <IconButton onClick={event => this.handleSplash()}>
+                                        <SvgIcon className='App-Bar-HexagonIcon'>
+                                            <path d='' />
+                                        </SvgIcon>
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title='Print'>
+                                    <IconButton onClick={event => this.handlePrint()}>
+                                        <PrintIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title='New Session'>
+                                    <IconButton onClick={event => this.handleNewSession()}>
+                                        <OpenInNewIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title='User Profile'>
+                                    <IconButton onClick={event => this.showMainView()}>
+                                        <AccountCircleIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                <Typography className='App-Bar-Title'>
+                                    {this.state.userName ? this.state.userName : 'Guest'}
+                                </Typography>
+                                <ToolbarTitle
+                                    alt=''
+                                    className='App-Bar-Toolbar-Title'
+                                    text={<img alt='logo' className='App-Bar-Logo' src={logo} />}
+                                />
+                                <Typography className='App-Bar-Title-Custom'>
+                                    <span>BL</span>
+                                    <span className='TT-Font-Red'>O</span>
+                                    <span>CNETS</span>
+                                </Typography>
+                            </div>
+                            <div className={classes.sectionMobile}>
+                                <IconButton onClick={event => this.showMobileMenu(event)}>
+                                    <MoreIcon />
+                                </IconButton>
+                            </div>
+                        </Toolbar>
                     </AppBar>
                 </MuiThemeProvider>
-                <Drawer docked={false} width={300} open={this.state.open}
-                        onRequestChange={(open) => this.setState({ open })}>
-                    <List style={{ 'backgroundColor': '#222222' }}>
-                        <Paper style={{
-                            'backgroundColor': '#222222',
-                            'boxShadow': 'none',
-                            'height': '56px',
-                            'textAlign': 'left'
-                        }}>
-                            <IconButton style={{ 'marginLeft': '1%', 'color': 'white' }} onClick={this.handleToggle}>
+                <Drawer onClose={this.handleToggle} open={this.state.open}>
+                    <List className='App-Bar-List'>
+                        <Paper className='App-Bar-Paper'>
+                            <IconButton className='App-Bar-IconButton-Menu' onClick={this.handleToggle}>
                                 <MenuIcon />
                             </IconButton>
                         </Paper>
@@ -536,38 +516,38 @@ class App extends Component {
                 </Paper>
                 {/* Page View with content loaded */}
                 {this.state.transactionCode === 'TAT01' ?
-                    <Paper className='Transparent-Theme' style={paperStyle} elevation={5}>
+                    <Paper className='Transparent-Theme' elevation={24}>
                         {content}
                     </Paper>
                     :
-                    <Paper className='White-theme' style={paperStyle} elevation={5}>
-                        <Toolbar style={{ 'justifyContent': 'center', 'height': 100 }}>
+                    <Paper className='White-theme' elevation={24}>
+                        <Toolbar className='App-Toolbar'>
                             <ToolbarTitle
-                                text={<img src={paperLogo} style={paperLogoStyle} alt='Blocnets' />}
+                                text={<img alt='Blocnets' className='App-ToolbarTitle' src={paperLogo} />}
                             />
                         </Toolbar>
                         {content}
                     </Paper>
                 }
-                <div style={{ 'bottom': '0', 'position': 'fixed', 'width': '100%' }}>
-                    <div style={{ padding: 24 }}>
+                <div className='App-Footer'>
+                    <div className='Module'>
                         <Grid container spacing={24}>
                             <MuiThemeProvider theme={theme}>
                                 <Grid container item xs={12}>
                                     <Grid container item xs>
-                                        <Typography align='right' style={{ 'width': '100%' }}>
+                                        <Typography align='right' className='Module-Paper'>
                                             {this.state.transactionCode} | System Number
                                         </Typography>
                                     </Grid>
                                 </Grid>
                                 <Grid container item xs={12}>
                                     <Grid container item xs>
-                                        <Typography align='left' style={{ 'width': '100%' }}>
+                                        <Typography align='left' className='Module-Paper'>
                                             © 2018 ALL RIGHTS RESERVED.
                                         </Typography>
                                     </Grid>
                                     <Grid container item xs>
-                                        <Typography align='right' style={{ 'width': '100%' }}>
+                                        <Typography align='right' className='Module-Paper'>
                                             {this.state.currentDateAndTime}
                                         </Typography>
                                     </Grid>
@@ -578,6 +558,7 @@ class App extends Component {
                 </div>
                 {renderMobileMenu}
             </div>
+
         );
 
     }
