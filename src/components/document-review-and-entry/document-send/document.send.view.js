@@ -101,12 +101,13 @@ class SendDocumentView extends React.Component {
         };
         reader.onload = function () {
             // Binary String
-            // var binaryString = reader.result;
-            // console.log(btoa(binaryString));
-            base64Result(reader.result);
+            var binaryString = reader.result;
+            var wrapBinaryInBase64 = btoa(binaryString);
+            base64Result(wrapBinaryInBase64);
         };
         if(file) {
-            reader.readAsDataURL(file);
+            // reader.readAsDataURL(file); //SAP strips Base64 header..
+            reader.readAsBinaryString(file); // Temp Solution: Binary => base64(Binary)
         }
     }
 
