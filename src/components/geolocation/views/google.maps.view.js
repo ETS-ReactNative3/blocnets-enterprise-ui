@@ -104,7 +104,8 @@ export class MapContainer extends Component {
             <div>
                 <Grid container spacing={24}>
                     <div className='map-frame'>
-                        <Map className='map-container' google={this.props.google} zoom={4}>
+                        <Map className='map-container' google={this.props.google} zoom={5}
+                             initialCenter={{ lat: 39.0292, lng: -96.7892 }}>
                             <Marker name={'AVC Corporation'} onClick={this.onMarkerClick}
                                     partNameNHA={'LIDAR Radar'}
                                     position={{ lat: 33.680130, lng: -78.909200 }} />
