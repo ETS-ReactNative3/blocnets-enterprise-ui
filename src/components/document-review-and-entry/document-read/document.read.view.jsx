@@ -9,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import TablePagination from '@material-ui/core/TablePagination';
+import Dialog from '@material-ui/core/Dialog/Dialog';
 import Snackbar from 'material-ui/Snackbar';
 import { connect } from 'react-redux';
 import { retrieveFileByKey } from '../../../redux/actions/FILE/file.action';
@@ -18,11 +19,18 @@ let counter = 0;
 
 const rows = [
     { id: 'fileName', label: 'Name' },
-    { id: 'fileSize', label: 'Size' },
+    { id: 'fileSize', label: 'Size(Bytes)' },
     { id: 'fileType', label: 'File Type' },
     { id: 'lastModifiedDate', label: 'Last Modified Date' },
     { id: 'lastModifed', label: 'Last Modified' }
 ];
+
+let dialogCounter = 0;
+
+function createDialogData(info1, info2) {
+    dialogCounter += 1;
+    return { id: dialogCounter, info1, info2 };
+}
 
 class TableHeader extends React.Component {
     render() {
@@ -77,6 +85,8 @@ class ReadDocumentView extends React.Component {
             page: 0,
             rowsPerPage: 10,
             userName: this.props.userName,
+            openDialog: false,
+            reconstructedFile: ["test"],
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
@@ -119,10 +129,73 @@ class ReadDocumentView extends React.Component {
         return tableContent;
     };
 
+    decodeFile = (encodedFile) => {
+        let decodedBinary = atob(encodedFile);
+        console.log(decodedBinary);
+        let file = decodedBinary.trim().split(" ")
+            .map(item => String.fromCharCode(parseInt(item, 2)))
+            .join("");
+        console.log(file);
+    }
+
+    handleDREValidation = () => {
+        if (this.props.data.fileReducer.retrieveFileByKeySuccess) {
+            this.setState({
+                openDialog: true,
+                showProgressLogo: false,
+                snackbar: {
+                    autoHideDuration: 2000,
+                    message: 'Document Retrieved Successfully!',
+                    open: true,
+                    sbColor: '#23CE6B'
+                }
+            })
+            this.decodeFile(this.props.data.fileReducer.retrieveFileByKeySuccess.file);
+        } else {
+            this.setState({
+                showProgressLogo: false,
+                snackbar: {
+                    autoHideDuration: 2000,
+                    message: 'Error retrieving document! Please try again.',
+                    open: true,
+                    sbColor: 'red'
+                }
+            })
+        }
+    }
+
+
+    handleClickedFile = (event, fileName) => {
+        //this.setState({ showProgressLogo: true })
+        Promise.resolve(this.props.retrieveFileByKey(fileName))
+            .then(() => {
+                //this.handleDREValidation();
+            })
+    };
+
+    handleDialogClose = () => {
+        this.setState({ openDialog: false });
+    };
+
+    handleSnackbarClose = () => {
+        this.setState({
+            snackbar: {
+                autoHideDuration: 2000,
+                message: '',
+                open: false,
+                sbColor: 'black'
+            },
+        });
+    };
+
     render() {
         const { data, rowsPerPage, page } = this.state;
 
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+
+        const dialogRows = [
+            createDialogData('File', this.state.reconstructedFile)
+        ]
 
         return (
             <form>
@@ -148,22 +221,27 @@ class ReadDocumentView extends React.Component {
                                                         <TableRow hover
                                                             tabIndex={-1} key={n.id}>
                                                             <TableCell
+                                                                onClick={event => this.handleClickedFile(event, n.fileName)}
                                                                 style={{ "cursor": "pointer" }}>
                                                                 {n.fileName}
                                                             </TableCell>
                                                             <TableCell
+                                                                onClick={event => this.handleClickedFile(event, n.fileName)}
                                                                 style={{ "cursor": "pointer" }}>
                                                                 {n.fileType}
                                                             </TableCell>
                                                             <TableCell
+                                                                onClick={event => this.handleClickedFile(event, n.fileName)}
                                                                 style={{ "cursor": "pointer" }}>
                                                                 {n.fileSize}
                                                             </TableCell>
                                                             <TableCell
+                                                                onClick={event => this.handleClickedFile(event, n.fileName)}
                                                                 style={{ "cursor": "pointer" }}>
                                                                 {n.lastModifiedDate}
                                                             </TableCell>
                                                             <TableCell
+                                                                onClick={event => this.handleClickedFile(event, n.fileName)}
                                                                 style={{ "cursor": "pointer" }}>
                                                                 {n.lastModified}
                                                             </TableCell>
@@ -196,6 +274,43 @@ class ReadDocumentView extends React.Component {
                         </Grid>
                     </Grid>
                 </div>
+                <Dialog open={this.state.openDialog} onClose={this.handleDialogClose}>
+                    <div style={{ padding: 24 }}>
+                        <Grid container justify="flex-end">
+                            <Grid item>
+                                <i className="material-icons" style={{ "cursor": "pointer" }}
+                                    onClick={this.handleDialogClose}>close</i>
+                            </Grid>
+                        </Grid>
+                        <br />
+                        <Grid container justify="center">
+                            <Grid container item xs={12}>
+                                <Paper style={{ "width": "100%" }}>
+                                    <div>
+                                        {this.state.showProgressLogoDialog ?
+                                            <div className="overlay"><img src={blocnetsLogo}
+                                                className="App-logo-progress" alt="" />
+                                            </div> : ""}
+                                    </div>
+                                    <div style={{ "overflowX": "auto" }}>
+                                        <Table style={{ "tableLayout": "fixed" }}>
+                                            <TableBody style={{ "overflowWrap": "break-word" }}>
+                                                {dialogRows.map(row => {
+                                                    return (
+                                                        <TableRow key={row.id}>
+                                                            <TableCell>{row.info1}</TableCell>
+                                                            <TableCell>{row.info2}</TableCell>
+                                                        </TableRow>
+                                                    );
+                                                })}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
+                                </Paper>
+                            </Grid>
+                        </Grid>
+                    </div>
+                </Dialog>
                 <Snackbar
                     open={this.state.snackbar.open}
                     message={this.state.snackbar.message}
