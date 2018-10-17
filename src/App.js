@@ -19,6 +19,7 @@ import CompleteProductionView from './components/production/views/complete.produ
 import TrackAndTraceView from './components/track-and-trace/views/track-and-trace.view';
 import SendDocumentView from './components/document-review-and-entry/document-send/document.send.view';
 import SaveDocumentView from './components/document-review-and-entry/document-save/document.save.view';
+import ReadDocumentView from './components/document-review-and-entry/document-read/document.read.view';
 import MapContainerView from './components/geolocation/views/google.maps.view';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -196,6 +197,14 @@ class App extends Component {
         });
     };
 
+    showReadDocumentView = () => {
+        this.setState({
+            show: 'readdocumentview',
+            open: false,
+            transactionCode: 'DRE04'
+        });
+    };
+
     showMapContainerView = () => {
         this.setState({
             show: 'mapcontainerview',
@@ -299,6 +308,9 @@ class App extends Component {
             case 'showSaveDocumentViewId':
                 this.showSaveDocumentView();
                 break;
+            case 'showReadDocumentViewId':
+                this.showReadDocumentView();
+                break;
             case 'showMapContainerViewId':
                 this.showMapContainerView();
                 break;
@@ -355,6 +367,11 @@ class App extends Component {
                 content = (<SaveDocumentView
                     userName={this.state.userName} />);
                 contentTitle = 'SAVE A DOCUMENT';
+                break;
+            case 'readdocumentview':
+                content = (<ReadDocumentView
+                    userName={this.state.userName} />);
+                contentTitle = 'VIEW A DOCUMENT';
                 break;
             case 'mapcontainerview':
                 content = (<MapContainerView />);

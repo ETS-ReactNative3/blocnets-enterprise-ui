@@ -9,8 +9,6 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import TablePagination from '@material-ui/core/TablePagination';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
-import yellow from '@material-ui/core/colors/yellow';
 import Snackbar from 'material-ui/Snackbar';
 import { connect } from 'react-redux';
 import { retrieveFileByKey } from '../../../redux/actions/FILE/file.action';
@@ -51,7 +49,7 @@ TableHeader.propTypes = {
 class ReadDocumentView extends React.Component {
 
     componentDidMount() {
-        !this.isCancelled && Promise.resolve(this.props.getUserMessageDataByUserID('Guest'))
+        !this.isCancelled && Promise.resolve(this.props.getUserMessageDataByUserID(this.state.userName))
             .then(() => {
                 if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess) {
                     this.setState({
@@ -78,7 +76,7 @@ class ReadDocumentView extends React.Component {
             data: [],
             page: 0,
             rowsPerPage: 10,
-            userName: '',
+            userName: this.props.userName,
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
@@ -104,19 +102,15 @@ class ReadDocumentView extends React.Component {
         if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess) {
             if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles.length > 0) {
                 for (let i = 0; i < this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles.length; i++) {
-                    if (!this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles[i] === 'string') {
-                        let tmp = JSON.parse(this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles[i])
-                        Promise.resolve(this.props.retrieveFileByKey(tmp.fileName))
-                            .then(() => {
-                                console.log(this.props.data.umaReducer.retrieveFileByKeySuccess.userFiles[i])
-                            })
+                    if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles[i] !== 'string') {
+                        let tmp = JSON.parse(this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles[i]);
                         tableContent.push(
                             createData(
-                                tmp.fileName,
-                                tmp.fileType,
-                                tmp.fileSize,
-                                tmp.lastModifiedDate,
-                                tmp.lastModified,
+                                tmp.data.name,
+                                tmp.data.size,
+                                tmp.data.type,
+                                tmp.data.lastModifiedDate,
+                                tmp.data.lastModified,
                             ));
                     }
                 }
@@ -129,12 +123,6 @@ class ReadDocumentView extends React.Component {
         const { data, rowsPerPage, page } = this.state;
 
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-
-        const buttonThemeYellow = createMuiTheme({
-            palette: {
-                primary: yellow
-            },
-        });
 
         return (
             <form>
@@ -161,7 +149,7 @@ class ReadDocumentView extends React.Component {
                                                             tabIndex={-1} key={n.id}>
                                                             <TableCell
                                                                 style={{ "cursor": "pointer" }}>
-                                                                {n.fileName.toUpperCase()}
+                                                                {n.fileName}
                                                             </TableCell>
                                                             <TableCell
                                                                 style={{ "cursor": "pointer" }}>

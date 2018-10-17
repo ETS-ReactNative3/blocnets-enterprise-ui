@@ -12,6 +12,7 @@ import Stop from '@material-ui/icons/Stop';
 import SearchIcon from '@material-ui/icons/Search';
 import Send from '@material-ui/icons/Send';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import DescriptionIcon from '@material-ui/icons/Description';
 import LocationOn from '@material-ui/icons/LocationOn';
 
 class AppMenu extends Component {
@@ -46,6 +47,10 @@ class AppMenu extends Component {
 
     showSaveDocumentView = () => {
         this.props.viewHandler('showSaveDocumentViewId');
+    };
+
+    showReadDocumentView = () => {
+        this.props.viewHandler('showReadDocumentViewId');
     };
 
     showMapContainerView = () => {
@@ -113,6 +118,13 @@ class AppMenu extends Component {
                         <CloudUploadIcon />
                     </ListItemIcon>
                     <ListItemText className='Mobile-ListItemText' primary='Save a Document' />
+                </MenuItem>
+                <hr />
+                <MenuItem className='Mobile-MenuItem' id='showReadDocumentViewId' onClick={this.showReadDocumentView}>
+                    <ListItemIcon className='Mobile-ListItemIcon'>
+                        <DescriptionIcon />
+                    </ListItemIcon>
+                    <ListItemText className='Mobile-ListItemText' primary='View a Document' />
                 </MenuItem>
                 <hr />
                 <MenuItem className='Mobile-MenuItem' id='showMapContainerViewId' onClick={this.showMapContainerView}>

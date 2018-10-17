@@ -297,6 +297,16 @@ class SplashView extends Component {
                                             <li className='hex'>
                                                 <div className='hexIn'>
                                                     <span className='hex-container'>
+                                                        <div className='hexagon-black'>
+                                                            <span><i className='material-icons'
+                                                                     id='hex-icon'>description</i></span>
+                                                        </div>
+                                                        <ButtonBase focusRipple
+                                                                    style={{ 'width': '100%', 'height': '100%' }}
+                                                                    onClick={event => this.handleView(event, 'DRE04')}>
+                                                            <h1>View a Document</h1>
+                                                            <p></p>
+                                                        </ButtonBase>
                                                     </span>
                                                 </div>
                                             </li>

@@ -187,9 +187,6 @@ class SaveDocumentView extends React.Component {
                                 .then(() => {
                                     this.handleDREValidation();
                                 })
-                            this.setState({
-                                showProgressLogo: false
-                            })
                         } else {
                             umaBody = {
                                 userFiles:[newUserFile],
