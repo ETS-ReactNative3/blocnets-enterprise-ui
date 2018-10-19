@@ -146,9 +146,10 @@ class SaveDocumentView extends React.Component {
     }
 
     handleFileUpload = (event) => {
-        this.props.data.dreReducer.uploadFileByUserIdSuccess = '';
+        this.props.data.fileReducer.uploadFileByUserIdSuccess = '';
         this.props.data.umaReducer.getUserMessageDataByUserIDSuccess = '';
         this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess = '';
+        this.props.data.fileReducer.uploadFileByUserIdError = '';
         this.setState({ showProgressLogo: true });
         let fileURL = this.state.fileName;
         let fileBody = {
