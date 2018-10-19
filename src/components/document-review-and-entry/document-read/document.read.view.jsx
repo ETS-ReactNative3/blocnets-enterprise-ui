@@ -130,12 +130,17 @@ class ReadDocumentView extends React.Component {
     };
 
     decodeFile = (encodedFile) => {
-        let decodedBinary = atob(encodedFile);
+        let decodedBinary = atob(encodedFile);          // Base64 Decode and store binary
         console.log(decodedBinary);
         let file = decodedBinary.trim().split(" ")
             .map(item => String.fromCharCode(parseInt(item, 2)))
             .join("");
         console.log(file);
+        var reader = new FileReader();
+        reader.onload = function () {
+            console.log(reader.result);
+        }
+        reader.readAsArrayBuffer(decodedBinary);
     }
 
     handleDREValidation = () => {
@@ -166,10 +171,10 @@ class ReadDocumentView extends React.Component {
 
 
     handleClickedFile = (event, fileName) => {
-        //this.setState({ showProgressLogo: true })
+        this.setState({ showProgressLogo: true })
         Promise.resolve(this.props.retrieveFileByKey(fileName))
             .then(() => {
-                //this.handleDREValidation();
+                this.handleDREValidation();
             })
     };
 

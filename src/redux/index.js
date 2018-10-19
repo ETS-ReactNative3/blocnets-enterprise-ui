@@ -10,14 +10,16 @@ import { prdReducer } from './reducers/PRD/prd.reducer';
 import { dreReducer } from './reducers/DRE/dre.reducer';
 import { umaReducer } from './reducers/UMA/uma.reducer';
 import { fileReducer } from './reducers/FILE/file.reducer';
+import { catReducer } from './reducers/CAT/cat.reducer';
 
 export default combineReducers({
   authReducer,
-  spawnConstructReducer,
   bomReducer,
   sarReducer,
   prdReducer,
   dreReducer,
   umaReducer,
-  fileReducer
+  fileReducer,
+  catReducer,
+  spawnConstructReducer,
 });

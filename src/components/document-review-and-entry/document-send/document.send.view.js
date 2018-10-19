@@ -34,6 +34,7 @@ class SendDocumentView extends React.Component {
             showProgressLogo: false,
             fileKey: '',
             file: '',
+            creatorID: this.props.userName,
             recipientUserName: '',
             errorTextRecipientUserName: 'This is a required field.',
             messageType: '',
@@ -184,7 +185,7 @@ class SendDocumentView extends React.Component {
         let fileURL = this.state.fileKey
         let fileBody = {
             file: this.state.file,
-            creatorID: 'Admin'
+            creatorID: this.state.creatorID
         };
         let dreURL = this.guid();
         let dreBody = {

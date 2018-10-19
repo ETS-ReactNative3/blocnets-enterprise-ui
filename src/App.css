@@ -292,7 +292,7 @@ body {
 
 /*** HEXAGON SIZING AND EVEN ROW INDENTATION *****************************************************************/
 
-@media (min-width: 1201px) {
+@media (min-width: 1501px) {
     /* <- 5-4  hexagons per row */
     #hexGrid {
         padding-bottom: 4.4%
@@ -311,6 +311,99 @@ body {
         color: black;
         top: 65px;
         left: -65px;
+    }
+    .map-frame {
+        height: 60vh;
+    }
+    .map-container {
+        top: 31%;
+        bottom: 0px;
+        height: 60% !important;
+        width: 70% !important;
+    }
+}
+
+@media (max-width: 1500px) and (min-width: 1401px) {
+    /* <- 5-4  hexagons per row */
+    #hexGrid {
+        padding-bottom: 4.4%
+    }
+    .hex {
+        width: 20%;
+        /* = 100 / 5 */
+    }
+    .hex:nth-child(9n+6) {
+        /* first hexagon of even rows */
+        margin-left: 10%;
+        /* = width of .hex / 2  to indent even rows */
+    }
+    #hex-icon {
+        font-size: 110px;
+        color: black;
+        top: 45px;
+        left: -55px;
+    }
+    .map-frame {
+        height: 60vh;
+    }
+    .map-container {
+        top: 31%;
+        bottom: 0px;
+        height: 60% !important;
+        width: 70% !important;
+    }
+}
+
+@media (max-width: 1400px) and (min-width: 1301px) {
+    /* <- 5-4  hexagons per row */
+    #hexGrid {
+        padding-bottom: 4.4%
+    }
+    .hex {
+        width: 20%;
+        /* = 100 / 5 */
+    }
+    .hex:nth-child(9n+6) {
+        /* first hexagon of even rows */
+        margin-left: 10%;
+        /* = width of .hex / 2  to indent even rows */
+    }
+    #hex-icon {
+        font-size: 100px;
+        color: black;
+        top: 45px;
+        left: -50px;
+    }
+    .map-frame {
+        height: 60vh;
+    }
+    .map-container {
+        top: 31%;
+        bottom: 0px;
+        height: 60% !important;
+        width: 70% !important;
+    }
+}
+
+@media (max-width: 1300px) and (min-width: 1201px) {
+    /* <- 5-4  hexagons per row */
+    #hexGrid {
+        padding-bottom: 4.4%
+    }
+    .hex {
+        width: 20%;
+        /* = 100 / 5 */
+    }
+    .hex:nth-child(9n+6) {
+        /* first hexagon of even rows */
+        margin-left: 10%;
+        /* = width of .hex / 2  to indent even rows */
+    }
+    #hex-icon {
+        font-size: 90px;
+        color: black;
+        top: 40px;
+        left: -45px;
     }
     .map-frame {
         height: 60vh;
@@ -406,6 +499,9 @@ body {
         left: -50px;
     }
 }
+/*                  *
+*   Mobile Section  *
+*                   */
 
 /* Pixel 2/Pixel 2XL*/
 

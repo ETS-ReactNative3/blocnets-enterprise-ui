@@ -105,8 +105,8 @@ class SaveDocumentView extends React.Component {
             base64Result(wrapBinaryInBase64);
         };
         if(file) {
-            //reader.readAsDataURL(file); //SAP strips Base64 header
-            reader.readAsBinaryString(file); // Temp Solution: Binary => base64(Binary)
+            //reader.readAsDataURL(file);
+            reader.readAsBinaryString(file); // SAP strips Base64 header - Temp Solution: Binary => base64(Binary)
             this.handleFileMetaData(file);
         }
     }
