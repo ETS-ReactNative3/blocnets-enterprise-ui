@@ -171,38 +171,73 @@ class SaveDocumentView extends React.Component {
         console.log(fileBody);
         Promise.resolve(this.props.uploadFileByUserId(fileURL, fileBody))
             .then(() => {
-                Promise.resolve(this.props.getUserMessageDataByUserID(umaURL))
-                    .then(() => {
-                        if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess) {
-                            oldFiles = this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles;
-                            allFiles = [newUserFile];
-                            for (let i = 0; i < oldFiles.length; i++) {
-                                allFiles.push(oldFiles[i]);
+                if (this.props.data.fileReducer.uploadFileByUserIdSuccess) {
+                    Promise.resolve(this.props.getUserMessageDataByUserID(umaURL))
+                        .then(() => {
+                            if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess) {
+                                oldFiles = this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles;
+                                allFiles = [newUserFile];
+                                for (let i = 0; i < oldFiles.length; i++) {
+                                    allFiles.push(oldFiles[i]);
+                                }
+                                umaBody = {
+                                    userFiles: allFiles,
+                                    userMessages: this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages,
+                                    archivedMessages: ["string"]        // Change later to be dynamic
+                                };
+                                Promise.resolve(this.props.updateUserMessageDataByUserID(umaURL, umaBody))
+                                    .then(() => {
+                                        this.handleDREValidation();
+                                    })
+                            } else {
+                                umaBody = {
+                                    userFiles: [newUserFile],
+                                    userMessages: ["string"],
+                                    archivedMessages: ["string"]
+                                };
+                                Promise.resolve(this.props.updateUserMessageDataByUserID(umaURL, umaBody))
+                                    .then(() => {
+                                        this.handleDREValidation();
+                                    })
                             }
-                            umaBody = {
-                                userFiles: allFiles,
-                                userMessages: this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages,
-                                archivedMessages: ["string"]        // Change later to be dynamic
-                            };
-                            Promise.resolve(this.props.updateUserMessageDataByUserID(umaURL, umaBody))
-                                .then(() => {
-                                    this.handleDREValidation();
-                                })
-                        } else {
-                            umaBody = {
-                                userFiles:[newUserFile],
-                                userMessages: ["string"],
-                                archivedMessages: ["string"]
-                            };
-                            Promise.resolve(this.props.updateUserMessageDataByUserID(umaURL, umaBody))
-                                .then(() => {
-                                    this.handleDREValidation();
-                                })
-                        }
-                    })
+                        })
+                } else {
+                    if (this.props.data.fileReducer.uploadFileByUserIdError.status === 409) {
+                        this.setState({
+                            showProgressLogo: false,
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'File already exists! Please choose a different file name.',
+                                open: true,
+                                sbColor: 'red'
+                            }
+                        });
+                    } else {
+                        this.setState({
+                            showProgressLogo: false,
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Error saving document! Please try again.',
+                                open: true,
+                                sbColor: 'red'
+                            }
+                        });
+                    }
+                }
             })
+            .catch((error) => {
+                this.setState({
+                    showProgressLogo: false,
+                    snackbar: {
+                        autoHideDuration: 2000,
+                        message: 'Error saving document! Please try again.',
+                        open: true,
+                        sbColor: 'red'
+                    }
+                });
+            });
         event.preventDefault();
-    }
+    };
 
     handleSnackbarClose = () => {
         this.setState({

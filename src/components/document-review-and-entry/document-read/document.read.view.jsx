@@ -110,7 +110,8 @@ class ReadDocumentView extends React.Component {
             };
         };
         if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess) {
-            if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles.length > 0) {
+            if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles &&
+                this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles.length > 0) {
                 for (let i = 0; i < this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles.length; i++) {
                     if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles[i] !== 'string') {
                         let tmp = JSON.parse(this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles[i]);

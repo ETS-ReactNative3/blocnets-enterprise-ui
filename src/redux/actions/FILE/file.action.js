@@ -18,7 +18,7 @@ export function uploadFileByUserId(url, body) {
                         payload: true
                     });
                 })
-                .then((error) => {
+                .catch((error) => {
                     let errorData = resolver(error);
                     dispatch({
                         type: "UPLOAD_NEW_FILE_BY_USER_ID_FAILED",
