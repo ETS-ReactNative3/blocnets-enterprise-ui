@@ -87,6 +87,7 @@ class ReadDocumentView extends React.Component {
             userName: this.props.userName,
             openDialog: false,
             reconstructedFile: ["test"],
+            mimeType: '',
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
@@ -130,18 +131,13 @@ class ReadDocumentView extends React.Component {
         return tableContent;
     };
 
-    decodeFile = (encodedFile) => {
-        let decodedBinary = atob(encodedFile);          // Base64 Decode and store binary
-        console.log(decodedBinary);
-        let file = decodedBinary.trim().split(" ")
-            .map(item => String.fromCharCode(parseInt(item, 2)))
-            .join("");
-        console.log(file);
-        var reader = new FileReader();
-        reader.onload = function () {
-            console.log(reader.result);
-        }
-        reader.readAsArrayBuffer(decodedBinary);
+    decodeFile = (encodedFile, contentType) => {
+        console.log(encodedFile);
+        let decodedFile = atob(encodedFile);          // Base64 Decode and store binary
+        this.setState({
+            reconstructedFile: [decodedFile],
+            mimeType: contentType
+        });
     }
 
     handleDREValidation = () => {
@@ -156,7 +152,7 @@ class ReadDocumentView extends React.Component {
                     sbColor: '#23CE6B'
                 }
             })
-            this.decodeFile(this.props.data.fileReducer.retrieveFileByKeySuccess.file);
+            this.decodeFile(this.props.data.fileReducer.retrieveFileByKeySuccess.file, this.props.data.fileReducer.retrieveFileByKeySuccess.contentType);
         } else {
             this.setState({
                 showProgressLogo: false,
@@ -172,10 +168,10 @@ class ReadDocumentView extends React.Component {
 
 
     handleClickedFile = (event, fileName) => {
-        this.setState({ showProgressLogo: true })
+        //this.setState({ showProgressLogo: true })
         Promise.resolve(this.props.retrieveFileByKey(fileName))
             .then(() => {
-                this.handleDREValidation();
+                //this.handleDREValidation();
             })
     };
 
