@@ -292,7 +292,7 @@ class BillOfMaterialsForm extends React.Component {
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
                             <FormLabel className='Module-FormLabel'>
-                                Material Shipping Information
+                                Outbound Customer Data
                             </FormLabel>
                         </Grid>
                     </Grid>
@@ -387,18 +387,6 @@ class BillOfMaterialsForm extends React.Component {
                                 className='Module-TextField'
                                 hintText='Country'
                                 value={this.state.materialCountry}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='materialIPAddress'
-                                floatingLabelText='IP Address'
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText=''
-                                value={this.state.materialIPAddress}
                                 onChange={this.handleChange}
                             />
                         </Grid>

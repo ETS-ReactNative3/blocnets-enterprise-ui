@@ -214,7 +214,7 @@ class BillOfMaterialsReview extends React.Component {
             createData('Part Name', this.props.eBOMData.partName),
             createData('Part Description', this.props.eBOMData.partDescription),
             */
-            createData('Material Shipping Information', ''),
+            createData('Outbound Customer Data', ''),
             createData('Company Name', this.props.eBOMData.materialCompanyName),
             createData('Address', this.props.eBOMData.materialAddressLine1 + ' '
                 + this.props.eBOMData.materialAddressLine2 + ' ' + this.props.eBOMData.materialCity
