@@ -81,7 +81,7 @@ class SplashView extends Component {
                                 <div style={{ padding: 24 }}>
                                     <Grid container spacing={24}>
                                         <Grid container item xs={12} justify='center'>
-                                            <img src={animatedLogo} alt='' />
+                                            <img src={animatedLogo} alt='' height='314px'/>
                                         </Grid>
                                     </Grid>
                                 </div>
