@@ -169,9 +169,11 @@ class TrackAndTraceSearchView extends Component {
                     createData('Material ID', bomData.material.materialNumber),
                     createData('Material Name', bomData.material.materialSerialNumber),
                     createData('Material Description', bomData.material.materialDescription),
+                    /* RELEASE-90: Hide Part No., Part Name and Part Description fields.
                     createData('Part No.', bomData.material.materialMvmtMaterialNumber),
                     createData('Part Name', bomData.material.materialMvmtCageCode),
                     createData('Part Description', bomData.material.materialMvmtSupplierName),
+                    */
                     createData('Material Shipping Information', ''),
                     createData('Address', bomData.material.materialMvmtShippedTo),
                     createData('IP Address', bomData.material.materialMvmtLocation),

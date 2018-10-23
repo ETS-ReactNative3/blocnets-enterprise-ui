@@ -244,47 +244,51 @@ class BillOfMaterialsForm extends React.Component {
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid container spacing={24}>
-                        <Grid container item xs={12} sm={3}>
-                            <TextField
-                                type='text'
-                                name='partNo'
-                                floatingLabelText='Part No.'
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText=''
-                                value={this.state.partNo}
-                                onChange={this.handleChange}
-                            />
+                    {
+                        /* RELEASE-90: Hide Part No., Part Name and Part Description fields.
+                        <Grid container spacing={24}>
+                            <Grid container item xs={12} sm={3}>
+                                <TextField
+                                    type='text'
+                                    name='partNo'
+                                    floatingLabelText='Part No.'
+                                    floatingLabelFixed={true}
+                                    className='Module-TextField'
+                                    hintText=''
+                                    value={this.state.partNo}
+                                    onChange={this.handleChange}
+                                />
+                            </Grid>
+                            <Grid container item xs={12} sm={3}>
+                                <TextField
+                                    type='text'
+                                    name='partName'
+                                    floatingLabelText='Part Name'
+                                    floatingLabelFixed={true}
+                                    className='Module-TextField'
+                                    hintText=''
+                                    value={this.state.partName}
+                                    onChange={this.handleChange}
+                                />
+                            </Grid>
+                            <Grid container item xs={12} sm={3}>
+                                <TextField
+                                    type='text'
+                                    name='partDescription'
+                                    floatingLabelText='Part Description'
+                                    floatingLabelFixed={true}
+                                    className='Module-TextField'
+                                    hintText=''
+                                    value={this.state.partDescription}
+                                    onChange={this.handleChange}
+                                />
+                            </Grid>
+                            <Grid container item xs={12} sm={3}>
+                            </Grid>
                         </Grid>
-                        <Grid container item xs={12} sm={3}>
-                            <TextField
-                                type='text'
-                                name='partName'
-                                floatingLabelText='Part Name'
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText=''
-                                value={this.state.partName}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                        <Grid container item xs={12} sm={3}>
-                            <TextField
-                                type='text'
-                                name='partDescription'
-                                floatingLabelText='Part Description'
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText=''
-                                value={this.state.partDescription}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                        <Grid container item xs={12} sm={3}>
-                        </Grid>
-                    </Grid>
-                    <br /><br />
+                        */
+                    }
+                    <br /><br /><br />
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
                             <FormLabel className='Module-FormLabel'>

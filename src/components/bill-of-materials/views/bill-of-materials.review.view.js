@@ -209,9 +209,11 @@ class BillOfMaterialsReview extends React.Component {
             createData('Material ID', this.props.eBOMData.materialID),
             createData('Material Name', this.props.eBOMData.materialName),
             createData('Material Description', this.props.eBOMData.materialDescription),
+            /* RELEASE-90: Hide Part No., Part Name and Part Description fields.
             createData('Part No.', this.props.eBOMData.partNo),
             createData('Part Name', this.props.eBOMData.partName),
             createData('Part Description', this.props.eBOMData.partDescription),
+            */
             createData('Material Shipping Information', ''),
             createData('Address', this.props.eBOMData.materialAddressLine1 + ' '
                 + this.props.eBOMData.materialAddressLine2 + ' ' + this.props.eBOMData.materialCity
