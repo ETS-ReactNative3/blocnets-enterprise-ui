@@ -22,7 +22,6 @@ class BillOfMaterialsForm extends React.Component {
             materialName: this.props.eBOMData.materialName ? this.props.eBOMData.materialName : '',
             errorTextMaterialName: this.props.eBOMData.materialName ? '' : 'This is a required field.',
             materialDescription: this.props.eBOMData.materialDescription ? this.props.eBOMData.materialDescription : '',
-            errorTextMaterialDescription: this.props.eBOMData.materialDescription ? '' : 'This is a required field.',
             partNo: this.props.eBOMData.partNo ? this.props.eBOMData.partNo : '',
             partName: this.props.eBOMData.partName ? this.props.eBOMData.partName : '',
             partDescription: this.props.eBOMData.partDescription ? this.props.eBOMData.partDescription : '',
@@ -102,11 +101,6 @@ class BillOfMaterialsForm extends React.Component {
             this.setState({ errorTextMaterialName: '' });
         } else if ([event.target.name].toString() === 'materialName' && !event.target.value) {
             this.setState({ errorTextMaterialName: 'This is a required field.' });
-        }
-        if ([event.target.name].toString() === 'materialDescription' && event.target.value) {
-            this.setState({ errorTextMaterialDescription: '' });
-        } else if ([event.target.name].toString() === 'materialDescription' && !event.target.value) {
-            this.setState({ errorTextMaterialDescription: 'This is a required field.' });
         }
         if ([event.target.name].toString() === 'materialAddressLine1' && event.target.value) {
             this.setState({ errorTextMaterialAddressLine1: '' });
@@ -188,7 +182,7 @@ class BillOfMaterialsForm extends React.Component {
 
     render() {
 
-        const formComplete = this.state.materialID && this.state.materialName && this.state.materialDescription &&
+        const formComplete = this.state.materialID && this.state.materialName &&
             this.state.materialAddressLine1 && this.state.materialCity &&
             this.state.materialAddressState && this.state.materialPostalCode;
 
@@ -232,7 +226,6 @@ class BillOfMaterialsForm extends React.Component {
                                 hintText=''
                                 value={this.state.materialDescription}
                                 onChange={this.handleChange}
-                                errorText={this.state.errorTextMaterialDescription}
                             />
                         </Grid>
                         <Grid container item xs={12} sm={3} justify='flex-end'>

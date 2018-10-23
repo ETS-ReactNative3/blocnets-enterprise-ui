@@ -40,20 +40,22 @@ export function createMasterDataKeys(data) {
                 });
             })
 
-        await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "materialDesc=" + data.material.materialDescription, data, { headers })
-            .then(() => {
-                return dispatch({
-                    type: "CREATE_MASTER_DATA_KEY_MATERIAL_DESC_SUCCESS",
-                    payload: true
-                });
-            })
-            .catch((error) => {
-                let errorData = resolver(error);
-                dispatch({
-                    type: "CREATE_MASTER_DATA_KEY_MATERIAL_DESC_FAILED",
-                    payload: errorData
-                });
-            })
+        if (data.material.materialDescription) {
+            await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "materialDesc=" + data.material.materialDescription, data, { headers })
+                .then(() => {
+                    return dispatch({
+                        type: "CREATE_MASTER_DATA_KEY_MATERIAL_DESC_SUCCESS",
+                        payload: true
+                    });
+                })
+                .catch((error) => {
+                    let errorData = resolver(error);
+                    dispatch({
+                        type: "CREATE_MASTER_DATA_KEY_MATERIAL_DESC_FAILED",
+                        payload: errorData
+                    });
+                })
+        }
 
         if (data.material.materialMvmtMaterialNumber) {
             await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "partNumber=" + data.material.materialMvmtMaterialNumber, data, { headers })
