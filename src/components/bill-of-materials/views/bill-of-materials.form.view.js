@@ -303,6 +303,18 @@ class BillOfMaterialsForm extends React.Component {
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='text'
+                                name='materialCompanyName'
+                                floatingLabelText='Company Name'
+                                floatingLabelFixed={true}
+                                className='Module-TextField'
+                                hintText=''
+                                value={this.state.materialCompanyName}
+                                onChange={this.handleChange}
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type='text'
                                 name='materialAddressLine1'
                                 floatingLabelText='Address'
                                 floatingLabelFixed={true}
@@ -338,6 +350,8 @@ class BillOfMaterialsForm extends React.Component {
                                 errorText={this.state.errorTextMaterialCity}
                             />
                         </Grid>
+                    </Grid>
+                    <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='text'
@@ -351,8 +365,6 @@ class BillOfMaterialsForm extends React.Component {
                                 errorText={this.state.errorTextMaterialAddressState}
                             />
                         </Grid>
-                    </Grid>
-                    <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='text'
@@ -378,8 +390,6 @@ class BillOfMaterialsForm extends React.Component {
                                 onChange={this.handleChange}
                             />
                         </Grid>
-                    </Grid>
-                    <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='text'
@@ -392,20 +402,8 @@ class BillOfMaterialsForm extends React.Component {
                                 onChange={this.handleChange}
                             />
                         </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='materialCompanyName'
-                                floatingLabelText='Company Name'
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText=''
-                                value={this.state.materialCompanyName}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
                     </Grid>
-                    <br /><br />
+                    <br /><br /><br />
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
                             <FormLabel className='Module-FormLabel'>

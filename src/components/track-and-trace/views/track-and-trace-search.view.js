@@ -175,9 +175,9 @@ class TrackAndTraceSearchView extends Component {
                     createData('Part Description', bomData.material.materialMvmtSupplierName),
                     */
                     createData('Material Shipping Information', ''),
+                    createData('Company Name', bomData.material.materialMvmtShippedFrom),
                     createData('Address', bomData.material.materialMvmtShippedTo),
                     createData('IP Address', bomData.material.materialMvmtLocation),
-                    createData('Company Name', bomData.material.materialMvmtShippedFrom),
                     createData('Material Dimensions', ''),
                     createData('Volume', bomData.material.materialVolume),
                     createData('Weight', bomData.material.materialWeight),
