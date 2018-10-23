@@ -395,7 +395,7 @@ class BillOfMaterialsForm extends React.Component {
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
                             <FormLabel className='Module-FormLabel'>
-                                Material Dimensions
+                                Material Validation Characteristics
                             </FormLabel>
                         </Grid>
                     </Grid>
