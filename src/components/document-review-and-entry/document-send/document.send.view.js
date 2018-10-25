@@ -203,6 +203,7 @@ class SendDocumentView extends React.Component {
         let allMessages = [];
         let umaURL = this.state.recipientUserName;
         let umaBody = {
+            userfiles: ["string"],
             userMessages: ["string"],
             archivedMessages: ["string"]
         };
@@ -219,6 +220,7 @@ class SendDocumentView extends React.Component {
                                         allMessages.push(oldMessages[i]);
                                     }
                                     umaBody = {
+                                        userfiles: this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles,
                                         userMessages: allMessages,
                                         archivedMessages: ["string"]        // Change later to be dynamic
                                     };
@@ -228,6 +230,7 @@ class SendDocumentView extends React.Component {
                                         })
                                 } else {
                                     umaBody = {
+                                        userfiles: this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles,
                                         userMessages: [dreURL],
                                         archivedMessages: ["string"]
                                     };
