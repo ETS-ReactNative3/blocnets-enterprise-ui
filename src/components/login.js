@@ -8,9 +8,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Snackbar from 'material-ui/Snackbar';
 import { connect } from 'react-redux';
-import {
-    getEachMessageForUserID
-} from '../redux/actions/UMA/user.message.array.action';
+import { getUserMessageDataByUserID } from '../redux/actions/UMA/user.message.array.action';
 
 const paperStyle = {
     width: '100%',
@@ -81,9 +79,9 @@ class LoginView extends Component {
 
     handleView = (event) => {
         this.setState({ showProgressLogo: true });
-        Promise.resolve(this.props.getEachMessageForUserID(this.state.userName))
+        Promise.resolve(this.props.getUserMessageDataByUserID(this.state.userName))
             .then(() => {
-                if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
+                if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess) {
                     this.setState({ showProgressLogoDialog: false });
                     this.props.viewHandler('app', false, this.state.transactionCode, this.state.userName);
                 } else {
@@ -234,7 +232,7 @@ const mapStateToProps = (state) => {
 // This way, we can call our action creator by doing this.props.fetchData(url);
 const mapDispatchToProps = (dispatch) => {
     return {
-        getEachMessageForUserID: (user) => dispatch(getEachMessageForUserID(user))
+        getUserMessageDataByUserID: (user) => dispatch(getUserMessageDataByUserID(user))
     };
 };
 

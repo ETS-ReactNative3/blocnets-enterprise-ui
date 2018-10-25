@@ -179,27 +179,20 @@ class SaveDocumentView extends React.Component {
                 if (this.props.data.fileReducer.uploadFileByUserIdSuccess) {
                     Promise.resolve(this.props.getUserMessageDataByUserID(umaURL))
                         .then(() => {
-                            if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess &&
-                                this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles) {
-                                oldFiles = this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles;
-                                allFiles = [newUserFile];
-                                for (let i = 0; i < oldFiles.length; i++) {
-                                    allFiles.push(oldFiles[i]);
+                            if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess) {
+                                if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles) {
+                                    oldFiles = this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles;
+                                    allFiles = [newUserFile];
+                                    for (let i = 0; i < oldFiles.length; i++) {
+                                        allFiles.push(oldFiles[i]);
+                                    }
+                                } else {
+                                    allFiles = [newUserFile];
                                 }
                                 umaBody = {
                                     userFiles: allFiles,
                                     userMessages: this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages,
                                     archivedMessages: [this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.archivedMessages]     // Change later to be dynamic
-                                };
-                                Promise.resolve(this.props.updateUserMessageDataByUserID(umaURL, umaBody))
-                                    .then(() => {
-                                        this.handleDREValidation();
-                                    })
-                            } else {
-                                umaBody = {
-                                    userFiles: [newUserFile],
-                                    userMessages: [this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages],
-                                    archivedMessages: [this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.archivedMessages]
                                 };
                                 Promise.resolve(this.props.updateUserMessageDataByUserID(umaURL, umaBody))
                                     .then(() => {
