@@ -55,10 +55,7 @@ class BillOfMaterialsForm extends React.Component {
             addressState: this.props.eBOMData.addressState ? this.props.eBOMData.addressState : '',
             postalCode: this.props.eBOMData.postalCode ? this.props.eBOMData.postalCode : '',
             country: this.props.eBOMData.country ? this.props.eBOMData.country : '',
-            ipAddress: this.props.eBOMData.ipAddress ? this.props.eBOMData.ipAddress : '',
-            matSupPerIPAddress: this.props.eBOMData.matSupPerIPAddress ? this.props.eBOMData.matSupPerIPAddress : '',
             supPaymentTerms: this.props.eBOMData.supPaymentTerms ? this.props.eBOMData.supPaymentTerms : '',
-            supOrderPolicy: this.props.eBOMData.supOrderPolicy ? this.props.eBOMData.supOrderPolicy : '',
             materialAddressLine1: this.props.eBOMData.materialAddressLine1 ? this.props.eBOMData.materialAddressLine1 : '',
             errorTextMaterialAddressLine1: this.props.eBOMData.materialAddressLine1 ? '' : 'This is a required field.',
             materialAddressLine2: this.props.eBOMData.materialAddressLine2 ? this.props.eBOMData.materialAddressLine2 : '',
@@ -682,7 +679,7 @@ class BillOfMaterialsForm extends React.Component {
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
                             <FormLabel className='Module-FormLabel'>
-                                Suppliers
+                                Inbound Supplier(s)
                             </FormLabel>
                         </Grid>
                     </Grid>
@@ -769,50 +766,12 @@ class BillOfMaterialsForm extends React.Component {
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='text'
-                                name='ipAddress'
-                                floatingLabelText='IP Address'
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText=''
-                                value={this.state.ipAddress}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={24}>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='matSupPerIPAddress'
-                                floatingLabelText='Material Supplied Per IP Address'
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText=''
-                                value={this.state.matSupPerIPAddress}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
                                 name='supPaymentTerms'
                                 floatingLabelText='Supplier Payment Terms'
                                 floatingLabelFixed={true}
                                 className='Module-TextField'
                                 hintText=''
                                 value={this.state.supPaymentTerms}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='supOrderPolicy'
-                                floatingLabelText='Supplier Order Policy'
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText=''
-                                value={this.state.supOrderPolicy}
                                 onChange={this.handleChange}
                             />
                         </Grid>

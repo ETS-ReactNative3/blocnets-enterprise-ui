@@ -45,7 +45,7 @@ class BillOfMaterialsReview extends React.Component {
             file: 'string',
             supplier: {
                 supplierName: 'string',
-                supplierCageCode: this.props.eBOMData.ipAddress,
+                supplierCageCode: 'string',
                 suppliers: [
                     {
                         supplierIpAddress: 'string',
@@ -60,7 +60,7 @@ class BillOfMaterialsReview extends React.Component {
                     + this.props.eBOMData.addressLine2 + ' ' + this.props.eBOMData.city
                     + ' ' + this.props.eBOMData.addressState + ' ' + this.props.eBOMData.postalCode + ' '
                     + this.props.eBOMData.country,
-                supplierMaterialNumber: this.props.eBOMData.matSupPerIPAddress,
+                supplierMaterialNumber: 'string',
                 supplierCustomerShipToAddress: 'string',
                 supplierCustomerShipToCageCode: 'string',
                 supplierCustomerShipToIPAddress: 'string',
@@ -68,7 +68,7 @@ class BillOfMaterialsReview extends React.Component {
                 supplierCustomerBillToCageCode: 'string',
                 supplierCustomerBillToIPAddress: 'string',
                 supplierProductionCapacityCommittedToNetwork: this.props.eBOMData.supPaymentTerms,
-                supplierOrderedLeadTime: this.props.eBOMData.supOrderPolicy,
+                supplierOrderedLeadTime: 'string',
                 supplierMaterialQualityInputSystem: [
                     'string'
                 ],
@@ -237,15 +237,12 @@ class BillOfMaterialsReview extends React.Component {
             createData('Maximum Economic Order Quantities', this.props.eBOMData.maxEOQuantities),
             createData('Maximum Economic Product Withdraw Rate', this.props.eBOMData.maxEPWithdrawRate),
             createData('Minimum Order Lead Times', this.props.eBOMData.minOrderLeadTimes),
-            createData('Suppliers', ''),
+            createData('Inbound Supplier(s)', ''),
             createData('Address', this.props.eBOMData.addressLine1 + ' '
                 + this.props.eBOMData.addressLine2 + ' ' + this.props.eBOMData.city
                 + ' ' + this.props.eBOMData.addressState + ' ' + this.props.eBOMData.postalCode + ' '
                 + this.props.eBOMData.country),
-            createData('IP Address', this.props.eBOMData.ipAddress),
-            createData('Material Supplied Per IP Address', this.props.eBOMData.matSupPerIPAddress),
-            createData('Supplier Payment Terms', this.props.eBOMData.supPaymentTerms),
-            createData('Supplier Order Policy', this.props.eBOMData.supOrderPolicy)
+            createData('Supplier Payment Terms', this.props.eBOMData.supPaymentTerms)
         ];
 
         return (

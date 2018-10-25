@@ -200,12 +200,9 @@ class TrackAndTraceSearchView extends Component {
                     createData('Maximum Economic Order Quantities', bomData.supplier.supplierMaximumEconomicOrderQuantity),
                     createData('Maximum Economic Product Withdraw Rate', bomData.supplier.supplierMaximumEconomicProductWithdrawRate),
                     createData('Minimum Order Lead Times', bomData.supplier.supplierMinimumOrderLeadTime),
-                    createData('Suppliers', ''),
+                    createData('Inbound Supplier(s)', ''),
                     createData('Address', bomData.supplier.supplierLocationAddress),
-                    createData('IP Address', bomData.supplier.supplierCageCode),
-                    createData('Material Supplied Per IP Address', bomData.supplier.supplierMaterialNumber),
-                    createData('Supplier Payment Terms', bomData.supplier.supplierProductionCapacityCommittedToNetwork),
-                    createData('Supplier Order Policy', bomData.supplier.supplierOrderedLeadTime)
+                    createData('Supplier Payment Terms', bomData.supplier.supplierProductionCapacityCommittedToNetwork)
                 ]
             });
             if (bomData.material.materialNumber !== '') {
