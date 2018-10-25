@@ -189,7 +189,7 @@ class SaveDocumentView extends React.Component {
                                 umaBody = {
                                     userFiles: allFiles,
                                     userMessages: this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages,
-                                    archivedMessages: ["string"]        // Change later to be dynamic
+                                    archivedMessages: [this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.archivedMessages]     // Change later to be dynamic
                                 };
                                 Promise.resolve(this.props.updateUserMessageDataByUserID(umaURL, umaBody))
                                     .then(() => {
@@ -198,8 +198,8 @@ class SaveDocumentView extends React.Component {
                             } else {
                                 umaBody = {
                                     userFiles: [newUserFile],
-                                    userMessages: ["string"],
-                                    archivedMessages: ["string"]
+                                    userMessages: [this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages],
+                                    archivedMessages: [this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.archivedMessages]
                                 };
                                 Promise.resolve(this.props.updateUserMessageDataByUserID(umaURL, umaBody))
                                     .then(() => {
