@@ -110,8 +110,10 @@ class App extends Component {
             badgeContent: 0,
             mobileMoreAnchorEl: null,
             showMobileMenu: false,
+            blockInformation: '',
             tatData: [],
             tree: [],
+            shippingData: [],
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
@@ -213,24 +215,28 @@ class App extends Component {
         });
     };
 
-    handleTTSearchData = (show, open, transactionCode, tatData, tree, snackbar) => {
+    handleTTSearchData = (show, open, transactionCode, blockInformation, tatData, tree, shippingData, snackbar) => {
         this.setState({
             show: show,
             open: open,
             transactionCode: transactionCode,
+            blockInformation: blockInformation,
             tatData: tatData,
             tree: tree,
+            shippingData: shippingData,
             snackbar: snackbar
         });
     };
 
-    handleTrackAndTraceData = (show, open, transactionCode, tatData, tree, snackbar) => {
+    handleTrackAndTraceData = (show, open, transactionCode, blockInformation, tatData, tree, shippingData, snackbar) => {
         this.setState({
             show: show,
             open: open,
             transactionCode: transactionCode,
+            blockInformation: blockInformation,
             tatData: tatData,
             tree: tree,
+            shippingData: shippingData,
             snackbar: snackbar
         });
     };
@@ -328,6 +334,8 @@ class App extends Component {
         switch (this.state.show) {
             case 'trackandtraceresultsview':
                 content = (<TrackAndTraceResultsView
+                    blockInformation={this.state.blockInformation}
+                    shippingData={this.state.shippingData}
                     snackbar={this.state.snackbar}
                     tatData={this.state.tatData}
                     tree={this.state.tree} />);

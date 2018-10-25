@@ -22,7 +22,7 @@ import {
     getBillOfMaterialsByPartDesc
 } from '../../../redux/actions/BOM/bill-of-materials.actions';
 import {
-    getShippingDataByShipmentID
+    getShippingDataByShipmentID, getShippingDataByMaterialID
 } from '../../../redux/actions/shipping.and.receiving.actions';
 import { createConstruct } from '../../../redux/actions/tree.spawn.action';
 import { connect } from 'react-redux';
@@ -45,8 +45,10 @@ class TrackAndTraceSearchView extends Component {
             searchKey: '',
             searchCriteria: '',
             openSearch: false,
+            blockInformation: '',
             tatData: [],
             tree: [],
+            shippingData: [],
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
@@ -89,13 +91,16 @@ class TrackAndTraceSearchView extends Component {
         this.props.data.bomReducer.getBillOfMaterialsByPartDescSuccess = '';
         this.props.data.sarReducer.getShippingDataByShipmentIDSuccess = '';
         this.props.data.spawnConstructReducer.construct = '';
+        this.props.data.sarReducer.getShippingDataByMaterialIDSuccess = '';
         tree = [];
         let bomData = [];
         let shippingData = [];
         this.setState({
             showProgressLogo: true,
+            blockInformation: 'Block Information',
             tatData: [],
-            tree: []
+            tree: [],
+            shippingData: []
         });
         if (this.state.searchCriteria === 'Material ID') {
             Promise.resolve(this.props.getBillOfMaterialsByMaterialID(this.state.searchKey))
@@ -158,6 +163,7 @@ class TrackAndTraceSearchView extends Component {
 
     handleBOMData = (bomData) => {
         let bomDataLength = JSON.stringify(bomData).length;
+        let shippingData = [];
         if (bomDataLength > 2) {
             let alwaysUpright = bomData.material.materialAlwaysUpRight === true ? 'YES' : 'NO';
             let metallic = bomData.material.materialOther[0].substr(10, 1) === 't' ? 'YES' : 'NO';
@@ -165,6 +171,7 @@ class TrackAndTraceSearchView extends Component {
             let magnetic = bomData.material.materialOther[2].substr(10, 1) === 't' ? 'YES' : 'NO';
             counter = 0;
             this.setState({
+                blockInformation: 'Master Material Data',
                 tatData: [
                     createData('Material ID', bomData.material.materialNumber),
                     createData('Material Name', bomData.material.materialSerialNumber),
@@ -220,7 +227,13 @@ class TrackAndTraceSearchView extends Component {
                                     sbColor: '#23CE6B'
                                 }
                             });
-                            this.props.viewHandler('trackandtraceresultsview', false, 'TAT02', this.state.tatData, this.state.tree, this.state.snackbar);
+                            Promise.resolve(this.props.getShippingDataByMaterialID(bomData.material.materialNumber))
+                                .then(() => {
+                                    if (this.props.data.sarReducer.getShippingDataByMaterialIDSuccess) {
+                                        shippingData = this.props.data.sarReducer.getShippingDataByMaterialIDSuccess;
+                                    }
+                                    this.handleShippingDataByMaterialID('trackandtraceresultsview', false, 'TAT02', this.state.blockInformation, this.state.tatData, this.state.tree, shippingData, this.state.snackbar);
+                                });
                         } else {
                             this.setState({
                                 showProgressLogo: false,
@@ -232,13 +245,20 @@ class TrackAndTraceSearchView extends Component {
                                     sbColor: '#23CE6B'
                                 }
                             });
-                            this.props.viewHandler('trackandtraceresultsview', false, 'TAT02', this.state.tatData, this.state.tree, this.state.snackbar);
+                            Promise.resolve(this.props.getShippingDataByMaterialID(bomData.material.materialNumber))
+                                .then(() => {
+                                    if (this.props.data.sarReducer.getShippingDataByMaterialIDSuccess) {
+                                        shippingData = this.props.data.sarReducer.getShippingDataByMaterialIDSuccess;
+                                    }
+                                    this.handleShippingDataByMaterialID('trackandtraceresultsview', false, 'TAT02', this.state.blockInformation, this.state.tatData, this.state.tree, shippingData, this.state.snackbar);
+                                });
                         }
                     });
             } else {
                 this.setState({
                     showProgressLogo: false,
                     tree: [],
+                    shippingData: [],
                     snackbar: {
                         autoHideDuration: 2000,
                         message: 'Successfully tracked a block!',
@@ -246,13 +266,15 @@ class TrackAndTraceSearchView extends Component {
                         sbColor: '#23CE6B'
                     }
                 });
-                this.props.viewHandler('trackandtraceresultsview', false, 'TAT02', this.state.tatData, this.state.tree, this.state.snackbar);
+                this.props.viewHandler('trackandtraceresultsview', false, 'TAT02', this.state.blockInformation, this.state.tatData, this.state.tree, this.state.shippingData, this.state.snackbar);
             }
         } else {
             this.setState({
                 showProgressLogo: false,
+                blockInformation: 'Block Information',
                 tatData: [],
                 tree: [],
+                shippingData: [],
                 snackbar: {
                     autoHideDuration: 2000,
                     message: 'Error tracking a block!',
@@ -260,7 +282,7 @@ class TrackAndTraceSearchView extends Component {
                     sbColor: 'red'
                 }
             });
-            this.props.viewHandler('trackandtraceresultsview', false, 'TAT02', this.state.tatData, this.state.tree, this.state.snackbar);
+            this.props.viewHandler('trackandtraceresultsview', false, 'TAT02', this.state.blockInformation, this.state.tatData, this.state.tree, this.state.shippingData, this.state.snackbar);
         }
     };
 
@@ -294,6 +316,7 @@ class TrackAndTraceSearchView extends Component {
             counter = 0;
             this.setState({
                 showProgressLogo: false,
+                blockInformation: 'Shipping Information',
                 tatData: [
                     createData('Material ID', shippingData.materialID),
                     createData('Shipment ID', shippingData.shipmentID),
@@ -309,6 +332,7 @@ class TrackAndTraceSearchView extends Component {
                     createData('Received Order', dataReceivedOrder)
                 ],
                 tree: [],
+                shippingData: [],
                 snackbar: {
                     autoHideDuration: 2000,
                     message: 'Successfully tracked a block!',
@@ -319,8 +343,10 @@ class TrackAndTraceSearchView extends Component {
         } else {
             this.setState({
                 showProgressLogo: false,
+                blockInformation: 'Block Information',
                 tatData: [],
                 tree: [],
+                shippingData: [],
                 snackbar: {
                     autoHideDuration: 2000,
                     message: 'Error tracking a block!',
@@ -329,7 +355,59 @@ class TrackAndTraceSearchView extends Component {
                 }
             });
         }
-        this.props.viewHandler('trackandtraceresultsview', false, 'TAT02', this.state.tatData, this.state.tree, this.state.snackbar);
+        this.props.viewHandler('trackandtraceresultsview', false, 'TAT02', this.state.blockInformation, this.state.tatData, this.state.tree, this.state.shippingData, this.state.snackbar);
+    };
+
+    handleShippingDataByMaterialID = (show, open, transactionCode, blockInformation, tatData, tree, shippingData, snackbar) => {
+        let shippingDataLength = JSON.stringify(shippingData).length;
+        let dataManualShipping = 'NO';
+        let dataShipmentSent = 'NO';
+        let dataShipmentCompleted = 'NO';
+        let dataShipped = 'NO';
+        let dataReceivedShipent = 'NO';
+        let dataReceivedOrder = 'NO';
+        if (shippingDataLength > 2) {
+            if (shippingData.manuallyShipped === true) {
+                dataManualShipping = 'YES'
+            }
+            if (shippingData.shipmentSent === true) {
+                dataShipmentSent = 'YES'
+            }
+            if (shippingData.shipmentCompleted === true) {
+                dataShipmentCompleted = 'YES'
+            }
+            if (shippingData.shipped === true) {
+                dataShipped = 'YES'
+            }
+            if (shippingData.receivedShipment === true) {
+                dataReceivedShipent = 'YES'
+            }
+            if (shippingData.receivedOrder === true) {
+                dataReceivedOrder = 'YES'
+            }
+            counter = 0;
+            this.setState({
+                shippingData: [
+                    createData('Material ID', shippingData.materialID),
+                    createData('Shipment ID', shippingData.shipmentID),
+                    createData('Address', shippingData.address1 + ' ' + shippingData.address2 + ' ' + shippingData.city + ' ' + shippingData.state + ' ' + shippingData.country + ' ' + shippingData.postalCode),
+                    createData('IP Address', shippingData.ipAddress),
+                    createData('Manual Shipping', dataManualShipping),
+                    createData('Delivery Order No.', shippingData.deliverOrderNo),
+                    createData('Shipment Quantity', shippingData.shipmentQuantity),
+                    createData('Shipment Sent', dataShipmentSent),
+                    createData('Shipment Completed', dataShipmentCompleted),
+                    createData('Shipped', dataShipped),
+                    createData('Received Shipment', dataReceivedShipent),
+                    createData('Received Order', dataReceivedOrder)
+                ]
+            });
+        } else {
+            this.setState({
+                shippingData: [],
+            });
+        }
+        this.props.viewHandler(show, open, transactionCode, blockInformation, tatData, tree, this.state.shippingData, snackbar);
     };
 
     render() {
@@ -394,15 +472,19 @@ class TrackAndTraceSearchView extends Component {
                                                 <MenuItem className='menuList'
                                                           onClick={event => this.handleSearch(event, 'Material Description')}>Material
                                                     Description: {this.state.searchKey}</MenuItem>
-                                                <MenuItem className='menuList'
-                                                          onClick={event => this.handleSearch(event, 'Part No.')}>Part
-                                                    No.: {this.state.searchKey}</MenuItem>
-                                                <MenuItem className='menuList'
-                                                          onClick={event => this.handleSearch(event, 'Part Name')}>Part
-                                                    Name: {this.state.searchKey}</MenuItem>
-                                                <MenuItem className='menuList'
-                                                          onClick={event => this.handleSearch(event, 'Part Description')}>Part
-                                                    Description: {this.state.searchKey}</MenuItem>
+                                                {
+                                                    /* RELEASE-90: Hide Part No., Part Name and Part Description fields.
+                                                    <MenuItem className='menuList'
+                                                              onClick={event => this.handleSearch(event, 'Part No.')}>Part
+                                                        No.: {this.state.searchKey}</MenuItem>
+                                                    <MenuItem className='menuList'
+                                                              onClick={event => this.handleSearch(event, 'Part Name')}>Part
+                                                        Name: {this.state.searchKey}</MenuItem>
+                                                    <MenuItem className='menuList'
+                                                              onClick={event => this.handleSearch(event, 'Part Description')}>Part
+                                                        Description: {this.state.searchKey}</MenuItem>
+                                                        */
+                                                }
                                                 <MenuItem className='menuList'
                                                           onClick={event => this.handleSearch(event, 'Shipment ID')}>Shipment
                                                     ID: {this.state.searchKey}</MenuItem>
@@ -452,6 +534,7 @@ const mapDispatchToProps = (dispatch) => {
         getBillOfMaterialsByPartDesc: (url) => dispatch(getBillOfMaterialsByPartDesc(url)),
         getShippingDataByShipmentID: (url) => dispatch(getShippingDataByShipmentID(url)),
         createConstruct: (materialID) => dispatch(createConstruct(materialID)),
+        getShippingDataByMaterialID: (url) => dispatch(getShippingDataByMaterialID(url))
     }
 };
 
