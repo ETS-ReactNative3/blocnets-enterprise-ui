@@ -45,21 +45,6 @@ class BillOfMaterialsForm extends React.Component {
             lengthTolerance: this.props.eBOMData.lengthTolerance ? this.props.eBOMData.lengthTolerance : '',
             roundTolerance: this.props.eBOMData.roundTolerance ? this.props.eBOMData.roundTolerance : '',
             nonSkidTolerance: this.props.eBOMData.nonSkidTolerance ? this.props.eBOMData.nonSkidTolerance : '',
-            shipToAddressLine1: this.props.eBOMData.shipToAddressLine1 ? this.props.eBOMData.shipToAddressLine1 : '',
-            shipToAddressLine2: this.props.eBOMData.shipToAddressLine2 ? this.props.eBOMData.shipToAddressLine2 : '',
-            shipToCity: this.props.eBOMData.shipToCity ? this.props.eBOMData.shipToCity : '',
-            shipToAddressState: this.props.eBOMData.shipToAddressState ? this.props.eBOMData.shipToAddressState : '',
-            shipToPostalCode: this.props.eBOMData.shipToPostalCode ? this.props.eBOMData.shipToPostalCode : '',
-            shipToCountry: this.props.eBOMData.shipToCountry ? this.props.eBOMData.shipToCountry : '',
-            shipToIPAddress: this.props.eBOMData.shipToIPAddress ? this.props.eBOMData.shipToIPAddress : '',
-            billToAddressLine1: this.props.eBOMData.billToAddressLine1 ? this.props.eBOMData.billToAddressLine1 : '',
-            billToAddressLine2: this.props.eBOMData.billToAddressLine2 ? this.props.eBOMData.billToAddressLine2 : '',
-            billToCity: this.props.eBOMData.billToCity ? this.props.eBOMData.billToCity : '',
-            billToAddressState: this.props.eBOMData.billToAddressState ? this.props.eBOMData.billToAddressState : '',
-            billToPostalCode: this.props.eBOMData.billToPostalCode ? this.props.eBOMData.billToPostalCode : '',
-            billToCountry: this.props.eBOMData.billToCountry ? this.props.eBOMData.billToCountry : '',
-            billToIPAddress: this.props.eBOMData.billToIPAddress ? this.props.eBOMData.billToIPAddress : '',
-            paymentTerms: this.props.eBOMData.paymentTerms ? this.props.eBOMData.paymentTerms : '',
             minEOQuantities: this.props.eBOMData.minEOQuantities ? this.props.eBOMData.minEOQuantities : '',
             maxEOQuantities: this.props.eBOMData.maxEOQuantities ? this.props.eBOMData.maxEOQuantities : '',
             maxEPWithdrawRate: this.props.eBOMData.maxEPWithdrawRate ? this.props.eBOMData.maxEPWithdrawRate : '',
@@ -466,17 +451,6 @@ class BillOfMaterialsForm extends React.Component {
                             />
                         </Grid>
                     </Grid>
-                    <br /><br />
-                    <Grid container spacing={24}>
-                        <Grid container item xs={12}>
-                            <FormLabel className='Module-FormLabel'>
-                                Material Handling Characteristics
-                            </FormLabel>
-                        </Grid>
-                    </Grid>
-                    <br />
-                    <Divider className='Module-Divider' />
-                    <br />
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <TextField
@@ -546,19 +520,6 @@ class BillOfMaterialsForm extends React.Component {
                                 />
                             </FormGroup>
                         </Grid>
-                    </Grid>
-                    <br /><br />
-                    <Grid container spacing={24}>
-                        <Grid container item xs={12}>
-                            <FormLabel className='Module-FormLabel'>
-                                Material Other
-                            </FormLabel>
-                        </Grid>
-                    </Grid>
-                    <br />
-                    <Divider className='Module-Divider' />
-                    <br /><br />
-                    <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <FormGroup row>
                                 <FormControlLabel
@@ -614,17 +575,6 @@ class BillOfMaterialsForm extends React.Component {
                             </FormGroup>
                         </Grid>
                     </Grid>
-                    <br /><br />
-                    <Grid container spacing={24}>
-                        <Grid container item xs={12}>
-                            <FormLabel className='Module-FormLabel'>
-                                Material Quality Standards
-                            </FormLabel>
-                        </Grid>
-                    </Grid>
-                    <br />
-                    <Divider className='Module-Divider' />
-                    <br />
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <TextField
@@ -659,222 +609,6 @@ class BillOfMaterialsForm extends React.Component {
                                 className='Module-TextField'
                                 hintText=''
                                 value={this.state.nonSkidTolerance}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                    </Grid>
-                    <br /><br />
-                    <Grid container spacing={24}>
-                        <Grid container item xs={12}>
-                            <FormLabel className='Module-FormLabel'>
-                                Supplier Customer Definition
-                            </FormLabel>
-                        </Grid>
-                    </Grid>
-                    <br />
-                    <Divider className='Module-Divider' />
-                    <br />
-                    <Grid container spacing={24}>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='shipToAddressLine1'
-                                floatingLabelText='Ship To Address'
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText=''
-                                value={this.state.shipToAddressLine1}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='shipToAddressLine2'
-                                floatingLabelText=' '
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText='Address Line 2'
-                                value={this.state.shipToAddressLine2}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='shipToCity'
-                                floatingLabelText=' '
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText='City'
-                                value={this.state.shipToCity}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='shipToAddressState'
-                                floatingLabelText=' '
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText='State'
-                                value={this.state.shipToAddressState}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={24}>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='shipToPostalCode'
-                                floatingLabelText=' '
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText='Postal Code'
-                                value={this.state.shipToPostalCode}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='shipToCountry'
-                                floatingLabelText=' '
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText='Country'
-                                value={this.state.shipToCountry}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={24}>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='shipToIPAddress'
-                                floatingLabelText='Ship To IP Address'
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText=''
-                                value={this.state.shipToIPAddress}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={24}>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='billToAddressLine1'
-                                floatingLabelText='Bill To Address'
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText=''
-                                value={this.state.billToAddressLine1}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='billToAddressLine2'
-                                floatingLabelText=' '
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText='Address Line 2'
-                                value={this.state.billToAddressLine2}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='billToCity'
-                                floatingLabelText=' '
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText='City'
-                                value={this.state.billToCity}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='billToAddressState'
-                                floatingLabelText=' '
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText='State'
-                                value={this.state.billToAddressState}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={24}>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='billToPostalCode'
-                                floatingLabelText=' '
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText='Postal Code'
-                                value={this.state.billToPostalCode}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='billToCountry'
-                                floatingLabelText=' '
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText='Country'
-                                value={this.state.billToCountry}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={24}>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='billToIPAddress'
-                                floatingLabelText='Bill To IP Address'
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText=''
-                                value={this.state.billToIPAddress}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                    </Grid>
-                    <br /><br />
-                    <Grid container spacing={24}>
-                        <Grid container item xs={12}>
-                            <FormLabel className='Module-FormLabel'>
-                                Supplier Payment Terms
-                            </FormLabel>
-                        </Grid>
-                    </Grid>
-                    <br />
-                    <Divider className='Module-Divider' />
-                    <br />
-                    <Grid container spacing={24}>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='paymentTerms'
-                                floatingLabelText='Payment Terms'
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText=''
-                                value={this.state.paymentTerms}
                                 onChange={this.handleChange}
                             />
                         </Grid>

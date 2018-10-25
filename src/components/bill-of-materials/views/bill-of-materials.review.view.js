@@ -44,7 +44,7 @@ class BillOfMaterialsReview extends React.Component {
             text: 'string',
             file: 'string',
             supplier: {
-                supplierName: this.props.eBOMData.paymentTerms,
+                supplierName: 'string',
                 supplierCageCode: this.props.eBOMData.ipAddress,
                 suppliers: [
                     {
@@ -61,18 +61,12 @@ class BillOfMaterialsReview extends React.Component {
                     + ' ' + this.props.eBOMData.addressState + ' ' + this.props.eBOMData.postalCode + ' '
                     + this.props.eBOMData.country,
                 supplierMaterialNumber: this.props.eBOMData.matSupPerIPAddress,
-                supplierCustomerShipToAddress: this.props.eBOMData.shipToAddressLine1 + ' '
-                    + this.props.eBOMData.shipToAddressLine2 + ' ' + this.props.eBOMData.shipToCity
-                    + ' ' + this.props.eBOMData.shipToAddressState + ' ' + this.props.eBOMData.shipToPostalCode + ' '
-                    + this.props.eBOMData.shipToCountry,
+                supplierCustomerShipToAddress: 'string',
                 supplierCustomerShipToCageCode: 'string',
-                supplierCustomerShipToIPAddress: this.props.eBOMData.shipToIPAddress,
-                supplierCustomerBillToAddress: this.props.eBOMData.billToAddressLine1 + ' '
-                    + this.props.eBOMData.billToAddressLine2 + ' ' + this.props.eBOMData.billToCity
-                    + ' ' + this.props.eBOMData.billToAddressState + ' ' + this.props.eBOMData.billToPostalCode + ' '
-                    + this.props.eBOMData.billToCountry,
+                supplierCustomerShipToIPAddress: 'string',
+                supplierCustomerBillToAddress: 'string',
                 supplierCustomerBillToCageCode: 'string',
-                supplierCustomerBillToIPAddress: this.props.eBOMData.billToIPAddress,
+                supplierCustomerBillToIPAddress: 'string',
                 supplierProductionCapacityCommittedToNetwork: this.props.eBOMData.supPaymentTerms,
                 supplierOrderedLeadTime: this.props.eBOMData.supOrderPolicy,
                 supplierMaterialQualityInputSystem: [
@@ -227,33 +221,17 @@ class BillOfMaterialsReview extends React.Component {
             createData('Length', this.props.eBOMData.materialLength),
             createData('Width', this.props.eBOMData.width),
             createData('Height', this.props.eBOMData.height),
-            createData('Material Handling Characteristics', ''),
             createData('Temperature Limits', this.props.eBOMData.temperatureLimits),
             createData('Shock/Vibration', this.props.eBOMData.shockVibration),
             createData('Altitude Restrictions', this.props.eBOMData.altitudeRestrictions),
             createData('Compression Restrictions', this.props.eBOMData.compressionRestrictions),
             createData('Always Upright', this.props.eBOMData.alwaysUpright2),
-            createData('Material Other', ''),
             createData('Metallic', this.props.eBOMData.metallic2),
             createData('Hazmat', this.props.eBOMData.hazmat2),
             createData('Magnetic', this.props.eBOMData.magnetic2),
-            createData('Material Quality Standards', ''),
             createData('Length Tolerance', this.props.eBOMData.lengthTolerance),
             createData('Round Tolerance', this.props.eBOMData.roundTolerance),
             createData('Non-Skid Tolerance', this.props.eBOMData.nonSkidTolerance),
-            createData('Supplier Customer Definition', ''),
-            createData('Ship To Address', this.props.eBOMData.shipToAddressLine1 + ' '
-                + this.props.eBOMData.shipToAddressLine2 + ' ' + this.props.eBOMData.shipToCity
-                + ' ' + this.props.eBOMData.shipToAddressState + ' ' + this.props.eBOMData.shipToPostalCode + ' '
-                + this.props.eBOMData.shipToCountry),
-            createData('Ship To IP Address', this.props.eBOMData.shipToIPAddress),
-            createData('Bill To Address', this.props.eBOMData.billToAddressLine1 + ' '
-                + this.props.eBOMData.billToAddressLine2 + ' ' + this.props.eBOMData.billToCity
-                + ' ' + this.props.eBOMData.billToAddressState + ' ' + this.props.eBOMData.billToPostalCode + ' '
-                + this.props.eBOMData.billToCountry),
-            createData('Bill To IP Address', this.props.eBOMData.billToIPAddress),
-            createData('Supplier Payment Terms', ''),
-            createData('Payment Terms', this.props.eBOMData.paymentTerms),
             createData('Supplier Order Quantities Controls', ''),
             createData('Minimum Economic Order Quantities', this.props.eBOMData.minEOQuantities),
             createData('Maximum Economic Order Quantities', this.props.eBOMData.maxEOQuantities),
