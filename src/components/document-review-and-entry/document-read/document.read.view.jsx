@@ -27,9 +27,9 @@ const rows = [
 
 let dialogCounter = 0;
 
-function createDialogData(info1, info2) {
+function createDialogData(info) {
     dialogCounter += 1;
-    return { id: dialogCounter, info1, info2 };
+    return { id: dialogCounter, info };
 }
 
 class TableHeader extends React.Component {
@@ -132,10 +132,12 @@ class ReadDocumentView extends React.Component {
     };
 
     decodeFile = (encodedFile, contentType) => {
+        //if (contentType.indexOf('image/png' > -1))
         console.log(encodedFile);
-        let decodedFile = atob(encodedFile);          // Base64 Decode and store binary
+        //let file = atob(encodedFile);          // Base64 Decode and store binary
+        let file = encodedFile
         this.setState({
-            reconstructedFile: [decodedFile],
+            reconstructedFile: [file],
             mimeType: contentType
         });
     }
@@ -168,10 +170,10 @@ class ReadDocumentView extends React.Component {
 
 
     handleClickedFile = (event, fileName) => {
-        //this.setState({ showProgressLogo: true })
+        this.setState({ showProgressLogo: true })
         Promise.resolve(this.props.retrieveFileByKey(fileName))
             .then(() => {
-                //this.handleDREValidation();
+                this.handleDREValidation();
             })
     };
 
@@ -196,7 +198,7 @@ class ReadDocumentView extends React.Component {
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
         const dialogRows = [
-            createDialogData('File', this.state.reconstructedFile)
+            createDialogData(<img src={this.state.reconstructedFile} alt=''/>)
         ]
 
         return (
@@ -276,7 +278,7 @@ class ReadDocumentView extends React.Component {
                         </Grid>
                     </Grid>
                 </div>
-                <Dialog open={this.state.openDialog} onClose={this.handleDialogClose}>
+                <Dialog fullScreen open={this.state.openDialog} onClose={this.handleDialogClose}>
                     <div style={{ padding: 24 }}>
                         <Grid container justify="flex-end">
                             <Grid item>
@@ -300,8 +302,7 @@ class ReadDocumentView extends React.Component {
                                                 {dialogRows.map(row => {
                                                     return (
                                                         <TableRow key={row.id}>
-                                                            <TableCell>{row.info1}</TableCell>
-                                                            <TableCell>{row.info2}</TableCell>
+                                                            <TableCell>{row.info}</TableCell>
                                                         </TableRow>
                                                     );
                                                 })}
