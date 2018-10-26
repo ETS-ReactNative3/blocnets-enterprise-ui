@@ -25,11 +25,8 @@ const rows = [
     { id: 'lastModifed', label: 'Last Modified' }
 ];
 
-let dialogCounter = 0;
-
-function createDialogData(info) {
-    dialogCounter += 1;
-    return { id: dialogCounter, info };
+function handleDialogData(info) {
+    return info;
 }
 
 class TableHeader extends React.Component {
@@ -197,9 +194,7 @@ class ReadDocumentView extends React.Component {
 
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
-        const dialogRows = [
-            createDialogData(<img src={this.state.reconstructedFile} alt=''/>)
-        ]
+        const showImageFile = handleDialogData(<img src={this.state.reconstructedFile} width='100%' height='auto' alt='' />)
 
         return (
             <form>
@@ -297,17 +292,7 @@ class ReadDocumentView extends React.Component {
                                             </div> : ""}
                                     </div>
                                     <div style={{ "overflowX": "auto" }}>
-                                        <Table style={{ "tableLayout": "fixed" }}>
-                                            <TableBody style={{ "overflowWrap": "break-word" }}>
-                                                {dialogRows.map(row => {
-                                                    return (
-                                                        <TableRow key={row.id}>
-                                                            <TableCell>{row.info}</TableCell>
-                                                        </TableRow>
-                                                    );
-                                                })}
-                                            </TableBody>
-                                        </Table>
+                                        {showImageFile}
                                     </div>
                                 </Paper>
                             </Grid>
