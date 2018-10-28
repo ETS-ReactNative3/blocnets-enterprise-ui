@@ -273,6 +273,7 @@ class SaveDocumentView extends React.Component {
                         <Grid container item xs={12} sm={6} justify="flex-end">
                             <Grid>
                                 <input
+                                    accept=".png,.jpg,.jpeg,.gif,.pdf"
                                     id="flat-button-file"
                                     //multiple
                                     type="file"
