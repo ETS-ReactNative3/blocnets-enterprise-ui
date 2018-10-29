@@ -5,6 +5,9 @@ import Button from '@material-ui/core/Button';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import FormLabel from '@material-ui/core/FormLabel/FormLabel';
 import Divider from '@material-ui/core/Divider/Divider';
+import IconButton from "@material-ui/core/IconButton/IconButton";
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import DeleteIcon from '@material-ui/icons/Delete';
 import FormControl from '@material-ui/core/FormControl/FormControl';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import Select from '@material-ui/core/Select/Select';
@@ -53,7 +56,7 @@ class BillOfMaterialsForm extends React.Component {
             partDescription: this.props.eBOMData.partDescription ? this.props.eBOMData.partDescription : '',
             materialCompanyName: this.props.eBOMData.materialCompanyName ? this.props.eBOMData.materialCompanyName : '',
             materialCountry: this.props.eBOMData.materialCountry ? this.props.eBOMData.materialCountry : '',
-            errorTextMaterialCountry: this.props.eBOMData.country ? this.props.eBOMData.country : 'This is a required field.',
+            errorTextMaterialCountry: this.props.eBOMData.materialCountry ? '' : 'This is a required field.',
             materialAddressLine1: this.props.eBOMData.materialAddressLine1 ? this.props.eBOMData.materialAddressLine1 : '',
             errorTextMaterialAddressLine1: this.props.eBOMData.materialAddressLine1 ? '' : 'This is a required field.',
             materialAddressLine2: this.props.eBOMData.materialAddressLine2 ? this.props.eBOMData.materialAddressLine2 : '',
@@ -64,6 +67,7 @@ class BillOfMaterialsForm extends React.Component {
             materialPostalCode: this.props.eBOMData.materialPostalCode ? this.props.eBOMData.materialPostalCode : '',
             errorTextMaterialPostalCode: this.props.eBOMData.materialPostalCode ? '' : 'This is a required field.',
             materialIPAddress: this.props.eBOMData.materialIPAddress ? this.props.eBOMData.materialIPAddress : '',
+            outboundList: this.props.eBOMData.outboundList ? this.props.eBOMData.outboundList : [],
             volume: this.props.eBOMData.volume ? this.props.eBOMData.volume : '',
             weight: this.props.eBOMData.weight ? this.props.eBOMData.weight : '',
             materialLength: this.props.eBOMData.materialLength ? this.props.eBOMData.materialLength : '',
@@ -112,9 +116,17 @@ class BillOfMaterialsForm extends React.Component {
             this.setState({ errorTextMaterialName: 'This is a required field.' });
         }
         if ([event.target.name].toString() === 'materialCountry' && event.target.value) {
-            this.setState({ errorTextMaterialCountry: '' });
+            this.setState({
+                errorTextMaterialCountry: '',
+                materialStateProvince: '',
+                errorTextMaterialStateProvince: 'This is a required field.'
+            });
         } else if ([event.target.name].toString() === 'materialCountry' && !event.target.value) {
-            this.setState({ errorTextMaterialCountry: 'This is a required field.' });
+            this.setState({
+                errorTextMaterialCountry: 'This is a required field.',
+                materialStateProvince: '',
+                errorTextMaterialStateProvince: 'This is a required field.'
+            });
         }
         if ([event.target.name].toString() === 'materialAddressLine1' && event.target.value) {
             this.setState({ errorTextMaterialAddressLine1: '' });
@@ -135,6 +147,9 @@ class BillOfMaterialsForm extends React.Component {
             this.setState({ errorTextMaterialPostalCode: '' });
         } else if ([event.target.name].toString() === 'materialPostalCode' && !event.target.value) {
             this.setState({ errorTextMaterialPostalCode: 'This is a required field.' });
+        }
+        if ([event.target.name].toString() === 'country') {
+            this.setState({ stateProvince: '' });
         }
     };
 
@@ -184,6 +199,71 @@ class BillOfMaterialsForm extends React.Component {
                 magnetic2: 'NO'
             });
         }
+    };
+
+    handleAdditionOutbound = (event) => {
+        let outboundList = this.state.outboundList;
+        let outboundList2 = {
+            materialCompanyName: '',
+            materialCountry: '',
+            materialAddressLine1: '',
+            materialAddressLine2: '',
+            materialCity: '',
+            materialStateProvince: '',
+            materialPostalCode: ''
+        };
+        let outboundListFinal = outboundList.concat(outboundList2);
+        this.setState({ outboundList: outboundListFinal })
+    };
+
+    handleDeletionOutbound = (index) => (event) => {
+        let outboundList = this.state.outboundList;
+        let outboundList2 = outboundList.slice(0, index);
+        let outboundList3 = outboundList.slice(index + 1);
+        let outboundListFinal = outboundList2.concat(outboundList3);
+        this.setState({ outboundList: outboundListFinal })
+    };
+
+    handleTextOutbound = (index) => (event) => {
+        let outboundList = [...this.state.outboundList];
+        if ([event.target.name].toString() === 'materialCompanyNameList' && event.target.value) {
+            outboundList[index].materialCompanyName = event.target.value;
+        } else if ([event.target.name].toString() === 'materialCompanyNameList' && !event.target.value) {
+            outboundList[index].materialCompanyName = '';
+        }
+        if ([event.target.name].toString() === 'materialCountryList' && event.target.value) {
+            outboundList[index].materialCountry = event.target.value;
+            outboundList[index].materialStateProvince = '';
+        } else if ([event.target.name].toString() === 'materialCountryList' && !event.target.value) {
+            outboundList[index].materialCountry = '';
+            outboundList[index].materialStateProvince = '';
+        }
+        if ([event.target.name].toString() === 'materialAddressLine1List' && event.target.value) {
+            outboundList[index].materialAddressLine1 = event.target.value;
+        } else if ([event.target.name].toString() === 'materialAddressLine1List' && !event.target.value) {
+            outboundList[index].materialAddressLine1 = '';
+        }
+        if ([event.target.name].toString() === 'materialAddressLine2List' && event.target.value) {
+            outboundList[index].materialAddressLine2 = event.target.value;
+        } else if ([event.target.name].toString() === 'materialAddressLine2List' && !event.target.value) {
+            outboundList[index].materialAddressLine2 = '';
+        }
+        if ([event.target.name].toString() === 'materialCityList' && event.target.value) {
+            outboundList[index].materialCity = event.target.value;
+        } else if ([event.target.name].toString() === 'materialCityList' && !event.target.value) {
+            outboundList[index].materialCity = '';
+        }
+        if ([event.target.name].toString() === 'materialStateProvinceList' && event.target.value) {
+            outboundList[index].materialStateProvince = event.target.value;
+        } else if ([event.target.name].toString() === 'materialStateProvinceList' && !event.target.value) {
+            outboundList[index].materialStateProvince = '';
+        }
+        if ([event.target.name].toString() === 'materialPostalCodeList' && event.target.value) {
+            outboundList[index].materialPostalCode = event.target.value;
+        } else if ([event.target.name].toString() === 'materialPostalCodeList' && !event.target.value) {
+            outboundList[index].materialPostalCode = '';
+        }
+        this.setState({ outboundList: outboundList });
     };
 
     handleCreateMasterData = () => {
@@ -326,6 +406,11 @@ class BillOfMaterialsForm extends React.Component {
                                 onChange={this.handleChange}
                             />
                         </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <IconButton onClick={this.handleAdditionOutbound}>
+                                <AddCircleIcon className='Button-AddCircleIcon' />
+                            </IconButton>
+                        </Grid>
                     </Grid>
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
@@ -429,6 +514,128 @@ class BillOfMaterialsForm extends React.Component {
                             />
                         </Grid>
                     </Grid>
+                    <br />
+                    {this.state.outboundList.map((outboundList, index) => (
+                        <span key={index}>
+                            <br /><br />
+                            <Divider className='Module-Divider' />
+                            <br />
+                            <Grid container spacing={24}>
+                                <Grid container item xs={6} sm={3}>
+                                    <TextField
+                                        type='text'
+                                        name='materialCompanyNameList'
+                                        floatingLabelText='Company Name'
+                                        floatingLabelFixed={true}
+                                        className='Module-TextField'
+                                        hintText=''
+                                        value={outboundList.materialCompanyName}
+                                        onChange={this.handleTextOutbound(index)}
+                                    />
+                                </Grid>
+                                <Grid container item xs={6} sm={3}>
+                                    <IconButton onClick={this.handleDeletionOutbound(index)}>
+                                        <DeleteIcon className='Button-DeleteCircleIcon' />
+                                    </IconButton>
+                                </Grid>
+                            </Grid>
+                            <Grid container spacing={24}>
+                                <Grid container item xs={6} sm={3}>
+                                    <FormControl fullWidth={true}>
+                                        <InputLabel>Country</InputLabel>
+                                        <Select value={outboundList.materialCountry}
+                                                onChange={this.handleTextOutbound(index)}
+                                                input={<Input name='materialCountryList' className='Mobile-MenuItem' />}
+                                                displayEmpty>
+                                            {this.state.countryMenuItems.map((menuItem, i) => {
+                                                return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
+                                            })}
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid container item xs={6} sm={3}>
+                                    <TextField
+                                        type='text'
+                                        name='materialAddressLine1List'
+                                        floatingLabelText='Address'
+                                        floatingLabelFixed={true}
+                                        className='BOM-TextField'
+                                        hintText=''
+                                        value={outboundList.materialAddressLine1}
+                                        onChange={this.handleTextOutbound(index)}
+                                    />
+                                </Grid>
+                                <Grid container item xs={6} sm={3}>
+                                    <TextField
+                                        type='text'
+                                        name='materialAddressLine2List'
+                                        floatingLabelText='Address Line 2'
+                                        floatingLabelFixed={true}
+                                        className='BOM-TextField'
+                                        hintText=''
+                                        value={outboundList.materialAddressLine2}
+                                        onChange={this.handleTextOutbound(index)}
+                                    />
+                                </Grid>
+                            </Grid>
+                            <br /><br />
+                            <Grid container spacing={24}>
+                                <Grid container item xs={6} sm={3}>
+                                    <TextField
+                                        type='text'
+                                        name='materialCityList'
+                                        floatingLabelText='City'
+                                        floatingLabelFixed={true}
+                                        className='BOM-TextField'
+                                        hintText=''
+                                        value={outboundList.materialCity}
+                                        onChange={this.handleTextOutbound(index)}
+                                    />
+                                </Grid>
+                                {outboundList.materialCountry === 'United States' ?
+                                    <Grid container item xs={6} sm={3}>
+                                        <FormControl fullWidth={true}>
+                                            <InputLabel>State/Province</InputLabel>
+                                            <Select value={outboundList.materialStateProvince}
+                                                    onChange={this.handleTextOutbound(index)}
+                                                    input={<Input name='materialStateProvinceList'
+                                                                  className='Mobile-MenuItem' />}
+                                                    displayEmpty>
+                                                {this.state.usStatesMenuItems.map((menuItem, i) => {
+                                                    return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
+                                                })}
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
+                                    :
+                                    <Grid container item xs={6} sm={3}>
+                                        <TextField
+                                            type='text'
+                                            name='materialStateProvinceList'
+                                            floatingLabelText='State/Province'
+                                            floatingLabelFixed={true}
+                                            className='BOM-TextField'
+                                            hintText=''
+                                            value={outboundList.materialStateProvince}
+                                            onChange={this.handleTextOutbound(index)}
+                                        />
+                                    </Grid>
+                                }
+                                <Grid container item xs={6} sm={3}>
+                                    <TextField
+                                        type='text'
+                                        name='materialPostalCodeList'
+                                        floatingLabelText='Postal Code'
+                                        floatingLabelFixed={true}
+                                        className='BOM-TextField'
+                                        hintText=''
+                                        value={outboundList.materialPostalCode}
+                                        onChange={this.handleTextOutbound(index)}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </span>
+                    ))}
                     <br /><br /><br />
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>

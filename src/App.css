@@ -915,3 +915,13 @@ body {
     margin-top: -16px !important;
     text-align: left !important;
 }
+
+.Button-AddCircleIcon {
+    color: #000000;
+    transform: scale(1.8);
+}
+
+.Button-DeleteCircleIcon {
+    color: #000000;
+    transform: scale(1.6);
+}

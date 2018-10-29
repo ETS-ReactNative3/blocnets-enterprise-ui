@@ -21,12 +21,69 @@ function createData(info1, info2) {
     return { id: counter, info1, info2 };
 }
 
+function createTableContent(eBOMData) {
+    let tableContent = [
+        createData('Material ID', eBOMData.materialID),
+        createData('Material Name', eBOMData.materialName),
+        createData('Material Description', eBOMData.materialDescription),
+        /* RELEASE-90: Hide Part No., Part Name and Part Description fields.
+        createData('Part No.', eBOMData.partNo),
+        createData('Part Name', eBOMData.partName),
+        createData('Part Description', eBOMData.partDescription),
+        */
+        createData('Outbound Customer Data', ''),
+        createData('Company Name / Address', eBOMData.materialCompanyName + ' / ' + eBOMData.materialAddressLine1 + ' '
+            + eBOMData.materialAddressLine2 + ' ' + eBOMData.materialCity
+            + ' ' + eBOMData.materialStateProvince + ' ' + eBOMData.materialPostalCode + ' '
+            + eBOMData.materialCountry)
+    ];
+    for (let i = 0; i < eBOMData.outboundList.length; i++) {
+        tableContent.push(createData('Company Name / Address', eBOMData.outboundList[i].materialCompanyName + ' / ' + eBOMData.outboundList[i].materialAddressLine1 + ' '
+            + eBOMData.outboundList[i].materialAddressLine2 + ' ' + eBOMData.outboundList[i].materialCity
+            + ' ' + eBOMData.outboundList[i].materialStateProvince + ' ' + eBOMData.outboundList[i].materialPostalCode + ' '
+            + eBOMData.outboundList[i].materialCountry));
+    }
+    tableContent.push(
+        createData('IP Address', eBOMData.materialIPAddress),
+        createData('Material Validation Characteristics', ''),
+        createData('Volume', eBOMData.volume),
+        createData('Weight', eBOMData.weight),
+        createData('Length', eBOMData.materialLength),
+        createData('Width', eBOMData.width),
+        createData('Height', eBOMData.height),
+        createData('Temperature Limits', eBOMData.temperatureLimits),
+        createData('Shock/Vibration', eBOMData.shockVibration),
+        createData('Altitude Restrictions', eBOMData.altitudeRestrictions),
+        createData('Compression Restrictions', eBOMData.compressionRestrictions),
+        createData('Always Upright', eBOMData.alwaysUpright2),
+        createData('Metallic', eBOMData.metallic2),
+        createData('Hazmat', eBOMData.hazmat2),
+        createData('Magnetic', eBOMData.magnetic2),
+        createData('Length Tolerance', eBOMData.lengthTolerance),
+        createData('Round Tolerance', eBOMData.roundTolerance),
+        createData('Non-Skid Tolerance', eBOMData.nonSkidTolerance),
+        createData('Supplier Order Quantities Controls', ''),
+        createData('Minimum Economic Order Quantities', eBOMData.minEOQuantities),
+        createData('Maximum Economic Order Quantities', eBOMData.maxEOQuantities),
+        createData('Maximum Economic Product Withdraw Rate', eBOMData.maxEPWithdrawRate),
+        createData('Minimum Order Lead Times', eBOMData.minOrderLeadTimes),
+        createData('Inbound Supplier(s)', ''),
+        createData('Address', eBOMData.addressLine1 + ' '
+            + eBOMData.addressLine2 + ' ' + eBOMData.city
+            + ' ' + eBOMData.stateProvince + ' ' + eBOMData.postalCode + ' '
+            + eBOMData.country),
+        createData('Supplier Payment Terms', eBOMData.supPaymentTerms)
+    );
+    return tableContent;
+}
+
 class BillOfMaterialsReview extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             showProgressLogo: false,
+            rows: createTableContent(this.props.eBOMData),
             snackbar: this.props.snackbar
         };
     }
@@ -199,52 +256,6 @@ class BillOfMaterialsReview extends React.Component {
 
     render() {
 
-        const rows = [
-            createData('Material ID', this.props.eBOMData.materialID),
-            createData('Material Name', this.props.eBOMData.materialName),
-            createData('Material Description', this.props.eBOMData.materialDescription),
-            /* RELEASE-90: Hide Part No., Part Name and Part Description fields.
-            createData('Part No.', this.props.eBOMData.partNo),
-            createData('Part Name', this.props.eBOMData.partName),
-            createData('Part Description', this.props.eBOMData.partDescription),
-            */
-            createData('Outbound Customer Data', ''),
-            createData('Company Name', this.props.eBOMData.materialCompanyName),
-            createData('Address', this.props.eBOMData.materialAddressLine1 + ' '
-                + this.props.eBOMData.materialAddressLine2 + ' ' + this.props.eBOMData.materialCity
-                + ' ' + this.props.eBOMData.materialStateProvince + ' ' + this.props.eBOMData.materialPostalCode + ' '
-                + this.props.eBOMData.materialCountry),
-            createData('IP Address', this.props.eBOMData.materialIPAddress),
-            createData('Material Validation Characteristics', ''),
-            createData('Volume', this.props.eBOMData.volume),
-            createData('Weight', this.props.eBOMData.weight),
-            createData('Length', this.props.eBOMData.materialLength),
-            createData('Width', this.props.eBOMData.width),
-            createData('Height', this.props.eBOMData.height),
-            createData('Temperature Limits', this.props.eBOMData.temperatureLimits),
-            createData('Shock/Vibration', this.props.eBOMData.shockVibration),
-            createData('Altitude Restrictions', this.props.eBOMData.altitudeRestrictions),
-            createData('Compression Restrictions', this.props.eBOMData.compressionRestrictions),
-            createData('Always Upright', this.props.eBOMData.alwaysUpright2),
-            createData('Metallic', this.props.eBOMData.metallic2),
-            createData('Hazmat', this.props.eBOMData.hazmat2),
-            createData('Magnetic', this.props.eBOMData.magnetic2),
-            createData('Length Tolerance', this.props.eBOMData.lengthTolerance),
-            createData('Round Tolerance', this.props.eBOMData.roundTolerance),
-            createData('Non-Skid Tolerance', this.props.eBOMData.nonSkidTolerance),
-            createData('Supplier Order Quantities Controls', ''),
-            createData('Minimum Economic Order Quantities', this.props.eBOMData.minEOQuantities),
-            createData('Maximum Economic Order Quantities', this.props.eBOMData.maxEOQuantities),
-            createData('Maximum Economic Product Withdraw Rate', this.props.eBOMData.maxEPWithdrawRate),
-            createData('Minimum Order Lead Times', this.props.eBOMData.minOrderLeadTimes),
-            createData('Inbound Supplier(s)', ''),
-            createData('Address', this.props.eBOMData.addressLine1 + ' '
-                + this.props.eBOMData.addressLine2 + ' ' + this.props.eBOMData.city
-                + ' ' + this.props.eBOMData.stateProvince + ' ' + this.props.eBOMData.postalCode + ' '
-                + this.props.eBOMData.country),
-            createData('Supplier Payment Terms', this.props.eBOMData.supPaymentTerms)
-        ];
-
         return (
             <div>
                 <div>
@@ -265,7 +276,7 @@ class BillOfMaterialsReview extends React.Component {
                                 <div className='Module-Paper-Div'>
                                     <Table className='Module-Table'>
                                         <TableBody className='Module-TableBody'>
-                                            {rows.map(row => {
+                                            {this.state.rows.map(row => {
                                                 return (
                                                     <TableRow key={row.id}>
                                                         <TableCell>{row.info1}</TableCell>
