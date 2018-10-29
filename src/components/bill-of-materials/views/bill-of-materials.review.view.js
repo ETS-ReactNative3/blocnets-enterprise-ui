@@ -33,15 +33,14 @@ function createTableContent(eBOMData) {
         */
         createData('Outbound Customer Data', ''),
         createData('Company Name / Address', eBOMData.materialCompanyName + ' / ' + eBOMData.materialAddressLine1 + ' '
-            + eBOMData.materialAddressLine2 + ' ' + eBOMData.materialCity
-            + ' ' + eBOMData.materialStateProvince + ' ' + eBOMData.materialPostalCode + ' '
-            + eBOMData.materialCountry)
+            + eBOMData.materialAddressLine2 + ' ' + eBOMData.materialCity + ' ' + eBOMData.materialStateProvince + ' '
+            + eBOMData.materialPostalCode + ' ' + eBOMData.materialCountry)
     ];
     for (let i = 0; i < eBOMData.outboundList.length; i++) {
-        tableContent.push(createData('Company Name / Address', eBOMData.outboundList[i].materialCompanyName + ' / ' + eBOMData.outboundList[i].materialAddressLine1 + ' '
-            + eBOMData.outboundList[i].materialAddressLine2 + ' ' + eBOMData.outboundList[i].materialCity
-            + ' ' + eBOMData.outboundList[i].materialStateProvince + ' ' + eBOMData.outboundList[i].materialPostalCode + ' '
-            + eBOMData.outboundList[i].materialCountry));
+        tableContent.push(createData('Company Name / Address', eBOMData.outboundList[i].materialCompanyName + ' / '
+            + eBOMData.outboundList[i].materialAddressLine1 + ' ' + eBOMData.outboundList[i].materialAddressLine2 + ' '
+            + eBOMData.outboundList[i].materialCity + ' ' + eBOMData.outboundList[i].materialStateProvince + ' '
+            + eBOMData.outboundList[i].materialPostalCode + ' ' + eBOMData.outboundList[i].materialCountry));
     }
     tableContent.push(
         createData('IP Address', eBOMData.materialIPAddress),
@@ -68,12 +67,19 @@ function createTableContent(eBOMData) {
         createData('Maximum Economic Product Withdraw Rate', eBOMData.maxEPWithdrawRate),
         createData('Minimum Order Lead Times', eBOMData.minOrderLeadTimes),
         createData('Inbound Supplier(s)', ''),
-        createData('Address', eBOMData.addressLine1 + ' '
-            + eBOMData.addressLine2 + ' ' + eBOMData.city
-            + ' ' + eBOMData.stateProvince + ' ' + eBOMData.postalCode + ' '
-            + eBOMData.country),
-        createData('Supplier Payment Terms', eBOMData.supPaymentTerms)
+        createData('Address / Supplier Payment Terms / Material ID / Quantity', eBOMData.addressLine1 + ' '
+            + eBOMData.addressLine2 + ' ' + eBOMData.city + ' ' + eBOMData.stateProvince + ' ' + eBOMData.postalCode
+            + ' ' + eBOMData.country + ' / ' + eBOMData.supPaymentTerms + ' / ' + eBOMData.supplierMaterialID + ' / '
+            + eBOMData.supplierQuantity)
     );
+    for (let i = 0; i < eBOMData.inboundList.length; i++) {
+        tableContent.push(createData('Address / Supplier Payment Terms / Material ID / Quantity',
+            eBOMData.inboundList[i].addressLine1 + ' ' + eBOMData.inboundList[i].addressLine2 + ' '
+            + eBOMData.inboundList[i].city + ' ' + eBOMData.inboundList[i].stateProvince + ' '
+            + eBOMData.inboundList[i].postalCode + ' ' + eBOMData.inboundList[i].country + ' / '
+            + eBOMData.inboundList[i].supPaymentTerms + ' / ' + eBOMData.inboundList[i].supplierMaterialID + ' / '
+            + eBOMData.inboundList[i].supplierQuantity));
+    }
     return tableContent;
 }
 

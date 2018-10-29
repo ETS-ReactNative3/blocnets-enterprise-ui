@@ -99,6 +99,9 @@ class BillOfMaterialsForm extends React.Component {
             stateProvince: this.props.eBOMData.stateProvince ? this.props.eBOMData.stateProvince : '',
             postalCode: this.props.eBOMData.postalCode ? this.props.eBOMData.postalCode : '',
             supPaymentTerms: this.props.eBOMData.supPaymentTerms ? this.props.eBOMData.supPaymentTerms : '',
+            supplierMaterialID: this.props.eBOMData.supplierMaterialID ? this.props.eBOMData.supplierMaterialID : '',
+            supplierQuantity: this.props.eBOMData.supplierQuantity ? this.props.eBOMData.supplierQuantity : '',
+            inboundList: this.props.eBOMData.inboundList ? this.props.eBOMData.inboundList : [],
             snackbar: this.props.snackbar
         };
     }
@@ -264,6 +267,83 @@ class BillOfMaterialsForm extends React.Component {
             outboundList[index].materialPostalCode = '';
         }
         this.setState({ outboundList: outboundList });
+    };
+
+    handleAdditionInbound = (event) => {
+        let inboundList = this.state.inboundList;
+        let inboundList2 = {
+            country: '',
+            addressLine1: '',
+            addressLine2: '',
+            city: '',
+            stateProvince: '',
+            postalCode: '',
+            supPaymentTerms: '',
+            supplierMaterialID: '',
+            supplierQuantity: ''
+        };
+        let inboundListFinal = inboundList.concat(inboundList2);
+        this.setState({ inboundList: inboundListFinal })
+    };
+
+    handleDeletionInbound = (index) => (event) => {
+        let inboundList = this.state.inboundList;
+        let inboundList2 = inboundList.slice(0, index);
+        let inboundList3 = inboundList.slice(index + 1);
+        let inboundListFinal = inboundList2.concat(inboundList3);
+        this.setState({ inboundList: inboundListFinal })
+    };
+
+    handleTextInbound = (index) => (event) => {
+        let inboundList = [...this.state.inboundList];
+        if ([event.target.name].toString() === 'countryList' && event.target.value) {
+            inboundList[index].country = event.target.value;
+            inboundList[index].stateProvince = '';
+        } else if ([event.target.name].toString() === 'countryList' && !event.target.value) {
+            inboundList[index].country = '';
+            inboundList[index].stateProvince = '';
+        }
+        if ([event.target.name].toString() === 'addressLine1List' && event.target.value) {
+            inboundList[index].addressLine1 = event.target.value;
+        } else if ([event.target.name].toString() === 'addressLine1List' && !event.target.value) {
+            inboundList[index].addressLine1 = '';
+        }
+        if ([event.target.name].toString() === 'addressLine2List' && event.target.value) {
+            inboundList[index].addressLine2 = event.target.value;
+        } else if ([event.target.name].toString() === 'addressLine2List' && !event.target.value) {
+            inboundList[index].addressLine2 = '';
+        }
+        if ([event.target.name].toString() === 'cityList' && event.target.value) {
+            inboundList[index].city = event.target.value;
+        } else if ([event.target.name].toString() === 'cityList' && !event.target.value) {
+            inboundList[index].city = '';
+        }
+        if ([event.target.name].toString() === 'stateProvinceList' && event.target.value) {
+            inboundList[index].stateProvince = event.target.value;
+        } else if ([event.target.name].toString() === 'stateProvinceList' && !event.target.value) {
+            inboundList[index].stateProvince = '';
+        }
+        if ([event.target.name].toString() === 'postalCodeList' && event.target.value) {
+            inboundList[index].postalCode = event.target.value;
+        } else if ([event.target.name].toString() === 'postalCodeList' && !event.target.value) {
+            inboundList[index].postalCode = '';
+        }
+        if ([event.target.name].toString() === 'supPaymentTermsList' && event.target.value) {
+            inboundList[index].supPaymentTerms = event.target.value;
+        } else if ([event.target.name].toString() === 'supPaymentTermsList' && !event.target.value) {
+            inboundList[index].supPaymentTerms = '';
+        }
+        if ([event.target.name].toString() === 'supplierMaterialIDList' && event.target.value) {
+            inboundList[index].supplierMaterialID = event.target.value;
+        } else if ([event.target.name].toString() === 'supplierMaterialIDList' && !event.target.value) {
+            inboundList[index].supplierMaterialID = '';
+        }
+        if ([event.target.name].toString() === 'supplierQuantityList' && event.target.value) {
+            inboundList[index].supplierQuantity = event.target.value;
+        } else if ([event.target.name].toString() === 'supplierQuantityList' && !event.target.value) {
+            inboundList[index].supplierQuantity = '';
+        }
+        this.setState({ inboundList: inboundList });
     };
 
     handleCreateMasterData = () => {
@@ -986,6 +1066,11 @@ class BillOfMaterialsForm extends React.Component {
                                 onChange={this.handleChange}
                             />
                         </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <IconButton onClick={this.handleAdditionInbound}>
+                                <AddCircleIcon className='Button-AddCircleIcon' />
+                            </IconButton>
+                        </Grid>
                     </Grid>
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
@@ -1054,7 +1139,175 @@ class BillOfMaterialsForm extends React.Component {
                                 onChange={this.handleChange}
                             />
                         </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type='text'
+                                name='supplierMaterialID'
+                                floatingLabelText='Material ID'
+                                floatingLabelFixed={true}
+                                className='Module-TextField'
+                                hintText=''
+                                value={this.state.supplierMaterialID}
+                                onChange={this.handleChange}
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                type='number'
+                                name='supplierQuantity'
+                                floatingLabelText='Quantity'
+                                floatingLabelFixed={true}
+                                className='Module-TextField'
+                                hintText=''
+                                value={this.state.supplierQuantity}
+                                onChange={this.handleChange}
+                            />
+                        </Grid>
                     </Grid>
+                    <br />
+                    {this.state.inboundList.map((inboundList, index) => (
+                        <span key={index}>
+                            <br />
+                            <Divider className='Module-Divider' />
+                            <br />
+                            <Grid container spacing={24}>
+                                <Grid container item xs={6} sm={3}>
+                                    <FormControl fullWidth={true}>
+                                        <InputLabel>Country</InputLabel>
+                                        <Select value={inboundList.country} onChange={this.handleTextInbound(index)}
+                                                input={<Input name='countryList' className='Mobile-MenuItem' />}
+                                                displayEmpty>
+                                            {this.state.countryMenuItems.map((menuItem, i) => {
+                                                return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
+                                            })}
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid container item xs={6} sm={3}>
+                                    <TextField
+                                        type='text'
+                                        name='addressLine1List'
+                                        floatingLabelText='Address'
+                                        floatingLabelFixed={true}
+                                        className='BOM-TextField'
+                                        hintText=''
+                                        value={inboundList.addressLine1}
+                                        onChange={this.handleTextInbound(index)}
+                                    />
+                                </Grid>
+                                <Grid container item xs={6} sm={3}>
+                                    <TextField
+                                        type='text'
+                                        name='addressLine2List'
+                                        floatingLabelText='Address Line 2'
+                                        floatingLabelFixed={true}
+                                        className='BOM-TextField'
+                                        hintText=''
+                                        value={inboundList.addressLine2}
+                                        onChange={this.handleTextInbound(index)}
+                                    />
+                                </Grid>
+                                <Grid container item xs={6} sm={3}>
+                                    <IconButton onClick={this.handleDeletionInbound(index)}>
+                                        <DeleteIcon className='Button-DeleteCircleIcon' />
+                                    </IconButton>
+                                </Grid>
+                            </Grid>
+                            <Grid container spacing={24}>
+                                <Grid container item xs={6} sm={3}>
+                                    <TextField
+                                        type='text'
+                                        name='cityList'
+                                        floatingLabelText='City'
+                                        floatingLabelFixed={true}
+                                        className='BOM-TextField'
+                                        hintText=''
+                                        value={inboundList.city}
+                                        onChange={this.handleTextInbound(index)}
+                                    />
+                                </Grid>
+                                {inboundList.country === 'United States' ?
+                                    <Grid container item xs={6} sm={3}>
+                                        <FormControl fullWidth={true}>
+                                            <InputLabel>State/Province</InputLabel>
+                                            <Select value={inboundList.stateProvince}
+                                                    onChange={this.handleTextInbound(index)}
+                                                    input={<Input name='stateProvinceList'
+                                                                  className='Mobile-MenuItem' />}
+                                                    displayEmpty>
+                                                {this.state.usStatesMenuItems.map((menuItem, i) => {
+                                                    return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
+                                                })}
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
+                                    :
+                                    <Grid container item xs={6} sm={3}>
+                                        <TextField
+                                            type='text'
+                                            name='stateProvinceList'
+                                            floatingLabelText='State/Province'
+                                            floatingLabelFixed={true}
+                                            className='BOM-TextField'
+                                            hintText=''
+                                            value={inboundList.stateProvince}
+                                            onChange={this.handleTextInbound(index)}
+                                        />
+                                    </Grid>
+                                }
+                                <Grid container item xs={6} sm={3}>
+                                    <TextField
+                                        type='text'
+                                        name='postalCodeList'
+                                        floatingLabelText='Postal Code'
+                                        floatingLabelFixed={true}
+                                        className='BOM-TextField'
+                                        hintText=''
+                                        value={inboundList.postalCode}
+                                        onChange={this.handleTextInbound(index)}
+                                    />
+                                </Grid>
+                            </Grid>
+                            <Grid container spacing={24}>
+                                <Grid container item xs={6} sm={3}>
+                                    <TextField
+                                        type='text'
+                                        name='supPaymentTermsList'
+                                        floatingLabelText='Supplier Payment Terms'
+                                        floatingLabelFixed={true}
+                                        className='Module-TextField'
+                                        hintText=''
+                                        value={inboundList.supPaymentTerms}
+                                        onChange={this.handleTextInbound(index)}
+                                    />
+                                </Grid>
+                                <Grid container item xs={6} sm={3}>
+                                    <TextField
+                                        type='text'
+                                        name='supplierMaterialIDList'
+                                        floatingLabelText='Material ID'
+                                        floatingLabelFixed={true}
+                                        className='Module-TextField'
+                                        hintText=''
+                                        value={inboundList.supplierMaterialID}
+                                        onChange={this.handleTextInbound(index)}
+                                    />
+                                </Grid>
+                                <Grid container item xs={6} sm={3}>
+                                    <TextField
+                                        type='number'
+                                        name='supplierQuantityList'
+                                        floatingLabelText='Quantity'
+                                        floatingLabelFixed={true}
+                                        className='Module-TextField'
+                                        hintText=''
+                                        value={inboundList.supplierQuantity}
+                                        onChange={this.handleTextInbound(index)}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </span>
+                    ))}
                     <br />
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
