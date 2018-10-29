@@ -51,6 +51,7 @@ class SaveDocumentView extends React.Component {
     }
 
     handleBase64File = (event) => {
+        console.log(event);
         Promise.resolve(this.setState({ base64File: event }))
     }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Document, Page } from 'react-pdf';
 import blocnetsLogo from '../../../blocknetwhite-1.png';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -25,8 +26,22 @@ const rows = [
     { id: 'lastModifed', label: 'Last Modified' }
 ];
 
-function handleDialogData(info) {
-    return info;
+function handleDialogData(file, type) {
+    if (type.indexOf('image') > -1) {
+        let image = <img src={file[0]} width='100%' height='auto' alt='' />;
+        console.log('This is an image');
+        return image;
+    }
+    if (type.indexOf('application/pdf') > -1) {
+        let pageNumber = 1;
+        var numPages = null;
+        let onDocumentLoad = ({ num }) => {
+            numPages = num;
+        }
+        let pdf = <div><Document width='100%' height='auto' file={file[0]} onLoadSuccess={onDocumentLoad}><Page pageNumber={pageNumber} /></Document><p>Page {pageNumber} of {numPages}</p> </div>;
+        console.log('This is a pdf');
+        return pdf;
+    }
 }
 
 class TableHeader extends React.Component {
@@ -129,7 +144,6 @@ class ReadDocumentView extends React.Component {
     };
 
     decodeFile = (encodedFile, contentType) => {
-        //if (contentType.indexOf('image/png' > -1))
         console.log(encodedFile);
         //let file = atob(encodedFile);          // Base64 Decode and store binary
         let file = encodedFile
@@ -188,13 +202,17 @@ class ReadDocumentView extends React.Component {
             },
         });
     };
+    
+    handleChangePage = (event, page) => {
+        this.setState({page});
+    };
 
     render() {
         const { data, rowsPerPage, page } = this.state;
 
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
-        const showImageFile = handleDialogData(<img src={this.state.reconstructedFile} width='100%' height='auto' alt='' />)
+        const showFile = handleDialogData(this.state.reconstructedFile, this.state.mimeType);
 
         return (
             <form>
@@ -292,7 +310,7 @@ class ReadDocumentView extends React.Component {
                                             </div> : ""}
                                     </div>
                                     <div style={{ "overflowX": "auto" }}>
-                                        {showImageFile}
+                                        {showFile}
                                     </div>
                                 </Paper>
                             </Grid>
