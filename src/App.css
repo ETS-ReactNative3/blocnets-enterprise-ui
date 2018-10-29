@@ -650,12 +650,12 @@ body {
 }
 
 .Module {
-    padding: 24px !important;;
+    padding: 24px !important;
 }
 
 .Module-TextField {
-    float: left !important;;
-    text-align: left !important;;
+    float: left !important;
+    text-align: left !important;
 }
 
 .Module-Button:enabled {
@@ -908,4 +908,10 @@ body {
 .Module-Button-Search:disabled {
     background-color: rgba(180, 180, 180, 1) !important;
     color: rgba(0, 0, 0, 0.26) !important;
+}
+
+.BOM-TextField {
+    float: left !important;
+    margin-top: -16px !important;
+    text-align: left !important;
 }

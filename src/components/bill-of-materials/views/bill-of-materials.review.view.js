@@ -58,7 +58,7 @@ class BillOfMaterialsReview extends React.Component {
                 supplierBillingAddress: 'string',
                 supplierLocationAddress: this.props.eBOMData.addressLine1 + ' '
                     + this.props.eBOMData.addressLine2 + ' ' + this.props.eBOMData.city
-                    + ' ' + this.props.eBOMData.addressState + ' ' + this.props.eBOMData.postalCode + ' '
+                    + ' ' + this.props.eBOMData.stateProvince + ' ' + this.props.eBOMData.postalCode + ' '
                     + this.props.eBOMData.country,
                 supplierMaterialNumber: 'string',
                 supplierCustomerShipToAddress: 'string',
@@ -88,7 +88,7 @@ class BillOfMaterialsReview extends React.Component {
                 materialMvmtLocation: this.props.eBOMData.materialIPAddress,
                 materialMvmtShippedTo: this.props.eBOMData.materialAddressLine1 + ' '
                     + this.props.eBOMData.materialAddressLine2 + ' ' + this.props.eBOMData.materialCity
-                    + ' ' + this.props.eBOMData.materialAddressState + ' ' + this.props.eBOMData.materialPostalCode + ' '
+                    + ' ' + this.props.eBOMData.materialStateProvince + ' ' + this.props.eBOMData.materialPostalCode + ' '
                     + this.props.eBOMData.materialCountry,
                 materialMvmtShippedFrom: this.props.eBOMData.materialCompanyName,
                 materialMvmtCageCode: this.props.eBOMData.partName,
@@ -212,7 +212,7 @@ class BillOfMaterialsReview extends React.Component {
             createData('Company Name', this.props.eBOMData.materialCompanyName),
             createData('Address', this.props.eBOMData.materialAddressLine1 + ' '
                 + this.props.eBOMData.materialAddressLine2 + ' ' + this.props.eBOMData.materialCity
-                + ' ' + this.props.eBOMData.materialAddressState + ' ' + this.props.eBOMData.materialPostalCode + ' '
+                + ' ' + this.props.eBOMData.materialStateProvince + ' ' + this.props.eBOMData.materialPostalCode + ' '
                 + this.props.eBOMData.materialCountry),
             createData('IP Address', this.props.eBOMData.materialIPAddress),
             createData('Material Validation Characteristics', ''),
@@ -240,7 +240,7 @@ class BillOfMaterialsReview extends React.Component {
             createData('Inbound Supplier(s)', ''),
             createData('Address', this.props.eBOMData.addressLine1 + ' '
                 + this.props.eBOMData.addressLine2 + ' ' + this.props.eBOMData.city
-                + ' ' + this.props.eBOMData.addressState + ' ' + this.props.eBOMData.postalCode + ' '
+                + ' ' + this.props.eBOMData.stateProvince + ' ' + this.props.eBOMData.postalCode + ' '
                 + this.props.eBOMData.country),
             createData('Supplier Payment Terms', this.props.eBOMData.supPaymentTerms)
         ];

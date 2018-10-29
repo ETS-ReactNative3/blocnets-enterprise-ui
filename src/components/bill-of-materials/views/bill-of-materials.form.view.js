@@ -5,18 +5,44 @@ import Button from '@material-ui/core/Button';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import FormLabel from '@material-ui/core/FormLabel/FormLabel';
 import Divider from '@material-ui/core/Divider/Divider';
+import FormControl from '@material-ui/core/FormControl/FormControl';
+import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import Select from '@material-ui/core/Select/Select';
+import Input from '@material-ui/core/Input/Input';
+import MenuItem from '@material-ui/core/MenuItem/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText/FormHelperText';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import ListAlt from '@material-ui/icons/ListAlt';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
+import Countries from '../countries';
+import USStates from '../us_states';
+
+function createCountryMenuItems() {
+    let countryMenuItems = [];
+    for (let i = 0; i < Countries.length; i++) {
+        countryMenuItems.push(Countries[i].label);
+    }
+    return countryMenuItems;
+}
+
+function createUSStatesMenuItems() {
+    let usMenuItems = [];
+    for (let i = 0; i < USStates.length; i++) {
+        usMenuItems.push(USStates[i].name);
+    }
+    return usMenuItems;
+}
 
 class BillOfMaterialsForm extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            countryMenuItems: createCountryMenuItems(),
+            usStatesMenuItems: createUSStatesMenuItems(),
             materialID: this.props.eBOMData.materialID ? this.props.eBOMData.materialID : '',
             errorTextMaterialID: this.props.eBOMData.materialID ? '' : 'This is a required field.',
             materialName: this.props.eBOMData.materialName ? this.props.eBOMData.materialName : '',
@@ -25,6 +51,19 @@ class BillOfMaterialsForm extends React.Component {
             partNo: this.props.eBOMData.partNo ? this.props.eBOMData.partNo : '',
             partName: this.props.eBOMData.partName ? this.props.eBOMData.partName : '',
             partDescription: this.props.eBOMData.partDescription ? this.props.eBOMData.partDescription : '',
+            materialCompanyName: this.props.eBOMData.materialCompanyName ? this.props.eBOMData.materialCompanyName : '',
+            materialCountry: this.props.eBOMData.materialCountry ? this.props.eBOMData.materialCountry : '',
+            errorTextMaterialCountry: this.props.eBOMData.country ? this.props.eBOMData.country : 'This is a required field.',
+            materialAddressLine1: this.props.eBOMData.materialAddressLine1 ? this.props.eBOMData.materialAddressLine1 : '',
+            errorTextMaterialAddressLine1: this.props.eBOMData.materialAddressLine1 ? '' : 'This is a required field.',
+            materialAddressLine2: this.props.eBOMData.materialAddressLine2 ? this.props.eBOMData.materialAddressLine2 : '',
+            materialCity: this.props.eBOMData.materialCity ? this.props.eBOMData.materialCity : '',
+            errorTextMaterialCity: this.props.eBOMData.materialCity ? '' : 'This is a required field.',
+            materialStateProvince: this.props.eBOMData.materialStateProvince ? this.props.eBOMData.materialStateProvince : '',
+            errorTextMaterialStateProvince: this.props.eBOMData.materialStateProvince ? '' : 'This is a required field.',
+            materialPostalCode: this.props.eBOMData.materialPostalCode ? this.props.eBOMData.materialPostalCode : '',
+            errorTextMaterialPostalCode: this.props.eBOMData.materialPostalCode ? '' : 'This is a required field.',
+            materialIPAddress: this.props.eBOMData.materialIPAddress ? this.props.eBOMData.materialIPAddress : '',
             volume: this.props.eBOMData.volume ? this.props.eBOMData.volume : '',
             weight: this.props.eBOMData.weight ? this.props.eBOMData.weight : '',
             materialLength: this.props.eBOMData.materialLength ? this.props.eBOMData.materialLength : '',
@@ -49,25 +88,13 @@ class BillOfMaterialsForm extends React.Component {
             maxEOQuantities: this.props.eBOMData.maxEOQuantities ? this.props.eBOMData.maxEOQuantities : '',
             maxEPWithdrawRate: this.props.eBOMData.maxEPWithdrawRate ? this.props.eBOMData.maxEPWithdrawRate : '',
             minOrderLeadTimes: this.props.eBOMData.minOrderLeadTimes ? this.props.eBOMData.minOrderLeadTimes : '',
+            country: this.props.eBOMData.country ? this.props.eBOMData.country : '',
             addressLine1: this.props.eBOMData.addressLine1 ? this.props.eBOMData.addressLine1 : '',
             addressLine2: this.props.eBOMData.addressLine2 ? this.props.eBOMData.addressLine2 : '',
             city: this.props.eBOMData.city ? this.props.eBOMData.city : '',
-            addressState: this.props.eBOMData.addressState ? this.props.eBOMData.addressState : '',
+            stateProvince: this.props.eBOMData.stateProvince ? this.props.eBOMData.stateProvince : '',
             postalCode: this.props.eBOMData.postalCode ? this.props.eBOMData.postalCode : '',
-            country: this.props.eBOMData.country ? this.props.eBOMData.country : '',
             supPaymentTerms: this.props.eBOMData.supPaymentTerms ? this.props.eBOMData.supPaymentTerms : '',
-            materialAddressLine1: this.props.eBOMData.materialAddressLine1 ? this.props.eBOMData.materialAddressLine1 : '',
-            errorTextMaterialAddressLine1: this.props.eBOMData.materialAddressLine1 ? '' : 'This is a required field.',
-            materialAddressLine2: this.props.eBOMData.materialAddressLine2 ? this.props.eBOMData.materialAddressLine2 : '',
-            materialCity: this.props.eBOMData.materialCity ? this.props.eBOMData.materialCity : '',
-            errorTextMaterialCity: this.props.eBOMData.materialCity ? '' : 'This is a required field.',
-            materialAddressState: this.props.eBOMData.materialAddressState ? this.props.eBOMData.materialAddressState : '',
-            errorTextMaterialAddressState: this.props.eBOMData.materialAddressState ? '' : 'This is a required field.',
-            materialPostalCode: this.props.eBOMData.materialPostalCode ? this.props.eBOMData.materialPostalCode : '',
-            errorTextMaterialPostalCode: this.props.eBOMData.materialPostalCode ? '' : 'This is a required field.',
-            materialCountry: this.props.eBOMData.materialCountry ? this.props.eBOMData.materialCountry : '',
-            materialIPAddress: this.props.eBOMData.materialIPAddress ? this.props.eBOMData.materialIPAddress : '',
-            materialCompanyName: this.props.eBOMData.materialCompanyName ? this.props.eBOMData.materialCompanyName : '',
             snackbar: this.props.snackbar
         };
     }
@@ -84,6 +111,11 @@ class BillOfMaterialsForm extends React.Component {
         } else if ([event.target.name].toString() === 'materialName' && !event.target.value) {
             this.setState({ errorTextMaterialName: 'This is a required field.' });
         }
+        if ([event.target.name].toString() === 'materialCountry' && event.target.value) {
+            this.setState({ errorTextMaterialCountry: '' });
+        } else if ([event.target.name].toString() === 'materialCountry' && !event.target.value) {
+            this.setState({ errorTextMaterialCountry: 'This is a required field.' });
+        }
         if ([event.target.name].toString() === 'materialAddressLine1' && event.target.value) {
             this.setState({ errorTextMaterialAddressLine1: '' });
         } else if ([event.target.name].toString() === 'materialAddressLine1' && !event.target.value) {
@@ -94,10 +126,10 @@ class BillOfMaterialsForm extends React.Component {
         } else if ([event.target.name].toString() === 'materialCity' && !event.target.value) {
             this.setState({ errorTextMaterialCity: 'This is a required field.' });
         }
-        if ([event.target.name].toString() === 'materialAddressState' && event.target.value) {
-            this.setState({ errorTextMaterialAddressState: '' });
-        } else if ([event.target.name].toString() === 'materialAddressState' && !event.target.value) {
-            this.setState({ errorTextMaterialAddressState: 'This is a required field.' });
+        if ([event.target.name].toString() === 'materialStateProvince' && event.target.value) {
+            this.setState({ errorTextMaterialStateProvince: '' });
+        } else if ([event.target.name].toString() === 'materialStateProvince' && !event.target.value) {
+            this.setState({ errorTextMaterialStateProvince: 'This is a required field.' });
         }
         if ([event.target.name].toString() === 'materialPostalCode' && event.target.value) {
             this.setState({ errorTextMaterialPostalCode: '' });
@@ -164,9 +196,9 @@ class BillOfMaterialsForm extends React.Component {
 
     render() {
 
-        const formComplete = this.state.materialID && this.state.materialName &&
+        const formComplete = this.state.materialID && this.state.materialName && this.state.materialCountry &&
             this.state.materialAddressLine1 && this.state.materialCity &&
-            this.state.materialAddressState && this.state.materialPostalCode;
+            this.state.materialStateProvince && this.state.materialPostalCode;
 
         return (
             <div>
@@ -294,13 +326,30 @@ class BillOfMaterialsForm extends React.Component {
                                 onChange={this.handleChange}
                             />
                         </Grid>
+                    </Grid>
+                    <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <FormControl fullWidth={true}>
+                                <InputLabel>Country</InputLabel>
+                                <Select value={this.state.materialCountry} onChange={this.handleChange}
+                                        input={<Input name='materialCountry' className='Mobile-MenuItem' />}
+                                        displayEmpty>
+                                    {this.state.countryMenuItems.map((menuItem, i) => {
+                                        return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
+                                    })}
+                                </Select>
+                                <FormHelperText className='TT-Font-Red'>
+                                    {this.state.errorTextMaterialCountry}
+                                </FormHelperText>
+                            </FormControl>
+                        </Grid>
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='text'
                                 name='materialAddressLine1'
                                 floatingLabelText='Address'
                                 floatingLabelFixed={true}
-                                className='Module-TextField'
+                                className='BOM-TextField'
                                 hintText=''
                                 value={this.state.materialAddressLine1}
                                 onChange={this.handleChange}
@@ -311,65 +360,72 @@ class BillOfMaterialsForm extends React.Component {
                             <TextField
                                 type='text'
                                 name='materialAddressLine2'
-                                floatingLabelText=' '
+                                floatingLabelText='Address Line 2'
                                 floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText='Address Line 2'
+                                className='BOM-TextField'
+                                hintText=''
                                 value={this.state.materialAddressLine2}
                                 onChange={this.handleChange}
                             />
                         </Grid>
+                    </Grid>
+                    <br /><br />
+                    <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='text'
                                 name='materialCity'
-                                floatingLabelText=' '
+                                floatingLabelText='City'
                                 floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText='City'
+                                className='BOM-TextField'
+                                hintText=''
                                 value={this.state.materialCity}
                                 onChange={this.handleChange}
                                 errorText={this.state.errorTextMaterialCity}
                             />
                         </Grid>
-                    </Grid>
-                    <Grid container spacing={24}>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='materialAddressState'
-                                floatingLabelText=' '
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText='State'
-                                value={this.state.materialAddressState}
-                                onChange={this.handleChange}
-                                errorText={this.state.errorTextMaterialAddressState}
-                            />
-                        </Grid>
+                        {this.state.materialCountry === 'United States' ?
+                            <Grid container item xs={6} sm={3}>
+                                <FormControl fullWidth={true}>
+                                    <InputLabel>State/Province</InputLabel>
+                                    <Select value={this.state.materialStateProvince} onChange={this.handleChange}
+                                            input={<Input name='materialStateProvince' className='Mobile-MenuItem' />}
+                                            displayEmpty>
+                                        {this.state.usStatesMenuItems.map((menuItem, i) => {
+                                            return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
+                                        })}
+                                    </Select>
+                                    <FormHelperText className='TT-Font-Red'>
+                                        {this.state.errorTextMaterialStateProvince}
+                                    </FormHelperText>
+                                </FormControl>
+                            </Grid>
+                            :
+                            <Grid container item xs={6} sm={3}>
+                                <TextField
+                                    type='text'
+                                    name='materialStateProvince'
+                                    floatingLabelText='State/Province'
+                                    floatingLabelFixed={true}
+                                    className='BOM-TextField'
+                                    hintText=''
+                                    value={this.state.materialStateProvince}
+                                    onChange={this.handleChange}
+                                    errorText={this.state.errorTextMaterialStateProvince}
+                                />
+                            </Grid>
+                        }
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='text'
                                 name='materialPostalCode'
-                                floatingLabelText=' '
+                                floatingLabelText='Postal Code'
                                 floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText='Postal Code'
+                                className='BOM-TextField'
+                                hintText=''
                                 value={this.state.materialPostalCode}
                                 onChange={this.handleChange}
                                 errorText={this.state.errorTextMaterialPostalCode}
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='materialCountry'
-                                floatingLabelText=' '
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText='Country'
-                                value={this.state.materialCountry}
-                                onChange={this.handleChange}
                             />
                         </Grid>
                     </Grid>
@@ -685,15 +741,27 @@ class BillOfMaterialsForm extends React.Component {
                     </Grid>
                     <br />
                     <Divider className='Module-Divider' />
-                    <br />
+                    <br /><br />
                     <Grid container spacing={24}>
+                        <Grid container item xs={6} sm={3}>
+                            <FormControl fullWidth={true}>
+                                <InputLabel>Country</InputLabel>
+                                <Select value={this.state.country} onChange={this.handleChange}
+                                        input={<Input name='country' className='Mobile-MenuItem' />}
+                                        displayEmpty>
+                                    {this.state.countryMenuItems.map((menuItem, i) => {
+                                        return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
+                                    })}
+                                </Select>
+                            </FormControl>
+                        </Grid>
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='text'
                                 name='addressLine1'
                                 floatingLabelText='Address'
                                 floatingLabelFixed={true}
-                                className='Module-TextField'
+                                className='BOM-TextField'
                                 hintText=''
                                 value={this.state.addressLine1}
                                 onChange={this.handleChange}
@@ -703,35 +771,11 @@ class BillOfMaterialsForm extends React.Component {
                             <TextField
                                 type='text'
                                 name='addressLine2'
-                                floatingLabelText=' '
+                                floatingLabelText='Address Line 2'
                                 floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText='Address Line 2'
+                                className='BOM-TextField'
+                                hintText=''
                                 value={this.state.addressLine2}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='city'
-                                floatingLabelText=' '
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText='City'
-                                value={this.state.city}
-                                onChange={this.handleChange}
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                type='text'
-                                name='addressState'
-                                floatingLabelText=' '
-                                floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText='State'
-                                value={this.state.addressState}
                                 onChange={this.handleChange}
                             />
                         </Grid>
@@ -740,24 +784,52 @@ class BillOfMaterialsForm extends React.Component {
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='text'
-                                name='postalCode'
-                                floatingLabelText=' '
+                                name='city'
+                                floatingLabelText='City'
                                 floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText='Postal Code'
-                                value={this.state.postalCode}
+                                className='BOM-TextField'
+                                hintText=''
+                                value={this.state.city}
                                 onChange={this.handleChange}
                             />
                         </Grid>
+                        {this.state.country === 'United States' ?
+                            <Grid container item xs={6} sm={3}>
+                                <FormControl fullWidth={true}>
+                                    <InputLabel>State/Province</InputLabel>
+                                    <Select value={this.state.stateProvince} onChange={this.handleChange}
+                                            input={<Input name='stateProvince'
+                                                          className='Mobile-MenuItem' />}
+                                            displayEmpty>
+                                        {this.state.usStatesMenuItems.map((menuItem, i) => {
+                                            return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
+                                        })}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            :
+                            <Grid container item xs={6} sm={3}>
+                                <TextField
+                                    type='text'
+                                    name='stateProvince'
+                                    floatingLabelText='State/Province'
+                                    floatingLabelFixed={true}
+                                    className='BOM-TextField'
+                                    hintText=''
+                                    value={this.state.stateProvince}
+                                    onChange={this.handleChange}
+                                />
+                            </Grid>
+                        }
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='text'
-                                name='country'
-                                floatingLabelText=' '
+                                name='postalCode'
+                                floatingLabelText='Postal Code'
                                 floatingLabelFixed={true}
-                                className='Module-TextField'
-                                hintText='Country'
-                                value={this.state.country}
+                                className='BOM-TextField'
+                                hintText=''
+                                value={this.state.postalCode}
                                 onChange={this.handleChange}
                             />
                         </Grid>
