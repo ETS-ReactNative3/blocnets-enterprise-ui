@@ -51,6 +51,7 @@ class SaveDocumentView extends React.Component {
     }
 
     handleBase64File = (event) => {
+        console.log(event);
         Promise.resolve(this.setState({ base64File: event }))
     }
 
@@ -105,8 +106,9 @@ class SaveDocumentView extends React.Component {
             //base64Result(wrapBinaryInBase64);
 
             // Base64 String
-            var fileString = reader.result.split(',')[1]; // Remove Base 64 header - not needed for decoding later
-            base64Result(fileString);
+            //var fileString = reader.result.split(',')[1]; // Remove Base 64 header - not needed for decoding later
+            //base64Result(fileString);
+            base64Result(reader.result);
         };
         if (file) {
             reader.readAsDataURL(file);
@@ -272,6 +274,7 @@ class SaveDocumentView extends React.Component {
                         <Grid container item xs={12} sm={6} justify="flex-end">
                             <Grid>
                                 <input
+                                    accept=".png,.jpg,.jpeg,.gif,.pdf"
                                     id="flat-button-file"
                                     //multiple
                                     type="file"

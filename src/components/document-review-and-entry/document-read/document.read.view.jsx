@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Document, Page } from 'react-pdf';     // Docs: https://www.npmjs.com/package/react-pdf
 import blocnetsLogo from '../../../blocknetwhite-1.png';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -25,11 +26,13 @@ const rows = [
     { id: 'lastModifed', label: 'Last Modified' }
 ];
 
-let dialogCounter = 0;
+const options = {
+    cMapUrl: 'cmaps/',
+    cMapPacked: true,
+};
 
-function createDialogData(info1, info2) {
-    dialogCounter += 1;
-    return { id: dialogCounter, info1, info2 };
+function handleDialogData(file) {
+    return file;
 }
 
 class TableHeader extends React.Component {
@@ -88,6 +91,7 @@ class ReadDocumentView extends React.Component {
             openDialog: false,
             reconstructedFile: ["test"],
             mimeType: '',
+            numPages: null,
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
@@ -95,6 +99,10 @@ class ReadDocumentView extends React.Component {
                 sbColor: 'black'
             }
         };
+    }
+
+    onDocumentLoadSuccess = ({ numPages }) => {
+        this.setState({ numPages });
     }
 
     createTableContent = () => {
@@ -133,9 +141,10 @@ class ReadDocumentView extends React.Component {
 
     decodeFile = (encodedFile, contentType) => {
         console.log(encodedFile);
-        let decodedFile = atob(encodedFile);          // Base64 Decode and store binary
+        //let file = atob(encodedFile);          // Base64 Decode and store binary
+        let file = encodedFile
         this.setState({
-            reconstructedFile: [decodedFile],
+            reconstructedFile: [file],
             mimeType: contentType
         });
     }
@@ -168,10 +177,10 @@ class ReadDocumentView extends React.Component {
 
 
     handleClickedFile = (event, fileName) => {
-        //this.setState({ showProgressLogo: true })
+        this.setState({ showProgressLogo: true })
         Promise.resolve(this.props.retrieveFileByKey(fileName))
             .then(() => {
-                //this.handleDREValidation();
+                this.handleDREValidation();
             })
     };
 
@@ -190,14 +199,16 @@ class ReadDocumentView extends React.Component {
         });
     };
 
+    handleChangePage = (event, page) => {
+        this.setState({ page });
+    };
+
     render() {
-        const { data, rowsPerPage, page } = this.state;
+        const { data, rowsPerPage, page, numPages } = this.state;
 
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
-        const dialogRows = [
-            createDialogData('File', this.state.reconstructedFile)
-        ]
+        const showImageFile = handleDialogData(<img src={this.state.reconstructedFile[0]} width='100%' height='auto' alt='' />);
 
         return (
             <form>
@@ -276,7 +287,7 @@ class ReadDocumentView extends React.Component {
                         </Grid>
                     </Grid>
                 </div>
-                <Dialog open={this.state.openDialog} onClose={this.handleDialogClose}>
+                <Dialog fullScreen open={this.state.openDialog} onClose={this.handleDialogClose}>
                     <div style={{ padding: 24 }}>
                         <Grid container justify="flex-end">
                             <Grid item>
@@ -295,18 +306,26 @@ class ReadDocumentView extends React.Component {
                                             </div> : ""}
                                     </div>
                                     <div style={{ "overflowX": "auto" }}>
-                                        <Table style={{ "tableLayout": "fixed" }}>
-                                            <TableBody style={{ "overflowWrap": "break-word" }}>
-                                                {dialogRows.map(row => {
-                                                    return (
-                                                        <TableRow key={row.id}>
-                                                            <TableCell>{row.info1}</TableCell>
-                                                            <TableCell>{row.info2}</TableCell>
-                                                        </TableRow>
-                                                    );
-                                                })}
-                                            </TableBody>
-                                        </Table>
+                                        {this.state.mimeType.indexOf('image') > -1 ? showImageFile
+                                            :
+                                            <Document
+                                                file={this.state.reconstructedFile[0]}
+                                                onLoadSuccess={this.onDocumentLoadSuccess}
+                                                options={options}
+                                            >
+                                                {
+                                                    Array.from(
+                                                        new Array(numPages),
+                                                        (el, index) => (
+                                                            <Page
+                                                                key={`page_${index + 1}`}
+                                                                pageNumber={index + 1}
+                                                            />
+                                                        ),
+                                                    )
+                                                }
+                                            </Document>
+                                        }
                                     </div>
                                 </Paper>
                             </Grid>
