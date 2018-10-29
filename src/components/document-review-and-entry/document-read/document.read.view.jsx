@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Document, Page } from 'react-pdf';
+import { Document, Page } from 'react-pdf';     // Docs: https://www.npmjs.com/package/react-pdf
 import blocnetsLogo from '../../../blocknetwhite-1.png';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -26,22 +26,13 @@ const rows = [
     { id: 'lastModifed', label: 'Last Modified' }
 ];
 
-function handleDialogData(file, type) {
-    if (type.indexOf('image') > -1) {
-        let image = <img src={file[0]} width='100%' height='auto' alt='' />;
-        console.log('This is an image');
-        return image;
-    }
-    if (type.indexOf('application/pdf') > -1) {
-        let pageNumber = 1;
-        var numPages = null;
-        let onDocumentLoad = ({ num }) => {
-            numPages = num;
-        }
-        let pdf = <div><Document width='100%' height='auto' file={file[0]} onLoadSuccess={onDocumentLoad}><Page pageNumber={pageNumber} /></Document><p>Page {pageNumber} of {numPages}</p> </div>;
-        console.log('This is a pdf');
-        return pdf;
-    }
+const options = {
+    cMapUrl: 'cmaps/',
+    cMapPacked: true,
+};
+
+function handleDialogData(file) {
+    return file;
 }
 
 class TableHeader extends React.Component {
@@ -100,6 +91,7 @@ class ReadDocumentView extends React.Component {
             openDialog: false,
             reconstructedFile: ["test"],
             mimeType: '',
+            numPages: null,
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
@@ -107,6 +99,10 @@ class ReadDocumentView extends React.Component {
                 sbColor: 'black'
             }
         };
+    }
+
+    onDocumentLoadSuccess = ({ numPages }) => {
+        this.setState({ numPages });
     }
 
     createTableContent = () => {
@@ -202,17 +198,17 @@ class ReadDocumentView extends React.Component {
             },
         });
     };
-    
+
     handleChangePage = (event, page) => {
-        this.setState({page});
+        this.setState({ page });
     };
 
     render() {
-        const { data, rowsPerPage, page } = this.state;
+        const { data, rowsPerPage, page, numPages } = this.state;
 
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
-        const showFile = handleDialogData(this.state.reconstructedFile, this.state.mimeType);
+        const showImageFile = handleDialogData(<img src={this.state.reconstructedFile[0]} width='100%' height='auto' alt='' />);
 
         return (
             <form>
@@ -310,7 +306,26 @@ class ReadDocumentView extends React.Component {
                                             </div> : ""}
                                     </div>
                                     <div style={{ "overflowX": "auto" }}>
-                                        {showFile}
+                                        {this.state.mimeType.indexOf('image') > -1 ? showImageFile
+                                            :
+                                            <Document
+                                                file={this.state.reconstructedFile[0]}
+                                                onLoadSuccess={this.onDocumentLoadSuccess}
+                                                options={options}
+                                            >
+                                                {
+                                                    Array.from(
+                                                        new Array(numPages),
+                                                        (el, index) => (
+                                                            <Page
+                                                                key={`page_${index + 1}`}
+                                                                pageNumber={index + 1}
+                                                            />
+                                                        ),
+                                                    )
+                                                }
+                                            </Document>
+                                        }
                                     </div>
                                 </Paper>
                             </Grid>
