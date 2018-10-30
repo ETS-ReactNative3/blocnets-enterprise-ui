@@ -45,7 +45,7 @@ function createTableContent(bomData) {
         createData('Part Description', eBOMData.material.partDescription),
         */
     ];
-    if(bomData.outbound) {
+    if (bomData.outbound) {
         for (let i = 0; i < bomData.outbound.length; i++) {
             tableContent.push(createData('Company Name / Address', bomData.outbound[i].outboundCompanyName + ' / '
                 + bomData.outbound[i].outboundAddressLine1 + ' ' + bomData.outbound[i].outboundAddressLine2 + ' '
@@ -78,7 +78,7 @@ function createTableContent(bomData) {
         createData('Minimum Order Lead Times', bomData.supplierOrderQuantitiesControls.minimumOrderLeadTime),
         createData('Inbound Supplier(s)', '')
     );
-    if(bomData.inbound) {
+    if (bomData.inbound) {
         for (let i = 0; i < bomData.inbound.length; i++) {
             tableContent.push(createData('Address / Supplier Payment Terms / Material ID / Quantity',
                 bomData.inbound[i].inboundAddressLine1 + ' ' + bomData.inbound[i].inboundAddressLine2 + ' '
