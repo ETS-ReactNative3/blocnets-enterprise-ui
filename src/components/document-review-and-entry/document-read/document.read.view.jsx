@@ -11,6 +11,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import TablePagination from '@material-ui/core/TablePagination';
 import Dialog from '@material-ui/core/Dialog/Dialog';
+import Button from '@material-ui/core/Button';
 import Snackbar from 'material-ui/Snackbar';
 import { connect } from 'react-redux';
 import { retrieveFileByKey } from '../../../redux/actions/FILE/file.action';
@@ -147,7 +148,7 @@ class ReadDocumentView extends React.Component {
             reconstructedFile: [file],
             mimeType: contentType
         });
-    }
+    };
 
     handleDREValidation = () => {
         if (this.props.data.fileReducer.retrieveFileByKeySuccess) {
@@ -173,7 +174,7 @@ class ReadDocumentView extends React.Component {
                 }
             })
         }
-    }
+    };
 
 
     handleClickedFile = (event, fileName) => {
@@ -201,6 +202,12 @@ class ReadDocumentView extends React.Component {
 
     handleChangePage = (event, page) => {
         this.setState({ page });
+    };
+
+    handlePrint = (file) => {
+        let str = file[0].split(',')[1];
+        let tmp = atob(str);
+        window.open(tmp);
     };
 
     render() {
@@ -289,6 +296,7 @@ class ReadDocumentView extends React.Component {
                 </div>
                 <Dialog fullScreen open={this.state.openDialog} onClose={this.handleDialogClose}>
                     <div style={{ padding: 24 }}>
+                        {/* <Button onClick={event => this.handlePrint(this.state.reconstructedFile)}>Print</Button> */}
                         <Grid container justify="flex-end">
                             <Grid item>
                                 <i className="material-icons" style={{ "cursor": "pointer" }}
@@ -306,25 +314,28 @@ class ReadDocumentView extends React.Component {
                                             </div> : ""}
                                     </div>
                                     <div style={{ "overflowX": "auto" }}>
-                                        {this.state.mimeType.indexOf('image') > -1 ? showImageFile
-                                            :
-                                            <Document
-                                                file={this.state.reconstructedFile[0]}
-                                                onLoadSuccess={this.onDocumentLoadSuccess}
-                                                options={options}
-                                            >
-                                                {
-                                                    Array.from(
-                                                        new Array(numPages),
-                                                        (el, index) => (
-                                                            <Page
-                                                                key={`page_${index + 1}`}
-                                                                pageNumber={index + 1}
-                                                            />
-                                                        ),
-                                                    )
-                                                }
-                                            </Document>
+                                        {
+                                            this.state.mimeType.indexOf('image') > -1 ? showImageFile
+                                                :
+                                                this.state.mimeType.indexOf('application/pdf') > -1 ?
+                                                    <Document
+                                                        file={this.state.reconstructedFile[0]}
+                                                        onLoadSuccess={this.onDocumentLoadSuccess}
+                                                        options={options}
+                                                    >
+                                                        {
+                                                            Array.from(
+                                                                new Array(numPages),
+                                                                (el, index) => (
+                                                                    <Page
+                                                                        key={`page_${index + 1}`}
+                                                                        pageNumber={index + 1}
+                                                                    />
+                                                                ),
+                                                            )
+                                                        }
+                                                    </Document>
+                                                    : ''
                                         }
                                     </div>
                                 </Paper>
