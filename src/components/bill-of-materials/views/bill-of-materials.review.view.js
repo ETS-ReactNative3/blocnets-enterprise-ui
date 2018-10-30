@@ -32,18 +32,18 @@ function createTableContent(eBOMData) {
         createData('Part Description', eBOMData.partDescription),
         */
         createData('Outbound Customer Data', ''),
-        createData('Company Name / Address', eBOMData.materialCompanyName + ' / ' + eBOMData.materialAddressLine1 + ' '
-            + eBOMData.materialAddressLine2 + ' ' + eBOMData.materialCity + ' ' + eBOMData.materialStateProvince + ' '
-            + eBOMData.materialPostalCode + ' ' + eBOMData.materialCountry)
+        createData('Company Name / Address', eBOMData.outboundCompanyName + ' / ' + eBOMData.outboundAddressLine1 + ' '
+            + eBOMData.outboundAddressLine2 + ' ' + eBOMData.outboundCity + ' ' + eBOMData.outboundStateProvince + ' '
+            + eBOMData.outboundPostalCode + ' ' + eBOMData.outboundCountry)
     ];
     for (let i = 0; i < eBOMData.outboundList.length; i++) {
-        tableContent.push(createData('Company Name / Address', eBOMData.outboundList[i].materialCompanyName + ' / '
-            + eBOMData.outboundList[i].materialAddressLine1 + ' ' + eBOMData.outboundList[i].materialAddressLine2 + ' '
-            + eBOMData.outboundList[i].materialCity + ' ' + eBOMData.outboundList[i].materialStateProvince + ' '
-            + eBOMData.outboundList[i].materialPostalCode + ' ' + eBOMData.outboundList[i].materialCountry));
+        tableContent.push(createData('Company Name / Address', eBOMData.outboundList[i].outboundCompanyName + ' / '
+            + eBOMData.outboundList[i].outboundAddressLine1 + ' ' + eBOMData.outboundList[i].outboundAddressLine2 + ' '
+            + eBOMData.outboundList[i].outboundCity + ' ' + eBOMData.outboundList[i].outboundStateProvince + ' '
+            + eBOMData.outboundList[i].outboundPostalCode + ' ' + eBOMData.outboundList[i].outboundCountry));
     }
     tableContent.push(
-        createData('IP Address', eBOMData.materialIPAddress),
+        createData('IP Address', eBOMData.outboundIPAddress),
         createData('Material Validation Characteristics', ''),
         createData('Volume', eBOMData.volume),
         createData('Weight', eBOMData.weight),
@@ -67,18 +67,18 @@ function createTableContent(eBOMData) {
         createData('Maximum Economic Product Withdraw Rate', eBOMData.maxEPWithdrawRate),
         createData('Minimum Order Lead Times', eBOMData.minOrderLeadTimes),
         createData('Inbound Supplier(s)', ''),
-        createData('Address / Supplier Payment Terms / Material ID / Quantity', eBOMData.addressLine1 + ' '
-            + eBOMData.addressLine2 + ' ' + eBOMData.city + ' ' + eBOMData.stateProvince + ' ' + eBOMData.postalCode
-            + ' ' + eBOMData.country + ' / ' + eBOMData.supPaymentTerms + ' / ' + eBOMData.supplierMaterialID + ' / '
-            + eBOMData.supplierQuantity)
+        createData('Address / Supplier Payment Terms / Material ID / Quantity', eBOMData.inboundAddressLine1 + ' '
+            + eBOMData.inboundAddressLine2 + ' ' + eBOMData.inboundCity + ' ' + eBOMData.inboundStateProvince + ' ' + eBOMData.inboundPostalCode
+            + ' ' + eBOMData.inboundCountry + ' / ' + eBOMData.inboundSupplierPaymentTerms + ' / ' + eBOMData.inboundMaterialID + ' / '
+            + eBOMData.inboundQuantity)
     );
     for (let i = 0; i < eBOMData.inboundList.length; i++) {
         tableContent.push(createData('Address / Supplier Payment Terms / Material ID / Quantity',
-            eBOMData.inboundList[i].addressLine1 + ' ' + eBOMData.inboundList[i].addressLine2 + ' '
-            + eBOMData.inboundList[i].city + ' ' + eBOMData.inboundList[i].stateProvince + ' '
-            + eBOMData.inboundList[i].postalCode + ' ' + eBOMData.inboundList[i].country + ' / '
-            + eBOMData.inboundList[i].supPaymentTerms + ' / ' + eBOMData.inboundList[i].supplierMaterialID + ' / '
-            + eBOMData.inboundList[i].supplierQuantity));
+            eBOMData.inboundList[i].inboundAddressLine1 + ' ' + eBOMData.inboundList[i].inboundAddressLine2 + ' '
+            + eBOMData.inboundList[i].inboundCity + ' ' + eBOMData.inboundList[i].inboundStateProvince + ' '
+            + eBOMData.inboundList[i].inboundPostalCode + ' ' + eBOMData.inboundList[i].inboundCountry + ' / '
+            + eBOMData.inboundList[i].inboundSupplierPaymentTerms + ' / ' + eBOMData.inboundList[i].inboundMaterialID + ' / '
+            + eBOMData.inboundList[i].inboundQuantity));
     }
     return tableContent;
 }
@@ -101,114 +101,92 @@ class BillOfMaterialsReview extends React.Component {
         this.props.data.bomReducer.createMasterDataPartNoError = '';
         this.props.data.bomReducer.createMasterDataPartNameError = '';
         this.props.data.bomReducer.createMasterDataPartDescError = '';
+        let outbound = [{
+            outboundCompanyName: this.props.eBOMData.outboundCompanyName,
+            outboundCountry: this.props.eBOMData.outboundCountry,
+            outboundAddressLine1: this.props.eBOMData.outboundAddressLine1,
+            outboundAddressLine2: this.props.eBOMData.outboundAddressLine2,
+            outboundCity: this.props.eBOMData.outboundCity,
+            outboundStateProvince: this.props.eBOMData.outboundStateProvince,
+            outboundPostalCode: this.props.eBOMData.outboundPostalCode
+        }];
+        for (let i = 0; i < this.props.eBOMData.outboundList.length; i++) {
+            outbound.push({
+                outboundCompanyName: this.props.eBOMData.outboundList[i].outboundCompanyName,
+                outboundCountry: this.props.eBOMData.outboundList[i].outboundCountry,
+                outboundAddressLine1: this.props.eBOMData.outboundList[i].outboundAddressLine1,
+                outboundAddressLine2: this.props.eBOMData.outboundList[i].outboundAddressLine2,
+                outboundCity: this.props.eBOMData.outboundList[i].outboundCity,
+                outboundStateProvince: this.props.eBOMData.outboundList[i].outboundStateProvince,
+                outboundPostalCode: this.props.eBOMData.outboundList[i].outboundPostalCode
+            })
+        }
+        let inbound = [{
+            inboundCountry: this.props.eBOMData.inboundCountry,
+            inboundAddressLine1: this.props.eBOMData.inboundAddressLine1,
+            inboundAddressLine2: this.props.eBOMData.inboundAddressLine2,
+            inboundCity: this.props.eBOMData.inboundCity,
+            inboundStateProvince: this.props.eBOMData.inboundStateProvince,
+            inboundPostalCode: this.props.eBOMData.inboundPostalCode,
+            inboundSupplierPaymentTerms: this.props.eBOMData.inboundSupplierPaymentTerms,
+            inboundMaterialID: this.props.eBOMData.inboundMaterialID,
+            inboundQuantity: this.props.eBOMData.inboundQuantity
+        }];
+        for (let i = 0; i < this.props.eBOMData.inboundList.length; i++) {
+            inbound.push({
+                inboundCountry: this.props.eBOMData.inboundList[i].inboundCountry,
+                inboundAddressLine1: this.props.eBOMData.inboundList[i].inboundAddressLine1,
+                inboundAddressLine2: this.props.eBOMData.inboundList[i].inboundAddressLine2,
+                inboundCity: this.props.eBOMData.inboundList[i].inboundCity,
+                inboundStateProvince: this.props.eBOMData.inboundList[i].inboundStateProvince,
+                inboundPostalCode: this.props.eBOMData.inboundList[i].inboundPostalCode,
+                inboundSupplierPaymentTerms: this.props.eBOMData.inboundList[i].inboundSupplierPaymentTerms,
+                inboundMaterialID: this.props.eBOMData.inboundList[i].inboundMaterialID,
+                inboundQuantity: this.props.eBOMData.inboundList[i].inboundQuantity
+            })
+        }
         let eBOMError = [];
         this.setState({ showProgressLogo: true });
         let data = {
-            text: 'string',
-            file: 'string',
-            supplier: {
-                supplierName: 'string',
-                supplierCageCode: 'string',
-                suppliers: [
-                    {
-                        supplierIpAddress: 'string',
-                        supplierIpAddressDesc: 'string',
-                        supplierMaterialAddress: 'string',
-                        supplierMaterialNumber: 'string',
-                        supplierCageCode: 'string'
-                    }
-                ],
-                supplierBillingAddress: 'string',
-                supplierLocationAddress: this.props.eBOMData.addressLine1 + ' '
-                    + this.props.eBOMData.addressLine2 + ' ' + this.props.eBOMData.city
-                    + ' ' + this.props.eBOMData.stateProvince + ' ' + this.props.eBOMData.postalCode + ' '
-                    + this.props.eBOMData.country,
-                supplierMaterialNumber: 'string',
-                supplierCustomerShipToAddress: 'string',
-                supplierCustomerShipToCageCode: 'string',
-                supplierCustomerShipToIPAddress: 'string',
-                supplierCustomerBillToAddress: 'string',
-                supplierCustomerBillToCageCode: 'string',
-                supplierCustomerBillToIPAddress: 'string',
-                supplierProductionCapacityCommittedToNetwork: this.props.eBOMData.supPaymentTerms,
-                supplierOrderedLeadTime: 'string',
-                supplierMaterialQualityInputSystem: [
-                    'string'
-                ],
-                supplierMinimumEconomicOrderQuantity: this.props.eBOMData.minEOQuantities,
-                supplierMaximumEconomicOrderQuantity: this.props.eBOMData.maxEOQuantities,
-                supplierMaximumEconomicProductWithdrawRate: this.props.eBOMData.maxEPWithdrawRate,
-                supplierOrderExpiditeFee: 'string',
-                supplierOrderSlowDownFee: 'string',
-                supplierMaximumOrderLeadTime: 'string',
-                supplierMinimumOrderLeadTime: this.props.eBOMData.minOrderLeadTimes,
-                supplierLeadTimeViolationFee: 'string'
-            },
             material: {
-                materialMvmtOrderType: [
-                    'string'
-                ],
-                materialMvmtLocation: this.props.eBOMData.materialIPAddress,
-                materialMvmtShippedTo: this.props.eBOMData.materialAddressLine1 + ' '
-                    + this.props.eBOMData.materialAddressLine2 + ' ' + this.props.eBOMData.materialCity
-                    + ' ' + this.props.eBOMData.materialStateProvince + ' ' + this.props.eBOMData.materialPostalCode + ' '
-                    + this.props.eBOMData.materialCountry,
-                materialMvmtShippedFrom: this.props.eBOMData.materialCompanyName,
-                materialMvmtCageCode: this.props.eBOMData.partName,
-                materialMvmtSupplierName: this.props.eBOMData.partDescription,
-                materialMvmtSerialNumber: 'string',
-                materialMvmtMaterialNumber: this.props.eBOMData.partNo,
-                materialMvmtEndItemNumber: 'string',
-                materialAffiliates: [
-                    'string'
-                ],
                 materialNumber: this.props.eBOMData.materialID,
                 materialSerialNumber: this.props.eBOMData.materialName,
-                materialDescription: this.props.eBOMData.materialDescription,
+                materialDescription: this.props.eBOMData.materialDescription
+            },
+            file: '',
+            outbound: outbound,
+            materialValidationCharacteristics: {
                 materialVolume: this.props.eBOMData.volume,
-                materialVolumeUnits: 'string',
+                materialVolumeUnits: '',
                 materialWeight: this.props.eBOMData.weight,
-                materialWeightUnits: 'string',
+                materialWeightUnits: '',
                 materialLength: this.props.eBOMData.materialLength,
-                materialLengthUnits: 'string',
+                materialLengthUnits: '',
                 materialWidth: this.props.eBOMData.width,
-                materialWidthUnits: 'string',
+                materialWidthUnits: '',
                 materialHeight: this.props.eBOMData.height,
-                materialHeightUnits: 'string',
+                materialHeightUnits: '',
                 materialTempLimits: this.props.eBOMData.temperatureLimits,
                 materialVibrationLimits: this.props.eBOMData.shockVibration,
-                materialAlwaysUpRight: this.props.eBOMData.alwaysUpright,
                 materialAltitudeRestrictions: this.props.eBOMData.altitudeRestrictions,
                 materialCompressionRestrictions: this.props.eBOMData.compressionRestrictions,
-                materialOther: [
-                    'metallic: ' + this.props.eBOMData.metallic,
-                    'hazmat: ' + this.props.eBOMData.hazmat,
-                    'magnetic: ' + this.props.eBOMData.magnetic
-                ],
                 materialLengthTolerance: this.props.eBOMData.lengthTolerance,
                 materialRoundTolerance: this.props.eBOMData.roundTolerance,
                 materialNonSkidTolerance: this.props.eBOMData.nonSkidTolerance,
-                materialGoesInto: 'string',
-                materialProductionYield: 'string',
-                materialOrderLeadTime: 'string',
-                materialShippingLeadTime: 'string',
-                materialProductionSetupTime: 'string',
-                materialProductionChangeOverTime: 'string',
-                materialProductionRate: 'string',
-                materialCADFile: 'string',
-                materialCAMFile: 'string',
-                materialPrinterFile: 'string',
-                materialQualitySpec: [
-                    'string'
-                ],
-                materialMinimumEconomicProductionQuantity: 'string',
-                materialMaximumEconomicProductionQuantity: 'string',
-                materialProductionExpiditeFee: 'string',
-                materialProductionSlowDownFee: 'string',
-                materialMaximumProductionLeadTime: 'string',
-                materialMinimumProductionLeadTime: 'string',
-                materialLeadTimeViolationFee: 'string'
-            }
+                materialAlwaysUpRight: this.props.eBOMData.alwaysUpright,
+                materialOther: {
+                    metallic: this.props.eBOMData.metallic,
+                    hazmat: this.props.eBOMData.hazmat,
+                    magnetic: this.props.eBOMData.magnetic
+                }
+            },
+            supplierOrderQuantitiesControls: {
+                minimumEconomicOrderQuantity: this.props.eBOMData.minEOQuantities,
+                maximumEconomicOrderQuantity: this.props.eBOMData.maxEOQuantities,
+                maximumEconomicProductWithdrawRate: this.props.eBOMData.maxEPWithdrawRate,
+                minimumOrderLeadTime: this.props.eBOMData.minOrderLeadTimes
+            },
+            inbound: inbound
         };
         Promise.resolve(this.props.createMasterDataKeys(data))
             .then(() => {
@@ -329,7 +307,6 @@ class BillOfMaterialsReview extends React.Component {
     }
 
 }
-
 
 const mapStateToProps = (state) => {
     return {

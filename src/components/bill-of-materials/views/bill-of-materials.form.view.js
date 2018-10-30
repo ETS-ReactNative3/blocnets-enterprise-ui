@@ -54,19 +54,19 @@ class BillOfMaterialsForm extends React.Component {
             partNo: this.props.eBOMData.partNo ? this.props.eBOMData.partNo : '',
             partName: this.props.eBOMData.partName ? this.props.eBOMData.partName : '',
             partDescription: this.props.eBOMData.partDescription ? this.props.eBOMData.partDescription : '',
-            materialCompanyName: this.props.eBOMData.materialCompanyName ? this.props.eBOMData.materialCompanyName : '',
-            materialCountry: this.props.eBOMData.materialCountry ? this.props.eBOMData.materialCountry : '',
-            errorTextMaterialCountry: this.props.eBOMData.materialCountry ? '' : 'This is a required field.',
-            materialAddressLine1: this.props.eBOMData.materialAddressLine1 ? this.props.eBOMData.materialAddressLine1 : '',
-            errorTextMaterialAddressLine1: this.props.eBOMData.materialAddressLine1 ? '' : 'This is a required field.',
-            materialAddressLine2: this.props.eBOMData.materialAddressLine2 ? this.props.eBOMData.materialAddressLine2 : '',
-            materialCity: this.props.eBOMData.materialCity ? this.props.eBOMData.materialCity : '',
-            errorTextMaterialCity: this.props.eBOMData.materialCity ? '' : 'This is a required field.',
-            materialStateProvince: this.props.eBOMData.materialStateProvince ? this.props.eBOMData.materialStateProvince : '',
-            errorTextMaterialStateProvince: this.props.eBOMData.materialStateProvince ? '' : 'This is a required field.',
-            materialPostalCode: this.props.eBOMData.materialPostalCode ? this.props.eBOMData.materialPostalCode : '',
-            errorTextMaterialPostalCode: this.props.eBOMData.materialPostalCode ? '' : 'This is a required field.',
-            materialIPAddress: this.props.eBOMData.materialIPAddress ? this.props.eBOMData.materialIPAddress : '',
+            outboundCompanyName: this.props.eBOMData.outboundCompanyName ? this.props.eBOMData.outboundCompanyName : '',
+            outboundCountry: this.props.eBOMData.outboundCountry ? this.props.eBOMData.outboundCountry : '',
+            errorTextOutboundCountry: this.props.eBOMData.outboundCountry ? '' : 'This is a required field.',
+            outboundAddressLine1: this.props.eBOMData.outboundAddressLine1 ? this.props.eBOMData.outboundAddressLine1 : '',
+            errorTextOutboundAddressLine1: this.props.eBOMData.outboundAddressLine1 ? '' : 'This is a required field.',
+            outboundAddressLine2: this.props.eBOMData.outboundAddressLine2 ? this.props.eBOMData.outboundAddressLine2 : '',
+            outboundCity: this.props.eBOMData.outboundCity ? this.props.eBOMData.outboundCity : '',
+            errorTextOutboundCity: this.props.eBOMData.outboundCity ? '' : 'This is a required field.',
+            outboundStateProvince: this.props.eBOMData.outboundStateProvince ? this.props.eBOMData.outboundStateProvince : '',
+            errorTextOutboundStateProvince: this.props.eBOMData.outboundStateProvince ? '' : 'This is a required field.',
+            outboundPostalCode: this.props.eBOMData.outboundPostalCode ? this.props.eBOMData.outboundPostalCode : '',
+            errorTextOutboundPostalCode: this.props.eBOMData.outboundPostalCode ? '' : 'This is a required field.',
+            outboundIPAddress: this.props.eBOMData.outboundIPAddress ? this.props.eBOMData.outboundIPAddress : '',
             outboundList: this.props.eBOMData.outboundList ? this.props.eBOMData.outboundList : [],
             volume: this.props.eBOMData.volume ? this.props.eBOMData.volume : '',
             weight: this.props.eBOMData.weight ? this.props.eBOMData.weight : '',
@@ -92,15 +92,15 @@ class BillOfMaterialsForm extends React.Component {
             maxEOQuantities: this.props.eBOMData.maxEOQuantities ? this.props.eBOMData.maxEOQuantities : '',
             maxEPWithdrawRate: this.props.eBOMData.maxEPWithdrawRate ? this.props.eBOMData.maxEPWithdrawRate : '',
             minOrderLeadTimes: this.props.eBOMData.minOrderLeadTimes ? this.props.eBOMData.minOrderLeadTimes : '',
-            country: this.props.eBOMData.country ? this.props.eBOMData.country : '',
-            addressLine1: this.props.eBOMData.addressLine1 ? this.props.eBOMData.addressLine1 : '',
-            addressLine2: this.props.eBOMData.addressLine2 ? this.props.eBOMData.addressLine2 : '',
-            city: this.props.eBOMData.city ? this.props.eBOMData.city : '',
-            stateProvince: this.props.eBOMData.stateProvince ? this.props.eBOMData.stateProvince : '',
-            postalCode: this.props.eBOMData.postalCode ? this.props.eBOMData.postalCode : '',
-            supPaymentTerms: this.props.eBOMData.supPaymentTerms ? this.props.eBOMData.supPaymentTerms : '',
-            supplierMaterialID: this.props.eBOMData.supplierMaterialID ? this.props.eBOMData.supplierMaterialID : '',
-            supplierQuantity: this.props.eBOMData.supplierQuantity ? this.props.eBOMData.supplierQuantity : '',
+            inboundCountry: this.props.eBOMData.inboundCountry ? this.props.eBOMData.inboundcountry : '',
+            inboundAddressLine1: this.props.eBOMData.inboundAddressLine1 ? this.props.eBOMData.inboundAddressLine1 : '',
+            inboundAddressLine2: this.props.eBOMData.inboundAddressLine2 ? this.props.eBOMData.inboundAddressLine2 : '',
+            inboundCity: this.props.eBOMData.inboundCity ? this.props.eBOMData.inboundCity : '',
+            inboundStateProvince: this.props.eBOMData.inboundStateProvince ? this.props.eBOMData.inboundStateProvince : '',
+            inboundPostalCode: this.props.eBOMData.inboundPostalCode ? this.props.eBOMData.inboundPostalCode : '',
+            inboundSupplierPaymentTerms: this.props.eBOMData.inboundSupplierPaymentTerms ? this.props.eBOMData.inboundSupplierPaymentTerms : '',
+            inboundMaterialID: this.props.eBOMData.inboundMaterialID ? this.props.eBOMData.inboundMaterialID : '',
+            inboundQuantity: this.props.eBOMData.inboundQuantity ? this.props.eBOMData.inboundQuantity : '',
             inboundList: this.props.eBOMData.inboundList ? this.props.eBOMData.inboundList : [],
             snackbar: this.props.snackbar
         };
@@ -118,41 +118,41 @@ class BillOfMaterialsForm extends React.Component {
         } else if ([event.target.name].toString() === 'materialName' && !event.target.value) {
             this.setState({ errorTextMaterialName: 'This is a required field.' });
         }
-        if ([event.target.name].toString() === 'materialCountry' && event.target.value) {
+        if ([event.target.name].toString() === 'outboundCountry' && event.target.value) {
             this.setState({
-                errorTextMaterialCountry: '',
-                materialStateProvince: '',
-                errorTextMaterialStateProvince: 'This is a required field.'
+                errorTextOutboundCountry: '',
+                outboundStateProvince: '',
+                errorTextOutboundStateProvince: 'This is a required field.'
             });
-        } else if ([event.target.name].toString() === 'materialCountry' && !event.target.value) {
+        } else if ([event.target.name].toString() === 'outboundCountry' && !event.target.value) {
             this.setState({
-                errorTextMaterialCountry: 'This is a required field.',
-                materialStateProvince: '',
-                errorTextMaterialStateProvince: 'This is a required field.'
+                errorTextOutboundCountry: 'This is a required field.',
+                outboundStateProvince: '',
+                errorTextOutboundStateProvince: 'This is a required field.'
             });
         }
-        if ([event.target.name].toString() === 'materialAddressLine1' && event.target.value) {
-            this.setState({ errorTextMaterialAddressLine1: '' });
-        } else if ([event.target.name].toString() === 'materialAddressLine1' && !event.target.value) {
-            this.setState({ errorTextMaterialAddressLine1: 'This is a required field.' });
+        if ([event.target.name].toString() === 'outboundAddressLine1' && event.target.value) {
+            this.setState({ errorTextOutboundAddressLine1: '' });
+        } else if ([event.target.name].toString() === 'outboundAddressLine1' && !event.target.value) {
+            this.setState({ errorTextOutboundAddressLine1: 'This is a required field.' });
         }
-        if ([event.target.name].toString() === 'materialCity' && event.target.value) {
-            this.setState({ errorTextMaterialCity: '' });
-        } else if ([event.target.name].toString() === 'materialCity' && !event.target.value) {
-            this.setState({ errorTextMaterialCity: 'This is a required field.' });
+        if ([event.target.name].toString() === 'outboundCity' && event.target.value) {
+            this.setState({ errorTextOutboundCity: '' });
+        } else if ([event.target.name].toString() === 'outboundCity' && !event.target.value) {
+            this.setState({ errorTextOutboundCity: 'This is a required field.' });
         }
-        if ([event.target.name].toString() === 'materialStateProvince' && event.target.value) {
-            this.setState({ errorTextMaterialStateProvince: '' });
-        } else if ([event.target.name].toString() === 'materialStateProvince' && !event.target.value) {
-            this.setState({ errorTextMaterialStateProvince: 'This is a required field.' });
+        if ([event.target.name].toString() === 'outboundStateProvince' && event.target.value) {
+            this.setState({ errorTextOutboundStateProvince: '' });
+        } else if ([event.target.name].toString() === 'outboundStateProvince' && !event.target.value) {
+            this.setState({ errorTextOutboundStateProvince: 'This is a required field.' });
         }
-        if ([event.target.name].toString() === 'materialPostalCode' && event.target.value) {
-            this.setState({ errorTextMaterialPostalCode: '' });
-        } else if ([event.target.name].toString() === 'materialPostalCode' && !event.target.value) {
-            this.setState({ errorTextMaterialPostalCode: 'This is a required field.' });
+        if ([event.target.name].toString() === 'outboundPostalCode' && event.target.value) {
+            this.setState({ errorTextOutboundPostalCode: '' });
+        } else if ([event.target.name].toString() === 'outboundPostalCode' && !event.target.value) {
+            this.setState({ errorTextOutboundPostalCode: 'This is a required field.' });
         }
-        if ([event.target.name].toString() === 'country') {
-            this.setState({ stateProvince: '' });
+        if ([event.target.name].toString() === 'inboundCountry') {
+            this.setState({ inboundStateProvince: '' });
         }
     };
 
@@ -207,13 +207,13 @@ class BillOfMaterialsForm extends React.Component {
     handleAdditionOutbound = (event) => {
         let outboundList = this.state.outboundList;
         let outboundList2 = {
-            materialCompanyName: '',
-            materialCountry: '',
-            materialAddressLine1: '',
-            materialAddressLine2: '',
-            materialCity: '',
-            materialStateProvince: '',
-            materialPostalCode: ''
+            outboundCompanyName: '',
+            outboundCountry: '',
+            outboundAddressLine1: '',
+            outboundAddressLine2: '',
+            outboundCity: '',
+            outboundStateProvince: '',
+            outboundPostalCode: ''
         };
         let outboundListFinal = outboundList.concat(outboundList2);
         this.setState({ outboundList: outboundListFinal })
@@ -229,42 +229,42 @@ class BillOfMaterialsForm extends React.Component {
 
     handleTextOutbound = (index) => (event) => {
         let outboundList = [...this.state.outboundList];
-        if ([event.target.name].toString() === 'materialCompanyNameList' && event.target.value) {
-            outboundList[index].materialCompanyName = event.target.value;
-        } else if ([event.target.name].toString() === 'materialCompanyNameList' && !event.target.value) {
-            outboundList[index].materialCompanyName = '';
+        if ([event.target.name].toString() === 'outboundCompanyNameList' && event.target.value) {
+            outboundList[index].outboundCompanyName = event.target.value;
+        } else if ([event.target.name].toString() === 'outboundCompanyNameList' && !event.target.value) {
+            outboundList[index].outboundCompanyName = '';
         }
-        if ([event.target.name].toString() === 'materialCountryList' && event.target.value) {
-            outboundList[index].materialCountry = event.target.value;
-            outboundList[index].materialStateProvince = '';
-        } else if ([event.target.name].toString() === 'materialCountryList' && !event.target.value) {
-            outboundList[index].materialCountry = '';
-            outboundList[index].materialStateProvince = '';
+        if ([event.target.name].toString() === 'outboundCountryList' && event.target.value) {
+            outboundList[index].outboundCountry = event.target.value;
+            outboundList[index].outboundStateProvince = '';
+        } else if ([event.target.name].toString() === 'outboundCountryList' && !event.target.value) {
+            outboundList[index].outboundCountry = '';
+            outboundList[index].outboundStateProvince = '';
         }
-        if ([event.target.name].toString() === 'materialAddressLine1List' && event.target.value) {
-            outboundList[index].materialAddressLine1 = event.target.value;
-        } else if ([event.target.name].toString() === 'materialAddressLine1List' && !event.target.value) {
-            outboundList[index].materialAddressLine1 = '';
+        if ([event.target.name].toString() === 'outboundAddressLine1List' && event.target.value) {
+            outboundList[index].outboundAddressLine1 = event.target.value;
+        } else if ([event.target.name].toString() === 'outboundAddressLine1List' && !event.target.value) {
+            outboundList[index].outboundAddressLine1 = '';
         }
-        if ([event.target.name].toString() === 'materialAddressLine2List' && event.target.value) {
-            outboundList[index].materialAddressLine2 = event.target.value;
-        } else if ([event.target.name].toString() === 'materialAddressLine2List' && !event.target.value) {
-            outboundList[index].materialAddressLine2 = '';
+        if ([event.target.name].toString() === 'outboundAddressLine2List' && event.target.value) {
+            outboundList[index].outboundAddressLine2 = event.target.value;
+        } else if ([event.target.name].toString() === 'outboundAddressLine2List' && !event.target.value) {
+            outboundList[index].outboundAddressLine2 = '';
         }
-        if ([event.target.name].toString() === 'materialCityList' && event.target.value) {
-            outboundList[index].materialCity = event.target.value;
-        } else if ([event.target.name].toString() === 'materialCityList' && !event.target.value) {
-            outboundList[index].materialCity = '';
+        if ([event.target.name].toString() === 'outboundCityList' && event.target.value) {
+            outboundList[index].outboundCity = event.target.value;
+        } else if ([event.target.name].toString() === 'outboundCityList' && !event.target.value) {
+            outboundList[index].outboundCity = '';
         }
-        if ([event.target.name].toString() === 'materialStateProvinceList' && event.target.value) {
-            outboundList[index].materialStateProvince = event.target.value;
-        } else if ([event.target.name].toString() === 'materialStateProvinceList' && !event.target.value) {
-            outboundList[index].materialStateProvince = '';
+        if ([event.target.name].toString() === 'outboundStateProvinceList' && event.target.value) {
+            outboundList[index].outboundStateProvince = event.target.value;
+        } else if ([event.target.name].toString() === 'outboundStateProvinceList' && !event.target.value) {
+            outboundList[index].outboundStateProvince = '';
         }
-        if ([event.target.name].toString() === 'materialPostalCodeList' && event.target.value) {
-            outboundList[index].materialPostalCode = event.target.value;
-        } else if ([event.target.name].toString() === 'materialPostalCodeList' && !event.target.value) {
-            outboundList[index].materialPostalCode = '';
+        if ([event.target.name].toString() === 'outboundPostalCodeList' && event.target.value) {
+            outboundList[index].outboundPostalCode = event.target.value;
+        } else if ([event.target.name].toString() === 'outboundPostalCodeList' && !event.target.value) {
+            outboundList[index].outboundPostalCode = '';
         }
         this.setState({ outboundList: outboundList });
     };
@@ -272,15 +272,15 @@ class BillOfMaterialsForm extends React.Component {
     handleAdditionInbound = (event) => {
         let inboundList = this.state.inboundList;
         let inboundList2 = {
-            country: '',
-            addressLine1: '',
-            addressLine2: '',
-            city: '',
-            stateProvince: '',
-            postalCode: '',
-            supPaymentTerms: '',
-            supplierMaterialID: '',
-            supplierQuantity: ''
+            inboundCountry: '',
+            inboundAddressLine1: '',
+            inboundAddressLine2: '',
+            inboundCity: '',
+            inboundStateProvince: '',
+            inboundPostalCode: '',
+            inboundSupplierPaymentTerms: '',
+            inboundMaterialID: '',
+            inboundQuantity: ''
         };
         let inboundListFinal = inboundList.concat(inboundList2);
         this.setState({ inboundList: inboundListFinal })
@@ -296,52 +296,52 @@ class BillOfMaterialsForm extends React.Component {
 
     handleTextInbound = (index) => (event) => {
         let inboundList = [...this.state.inboundList];
-        if ([event.target.name].toString() === 'countryList' && event.target.value) {
-            inboundList[index].country = event.target.value;
-            inboundList[index].stateProvince = '';
-        } else if ([event.target.name].toString() === 'countryList' && !event.target.value) {
-            inboundList[index].country = '';
-            inboundList[index].stateProvince = '';
+        if ([event.target.name].toString() === 'inboundCountryList' && event.target.value) {
+            inboundList[index].inboundCountry = event.target.value;
+            inboundList[index].inboundStateProvince = '';
+        } else if ([event.target.name].toString() === 'inboundCountryList' && !event.target.value) {
+            inboundList[index].inboundCountry = '';
+            inboundList[index].inboundStateProvince = '';
         }
-        if ([event.target.name].toString() === 'addressLine1List' && event.target.value) {
-            inboundList[index].addressLine1 = event.target.value;
-        } else if ([event.target.name].toString() === 'addressLine1List' && !event.target.value) {
-            inboundList[index].addressLine1 = '';
+        if ([event.target.name].toString() === 'inboundAddressLine1List' && event.target.value) {
+            inboundList[index].inboundAddressLine1 = event.target.value;
+        } else if ([event.target.name].toString() === 'inboundAddressLine1List' && !event.target.value) {
+            inboundList[index].inboundAddressLine1 = '';
         }
-        if ([event.target.name].toString() === 'addressLine2List' && event.target.value) {
-            inboundList[index].addressLine2 = event.target.value;
-        } else if ([event.target.name].toString() === 'addressLine2List' && !event.target.value) {
-            inboundList[index].addressLine2 = '';
+        if ([event.target.name].toString() === 'inboundAddressLine2List' && event.target.value) {
+            inboundList[index].inboundAddressLine2 = event.target.value;
+        } else if ([event.target.name].toString() === 'inboundAddressLine2List' && !event.target.value) {
+            inboundList[index].inboundAddressLine2 = '';
         }
-        if ([event.target.name].toString() === 'cityList' && event.target.value) {
-            inboundList[index].city = event.target.value;
-        } else if ([event.target.name].toString() === 'cityList' && !event.target.value) {
-            inboundList[index].city = '';
+        if ([event.target.name].toString() === 'inboundCityList' && event.target.value) {
+            inboundList[index].inboundCity = event.target.value;
+        } else if ([event.target.name].toString() === 'inboundCityList' && !event.target.value) {
+            inboundList[index].inboundCity = '';
         }
-        if ([event.target.name].toString() === 'stateProvinceList' && event.target.value) {
-            inboundList[index].stateProvince = event.target.value;
-        } else if ([event.target.name].toString() === 'stateProvinceList' && !event.target.value) {
-            inboundList[index].stateProvince = '';
+        if ([event.target.name].toString() === 'inboundStateProvinceList' && event.target.value) {
+            inboundList[index].inboundStateProvince = event.target.value;
+        } else if ([event.target.name].toString() === 'inboundStateProvinceList' && !event.target.value) {
+            inboundList[index].inboundStateProvince = '';
         }
-        if ([event.target.name].toString() === 'postalCodeList' && event.target.value) {
-            inboundList[index].postalCode = event.target.value;
-        } else if ([event.target.name].toString() === 'postalCodeList' && !event.target.value) {
-            inboundList[index].postalCode = '';
+        if ([event.target.name].toString() === 'inboundPostalCodeList' && event.target.value) {
+            inboundList[index].inboundPostalCode = event.target.value;
+        } else if ([event.target.name].toString() === 'inboundPostalCodeList' && !event.target.value) {
+            inboundList[index].inboundPostalCode = '';
         }
-        if ([event.target.name].toString() === 'supPaymentTermsList' && event.target.value) {
-            inboundList[index].supPaymentTerms = event.target.value;
-        } else if ([event.target.name].toString() === 'supPaymentTermsList' && !event.target.value) {
-            inboundList[index].supPaymentTerms = '';
+        if ([event.target.name].toString() === 'inboundSupplierPaymentTermsList' && event.target.value) {
+            inboundList[index].inboundSupplierPaymentTerms = event.target.value;
+        } else if ([event.target.name].toString() === 'inboundSupplierPaymentTermsList' && !event.target.value) {
+            inboundList[index].inboundSupplierPaymentTerms = '';
         }
-        if ([event.target.name].toString() === 'supplierMaterialIDList' && event.target.value) {
-            inboundList[index].supplierMaterialID = event.target.value;
-        } else if ([event.target.name].toString() === 'supplierMaterialIDList' && !event.target.value) {
-            inboundList[index].supplierMaterialID = '';
+        if ([event.target.name].toString() === 'inboundMaterialIDList' && event.target.value) {
+            inboundList[index].inboundMaterialID = event.target.value;
+        } else if ([event.target.name].toString() === 'inboundMaterialIDList' && !event.target.value) {
+            inboundList[index].inboundMaterialID = '';
         }
-        if ([event.target.name].toString() === 'supplierQuantityList' && event.target.value) {
-            inboundList[index].supplierQuantity = event.target.value;
-        } else if ([event.target.name].toString() === 'supplierQuantityList' && !event.target.value) {
-            inboundList[index].supplierQuantity = '';
+        if ([event.target.name].toString() === 'inboundQuantityList' && event.target.value) {
+            inboundList[index].inboundQuantity = event.target.value;
+        } else if ([event.target.name].toString() === 'inboundQuantityList' && !event.target.value) {
+            inboundList[index].inboundQuantity = '';
         }
         this.setState({ inboundList: inboundList });
     };
@@ -356,9 +356,9 @@ class BillOfMaterialsForm extends React.Component {
 
     render() {
 
-        const formComplete = this.state.materialID && this.state.materialName && this.state.materialCountry &&
-            this.state.materialAddressLine1 && this.state.materialCity &&
-            this.state.materialStateProvince && this.state.materialPostalCode;
+        const formComplete = this.state.materialID && this.state.materialName && this.state.outboundCountry &&
+            this.state.outboundAddressLine1 && this.state.outboundCity &&
+            this.state.outboundStateProvince && this.state.outboundPostalCode;
 
         return (
             <div>
@@ -477,12 +477,12 @@ class BillOfMaterialsForm extends React.Component {
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='text'
-                                name='materialCompanyName'
+                                name='outboundCompanyName'
                                 floatingLabelText='Company Name'
                                 floatingLabelFixed={true}
                                 className='Module-TextField'
                                 hintText=''
-                                value={this.state.materialCompanyName}
+                                value={this.state.outboundCompanyName}
                                 onChange={this.handleChange}
                             />
                         </Grid>
@@ -496,40 +496,40 @@ class BillOfMaterialsForm extends React.Component {
                         <Grid container item xs={6} sm={3}>
                             <FormControl fullWidth={true}>
                                 <InputLabel>Country</InputLabel>
-                                <Select value={this.state.materialCountry} onChange={this.handleChange}
-                                        input={<Input name='materialCountry' className='Mobile-MenuItem' />}
+                                <Select value={this.state.outboundCountry} onChange={this.handleChange}
+                                        input={<Input name='outboundCountry' className='Mobile-MenuItem' />}
                                         displayEmpty>
                                     {this.state.countryMenuItems.map((menuItem, i) => {
                                         return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
                                     })}
                                 </Select>
                                 <FormHelperText className='TT-Font-Red'>
-                                    {this.state.errorTextMaterialCountry}
+                                    {this.state.errorTextOutboundCountry}
                                 </FormHelperText>
                             </FormControl>
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='text'
-                                name='materialAddressLine1'
+                                name='outboundAddressLine1'
                                 floatingLabelText='Address'
                                 floatingLabelFixed={true}
                                 className='BOM-TextField'
                                 hintText=''
-                                value={this.state.materialAddressLine1}
+                                value={this.state.outboundAddressLine1}
                                 onChange={this.handleChange}
-                                errorText={this.state.errorTextMaterialAddressLine1}
+                                errorText={this.state.errorTextOutboundAddressLine1}
                             />
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='text'
-                                name='materialAddressLine2'
+                                name='outboundAddressLine2'
                                 floatingLabelText='Address Line 2'
                                 floatingLabelFixed={true}
                                 className='BOM-TextField'
                                 hintText=''
-                                value={this.state.materialAddressLine2}
+                                value={this.state.outboundAddressLine2}
                                 onChange={this.handleChange}
                             />
                         </Grid>
@@ -539,29 +539,29 @@ class BillOfMaterialsForm extends React.Component {
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='text'
-                                name='materialCity'
+                                name='outboundCity'
                                 floatingLabelText='City'
                                 floatingLabelFixed={true}
                                 className='BOM-TextField'
                                 hintText=''
-                                value={this.state.materialCity}
+                                value={this.state.outboundCity}
                                 onChange={this.handleChange}
-                                errorText={this.state.errorTextMaterialCity}
+                                errorText={this.state.errorTextOutboundCity}
                             />
                         </Grid>
-                        {this.state.materialCountry === 'United States' ?
+                        {this.state.outboundCountry === 'United States' ?
                             <Grid container item xs={6} sm={3}>
                                 <FormControl fullWidth={true}>
                                     <InputLabel>State/Province</InputLabel>
-                                    <Select value={this.state.materialStateProvince} onChange={this.handleChange}
-                                            input={<Input name='materialStateProvince' className='Mobile-MenuItem' />}
+                                    <Select value={this.state.outboundStateProvince} onChange={this.handleChange}
+                                            input={<Input name='outboundStateProvince' className='Mobile-MenuItem' />}
                                             displayEmpty>
                                         {this.state.usStatesMenuItems.map((menuItem, i) => {
                                             return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
                                         })}
                                     </Select>
                                     <FormHelperText className='TT-Font-Red'>
-                                        {this.state.errorTextMaterialStateProvince}
+                                        {this.state.errorTextOutboundStateProvince}
                                     </FormHelperText>
                                 </FormControl>
                             </Grid>
@@ -569,28 +569,28 @@ class BillOfMaterialsForm extends React.Component {
                             <Grid container item xs={6} sm={3}>
                                 <TextField
                                     type='text'
-                                    name='materialStateProvince'
+                                    name='outboundStateProvince'
                                     floatingLabelText='State/Province'
                                     floatingLabelFixed={true}
                                     className='BOM-TextField'
                                     hintText=''
-                                    value={this.state.materialStateProvince}
+                                    value={this.state.outboundStateProvince}
                                     onChange={this.handleChange}
-                                    errorText={this.state.errorTextMaterialStateProvince}
+                                    errorText={this.state.errorTextOutboundStateProvince}
                                 />
                             </Grid>
                         }
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='text'
-                                name='materialPostalCode'
+                                name='outboundPostalCode'
                                 floatingLabelText='Postal Code'
                                 floatingLabelFixed={true}
                                 className='BOM-TextField'
                                 hintText=''
-                                value={this.state.materialPostalCode}
+                                value={this.state.outboundPostalCode}
                                 onChange={this.handleChange}
-                                errorText={this.state.errorTextMaterialPostalCode}
+                                errorText={this.state.errorTextOutboundPostalCode}
                             />
                         </Grid>
                     </Grid>
@@ -604,12 +604,12 @@ class BillOfMaterialsForm extends React.Component {
                                 <Grid container item xs={6} sm={3}>
                                     <TextField
                                         type='text'
-                                        name='materialCompanyNameList'
+                                        name='outboundCompanyNameList'
                                         floatingLabelText='Company Name'
                                         floatingLabelFixed={true}
                                         className='Module-TextField'
                                         hintText=''
-                                        value={outboundList.materialCompanyName}
+                                        value={outboundList.outboundCompanyName}
                                         onChange={this.handleTextOutbound(index)}
                                     />
                                 </Grid>
@@ -623,9 +623,9 @@ class BillOfMaterialsForm extends React.Component {
                                 <Grid container item xs={6} sm={3}>
                                     <FormControl fullWidth={true}>
                                         <InputLabel>Country</InputLabel>
-                                        <Select value={outboundList.materialCountry}
+                                        <Select value={outboundList.outboundCountry}
                                                 onChange={this.handleTextOutbound(index)}
-                                                input={<Input name='materialCountryList' className='Mobile-MenuItem' />}
+                                                input={<Input name='outboundCountryList' className='Mobile-MenuItem' />}
                                                 displayEmpty>
                                             {this.state.countryMenuItems.map((menuItem, i) => {
                                                 return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
@@ -636,24 +636,24 @@ class BillOfMaterialsForm extends React.Component {
                                 <Grid container item xs={6} sm={3}>
                                     <TextField
                                         type='text'
-                                        name='materialAddressLine1List'
+                                        name='outboundAddressLine1List'
                                         floatingLabelText='Address'
                                         floatingLabelFixed={true}
                                         className='BOM-TextField'
                                         hintText=''
-                                        value={outboundList.materialAddressLine1}
+                                        value={outboundList.outboundAddressLine1}
                                         onChange={this.handleTextOutbound(index)}
                                     />
                                 </Grid>
                                 <Grid container item xs={6} sm={3}>
                                     <TextField
                                         type='text'
-                                        name='materialAddressLine2List'
+                                        name='outboundAddressLine2List'
                                         floatingLabelText='Address Line 2'
                                         floatingLabelFixed={true}
                                         className='BOM-TextField'
                                         hintText=''
-                                        value={outboundList.materialAddressLine2}
+                                        value={outboundList.outboundAddressLine2}
                                         onChange={this.handleTextOutbound(index)}
                                     />
                                 </Grid>
@@ -663,22 +663,22 @@ class BillOfMaterialsForm extends React.Component {
                                 <Grid container item xs={6} sm={3}>
                                     <TextField
                                         type='text'
-                                        name='materialCityList'
+                                        name='outboundCityList'
                                         floatingLabelText='City'
                                         floatingLabelFixed={true}
                                         className='BOM-TextField'
                                         hintText=''
-                                        value={outboundList.materialCity}
+                                        value={outboundList.outboundCity}
                                         onChange={this.handleTextOutbound(index)}
                                     />
                                 </Grid>
-                                {outboundList.materialCountry === 'United States' ?
+                                {outboundList.outboundCountry === 'United States' ?
                                     <Grid container item xs={6} sm={3}>
                                         <FormControl fullWidth={true}>
                                             <InputLabel>State/Province</InputLabel>
-                                            <Select value={outboundList.materialStateProvince}
+                                            <Select value={outboundList.outboundStateProvince}
                                                     onChange={this.handleTextOutbound(index)}
-                                                    input={<Input name='materialStateProvinceList'
+                                                    input={<Input name='outboundStateProvinceList'
                                                                   className='Mobile-MenuItem' />}
                                                     displayEmpty>
                                                 {this.state.usStatesMenuItems.map((menuItem, i) => {
@@ -691,12 +691,12 @@ class BillOfMaterialsForm extends React.Component {
                                     <Grid container item xs={6} sm={3}>
                                         <TextField
                                             type='text'
-                                            name='materialStateProvinceList'
+                                            name='outboundStateProvinceList'
                                             floatingLabelText='State/Province'
                                             floatingLabelFixed={true}
                                             className='BOM-TextField'
                                             hintText=''
-                                            value={outboundList.materialStateProvince}
+                                            value={outboundList.outboundStateProvince}
                                             onChange={this.handleTextOutbound(index)}
                                         />
                                     </Grid>
@@ -704,12 +704,12 @@ class BillOfMaterialsForm extends React.Component {
                                 <Grid container item xs={6} sm={3}>
                                     <TextField
                                         type='text'
-                                        name='materialPostalCodeList'
+                                        name='outboundPostalCodeList'
                                         floatingLabelText='Postal Code'
                                         floatingLabelFixed={true}
                                         className='BOM-TextField'
                                         hintText=''
-                                        value={outboundList.materialPostalCode}
+                                        value={outboundList.outboundPostalCode}
                                         onChange={this.handleTextOutbound(index)}
                                     />
                                 </Grid>
@@ -1033,8 +1033,8 @@ class BillOfMaterialsForm extends React.Component {
                         <Grid container item xs={6} sm={3}>
                             <FormControl fullWidth={true}>
                                 <InputLabel>Country</InputLabel>
-                                <Select value={this.state.country} onChange={this.handleChange}
-                                        input={<Input name='country' className='Mobile-MenuItem' />}
+                                <Select value={this.state.inboundCountry} onChange={this.handleChange}
+                                        input={<Input name='inboundCountry' className='Mobile-MenuItem' />}
                                         displayEmpty>
                                     {this.state.countryMenuItems.map((menuItem, i) => {
                                         return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
@@ -1045,24 +1045,24 @@ class BillOfMaterialsForm extends React.Component {
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='text'
-                                name='addressLine1'
+                                name='inboundAddressLine1'
                                 floatingLabelText='Address'
                                 floatingLabelFixed={true}
                                 className='BOM-TextField'
                                 hintText=''
-                                value={this.state.addressLine1}
+                                value={this.state.inboundAddressLine1}
                                 onChange={this.handleChange}
                             />
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='text'
-                                name='addressLine2'
+                                name='inboundAddressLine2'
                                 floatingLabelText='Address Line 2'
                                 floatingLabelFixed={true}
                                 className='BOM-TextField'
                                 hintText=''
-                                value={this.state.addressLine2}
+                                value={this.state.inboundAddressLine2}
                                 onChange={this.handleChange}
                             />
                         </Grid>
@@ -1076,21 +1076,21 @@ class BillOfMaterialsForm extends React.Component {
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='text'
-                                name='city'
+                                name='inboundCity'
                                 floatingLabelText='City'
                                 floatingLabelFixed={true}
                                 className='BOM-TextField'
                                 hintText=''
-                                value={this.state.city}
+                                value={this.state.inboundCity}
                                 onChange={this.handleChange}
                             />
                         </Grid>
-                        {this.state.country === 'United States' ?
+                        {this.state.inboundCountry === 'United States' ?
                             <Grid container item xs={6} sm={3}>
                                 <FormControl fullWidth={true}>
                                     <InputLabel>State/Province</InputLabel>
-                                    <Select value={this.state.stateProvince} onChange={this.handleChange}
-                                            input={<Input name='stateProvince'
+                                    <Select value={this.state.inboundStateProvince} onChange={this.handleChange}
+                                            input={<Input name='inboundStateProvince'
                                                           className='Mobile-MenuItem' />}
                                             displayEmpty>
                                         {this.state.usStatesMenuItems.map((menuItem, i) => {
@@ -1103,12 +1103,12 @@ class BillOfMaterialsForm extends React.Component {
                             <Grid container item xs={6} sm={3}>
                                 <TextField
                                     type='text'
-                                    name='stateProvince'
+                                    name='inboundStateProvince'
                                     floatingLabelText='State/Province'
                                     floatingLabelFixed={true}
                                     className='BOM-TextField'
                                     hintText=''
-                                    value={this.state.stateProvince}
+                                    value={this.state.inboundStateProvince}
                                     onChange={this.handleChange}
                                 />
                             </Grid>
@@ -1116,12 +1116,12 @@ class BillOfMaterialsForm extends React.Component {
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='text'
-                                name='postalCode'
+                                name='inboundPostalCode'
                                 floatingLabelText='Postal Code'
                                 floatingLabelFixed={true}
                                 className='BOM-TextField'
                                 hintText=''
-                                value={this.state.postalCode}
+                                value={this.state.inboundPostalCode}
                                 onChange={this.handleChange}
                             />
                         </Grid>
@@ -1130,36 +1130,36 @@ class BillOfMaterialsForm extends React.Component {
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='text'
-                                name='supPaymentTerms'
+                                name='inboundSupplierPaymentTerms'
                                 floatingLabelText='Supplier Payment Terms'
                                 floatingLabelFixed={true}
                                 className='Module-TextField'
                                 hintText=''
-                                value={this.state.supPaymentTerms}
+                                value={this.state.inboundSupplierPaymentTerms}
                                 onChange={this.handleChange}
                             />
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='text'
-                                name='supplierMaterialID'
+                                name='inboundMaterialID'
                                 floatingLabelText='Material ID'
                                 floatingLabelFixed={true}
                                 className='Module-TextField'
                                 hintText=''
-                                value={this.state.supplierMaterialID}
+                                value={this.state.inboundMaterialID}
                                 onChange={this.handleChange}
                             />
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <TextField
                                 type='number'
-                                name='supplierQuantity'
+                                name='inboundQuantity'
                                 floatingLabelText='Quantity'
                                 floatingLabelFixed={true}
                                 className='Module-TextField'
                                 hintText=''
-                                value={this.state.supplierQuantity}
+                                value={this.state.inboundQuantity}
                                 onChange={this.handleChange}
                             />
                         </Grid>
@@ -1174,8 +1174,9 @@ class BillOfMaterialsForm extends React.Component {
                                 <Grid container item xs={6} sm={3}>
                                     <FormControl fullWidth={true}>
                                         <InputLabel>Country</InputLabel>
-                                        <Select value={inboundList.country} onChange={this.handleTextInbound(index)}
-                                                input={<Input name='countryList' className='Mobile-MenuItem' />}
+                                        <Select value={inboundList.inboundCountry}
+                                                onChange={this.handleTextInbound(index)}
+                                                input={<Input name='inboundCountryList' className='Mobile-MenuItem' />}
                                                 displayEmpty>
                                             {this.state.countryMenuItems.map((menuItem, i) => {
                                                 return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
@@ -1186,24 +1187,24 @@ class BillOfMaterialsForm extends React.Component {
                                 <Grid container item xs={6} sm={3}>
                                     <TextField
                                         type='text'
-                                        name='addressLine1List'
+                                        name='inboundAddressLine1List'
                                         floatingLabelText='Address'
                                         floatingLabelFixed={true}
                                         className='BOM-TextField'
                                         hintText=''
-                                        value={inboundList.addressLine1}
+                                        value={inboundList.inboundAddressLine1}
                                         onChange={this.handleTextInbound(index)}
                                     />
                                 </Grid>
                                 <Grid container item xs={6} sm={3}>
                                     <TextField
                                         type='text'
-                                        name='addressLine2List'
+                                        name='inboundAddressLine2List'
                                         floatingLabelText='Address Line 2'
                                         floatingLabelFixed={true}
                                         className='BOM-TextField'
                                         hintText=''
-                                        value={inboundList.addressLine2}
+                                        value={inboundList.inboundAddressLine2}
                                         onChange={this.handleTextInbound(index)}
                                     />
                                 </Grid>
@@ -1217,22 +1218,22 @@ class BillOfMaterialsForm extends React.Component {
                                 <Grid container item xs={6} sm={3}>
                                     <TextField
                                         type='text'
-                                        name='cityList'
+                                        name='inboundCityList'
                                         floatingLabelText='City'
                                         floatingLabelFixed={true}
                                         className='BOM-TextField'
                                         hintText=''
-                                        value={inboundList.city}
+                                        value={inboundList.inboundCity}
                                         onChange={this.handleTextInbound(index)}
                                     />
                                 </Grid>
-                                {inboundList.country === 'United States' ?
+                                {inboundList.inboundCountry === 'United States' ?
                                     <Grid container item xs={6} sm={3}>
                                         <FormControl fullWidth={true}>
                                             <InputLabel>State/Province</InputLabel>
-                                            <Select value={inboundList.stateProvince}
+                                            <Select value={inboundList.inboundStateProvince}
                                                     onChange={this.handleTextInbound(index)}
-                                                    input={<Input name='stateProvinceList'
+                                                    input={<Input name='inboundStateProvinceList'
                                                                   className='Mobile-MenuItem' />}
                                                     displayEmpty>
                                                 {this.state.usStatesMenuItems.map((menuItem, i) => {
@@ -1245,12 +1246,12 @@ class BillOfMaterialsForm extends React.Component {
                                     <Grid container item xs={6} sm={3}>
                                         <TextField
                                             type='text'
-                                            name='stateProvinceList'
+                                            name='inboundStateProvinceList'
                                             floatingLabelText='State/Province'
                                             floatingLabelFixed={true}
                                             className='BOM-TextField'
                                             hintText=''
-                                            value={inboundList.stateProvince}
+                                            value={inboundList.inboundStateProvince}
                                             onChange={this.handleTextInbound(index)}
                                         />
                                     </Grid>
@@ -1258,12 +1259,12 @@ class BillOfMaterialsForm extends React.Component {
                                 <Grid container item xs={6} sm={3}>
                                     <TextField
                                         type='text'
-                                        name='postalCodeList'
+                                        name='inboundPostalCodeList'
                                         floatingLabelText='Postal Code'
                                         floatingLabelFixed={true}
                                         className='BOM-TextField'
                                         hintText=''
-                                        value={inboundList.postalCode}
+                                        value={inboundList.inboundPostalCode}
                                         onChange={this.handleTextInbound(index)}
                                     />
                                 </Grid>
@@ -1272,36 +1273,36 @@ class BillOfMaterialsForm extends React.Component {
                                 <Grid container item xs={6} sm={3}>
                                     <TextField
                                         type='text'
-                                        name='supPaymentTermsList'
+                                        name='inboundSupplierPaymentTermsList'
                                         floatingLabelText='Supplier Payment Terms'
                                         floatingLabelFixed={true}
                                         className='Module-TextField'
                                         hintText=''
-                                        value={inboundList.supPaymentTerms}
+                                        value={inboundList.inboundSupplierPaymentTerms}
                                         onChange={this.handleTextInbound(index)}
                                     />
                                 </Grid>
                                 <Grid container item xs={6} sm={3}>
                                     <TextField
                                         type='text'
-                                        name='supplierMaterialIDList'
+                                        name='inboundMaterialIDList'
                                         floatingLabelText='Material ID'
                                         floatingLabelFixed={true}
                                         className='Module-TextField'
                                         hintText=''
-                                        value={inboundList.supplierMaterialID}
+                                        value={inboundList.inboundMaterialID}
                                         onChange={this.handleTextInbound(index)}
                                     />
                                 </Grid>
                                 <Grid container item xs={6} sm={3}>
                                     <TextField
                                         type='number'
-                                        name='supplierQuantityList'
+                                        name='inboundQuantityList'
                                         floatingLabelText='Quantity'
                                         floatingLabelFixed={true}
                                         className='Module-TextField'
                                         hintText=''
-                                        value={inboundList.supplierQuantity}
+                                        value={inboundList.inboundQuantity}
                                         onChange={this.handleTextInbound(index)}
                                     />
                                 </Grid>
@@ -1331,6 +1332,7 @@ class BillOfMaterialsForm extends React.Component {
         );
 
     }
+
 }
 
 export default BillOfMaterialsForm;
