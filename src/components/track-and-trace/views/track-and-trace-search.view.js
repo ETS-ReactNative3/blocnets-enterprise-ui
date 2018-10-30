@@ -34,6 +34,63 @@ function createData(info1, info2) {
     return { id: counter, info1, info2 };
 }
 
+function createTableContent(bomData) {
+    let tableContent = [
+        createData('Material ID', bomData.material.materialID),
+        createData('Material Name', bomData.material.materialName),
+        createData('Material Description', bomData.material.materialDescription)
+        /* RELEASE-90: Hide Part No., Part Name and Part Description fields.
+        createData('Part No.', eBOMData.material.partNo),
+        createData('Part Name', eBOMData.material.partName),
+        createData('Part Description', eBOMData.material.partDescription),
+        */
+    ];
+    if(bomData.outbound) {
+        for (let i = 0; i < bomData.outbound.length; i++) {
+            tableContent.push(createData('Company Name / Address', bomData.outbound[i].outboundCompanyName + ' / '
+                + bomData.outbound[i].outboundAddressLine1 + ' ' + bomData.outbound[i].outboundAddressLine2 + ' '
+                + bomData.outbound[i].outboundCity + ' ' + bomData.outbound[i].outboundStateProvince + ' '
+                + bomData.outbound[i].outboundPostalCode + ' ' + bomData.outbound[i].outboundCountry));
+        }
+    }
+    tableContent.push(
+        createData('Material Validation Characteristics', ''),
+        createData('Volume', bomData.materialValidationCharacteristics.materialVolume),
+        createData('Weight', bomData.materialValidationCharacteristics.materialWeight),
+        createData('Length', bomData.materialValidationCharacteristics.materialLength),
+        createData('Width', bomData.materialValidationCharacteristics.materialWidth),
+        createData('Height', bomData.materialValidationCharacteristics.materialHeight),
+        createData('Temperature Limits', bomData.materialValidationCharacteristics.materialTempLimits),
+        createData('Shock/Vibration', bomData.materialValidationCharacteristics.materialVibrationLimits),
+        createData('Altitude Restrictions', bomData.materialValidationCharacteristics.materialAltitudeRestrictions),
+        createData('Compression Restrictions', bomData.materialValidationCharacteristics.materialCompressionRestrictions),
+        createData('Always Upright', bomData.materialValidationCharacteristics.materialAlwaysUpRight === true ? 'YES' : 'NO'),
+        createData('Metallic', bomData.materialValidationCharacteristics.materialOther.metallic === true ? 'YES' : 'NO'),
+        createData('Hazmat', bomData.materialValidationCharacteristics.materialOther.hazmat === true ? 'YES' : 'NO'),
+        createData('Magnetic', bomData.materialValidationCharacteristics.materialOther.magnetic === true ? 'YES' : 'NO'),
+        createData('Length Tolerance', bomData.materialValidationCharacteristics.materialLengthTolerance),
+        createData('Round Tolerance', bomData.materialValidationCharacteristics.materialRoundTolerance),
+        createData('Non-Skid Tolerance', bomData.materialValidationCharacteristics.materialNonSkidTolerance),
+        createData('Supplier Order Quantities Controls', ''),
+        createData('Minimum Economic Order Quantities', bomData.supplierOrderQuantitiesControls.minimumEconomicOrderQuantity),
+        createData('Maximum Economic Order Quantities', bomData.supplierOrderQuantitiesControls.maximumEconomicOrderQuantity),
+        createData('Maximum Economic Product Withdraw Rate', bomData.supplierOrderQuantitiesControls.maximumEconomicProductWithdrawRate),
+        createData('Minimum Order Lead Times', bomData.supplierOrderQuantitiesControls.minimumOrderLeadTime),
+        createData('Inbound Supplier(s)', '')
+    );
+    if(bomData.inbound) {
+        for (let i = 0; i < bomData.inbound.length; i++) {
+            tableContent.push(createData('Address / Supplier Payment Terms / Material ID / Quantity',
+                bomData.inbound[i].inboundAddressLine1 + ' ' + bomData.inbound[i].inboundAddressLine2 + ' '
+                + bomData.inbound[i].inboundCity + ' ' + bomData.inbound[i].inboundStateProvince + ' '
+                + bomData.inbound[i].inboundPostalCode + ' ' + bomData.inbound[i].inboundCountry + ' / '
+                + bomData.inbound[i].inboundSupplierPaymentTerms + ' / ' + bomData.inbound[i].inboundMaterialID + ' / '
+                + bomData.inbound[i].inboundQuantity));
+        }
+    }
+    return tableContent;
+}
+
 let tree = [];
 
 class TrackAndTraceSearchView extends Component {
@@ -165,55 +222,13 @@ class TrackAndTraceSearchView extends Component {
         let bomDataLength = JSON.stringify(bomData).length;
         let shippingData = [];
         if (bomDataLength > 2) {
-            let alwaysUpright = bomData.material.materialAlwaysUpRight === true ? 'YES' : 'NO';
-            let metallic = bomData.material.materialOther[0].substr(10, 1) === 't' ? 'YES' : 'NO';
-            let hazmat = bomData.material.materialOther[1].substr(8, 1) === 't' ? 'YES' : 'NO';
-            let magnetic = bomData.material.materialOther[2].substr(10, 1) === 't' ? 'YES' : 'NO';
             counter = 0;
             this.setState({
                 blockInformation: 'Master Material Data',
-                tatData: [
-                    createData('Material ID', bomData.material.materialNumber),
-                    createData('Material Name', bomData.material.materialSerialNumber),
-                    createData('Material Description', bomData.material.materialDescription),
-                    /* RELEASE-90: Hide Part No., Part Name and Part Description fields.
-                    createData('Part No.', bomData.material.materialMvmtMaterialNumber),
-                    createData('Part Name', bomData.material.materialMvmtCageCode),
-                    createData('Part Description', bomData.material.materialMvmtSupplierName),
-                    */
-                    createData('Outbound Customer Data', ''),
-                    createData('Company Name', bomData.material.materialMvmtShippedFrom),
-                    createData('Address', bomData.material.materialMvmtShippedTo),
-                    createData('IP Address', bomData.material.materialMvmtLocation),
-                    createData('Material Validation Characteristics', ''),
-                    createData('Volume', bomData.material.materialVolume),
-                    createData('Weight', bomData.material.materialWeight),
-                    createData('Length', bomData.material.materialLength),
-                    createData('Width', bomData.material.materialWidth),
-                    createData('Height', bomData.material.materialHeight),
-                    createData('Temperature Limits', bomData.material.materialTempLimits),
-                    createData('Shock/Vibration', bomData.material.materialVibrationLimits),
-                    createData('Altitude Restrictions', bomData.material.materialAltitudeRestrictions),
-                    createData('Compression Restrictions', bomData.material.materialCompressionRestrictions),
-                    createData('Always Upright', alwaysUpright),
-                    createData('Metallic', metallic),
-                    createData('Hazmat', hazmat),
-                    createData('Magnetic', magnetic),
-                    createData('Length Tolerance', bomData.material.materialLengthTolerance),
-                    createData('Round Tolerance', bomData.material.materialRoundTolerance),
-                    createData('Non-Skid Tolerance', bomData.material.materialNonSkidTolerance),
-                    createData('Supplier Order Quantities Controls', ''),
-                    createData('Minimum Economic Order Quantities', bomData.supplier.supplierMinimumEconomicOrderQuantity),
-                    createData('Maximum Economic Order Quantities', bomData.supplier.supplierMaximumEconomicOrderQuantity),
-                    createData('Maximum Economic Product Withdraw Rate', bomData.supplier.supplierMaximumEconomicProductWithdrawRate),
-                    createData('Minimum Order Lead Times', bomData.supplier.supplierMinimumOrderLeadTime),
-                    createData('Inbound Supplier(s)', ''),
-                    createData('Address', bomData.supplier.supplierLocationAddress),
-                    createData('Supplier Payment Terms', bomData.supplier.supplierProductionCapacityCommittedToNetwork)
-                ]
+                tatData: createTableContent(bomData)
             });
-            if (bomData.material.materialNumber !== '') {
-                Promise.resolve(this.props.createConstruct(bomData.material.materialNumber))
+            if (bomData.material.materialID !== '') {
+                Promise.resolve(this.props.createConstruct(bomData.material.materialID))
                     .then(() => {
                         if (this.props.data.spawnConstructReducer.construct !== '' && this.props.data.spawnConstructReducer.construct !== undefined) {
                             tree.push(this.props.data.spawnConstructReducer.construct);
@@ -227,7 +242,7 @@ class TrackAndTraceSearchView extends Component {
                                     sbColor: '#23CE6B'
                                 }
                             });
-                            Promise.resolve(this.props.getShippingDataByMaterialID(bomData.material.materialNumber))
+                            Promise.resolve(this.props.getShippingDataByMaterialID(bomData.material.materialID))
                                 .then(() => {
                                     if (this.props.data.sarReducer.getShippingDataByMaterialIDSuccess) {
                                         shippingData = this.props.data.sarReducer.getShippingDataByMaterialIDSuccess;
@@ -245,7 +260,7 @@ class TrackAndTraceSearchView extends Component {
                                     sbColor: '#23CE6B'
                                 }
                             });
-                            Promise.resolve(this.props.getShippingDataByMaterialID(bomData.material.materialNumber))
+                            Promise.resolve(this.props.getShippingDataByMaterialID(bomData.material.materialID))
                                 .then(() => {
                                     if (this.props.data.sarReducer.getShippingDataByMaterialIDSuccess) {
                                         shippingData = this.props.data.sarReducer.getShippingDataByMaterialIDSuccess;

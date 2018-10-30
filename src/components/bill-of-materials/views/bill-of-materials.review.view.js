@@ -43,7 +43,6 @@ function createTableContent(eBOMData) {
             + eBOMData.outboundList[i].outboundPostalCode + ' ' + eBOMData.outboundList[i].outboundCountry));
     }
     tableContent.push(
-        createData('IP Address', eBOMData.outboundIPAddress),
         createData('Material Validation Characteristics', ''),
         createData('Volume', eBOMData.volume),
         createData('Weight', eBOMData.weight),
@@ -148,13 +147,17 @@ class BillOfMaterialsReview extends React.Component {
         let eBOMError = [];
         this.setState({ showProgressLogo: true });
         let data = {
-            material: {
-                materialNumber: this.props.eBOMData.materialID,
-                materialSerialNumber: this.props.eBOMData.materialName,
-                materialDescription: this.props.eBOMData.materialDescription
-            },
             file: '',
             outbound: outbound,
+            inbound: inbound,
+            material: {
+                materialID: this.props.eBOMData.materialID,
+                materialName: this.props.eBOMData.materialName,
+                materialDescription: this.props.eBOMData.materialDescription,
+                partNo: '',
+                partName: '',
+                partDescription: ''
+            },
             materialValidationCharacteristics: {
                 materialVolume: this.props.eBOMData.volume,
                 materialVolumeUnits: '',
@@ -185,8 +188,7 @@ class BillOfMaterialsReview extends React.Component {
                 maximumEconomicOrderQuantity: this.props.eBOMData.maxEOQuantities,
                 maximumEconomicProductWithdrawRate: this.props.eBOMData.maxEPWithdrawRate,
                 minimumOrderLeadTime: this.props.eBOMData.minOrderLeadTimes
-            },
-            inbound: inbound
+            }
         };
         Promise.resolve(this.props.createMasterDataKeys(data))
             .then(() => {
