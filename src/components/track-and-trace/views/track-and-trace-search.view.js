@@ -335,9 +335,9 @@ class TrackAndTraceSearchView extends Component {
                     createData('Actual Ship Date', shippingData.actualShipDate),
                     createData('Address', shippingData.address1 + ' ' + shippingData.address2 + ' ' + shippingData.city + ' ' + shippingData.state + ' ' + shippingData.country + ' ' + shippingData.postalCode),
                     createData('Manual Shipping', dataManualShipping),
+                    createData('Shipment Completed', dataShipmentCompleted),
                     createData('Shipment Quantity', shippingData.shipmentQuantity),
                     createData('Shipment Sent', dataShipmentSent),
-                    createData('Shipment Completed', dataShipmentCompleted),
                     createData('Received Shipment', dataReceivedShipment),
                     createData('Received Order', dataReceivedOrder)
                 ],
@@ -373,7 +373,6 @@ class TrackAndTraceSearchView extends Component {
         let dataManualShipping = 'NO';
         let dataShipmentSent = 'NO';
         let dataShipmentCompleted = 'NO';
-        let dataShipped = 'NO';
         let dataReceivedShipent = 'NO';
         let dataReceivedOrder = 'NO';
         if (shippingDataLength > 2) {
@@ -385,9 +384,6 @@ class TrackAndTraceSearchView extends Component {
             }
             if (shippingData.shipmentCompleted === true) {
                 dataShipmentCompleted = 'YES'
-            }
-            if (shippingData.shipped === true) {
-                dataShipped = 'YES'
             }
             if (shippingData.receivedShipment === true) {
                 dataReceivedShipent = 'YES'
@@ -404,10 +400,9 @@ class TrackAndTraceSearchView extends Component {
                     createData('Actual Ship Date', shippingData.actualShipDate),
                     createData('Address', shippingData.address1 + ' ' + shippingData.address2 + ' ' + shippingData.city + ' ' + shippingData.state + ' ' + shippingData.country + ' ' + shippingData.postalCode),
                     createData('Manual Shipping', dataManualShipping),
+                    createData('Shipment Completed', dataShipmentCompleted),
                     createData('Shipment Quantity', shippingData.shipmentQuantity),
                     createData('Shipment Sent', dataShipmentSent),
-                    createData('Shipment Completed', dataShipmentCompleted),
-                    createData('Shipped', dataShipped),
                     createData('Received Shipment', dataReceivedShipent),
                     createData('Received Order', dataReceivedOrder)
                 ]

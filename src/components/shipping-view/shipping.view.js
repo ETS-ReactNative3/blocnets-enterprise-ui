@@ -280,7 +280,7 @@ class ShippingView extends Component {
             state: '',
             country: '',
             postalCode: '',
-            ipAddress: this.state.ipAddress,
+            ipAddress: '',
             receivedShipment: '',
             receivedOrder: '',
             deliverOrderNo: '',

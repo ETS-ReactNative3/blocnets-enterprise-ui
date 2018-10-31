@@ -25,6 +25,8 @@ let dataByShipmentID = [];
 
 let dataByMaterialIDManuallyShipped = 'NO';
 let dataByShipmentIDManuallyShipped = 'NO';
+let dataByMaterialIDShipmentCompleted = 'NO';
+let dataByShipmentIDShipmentCompleted = 'NO';
 
 let materialIDRows = [];
 let shipmentIDRows = [];
@@ -92,6 +94,9 @@ class ReceivingView extends Component {
                         if (dataByMaterialID.manuallyShipped === true) {
                             dataByMaterialIDManuallyShipped = 'YES'
                         }
+                        if (dataByMaterialID.shipmentCompleted === true) {
+                            dataByMaterialIDShipmentCompleted = 'YES'
+                        }
                         materialIDRows = [
                             createData('Material ID', this.state.materialID),
                             createData('Shipment ID', dataByMaterialID.shipmentID),
@@ -99,6 +104,7 @@ class ReceivingView extends Component {
                             createData('Actual Ship Date', dataByMaterialID.actualShipDate),
                             createData('Address', dataByMaterialID.address1 + ' ' + dataByMaterialID.address2 + ' ' + dataByMaterialID.city + ' ' + dataByMaterialID.state + ' ' + dataByMaterialID.country + ' ' + dataByMaterialID.postalCode),
                             createData('Manual Shipping', dataByMaterialIDManuallyShipped),
+                            createData('Shipment Completed', dataByMaterialIDShipmentCompleted),
                             createData('Shipment Quantity', dataByMaterialID.shipmentQuantity)
                         ];
                         this.setState({
@@ -128,6 +134,9 @@ class ReceivingView extends Component {
                         if (dataByShipmentID.manuallyShipped === true) {
                             dataByShipmentIDManuallyShipped = 'YES'
                         }
+                        if (dataByShipmentID.shipmentCompleted === true) {
+                            dataByShipmentIDShipmentCompleted = 'YES'
+                        }
                         shipmentIDRows = [
                             createData('Material ID', dataByShipmentID.materialID),
                             createData('Shipment ID', this.state.shipmentID),
@@ -135,6 +144,7 @@ class ReceivingView extends Component {
                             createData('Actual Ship Date', dataByShipmentID.actualShipDate),
                             createData('Address', dataByShipmentID.address1 + ' ' + dataByShipmentID.address2 + ' ' + dataByShipmentID.city + ' ' + dataByShipmentID.state + ' ' + dataByShipmentID.country + ' ' + dataByShipmentID.postalCode),
                             createData('Manual Shipping', dataByShipmentIDManuallyShipped),
+                            createData('Shipment Completed', dataByShipmentIDShipmentCompleted),
                             createData('Shipment Quantity', dataByShipmentID.shipmentQuantity)
                         ];
                         this.setState({
