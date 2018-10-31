@@ -306,8 +306,7 @@ class TrackAndTraceSearchView extends Component {
         let dataManualShipping = 'NO';
         let dataShipmentSent = 'NO';
         let dataShipmentCompleted = 'NO';
-        let dataShipped = 'NO';
-        let dataReceivedShipent = 'NO';
+        let dataReceivedShipment = 'NO';
         let dataReceivedOrder = 'NO';
         if (shippingDataLength > 2) {
             if (shippingData.manuallyShipped === true) {
@@ -319,11 +318,8 @@ class TrackAndTraceSearchView extends Component {
             if (shippingData.shipmentCompleted === true) {
                 dataShipmentCompleted = 'YES'
             }
-            if (shippingData.shipped === true) {
-                dataShipped = 'YES'
-            }
             if (shippingData.receivedShipment === true) {
-                dataReceivedShipent = 'YES'
+                dataReceivedShipment = 'YES'
             }
             if (shippingData.receivedOrder === true) {
                 dataReceivedOrder = 'YES'
@@ -335,15 +331,14 @@ class TrackAndTraceSearchView extends Component {
                 tatData: [
                     createData('Material ID', shippingData.materialID),
                     createData('Shipment ID', shippingData.shipmentID),
+                    createData('Planned Ship Date', shippingData.plannedShipDate),
+                    createData('Actual Ship Date', shippingData.actualShipDate),
                     createData('Address', shippingData.address1 + ' ' + shippingData.address2 + ' ' + shippingData.city + ' ' + shippingData.state + ' ' + shippingData.country + ' ' + shippingData.postalCode),
-                    createData('IP Address', shippingData.ipAddress),
                     createData('Manual Shipping', dataManualShipping),
-                    createData('Delivery Order No.', shippingData.deliverOrderNo),
                     createData('Shipment Quantity', shippingData.shipmentQuantity),
                     createData('Shipment Sent', dataShipmentSent),
                     createData('Shipment Completed', dataShipmentCompleted),
-                    createData('Shipped', dataShipped),
-                    createData('Received Shipment', dataReceivedShipent),
+                    createData('Received Shipment', dataReceivedShipment),
                     createData('Received Order', dataReceivedOrder)
                 ],
                 tree: [],
@@ -405,10 +400,10 @@ class TrackAndTraceSearchView extends Component {
                 shippingData: [
                     createData('Material ID', shippingData.materialID),
                     createData('Shipment ID', shippingData.shipmentID),
+                    createData('Planned Ship Date', shippingData.plannedShipDate),
+                    createData('Actual Ship Date', shippingData.actualShipDate),
                     createData('Address', shippingData.address1 + ' ' + shippingData.address2 + ' ' + shippingData.city + ' ' + shippingData.state + ' ' + shippingData.country + ' ' + shippingData.postalCode),
-                    createData('IP Address', shippingData.ipAddress),
                     createData('Manual Shipping', dataManualShipping),
-                    createData('Delivery Order No.', shippingData.deliverOrderNo),
                     createData('Shipment Quantity', shippingData.shipmentQuantity),
                     createData('Shipment Sent', dataShipmentSent),
                     createData('Shipment Completed', dataShipmentCompleted),

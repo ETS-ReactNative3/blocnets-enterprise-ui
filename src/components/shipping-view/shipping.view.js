@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import blocnetsLogo from '../../blocknetwhite-1.png';
 import Grid from '@material-ui/core/Grid';
 import FormLabel from '@material-ui/core/FormLabel/FormLabel';
@@ -16,7 +16,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
 import red from '@material-ui/core/colors/red';
 import Dialog from '@material-ui/core/Dialog';
@@ -26,9 +26,9 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Snackbar from 'material-ui/Snackbar';
-import {connect} from 'react-redux';
-import {getBillOfMaterialsByMaterialID} from '../../redux/actions/BOM/bill-of-materials.actions';
-import {syncSARDataAndBindKeys} from '../../redux/actions/shipping.and.receiving.actions';
+import { connect } from 'react-redux';
+import { getBillOfMaterialsByMaterialID } from '../../redux/actions/BOM/bill-of-materials.actions';
+import { syncSARDataAndBindKeys } from '../../redux/actions/shipping.and.receiving.actions';
 
 let counter = 0;
 
@@ -43,6 +43,8 @@ class ShippingView extends Component {
             shipmentID: '',
             shipmentIDGenerated: '',
             shipmentIDTyped: '',
+            plannedShipDate: '',
+            actualShipDate: '',
             address: '',
             addressMenuItems: '',
             ipAddress: '',
@@ -74,7 +76,7 @@ class ShippingView extends Component {
         if (event.target.value) {
             this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess = '';
             let eBOMData = [];
-            this.setState({showProgressLogo: true});
+            this.setState({ showProgressLogo: true });
             Promise.resolve(this.props.getBillOfMaterialsByMaterialID(event.target.value))
                 .then(() => {
                     if (this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess) {
@@ -82,8 +84,10 @@ class ShippingView extends Component {
                         if (eBOMData !== []) {
                             this.setState({
                                 showProgressLogo: false,
-                                addressMenuItems: eBOMData.material.materialMvmtShippedTo,
-                                ipAddress: eBOMData.material.materialMvmtLocation
+                                addressMenuItems: eBOMData.outbound[0].outboundAddressLine1 + ' ' + eBOMData.outbound[0].outboundAddressLine2 + ' '
+                                    + eBOMData.outbound[0].outboundCity + ' ' + eBOMData.outbound[0].outboundStateProvince + ' '
+                                    + eBOMData.outbound[0].outboundPostalCode + ' ' + eBOMData.outbound[0].outboundCountry,
+                                ipAddress: ''
                             });
                         } else {
                             this.setState({
@@ -116,12 +120,12 @@ class ShippingView extends Component {
     };
 
     handleChange = (event) => {
-        this.setState({[event.target.name]: event.target.value});
+        this.setState({ [event.target.name]: event.target.value });
         if ([event.target.name].toString() === 'materialID' && event.target.value) {
-            this.setState({errorTextMaterialID: ''});
+            this.setState({ errorTextMaterialID: '' });
             let materialIDQuantityList = [...this.state.materialIDQuantityList];
             materialIDQuantityList[0].materialID = event.target.value;
-            this.setState({materialIDQuantityList: materialIDQuantityList});
+            this.setState({ materialIDQuantityList: materialIDQuantityList });
         } else if ([event.target.name].toString() === 'materialID' && !event.target.value) {
             this.setState({
                 errorTextMaterialID: 'This is a required field.',
@@ -130,19 +134,19 @@ class ShippingView extends Component {
             });
         }
         if ([event.target.name].toString() === 'address' && event.target.value) {
-            this.setState({errorTextAddress: ''});
+            this.setState({ errorTextAddress: '' });
         } else if ([event.target.name].toString() === 'address' && !event.target.value) {
-            this.setState({errorTextAddress: 'This is a required field.'});
+            this.setState({ errorTextAddress: 'This is a required field.' });
         }
         if ([event.target.name].toString() === 'quantity' && event.target.value) {
-            this.setState({errorTextQuantity: ''});
+            this.setState({ errorTextQuantity: '' });
         } else if ([event.target.name].toString() === 'quantity' && !event.target.value) {
-            this.setState({errorTextQuantity: 'This is a required field.'});
+            this.setState({ errorTextQuantity: 'This is a required field.' });
         }
     };
 
     handleCheckboxChange = (event) => {
-        this.setState({[event.target.name]: event.target.checked});
+        this.setState({ [event.target.name]: event.target.checked });
         if ([event.target.name].toString() === 'manualShipping' && event.target.checked === true) {
             this.setState({
                 manualShipping: true,
@@ -174,7 +178,7 @@ class ShippingView extends Component {
             quantity: ''
         };
         let materialIDQuantityListFinal = materialIDQuantityList.concat(materialIDQuantityList2);
-        this.setState({materialIDQuantityList: materialIDQuantityListFinal})
+        this.setState({ materialIDQuantityList: materialIDQuantityListFinal })
     };
 
     handleDeletion = (index) => (event) => {
@@ -182,18 +186,18 @@ class ShippingView extends Component {
         let materialIDQuantityList2 = materialIDQuantityList.slice(0, index);
         let materialIDQuantityList3 = materialIDQuantityList.slice(index + 1);
         let materialIDQuantityListFinal = materialIDQuantityList2.concat(materialIDQuantityList3);
-        this.setState({materialIDQuantityList: materialIDQuantityListFinal})
+        this.setState({ materialIDQuantityList: materialIDQuantityListFinal })
     };
 
     handleMaterialIDText = (index) => (event) => {
         if (event.target.value) {
             this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess = '';
-            this.setState({showProgressLogo: true});
+            this.setState({ showProgressLogo: true });
             let childMaterialID = event.target.value;
             Promise.resolve(this.props.getBillOfMaterialsByMaterialID(event.target.value))
                 .then(() => {
                     if (this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess) {
-                        this.setState({showProgressLogo: false});
+                        this.setState({ showProgressLogo: false });
                     } else {
                         this.setState({
                             showProgressLogo: false,
@@ -221,7 +225,7 @@ class ShippingView extends Component {
         } else if ([event.target.name].toString() === 'quantityList' && !event.target.value) {
             materialIDQuantityList[index].quantity = '';
         }
-        this.setState({materialIDQuantityList: materialIDQuantityList});
+        this.setState({ materialIDQuantityList: materialIDQuantityList });
     };
 
     handleSendShipment = (event) => {
@@ -261,7 +265,7 @@ class ShippingView extends Component {
         this.props.data.sarReducer.createShippingDataByShipmentIDSuccess = '';
         this.props.data.sarReducer.updateShippingDataByMaterialIDSuccess = '';
         this.props.data.sarReducer.createShippingDataByMaterialIDSuccess = '';
-        this.setState({showProgressLogoDialog: true});
+        this.setState({ showProgressLogoDialog: true });
         let payload = {
             materialID: this.state.materialID,
             shipmentID: this.state.shipmentID,
@@ -270,7 +274,6 @@ class ShippingView extends Component {
             shipmentCompleted: this.state.shipmentCompleted,
             shipmentQuantity: this.state.quantity,
             manuallyShipped: this.state.manualShipping,
-            shipped: true,
             address1: this.state.address,
             address2: '',
             city: '',
@@ -281,7 +284,10 @@ class ShippingView extends Component {
             receivedShipment: '',
             receivedOrder: '',
             deliverOrderNo: '',
-            prdKey: ''
+            prdKey: '',
+            deviceUUID: '',
+            plannedShipDate: this.state.plannedShipDate,
+            actualShipDate: this.state.actualShipDate
         };
         Promise.resolve(this.props.syncSARDataAndBindKeys(payload))
             .then(() => {
@@ -301,6 +307,8 @@ class ShippingView extends Component {
                         shipmentID: '',
                         shipmentIDGenerated: '',
                         shipmentIDTyped: '',
+                        plannedShipDate: '',
+                        actualShipDate: '',
                         address: '',
                         addressMenuItems: '',
                         ipAddress: '',
@@ -332,13 +340,13 @@ class ShippingView extends Component {
     };
 
     handleDialogCloseConfirmation = () => {
-        this.setState({openDialogConfirmation: false});
+        this.setState({ openDialogConfirmation: false });
     };
 
     guid = () => {
         let shipmentID = this.generateUniqueID() + '-' + this.generateUniqueID() + '-'
             + this.generateUniqueID() + '-' + this.generateUniqueID();
-        this.setState({shipmentIDGenerated: shipmentID});
+        this.setState({ shipmentIDGenerated: shipmentID });
         return shipmentID;
     };
 
@@ -350,21 +358,23 @@ class ShippingView extends Component {
 
     createData = (info1, info2) => {
         counter += 1;
-        return {id: counter, info1, info2};
+        return { id: counter, info1, info2 };
     };
 
     createTableContent = () => {
         let shipmentID = '';
         if (this.state.shipmentIDTyped === '') {
             shipmentID = this.guid();
-            this.setState({shipmentID: shipmentID});
+            this.setState({ shipmentID: shipmentID });
         } else {
             shipmentID = this.state.shipmentIDTyped;
-            this.setState({shipmentID: shipmentID});
+            this.setState({ shipmentID: shipmentID });
         }
         let tableContent = [
             this.createData('Material ID', this.state.materialID),
             this.createData('Shipment ID', shipmentID),
+            this.createData('Planned Ship Date', this.state.plannedShipDate),
+            this.createData('Actual Ship Date', this.state.actualShipDate),
             this.createData('Address', this.state.address),
             this.createData('Manual Shipping', this.state.manualShipping2),
             this.createData('Shipment Completed', this.state.shipmentCompleted2)
@@ -419,25 +429,31 @@ class ShippingView extends Component {
             <form>
                 <div>
                     {this.state.showProgressLogo ?
-                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt=""/>
+                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt="" />
                         </div> : ""}
                 </div>
-                <div style={{padding: 24}}>
+                <div style={{ padding: 24 }}>
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
-                            <FormLabel style={{"textAlign": "left", "fontWeight": "bold", "color": "black"}}>Create
+                            <FormLabel style={{ "textAlign": "left", "fontWeight": "bold", "color": "black" }}>Create
                                 Shipping Information</FormLabel>
                         </Grid>
                     </Grid>
-                    <br/>
-                    <Divider style={{"height": "1px", "backgroundColor": "black"}}/>
-                    <br/><br/>
+                    <br />
+                    <Divider style={{ "height": "1px", "backgroundColor": "black" }} />
+                    <br /><br />
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
-                            <FormLabel style={{"textAlign": "left"}}>Material ID</FormLabel>
+                            <FormLabel style={{ "textAlign": "left" }}>Material ID</FormLabel>
                         </Grid>
                         <Grid container item xs={6} sm={3}>
-                            <FormLabel style={{"textAlign": "left"}}>Shipment ID</FormLabel>
+                            <FormLabel style={{ "textAlign": "left" }}>Shipment ID</FormLabel>
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <FormLabel style={{ "textAlign": "left" }}>Planned Ship Date</FormLabel>
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <FormLabel style={{ "textAlign": "left" }}>Actual Ship Date</FormLabel>
                         </Grid>
                     </Grid>
                     <Grid container spacing={24}>
@@ -447,10 +463,10 @@ class ShippingView extends Component {
                                 onChange={this.handleChange}
                                 type="text"
                                 name="materialID"
-                                style={{"float": "left", "textAlign": "left"}}
+                                style={{ "float": "left", "textAlign": "left" }}
                                 hintText=""
                                 errorText={this.state.errorTextMaterialID}
-                                errorStyle={{"float": "left", "textAlign": "left"}}
+                                errorStyle={{ "float": "left", "textAlign": "left" }}
                                 onBlur={this.handleMaterialIDChange}
                             />
                         </Grid>
@@ -460,31 +476,51 @@ class ShippingView extends Component {
                                 onChange={this.handleChange}
                                 type="text"
                                 name="shipmentIDTyped"
-                                style={{"float": "left", "textAlign": "left"}}
+                                style={{ "float": "left", "textAlign": "left" }}
+                                hintText=""
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                value={this.state.plannedShipDate}
+                                onChange={this.handleChange}
+                                type="date"
+                                name="plannedShipDate"
+                                style={{ "float": "left", "textAlign": "left" }}
+                                hintText=""
+                            />
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <TextField
+                                value={this.state.actualShipDate}
+                                onChange={this.handleChange}
+                                type="date"
+                                name="actualShipDate"
+                                style={{ "float": "left", "textAlign": "left" }}
                                 hintText=""
                             />
                         </Grid>
                     </Grid>
-                    <br/><br/>
+                    <br /><br />
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
-                            <FormLabel style={{"textAlign": "left"}}>Address</FormLabel>
+                            <FormLabel style={{ "textAlign": "left" }}>Address</FormLabel>
                         </Grid>
                     </Grid>
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
                             <FormControl fullWidth={true}>
                                 <Select value={this.state.address} onChange={this.handleChange}
-                                        input={<Input name="address" style={{"textAlign": "left"}}/>}
+                                        input={<Input name="address" style={{ "textAlign": "left" }} />}
                                         displayEmpty>
                                     <MenuItem
                                         value={this.state.addressMenuItems}>{this.state.addressMenuItems}</MenuItem>
                                 </Select>
                             </FormControl>
-                            <FormHelperText style={{"color": "red"}}>{this.state.errorTextAddress}</FormHelperText>
+                            <FormHelperText style={{ "color": "red" }}>{this.state.errorTextAddress}</FormHelperText>
                         </Grid>
                     </Grid>
-                    <br/>
+                    <br />
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <FormGroup row>
@@ -517,22 +553,22 @@ class ShippingView extends Component {
                             </FormGroup>
                         </Grid>
                     </Grid>
-                    <br/><br/>
+                    <br /><br />
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
-                            <FormLabel style={{"textAlign": "left", "fontWeight": "bold", "color": "black"}}>Additional
+                            <FormLabel style={{ "textAlign": "left", "fontWeight": "bold", "color": "black" }}>Additional
                                 Shipping Information</FormLabel>
                         </Grid>
                     </Grid>
-                    <br/>
-                    <Divider style={{"height": "1px", "backgroundColor": "black"}}/>
-                    <br/><br/>
+                    <br />
+                    <Divider style={{ "height": "1px", "backgroundColor": "black" }} />
+                    <br /><br />
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
-                            <FormLabel style={{"textAlign": "left"}}>Material ID</FormLabel>
+                            <FormLabel style={{ "textAlign": "left" }}>Material ID</FormLabel>
                         </Grid>
                         <Grid container item xs={6} sm={3}>
-                            <FormLabel style={{"textAlign": "left"}}>Quantity</FormLabel>
+                            <FormLabel style={{ "textAlign": "left" }}>Quantity</FormLabel>
                         </Grid>
                     </Grid>
                     {this.state.materialIDQuantityList.map((materialIDQuantityList, index) => (
@@ -541,7 +577,7 @@ class ShippingView extends Component {
                                 <Grid container item xs={6} sm={3}>
                                     <TextField
                                         type="text"
-                                        style={{"float": "left", "textAlign": "left"}}
+                                        style={{ "float": "left", "textAlign": "left" }}
                                         name="materialIDList"
                                         onChange={this.handleText(index)}
                                         hintText=""
@@ -552,7 +588,7 @@ class ShippingView extends Component {
                                 <Grid container item xs={6} sm={3}>
                                     <TextField
                                         type="text"
-                                        style={{"float": "left", "textAlign": "left"}}
+                                        style={{ "float": "left", "textAlign": "left" }}
                                         name="quantityList"
                                         onChange={this.handleText(index)}
                                         hintText=""
@@ -562,20 +598,20 @@ class ShippingView extends Component {
                                 {index === 0 ?
                                     <Grid container item xs={6} sm={3}>
                                         <IconButton onClick={this.handleAddition}>
-                                            <AddCircleIcon style={addCircleIconStyle}/>
+                                            <AddCircleIcon style={addCircleIconStyle} />
                                         </IconButton>
                                     </Grid>
                                     :
                                     <Grid container item xs={6} sm={3}>
                                         <IconButton onClick={this.handleDeletion(index)}>
-                                            <DeleteIcon style={deleteIconStyle}/>
+                                            <DeleteIcon style={deleteIconStyle} />
                                         </IconButton>
                                     </Grid>
                                 }
                             </Grid>
                         </span>
                     ))}
-                    <br/><br/>
+                    <br /><br />
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
                             <MuiThemeProvider theme={buttonThemeYellow}>
@@ -589,7 +625,7 @@ class ShippingView extends Component {
                 </div>
                 <Dialog open={this.state.openDialogQuantity} onClose={this.handleDialogCloseQuantity}
                         autoScrollBodyContent={true}>
-                    <div style={{padding: 24}}>
+                    <div style={{ padding: 24 }}>
                         <Grid container spacing={24}>
                             <Grid container item xs={12}>
                                 <TextField
@@ -599,14 +635,14 @@ class ShippingView extends Component {
                                     name="quantity"
                                     floatingLabelText="Quantity"
                                     floatingLabelFixed={true}
-                                    style={{"float": "left", "textAlign": "left"}}
+                                    style={{ "float": "left", "textAlign": "left" }}
                                     hintText=""
                                     errorText={this.state.errorTextQuantity}
-                                    errorStyle={{"float": "left", "textAlign": "left"}}
+                                    errorStyle={{ "float": "left", "textAlign": "left" }}
                                 />
                             </Grid>
                         </Grid>
-                        <br/>
+                        <br />
                         <Grid container spacing={24}>
                             <Grid container item xs={4} sm={4}>
                             </Grid>
@@ -631,25 +667,25 @@ class ShippingView extends Component {
                 </Dialog>
                 <Dialog open={this.state.openDialogConfirmation} onClose={this.handleDialogCloseConfirmation}
                         autoScrollBodyContent={true}>
-                    <div style={{padding: 24}}>
+                    <div style={{ padding: 24 }}>
                         <Grid container>
                             <Grid container item xs={12}>
                                 Please confirm information.
                             </Grid>
                         </Grid>
-                        <br/>
+                        <br />
                         <Grid container justify="center">
                             <Grid container item xs={12}>
-                                <Paper style={{"width": "100%"}}>
+                                <Paper style={{ "width": "100%" }}>
                                     <div>
                                         {this.state.showProgressLogoDialog ?
                                             <div className="overlay"><img src={blocnetsLogo}
-                                                                          className="App-logo-progress" alt=""/>
+                                                                          className="App-logo-progress" alt="" />
                                             </div> : ""}
                                     </div>
-                                    <div style={{"overflowX": "auto"}}>
-                                        <Table style={{"tableLayout": "fixed"}}>
-                                            <TableBody style={{"overflowWrap": "break-word"}}>
+                                    <div style={{ "overflowX": "auto" }}>
+                                        <Table style={{ "tableLayout": "fixed" }}>
+                                            <TableBody style={{ "overflowWrap": "break-word" }}>
                                                 {this.state.rows.map(row => {
                                                     return (
                                                         <TableRow key={row.id}>
@@ -664,7 +700,7 @@ class ShippingView extends Component {
                                 </Paper>
                             </Grid>
                         </Grid>
-                        <br/>
+                        <br />
                         <Grid container spacing={24}>
                             <Grid container item xs={4} sm={4}>
                                 <MuiThemeProvider theme={buttonThemeRed}>
@@ -698,7 +734,7 @@ class ShippingView extends Component {
                     message={this.state.snackbar.message}
                     autoHideDuration={this.state.snackbar.autoHideDuration}
                     onRequestClose={this.handleSnackbarClose}
-                    bodyStyle={{backgroundColor: this.state.snackbar.sbColor}}
+                    bodyStyle={{ backgroundColor: this.state.snackbar.sbColor }}
                 />
             </form>
         );

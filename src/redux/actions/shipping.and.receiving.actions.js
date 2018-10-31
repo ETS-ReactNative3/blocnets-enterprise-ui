@@ -225,7 +225,10 @@ export function syncSARDataAndBindKeys(payload) {
                 receivedShipment: payload.receivedShipment,
                 receivedOrder: payload.receivedOrder,
                 deliverOrderNo: payload.deliverOrderNo,
-                prdKey: payload.prdKey
+                prdKey: payload.prdKey,
+                deviceUUID: payload.deviceUUID,
+                plannedShipDate: payload.plannedShipDate,
+                actualShipDate: payload.actualShipDate,
             };
 
             let shipKeyData = {
@@ -247,7 +250,10 @@ export function syncSARDataAndBindKeys(payload) {
                 receivedShipment: '',
                 receivedOrder: '',
                 deliverOrderNo: '',
-                prdKey: ''
+                prdKey: '',
+                deviceUUID: payload.deviceUUID,
+                plannedShipDate: payload.plannedShipDate,
+                actualShipDate: payload.actualShipDate,
             };
 
             await axios.post(config.chaincodes.Default + config.chaincodes.SAR + 'shipmentId=' + payload.shipmentID, payload, { headers })
@@ -298,7 +304,10 @@ export function syncSARDataAndBindKeys(payload) {
                                         receivedShipment: response.data.receivedShipment,
                                         receivedOrder: response.data.receivedOrder,
                                         deliverOrderNo: response.data.deliverOrderNo,
-                                        prdKey: response.data.prdKey
+                                        prdKey: response.data.prdKey,
+                                        deviceUUID: response.data.deviceUUID,
+                                        plannedShipDate: response.data.plannedShipDate,
+                                        actualShipDate: response.data.actualShipDate,
                                     };
 
                                     if (response.data.listOfKeys === null) {
