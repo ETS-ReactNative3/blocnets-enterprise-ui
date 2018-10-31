@@ -1,7 +1,7 @@
 import axios from 'axios';
 import config from '../../config.json';
 import { resolver } from '../../../services/callback.resolver';
-import {tokenResolver} from '../../../services/token.resolver';
+import { tokenResolver } from '../../../services/token.resolver';
 
 export function createUserMessageDataByUserID(url, body) {
     return async (dispatch) => {
@@ -85,24 +85,26 @@ export function getEachMessageForUserID(user) {
         await axios.get(config.chaincodes.Default + config.chaincodes.UMA + user, { headers })
             .then(async (response) => {
                 let inbox = [];
-                if (response.data) {
+                if (response.data && response.data.userMessages && response.data.userMessages.length > 0) {
                     for (let i = 0; i < response.data.userMessages.length; i++) {
-                        let url = response.data.userMessages[i];
-                        await axios.get(config.chaincodes.Default + config.chaincodes.DRE + url, { headers })
-                            .then((response) => {
-                                inbox.push(response.data);
-                                return dispatch({
-                                    type: "GET_EACH_MESSAGE_FOR_USER_ID_SUCCESS",
-                                    payload: inbox
-                                });
-                            })
-                            .catch((error) => {
-                                let errorData = resolver(error);
-                                dispatch({
-                                    type: "GET_EACH_MESSAGE_FOR_USER_ID_FAILED",
-                                    payload: errorData
+                        if (response.data.userMessages[i] !== 'string') {
+                            let url = response.data.userMessages[i];
+                            await axios.get(config.chaincodes.Default + config.chaincodes.DRE + url, { headers })
+                                .then((response) => {
+                                    inbox.push(response.data);
+                                    return dispatch({
+                                        type: "GET_EACH_MESSAGE_FOR_USER_ID_SUCCESS",
+                                        payload: inbox
+                                    });
                                 })
-                            });
+                                .catch((error) => {
+                                    let errorData = resolver(error);
+                                    dispatch({
+                                        type: "GET_EACH_MESSAGE_FOR_USER_ID_FAILED",
+                                        payload: errorData
+                                    })
+                                });
+                        }
                     }
                 }
             }).catch((error) => {

@@ -11,6 +11,7 @@ import TextField from 'material-ui/TextField';
 import Button from '@material-ui/core/Button';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import yellow from '@material-ui/core/colors/yellow';
+import CheckIcon from '@material-ui/icons/Check';
 import Snackbar from 'material-ui/Snackbar';
 import { connect } from 'react-redux';
 import { createDocumentEntryByUniqueID } from '../../../redux/actions/document.review.entry.actions';
@@ -28,13 +29,39 @@ let dataTypeMenuItems = response[0].dataType;
 
 class SendDocumentView extends React.Component {
 
+    componentDidMount() {
+        if (!this.isCancelled && this.props.data.umaReducer.getUserMessageDataByUserIDSuccess
+            && this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles
+            && this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles.length > 0) {
+            let files = ['None'];
+            for (let i = 0; i < this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles.length; i++) {
+                if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles[i] !== 'string') {
+                    let tmp = JSON.parse(this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles[i]);
+                    files.push(tmp.data.name)
+                }
+            }
+            Promise.resolve(
+                this.setState({
+                    fileMenuItems: files
+                })
+            )
+        }
+    };
+
+    componentWillUnmount() {
+        this.isCancelled = true;
+    };
     constructor(props) {
         super(props);
         this.state = {
+            fileMenuItems: [],
             showProgressLogo: false,
-            fileKey: '',
+            fileFromSavedDocsKey: '',
+            fileFromMyComputerKey: '',
             file: '',
-            creatorID: this.props.userName,
+            fileMetaData: {},
+            selectedFileKey: '',
+            userName: this.props.userName,
             recipientUserName: '',
             errorTextRecipientUserName: 'This is a required field.',
             messageType: '',
@@ -52,8 +79,24 @@ class SendDocumentView extends React.Component {
         };
     }
 
-    handleBase64File = (event) => {
-        Promise.resolve(this.setState({ fileKey: this.guid(), file: event }))
+    handleFileMetaData = (event) => {
+        Promise.resolve(this.setState({
+            fileMetaData: {
+                lastModified: event.lastModified,
+                lastModifiedDate: event.lastModifiedDate,
+                name: event.name,
+                size: event.size,
+                type: event.type
+            },
+        }))
+    }
+
+    handleBase64File = (fileName, event) => {
+        Promise.resolve(this.setState({
+            fileFromSavedDocsKey: '',
+            fileFromMyComputerKey: fileName,
+            file: event
+        }))
     }
 
     handleUploadError = (event) => {
@@ -89,7 +132,7 @@ class SendDocumentView extends React.Component {
         let files = event.target.files;
         var file = files[0];
         let base64Result = (string) => {
-            this.handleBase64File(string);
+            this.handleBase64File(file.name, string);
         };
         var reader = new FileReader();
         reader.onerror = this.handleUploadError;
@@ -105,14 +148,18 @@ class SendDocumentView extends React.Component {
             //var binaryString = reader.result;
             //var wrapBinaryInBase64 = btoa(binaryString);
             //base64Result(wrapBinaryInBase64);
-            
+
             // Base 64 string
-            var fileString = reader.result.split(',')[1]; // Remove Base 64 header - not needed for decoding later
-            base64Result(fileString);
+            //var fileString = reader.result.split(',')[1]; // Remove Base 64 header - not needed for decoding later
+            //base64Result(fileString);
+            base64Result(reader.result);
         };
-        if(file) {
-            reader.readAsDataURL(file); 
+        if (file) {
+            reader.readAsDataURL(file);
             //reader.readAsBinaryString(file); // Binary => base64(Binary)
+            this.handleFileMetaData(file);
+        } else {
+            Promise.resolve(this.setState({ fileFromMyComputerKey: '' }))
         }
     }
 
@@ -127,6 +174,12 @@ class SendDocumentView extends React.Component {
             this.setState({ errorTextMessageType: '' });
         } else if ([event.target.name].toString() === 'messageType' && !event.target.value) {
             this.setState({ errorTextMessageType: 'This is a required field.' });
+        }
+        if ([event.target.name].toString() === 'fileFromSavedDocsKey' && event.target.value === 'None') {
+            this.setState({ fileFromSavedDocsKey: '' });
+        } else if ([event.target.name].toString() === 'fileFromSavedDocsKey' && event.target.value !== 'None') {
+            this.setState({ fileFromSavedDocsKey: event.target.value, fileFromMyComputerKey: '' })
+            //this.handleIconToggle()
         }
         if ([event.target.name].toString() === 'dataType' && event.target.value) {
             this.setState({ errorTextDataType: '' });
@@ -166,7 +219,9 @@ class SendDocumentView extends React.Component {
                 recipientUserName: '',
                 messageType: '',
                 dataType: '',
-                message: ''
+                message: '',
+                fileFromSavedDocsKey: '',
+                fileFromMyComputerKey: ''
             });
         } else {
             this.setState({
@@ -181,23 +236,74 @@ class SendDocumentView extends React.Component {
         }
     }
 
+    handleFileKeyAttached = () => {
+
+        if (this.state.fileFromSavedDocsKey !== '') {
+            Promise.resolve(this.setState({ selectedFileKey: this.state.fileFromSavedDocsKey }))
+        } else if (this.state.fileFromMyComputerKey !== '') {
+            let fileBody = {
+                file: this.state.file,
+                fileName: this.state.fileFromMyComputerKey,
+                creatorID: this.state.userName,
+                contentType: this.state.fileMetaData.type,
+                contentDisposition: '',
+                contentLength: this.state.fileMetaData.size
+            };
+            Promise.resolve(this.props.uploadFileByUserId(this.state.fileFromMyComputerKey, fileBody))
+                .then(() => {
+                    if (this.props.data.fileReducer.uploadFileByUserIdError.status === 409) {
+                        this.setState({
+                            showProgressLogo: false,
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'File already exists! Please choose a different file name.',
+                                open: true,
+                                sbColor: 'red'
+                            }
+                        })
+                    } else if (this.props.data.fileReducer.uploadFileByUserIdError.status !== 409) {
+                        this.setState({
+                            showProgressLogo: false,
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Error uploading document! Please try again.',
+                                open: true,
+                                sbColor: 'red'
+                            }
+                        });
+                    } else if (this.props.data.fileReducer.uploadFileByUserIdSuccess === true) {
+                        this.setState({
+                            selectedFileKey: this.state.fileFromMyComputerKey,
+                            showProgressLogo: false,
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Document Attached and Uploaded Successfully!',
+                                open: true,
+                                sbColor: '#23CE6B'
+                            }
+                        })
+                    }
+                })
+        }
+    };
+
     handleSendDocumentForReview = (event) => {
         this.props.data.dreReducer.createDocumentEntryByUniqueIDSuccess = '';
         this.props.data.umaReducer.getUserMessageDataByUserIDError = '';    // Clean-up: unused Validation
         this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess = '';
         this.setState({ showProgressLogo: true });
-        let fileURL = this.state.fileKey
-        let fileBody = {
-            file: this.state.file,
-            creatorID: this.state.creatorID
-        };
+        let tmp = {
+            opt1: this.state.fileFromSavedDocsKey,
+            opt2: this.state.fileFromMyComputerKey
+        }
+        let attachfileKey = this.state.selectedFileKey;
         let dreURL = this.guid();
         let dreBody = {
             text: this.state.message,
             status: 'Pending',
             type: this.state.messageType,
             desc: this.state.dataType,
-            fileId: fileURL
+            fileId: attachfileKey
         };
         let oldMessages = [];
         let allMessages = [];
@@ -207,8 +313,10 @@ class SendDocumentView extends React.Component {
             userMessages: ["string"],
             archivedMessages: ["string"]
         };
-        Promise.resolve(this.props.uploadFileByUserId(fileURL, fileBody))
-            .then(() => {
+        Promise.resolve(this.handleFileKeyAttached()).then(() => {
+            if ((tmp.opt1 === '' && tmp.opt2 === '' && attachfileKey === '')
+                || (tmp.opt1 !== '' && tmp.opt2 === '' && attachfileKey !== '')
+                || (tmp.opt1 === '' && tmp.opt2 !== '' && attachfileKey !== '')) {
                 Promise.resolve(this.props.createDocumentEntryByUniqueID(dreURL, dreBody))
                     .then(() => {
                         Promise.resolve(this.props.getUserMessageDataByUserID(umaURL))
@@ -241,7 +349,12 @@ class SendDocumentView extends React.Component {
                                 }
                             })
                     })
-            })
+            } else {
+                this.setState({
+                    showProgressLogo: false
+                })
+            }
+        })
         event.preventDefault();
     };
 
@@ -257,6 +370,7 @@ class SendDocumentView extends React.Component {
     };
 
     render() {
+        const { fileMenuItems, fileFromMyComputerKey } = this.state;
 
         const buttonThemeYellow = createMuiTheme({
             palette: {
@@ -281,6 +395,9 @@ class SendDocumentView extends React.Component {
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <FormLabel style={{ "textAlign": "left" }}>Message Type</FormLabel>
+                        </Grid>
+                        <Grid container item xs={6} sm={3}>
+                            <FormLabel style={{ "textAlign": "left" }}>Attach File from Saved Documents</FormLabel>
                         </Grid>
                     </Grid>
                     <Grid container spacing={24}>
@@ -310,15 +427,40 @@ class SendDocumentView extends React.Component {
                                     style={{ "color": "red" }}>{this.state.errorTextMessageType}</FormHelperText>
                             </FormControl>
                         </Grid>
-                        <Grid container item xs={12} sm={6} justify="flex-end">
+                        <Grid container item xs={6} sm={3}>
+                            <FormControl fullWidth={true}>
+                                <Select value={this.state.fileFromSavedDocsKey} onChange={this.handleChange}
+                                    input={<Input name="fileFromSavedDocsKey" style={{ "textAlign": "left" }} />}
+                                    displayEmpty>
+                                    {fileMenuItems.map((menuItem, i) => {
+                                        return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
+                                    })}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid container item xs={6} sm={3} justify="flex-end">
                             <Grid>
                                 <input
                                     accept=".png,.jpg,.jpeg,.gif,.pdf"
                                     id="flat-button-file"
                                     //multiple
                                     type="file"
+                                    className='Module-Button-Input'
                                     onChange={this.handleFileChange}
                                 />
+                                <label htmlFor="flat-button-file">
+                                    <MuiThemeProvider theme={buttonThemeYellow}>
+                                        <Button
+                                            type='submit'
+                                            value='Upload'
+                                            variant='contained'
+                                            component="span"
+                                            color="primary">
+                                            Attach File from My Computer
+                                            {fileFromMyComputerKey !== '' ? <CheckIcon style={{ 'marginLeft': 'theme.spacing.unit' }} /> : <span></span>}
+                                        </Button>
+                                    </MuiThemeProvider>
+                                </label>
                             </Grid>
                         </Grid>
                     </Grid>
