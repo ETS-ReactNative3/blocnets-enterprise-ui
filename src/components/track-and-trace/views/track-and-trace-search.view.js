@@ -282,6 +282,10 @@ class TrackAndTraceSearchView extends Component {
                     }
                 });
                 this.props.viewHandler('trackandtraceresultsview', false, 'TAT02', this.state.blockInformation, this.state.tatData, this.state.tree, this.state.shippingData, this.state.snackbar);
+                this.setState({
+                    searchKey: '',
+                    searchCriteria: ''
+                });
             }
         } else {
             this.setState({
@@ -298,6 +302,10 @@ class TrackAndTraceSearchView extends Component {
                 }
             });
             this.props.viewHandler('trackandtraceresultsview', false, 'TAT02', this.state.blockInformation, this.state.tatData, this.state.tree, this.state.shippingData, this.state.snackbar);
+            this.setState({
+                searchKey: '',
+                searchCriteria: ''
+            });
         }
     };
 
@@ -366,6 +374,10 @@ class TrackAndTraceSearchView extends Component {
             });
         }
         this.props.viewHandler('trackandtraceresultsview', false, 'TAT02', this.state.blockInformation, this.state.tatData, this.state.tree, this.state.shippingData, this.state.snackbar);
+        this.setState({
+            searchKey: '',
+            searchCriteria: ''
+        });
     };
 
     handleShippingDataByMaterialID = (show, open, transactionCode, blockInformation, tatData, tree, shippingData, snackbar) => {
@@ -413,6 +425,10 @@ class TrackAndTraceSearchView extends Component {
             });
         }
         this.props.viewHandler(show, open, transactionCode, blockInformation, tatData, tree, this.state.shippingData, snackbar);
+        this.setState({
+            searchKey: '',
+            searchCriteria: ''
+        });
     };
 
     render() {

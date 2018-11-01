@@ -13,6 +13,14 @@ import { connect } from 'react-redux';
 import {
     createMasterDataKeys
 } from '../../../redux/actions/BOM/create.master.data.action';
+import {
+    updateBillOfMaterialsByMaterialID,
+    updateBillOfMaterialsByMaterialName,
+    updateBillOfMaterialsByMaterialDesc,
+    updateBillOfMaterialsByPartNumber,
+    updateBillOfMaterialsByPartName,
+    updateBillOfMaterialsByPartDesc
+} from '../../../redux/actions/BOM/bill-of-materials.actions';
 
 let counter = 0;
 
@@ -100,6 +108,12 @@ class BillOfMaterialsReview extends React.Component {
         this.props.data.bomReducer.createMasterDataPartNoError = '';
         this.props.data.bomReducer.createMasterDataPartNameError = '';
         this.props.data.bomReducer.createMasterDataPartDescError = '';
+        this.props.data.bomReducer.updateBillOfMaterialsByMaterialIDError = '';
+        this.props.data.bomReducer.updateBillOfMaterialsByMaterialNameError = '';
+        this.props.data.bomReducer.updateBillOfMaterialsByMaterialDescError = '';
+        this.props.data.bomReducer.updateBillOfMaterialsByPartNumberError = '';
+        this.props.data.bomReducer.updateBillOfMaterialsByPartNameError = '';
+        this.props.data.bomReducer.updateBillOfMaterialsByPartDescError = '';
         let outbound = [{
             outboundCompanyName: this.props.eBOMData.outboundCompanyName,
             outboundCountry: this.props.eBOMData.outboundCountry,
@@ -190,54 +204,128 @@ class BillOfMaterialsReview extends React.Component {
                 minimumOrderLeadTime: this.props.eBOMData.minOrderLeadTimes
             }
         };
-        Promise.resolve(this.props.createMasterDataKeys(data))
-            .then(() => {
-                if (this.props.data.bomReducer.createMasterDataMaterialIdKeyError !== '') {
-                    eBOMError.push(' Material ID');
-                }
-                if (this.props.data.bomReducer.createMasterDataMaterialNameKeyError !== '') {
-                    eBOMError.push(' Material Name');
-                }
-                if (this.props.data.bomReducer.createMasterDataMaterialDescKeyError !== '') {
-                    eBOMError.push(' Material Description');
-                }
-                if (this.props.data.bomReducer.createMasterDataPartNoError !== '') {
-                    eBOMError.push(' Part No.');
-                }
-                if (this.props.data.bomReducer.createMasterDataPartNameError !== '') {
-                    eBOMError.push(' Part Name');
-                }
-                if (this.props.data.bomReducer.createMasterDataPartDescError !== '') {
-                    eBOMError.push(' Part Description');
-                }
-                if (eBOMError.length === 0) {
-                    this.setState({
-                        showProgressLogo: false,
-                        snackbar: {
-                            autoHideDuration: 2000,
-                            message: 'Master Data successfully created!',
-                            open: true,
-                            sbColor: 'Module-Snackbar-Success'
-                        }
-                    });
-                    this.props.viewHandler(true, false, '', this.state.snackbar);
-                } else {
-                    this.setState({
-                        showProgressLogo: false,
-                        snackbar: {
-                            autoHideDuration: 5000,
-                            message: 'Error in creating the Master Data! Please check the' + eBOMError + ', then try again.',
-                            open: true,
-                            sbColor: 'Module-Snackbar-Error'
-                        }
-                    });
-                    this.props.viewHandler(true, false, this.props.eBOMData, this.state.snackbar);
-                }
-            })
+        if (this.props.eBOMData.editMasterMaterialData === true) {
+            Promise.resolve(this.props.updateBillOfMaterialsByMaterialID(this.props.eBOMData.materialID, data))
+                .then(() => {
+                    this.props.updateBillOfMaterialsByMaterialName(this.props.eBOMData.materialName, data);
+                })
+                .then(() => {
+                    if (this.props.eBOMData.materialDescription) {
+                        this.props.updateBillOfMaterialsByMaterialDesc(this.props.eBOMData.materialDescription, data);
+                    }
+                })
+                .then(() => {
+                    if (this.props.eBOMData.partNo) {
+                        this.props.updateBillOfMaterialsByPartNumber(this.props.eBOMData.partNo, data);
+                    }
+                })
+                .then(() => {
+                    if (this.props.eBOMData.partName) {
+                        this.props.updateBillOfMaterialsByPartName(this.props.eBOMData.partName, data);
+                    }
+                })
+                .then(() => {
+                    if (this.props.eBOMData.partDescription) {
+                        this.props.updateBillOfMaterialsByPartDesc(this.props.eBOMData.partDescription, data);
+                    }
+                })
+                .then(() => {
+                    if (this.props.data.bomReducer.updateBillOfMaterialsByMaterialIDError !== '') {
+                        eBOMError.push(' Material ID');
+                    }
+                    if (this.props.data.bomReducer.updateBillOfMaterialsByMaterialNameError !== '') {
+                        eBOMError.push(' Material Name');
+                    }
+                    if (this.props.data.bomReducer.updateBillOfMaterialsByMaterialDescError !== '') {
+                        eBOMError.push(' Material Description');
+                    }
+                    if (this.props.data.bomReducer.updateBillOfMaterialsByPartNumberError !== '') {
+                        eBOMError.push(' Part No.');
+                    }
+                    if (this.props.data.bomReducer.updateBillOfMaterialsByPartNameError !== '') {
+                        eBOMError.push(' Part Name');
+                    }
+                    if (this.props.data.bomReducer.updateBillOfMaterialsByPartDescError !== '') {
+                        eBOMError.push(' Part Description');
+                    }
+                    if (eBOMError.length === 0) {
+                        this.setState({
+                            showProgressLogo: false,
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Master Data successfully edited!',
+                                open: true,
+                                sbColor: 'Module-Snackbar-Success'
+                            }
+                        });
+                        this.props.viewHandler('submit', this.state.snackbar);
+                    } else {
+                        this.setState({
+                            showProgressLogo: false,
+                            snackbar: {
+                                autoHideDuration: 5000,
+                                message: 'Error in creating the Master Data! Please check the' + eBOMError + ', then try again.',
+                                open: true,
+                                sbColor: 'Module-Snackbar-Error'
+                            }
+                        });
+                        this.props.viewHandler('cancel', this.state.snackbar);
+                    }
+                });
+        } else {
+            Promise.resolve(this.props.createMasterDataKeys(data))
+                .then(() => {
+                    if (this.props.data.bomReducer.createMasterDataMaterialIdKeyError !== '') {
+                        eBOMError.push(' Material ID');
+                    }
+                    if (this.props.data.bomReducer.createMasterDataMaterialNameKeyError !== '') {
+                        eBOMError.push(' Material Name');
+                    }
+                    if (this.props.data.bomReducer.createMasterDataMaterialDescKeyError !== '') {
+                        eBOMError.push(' Material Description');
+                    }
+                    if (this.props.data.bomReducer.createMasterDataPartNoError !== '') {
+                        eBOMError.push(' Part No.');
+                    }
+                    if (this.props.data.bomReducer.createMasterDataPartNameError !== '') {
+                        eBOMError.push(' Part Name');
+                    }
+                    if (this.props.data.bomReducer.createMasterDataPartDescError !== '') {
+                        eBOMError.push(' Part Description');
+                    }
+                    if (eBOMError.length === 0) {
+                        this.setState({
+                            showProgressLogo: false,
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Master Data successfully created!',
+                                open: true,
+                                sbColor: 'Module-Snackbar-Success'
+                            }
+                        });
+                        this.props.viewHandler(true, false, '', this.state.snackbar);
+                    } else {
+                        this.setState({
+                            showProgressLogo: false,
+                            snackbar: {
+                                autoHideDuration: 5000,
+                                message: 'Error in creating the Master Data! Please check the' + eBOMError + ', then try again.',
+                                open: true,
+                                sbColor: 'Module-Snackbar-Error'
+                            }
+                        });
+                        this.props.viewHandler(true, false, this.props.eBOMData, this.state.snackbar);
+                    }
+                })
+        }
     };
 
     handleCancel = () => {
-        this.props.viewHandler(true, false, this.props.eBOMData, this.state.snackbar);
+        if (this.props.eBOMData.editMasterMaterialData === true) {
+            this.props.viewHandler('cancel', '');
+        } else {
+            this.props.viewHandler(true, false, this.props.eBOMData, this.state.snackbar);
+        }
     };
 
     render() {
@@ -318,7 +406,13 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        createMasterDataKeys: (data) => dispatch(createMasterDataKeys(data))
+        createMasterDataKeys: (data) => dispatch(createMasterDataKeys(data)),
+        updateBillOfMaterialsByMaterialID: (url, body) => dispatch(updateBillOfMaterialsByMaterialID(url, body)),
+        updateBillOfMaterialsByMaterialName: (url, body) => dispatch(updateBillOfMaterialsByMaterialName(url, body)),
+        updateBillOfMaterialsByMaterialDesc: (url, body) => dispatch(updateBillOfMaterialsByMaterialDesc(url, body)),
+        updateBillOfMaterialsByPartNumber: (url, body) => dispatch(updateBillOfMaterialsByPartNumber(url, body)),
+        updateBillOfMaterialsByPartName: (url, body) => dispatch(updateBillOfMaterialsByPartName(url, body)),
+        updateBillOfMaterialsByPartDesc: (url, body) => dispatch(updateBillOfMaterialsByPartDesc(url, body))
     };
 };
 

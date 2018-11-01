@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid/Grid';
+import EditIcon from '@material-ui/icons/Edit';
 import Paper from 'material-ui/Paper';
 import Table from '@material-ui/core/Table/Table';
 import TableBody from '@material-ui/core/TableBody/TableBody';
@@ -64,6 +65,16 @@ class TrackAndTraceResultsView extends Component {
         });
     };
 
+    handleEditMasterData = () => {
+        let masterMaterialData = this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess ||
+            this.props.data.bomReducer.getBillOfMaterialsByMaterialNameSuccess ||
+            this.props.data.bomReducer.getBillOfMaterialsByMaterialDescSuccess ||
+            this.props.data.bomReducer.getBillOfMaterialsByPartNumberSuccess ||
+            this.props.data.bomReducer.getBillOfMaterialsByPartNameSuccess ||
+            this.props.data.bomReducer.getBillOfMaterialsByPartDescSuccess;
+        this.props.viewHandler(masterMaterialData);
+    };
+
     render() {
 
         const buttonThemeRed = createMuiTheme({
@@ -79,6 +90,18 @@ class TrackAndTraceResultsView extends Component {
                         <Grid container>
                             <Grid container item xs={12}>
                                 {this.props.blockInformation}
+                                {this.props.blockInformation === 'Master Material Data' ?
+                                    <EditIcon
+                                        onClick={this.handleEditMasterData}
+                                        style={{
+                                            'cursor': 'pointer',
+                                            'marginTop': '-5px',
+                                            'paddingLeft': '10px'
+                                        }}
+                                    />
+                                    :
+                                    ''
+                                }
                             </Grid>
                         </Grid>
                         <br />

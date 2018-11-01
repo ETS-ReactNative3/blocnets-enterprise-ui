@@ -21,6 +21,7 @@ import SendDocumentView from './components/document-review-and-entry/document-se
 import SaveDocumentView from './components/document-review-and-entry/document-save/document.save.view';
 import ReadDocumentView from './components/document-review-and-entry/document-read/document.read.view';
 import MapContainerView from './components/geolocation/views/google.maps.view';
+import BillOfMaterialsEdit from './components/bill-of-materials/views/bill-of-materials-edit-view';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -119,7 +120,8 @@ class App extends Component {
                 message: '',
                 open: false,
                 sbColor: 'black'
-            }
+            },
+            masterMaterialData: []
         };
     }
 
@@ -212,6 +214,23 @@ class App extends Component {
             show: 'mapcontainerview',
             transactionCode: 'GEO01',
             open: false,
+        });
+    };
+
+    showEditMasterData = (masterMaterialData) => {
+        this.setState({
+            show: 'billofmaterialsedit',
+            open: false,
+            transactionCode: 'eBOM03',
+            masterMaterialData: masterMaterialData
+        });
+    };
+
+    handleEditMasterData = () => {
+        this.setState({
+            show: 'trackandtraceview',
+            open: false,
+            transactionCode: 'TAT01'
         });
     };
 
@@ -338,7 +357,8 @@ class App extends Component {
                     shippingData={this.state.shippingData}
                     snackbar={this.state.snackbar}
                     tatData={this.state.tatData}
-                    tree={this.state.tree} />);
+                    tree={this.state.tree}
+                    viewHandler={this.showEditMasterData} />);
                 contentTitle = 'SEARCH RESULTS';
                 break;
             case 'billofmaterials':
@@ -384,6 +404,12 @@ class App extends Component {
             case 'mapcontainerview':
                 content = (<MapContainerView />);
                 contentTitle = 'GEO MAPPING';
+                break;
+            case 'billofmaterialsedit':
+                content = (<BillOfMaterialsEdit
+                    masterMaterialData={this.state.masterMaterialData}
+                    viewHandler={this.handleEditMasterData} />);
+                contentTitle = 'EDIT MATERIAL AND SUPPLIER MASTER DATA';
                 break;
             default:
                 content = (
