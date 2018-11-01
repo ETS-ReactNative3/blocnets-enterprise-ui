@@ -54,13 +54,12 @@ class SendDocumentView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fileMenuItems: [],
             showProgressLogo: false,
+            fileMenuItems: [],
             fileFromSavedDocsKey: '',
             fileFromMyComputerKey: '',
             file: '',
             fileMetaData: {},
-            selectedFileKey: '',
             userName: this.props.userName,
             recipientUserName: '',
             errorTextRecipientUserName: 'This is a required field.',
@@ -154,10 +153,13 @@ class SendDocumentView extends React.Component {
             //base64Result(fileString);
             base64Result(reader.result);
         };
-        if (file) {
+        if (file && file.size < 30000000) {
             reader.readAsDataURL(file);
             //reader.readAsBinaryString(file); // Binary => base64(Binary)
             this.handleFileMetaData(file);
+        } else if (file && file.size > 30000000) {
+            Promise.resolve(this.setState({ fileFromMyComputerKey: '' }))
+            alert("File is too large. Reduce file size to less than 30mb!");
         } else {
             Promise.resolve(this.setState({ fileFromMyComputerKey: '' }))
         }
@@ -236,8 +238,41 @@ class SendDocumentView extends React.Component {
         }
     }
 
-    handleFileKeyAttached = () => {
+    handleFileValidation = () => {
+        if (this.props.data.fileReducer.uploadFileByUserIdError
+            && this.props.data.fileReducer.uploadFileByUserIdError.status === 409) {
+            this.setState({
+                snackbar: {
+                    autoHideDuration: 2000,
+                    message: 'File already exists! Please choose a different file name.',
+                    open: true,
+                    sbColor: 'red'
+                }
+            })
+        } else if (this.props.data.fileReducer.uploadFileByUserIdError
+            && this.props.data.fileReducer.uploadFileByUserIdError.status !== 409) {
+            this.setState({
+                showProgressLogo: false,
+                snackbar: {
+                    autoHideDuration: 2000,
+                    message: 'Error uploading document! Please try again.',
+                    open: true,
+                    sbColor: 'red'
+                }
+            });
+        } else if (this.props.data.fileReducer.uploadFileByUserIdSuccess === true) {
+            this.setState({
+                snackbar: {
+                    autoHideDuration: 2000,
+                    message: 'Document Attached and Uploaded Successfully!',
+                    open: true,
+                    sbColor: '#23CE6B'
+                }
+            })
+        }
+    }
 
+    handleFileKeyAttached = () => {
         if (this.state.fileFromSavedDocsKey !== '') {
             Promise.resolve(this.setState({ selectedFileKey: this.state.fileFromSavedDocsKey }))
         } else if (this.state.fileFromMyComputerKey !== '') {
@@ -249,40 +284,9 @@ class SendDocumentView extends React.Component {
                 contentDisposition: '',
                 contentLength: this.state.fileMetaData.size
             };
-            Promise.resolve(this.props.uploadFileByUserId(this.state.fileFromMyComputerKey, fileBody))
+            Promise.resolve(this.props.uploadFileByUserId(fileBody.fileName, fileBody))
                 .then(() => {
-                    if (this.props.data.fileReducer.uploadFileByUserIdError.status === 409) {
-                        this.setState({
-                            showProgressLogo: false,
-                            snackbar: {
-                                autoHideDuration: 2000,
-                                message: 'File already exists! Please choose a different file name.',
-                                open: true,
-                                sbColor: 'red'
-                            }
-                        })
-                    } else if (this.props.data.fileReducer.uploadFileByUserIdError.status !== 409) {
-                        this.setState({
-                            showProgressLogo: false,
-                            snackbar: {
-                                autoHideDuration: 2000,
-                                message: 'Error uploading document! Please try again.',
-                                open: true,
-                                sbColor: 'red'
-                            }
-                        });
-                    } else if (this.props.data.fileReducer.uploadFileByUserIdSuccess === true) {
-                        this.setState({
-                            selectedFileKey: this.state.fileFromMyComputerKey,
-                            showProgressLogo: false,
-                            snackbar: {
-                                autoHideDuration: 2000,
-                                message: 'Document Attached and Uploaded Successfully!',
-                                open: true,
-                                sbColor: '#23CE6B'
-                            }
-                        })
-                    }
+                    Promise.resolve(this.handleFileValidation())
                 })
         }
     };
@@ -296,7 +300,7 @@ class SendDocumentView extends React.Component {
             opt1: this.state.fileFromSavedDocsKey,
             opt2: this.state.fileFromMyComputerKey
         }
-        let attachfileKey = this.state.selectedFileKey;
+        let attachfileKey = tmp.opt1 !== '' ? tmp.opt1 : tmp.opt2 !== '' ? tmp.opt2 : '';
         let dreURL = this.guid();
         let dreBody = {
             text: this.state.message,

@@ -18,6 +18,7 @@
         "PRD": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-prd/latest/",
         "DRE": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-dre/latest/",
         "FILE": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-file/latest/",
-        "UMA": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-uma/latest/"
+        "UMA": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-uma/latest/",
+        "CAT": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-cat/latest/"
     }
 }

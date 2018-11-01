@@ -1,7 +1,8 @@
 import axios from 'axios';
 import config from '../config.json';
 import { resolver } from '../../services/callback.resolver';
-import {tokenResolver} from "../../services/token.resolver";
+import { tokenResolver } from "../../services/token.resolver";
+import { catalogue } from './CAT/catalogue.action';
 
 /**
  * PRD data by Production Order Number
@@ -15,9 +16,10 @@ export function createProductionOrderByProdOrderNo(url, body) {
             payload: true
         });
         const headers = tokenResolver();
+        const archive = catalogue('PRD', url);
         await axios.post(config.chaincodes.Default + config.chaincodes.PRD + url, body, { headers })
             .then(() => {
-                return dispatch({
+                return archive + dispatch({
                     type: "CREATE_PRD_DATA_BY_PRODUCTION_ORDER_NUMBER_SUCCESS",
                     payload: true
                 });

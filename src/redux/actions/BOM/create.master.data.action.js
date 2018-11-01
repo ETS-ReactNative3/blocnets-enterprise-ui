@@ -1,7 +1,8 @@
 import axios from 'axios';
 import config from '../../config.json';
 import { resolver } from '../../../services/callback.resolver';
-import {tokenResolver} from '../../../services/token.resolver';
+import { tokenResolver } from '../../../services/token.resolver';
+import { catalogue } from '../CAT/catalogue.action';
 
 export function createMasterDataKeys(data) {
     return async (dispatch) => {
@@ -10,9 +11,10 @@ export function createMasterDataKeys(data) {
             payload: true
         });
         const headers = tokenResolver();
+        const archive = catalogue('BOM', data.material.materialID);
         await axios.post(config.chaincodes.Default + config.chaincodes.BOM + data.material.materialID, data, { headers })
             .then(() => {
-                return dispatch({
+                return archive + dispatch({
                     type: "CREATE_MASTER_DATA_KEY_MATERIAL_ID_SUCCESS",
                     payload: true
                 });
