@@ -81,7 +81,7 @@ class ShippingView extends Component {
                 .then(() => {
                     if (this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess) {
                         eBOMData = this.props.data.bomReducer.getBillOfMaterialsByMaterialIDSuccess;
-                        if (eBOMData !== []) {
+                        if (eBOMData !== [] && eBOMData.outbound !== undefined) {
                             this.setState({
                                 showProgressLogo: false,
                                 addressMenuItems: eBOMData.outbound[0].outboundAddressLine1 + ' ' + eBOMData.outbound[0].outboundAddressLine2 + ' '

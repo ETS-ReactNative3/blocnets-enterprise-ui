@@ -221,7 +221,7 @@ class TrackAndTraceSearchView extends Component {
     handleBOMData = (bomData) => {
         let bomDataLength = JSON.stringify(bomData).length;
         let shippingData = [];
-        if (bomDataLength > 2) {
+        if (bomDataLength > 2 && bomData.outbound !== undefined) {
             counter = 0;
             this.setState({
                 blockInformation: 'Master Material Data',
