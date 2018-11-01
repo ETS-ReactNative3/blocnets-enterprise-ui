@@ -153,10 +153,13 @@ class SendDocumentView extends React.Component {
             //base64Result(fileString);
             base64Result(reader.result);
         };
-        if (file) {
+        if (file && file.size < 30000000) {
             reader.readAsDataURL(file);
             //reader.readAsBinaryString(file); // Binary => base64(Binary)
             this.handleFileMetaData(file);
+        } else if (file && file.size > 30000000) {
+            Promise.resolve(this.setState({ fileFromMyComputerKey: '' }))
+            alert("File is too large. Reduce file size to less than 30mb!");
         } else {
             Promise.resolve(this.setState({ fileFromMyComputerKey: '' }))
         }
