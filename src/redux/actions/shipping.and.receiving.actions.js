@@ -1,7 +1,8 @@
 import axios from 'axios';
 import config from '../config.json';
 import { resolver } from '../../services/callback.resolver';
-import {tokenResolver} from "../../services/token.resolver";
+import {tokenResolver} from '../../services/token.resolver';
+import { catalogue } from './CAT/catalogue.action';
 
 export function createShippingDataByShipmentID(url, body) {
     return async (dispatch) => {
@@ -10,9 +11,10 @@ export function createShippingDataByShipmentID(url, body) {
             payload: true
         });
         const headers = tokenResolver();
+        const archive = catalogue('SAR', url);
         await axios.post(config.chaincodes.Default + config.chaincodes.SAR + 'shipmentId=' + url, body, { headers })
             .then(() => {
-                return dispatch({
+                return archive + dispatch({
                     type: "CREATE_SHIPPING_DATA_BY_SHIPMENT_ID_SUCCESS",
                     payload: true
                 });
@@ -256,7 +258,8 @@ export function syncSARDataAndBindKeys(payload) {
             };
 
             await axios.post(config.chaincodes.Default + config.chaincodes.SAR + 'shipmentId=' + payload.shipmentID, payload, { headers })
-                .then(() => {
+                .then(async () => {
+                    await catalogue('SAR', payload.shipmentID);
                     dispatch({
                         type: "CREATE_SHIPPING_DATA_BY_SHIPMENT_ID_SUCCESS",
                         payload: true
