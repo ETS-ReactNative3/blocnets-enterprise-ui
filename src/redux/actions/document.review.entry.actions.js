@@ -58,7 +58,7 @@ export function updateDocumentEntryByUniqueID(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.put(config.chaincodes.Default + config.chaincodes.SAR + url, body, { headers })
+        await axios.put(config.chaincodes.Default + config.chaincodes.DRE + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_DRE_DATA_BY_UNIQUE_ID_SUCCESS",

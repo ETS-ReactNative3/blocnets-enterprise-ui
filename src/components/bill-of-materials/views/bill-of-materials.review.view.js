@@ -371,14 +371,14 @@ class BillOfMaterialsReview extends React.Component {
                         <Grid container item xs={6} sm={3}>
                         </Grid>
                         <Grid container item xs={6} sm={3}>
-                            <Grid container item xs>
+                            <Grid container item xs justify='flex-end'>
                                 <Button type='submit' value='OK' variant='contained' className='Module-Button'
                                         onClick={this.handleSubmit}>
                                     OK
                                     <Save className='Module-Button-Icon' />
                                 </Button>
                             </Grid>
-                            <Grid container item xs>
+                            <Grid container item xs justify='flex-end'>
                                 <Button type='button' value='Cancel' variant='contained'
                                         className='Module-Button-Cancel'
                                         onClick={this.handleCancel}>
