@@ -1,7 +1,7 @@
 import axios from 'axios';
 import config from '../config.json';
 import { resolver } from '../../services/callback.resolver';
-import {tokenResolver} from '../../services/token.resolver';
+import { tokenResolver } from '../../services/token.resolver';
 import { catalogue } from './CAT/catalogue.action';
 
 export function createShippingDataByShipmentID(url, body) {
@@ -77,6 +77,30 @@ export function updateShippingDataByShipmentID(url, body) {
     };
 }
 
+export function getHistoryShippingDataByShipmentID(url) {
+    return async (dispatch) => {
+        dispatch({
+            type: "LOADING_SAR_VIEW",
+            payload: true
+        });
+        const headers = tokenResolver();
+        await axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'shipmentId=' + url +'/history', { headers })
+            .then((response) => {
+                return dispatch({
+                    type: "GET_HISTORY_SHIPPING_DATA_BY_SHIPMENT_ID_SUCCESS",
+                    payload: response.data
+                });
+            })
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "GET_HISTORY_SHIPPING_DATA_BY_SHIPMENT_ID_FAILED",
+                    payload: errorData
+                })
+            });
+    };
+}
+
 export function createShippingDataByMaterialID(url, body) {
     return async (dispatch) => {
         dispatch({
@@ -143,6 +167,30 @@ export function updateShippingDataByMaterialID(url, body) {
                 let errorData = resolver(error);
                 dispatch({
                     type: "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
+                    payload: errorData
+                })
+            });
+    };
+}
+
+export function getHistoryShippingDataByMaterialID(url) {
+    return async (dispatch) => {
+        dispatch({
+            type: "LOADING_SAR_VIEW",
+            payload: true
+        });
+        const headers = tokenResolver();
+        await axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + url +'/history', { headers })
+            .then((response) => {
+                return dispatch({
+                    type: "GET_HISTORY_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
+                    payload: response.data
+                });
+            })
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "GET_HISTORY_SHIPPING_DATA_BY_MATERIAL_ID_FAILED",
                     payload: errorData
                 })
             });

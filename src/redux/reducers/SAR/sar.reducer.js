@@ -21,6 +21,12 @@ export function sarReducer(state = { items: [], errors: [] }, action) {
         case "UPDATE_SHIPPING_DATA_BY_SHIPMENT_ID_FAILED": {
             return state = { ...state, updateShippingDataByShipmentIDFail: action.payload }
         }
+        case "GET_HISTORY_SHIPPING_DATA_BY_SHIPMENT_ID_SUCCESS": {
+            return state = { ...state, getHistoryShippingDataByShipmentIDSuccess: action.payload}
+        }
+        case "GET_HISTORY_SHIPPING_DATA_BY_SHIPMENT_ID_FAILED": {
+            return state = { ...state, getHistoryShippingDataByShipmentIDFail: action.payload}
+        }
         case "CREATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS": {
             return state = { ...state, createShippingDataByMaterialIDSuccess: action.payload }
         }
@@ -38,6 +44,12 @@ export function sarReducer(state = { items: [], errors: [] }, action) {
         }
         case "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_FAILED": {
             return state = { ...state, updateShippingDataByMaterialIDFail: action.payload }
+        }
+        case "GET_HISTORY_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS": {
+            return state = { ...state, getHistoryShippingDataByMaterialIDSuccess: action.payload}
+        }
+        case "GET_HISTORY_SHIPPING_DATA_BY_MATERIAL_ID_FAILED": {
+            return state = { ...state, getHistoryShippingDataByMaterialIDFail: action.payload}
         }
         case "GET_SAR_DATA_LIST_BY_MATERIAL_ID_SUCCESS": {
             return state = { ...state, items: [...state.items, action.payload] }

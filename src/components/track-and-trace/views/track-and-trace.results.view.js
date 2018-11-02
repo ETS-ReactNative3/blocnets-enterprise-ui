@@ -1,27 +1,80 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import blocnetsLogo from '../../../blocknetwhite-1.png';
 import Grid from '@material-ui/core/Grid/Grid';
 import EditIcon from '@material-ui/icons/Edit';
 import Paper from 'material-ui/Paper';
+import Switch from '@material-ui/core/Switch/Switch';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
+import red from '@material-ui/core/colors/red';
 import Table from '@material-ui/core/Table/Table';
+import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import TableRow from '@material-ui/core/TableRow/TableRow';
 import TableCell from '@material-ui/core/TableCell/TableCell';
 import Typography from '@material-ui/core/Typography';
-import Switch from '@material-ui/core/Switch/Switch';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
-import red from '@material-ui/core/colors/red';
 import Dialog from 'material-ui/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
 import Snackbar from 'material-ui/Snackbar';
+import HistoryIcon from '@material-ui/icons/History';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
 import { connect } from 'react-redux';
+import { getHistoryShippingDataByShipmentID } from '../../../redux/actions/shipping.and.receiving.actions';
 import TrackAndTraceTreeView from './track-and-trace.tree.view';
 
+let SARcounter = 0;
+
+const SARrows = [
+    { id: 'SARKey', label: 'Shipment History' },
+];
+
+class SARTableHeader extends React.Component {
+    render() {
+        return (
+            <TableHead>
+                <TableRow>
+                    {SARrows.map(row => {
+                        return (
+                            <TableCell key={row.id}>
+                                {row.label}
+                            </TableCell>
+                        );
+                    })}
+                </TableRow>
+            </TableHead>
+        );
+    }
+}
+
+SARTableHeader.propTypes = {
+    rowCount: PropTypes.number.isRequired,
+};
+
 class TrackAndTraceResultsView extends Component {
+
+    componentDidMount() {
+        !this.isCancelled && Promise.resolve(this.props.getHistoryShippingDataByShipmentID(this.props.shippingData[1].info2))
+    }
+
+    componentWillUnmount() {
+        this.isCancelled = true;
+    };
 
     constructor(props) {
         super(props);
         this.state = {
             showMaterialMap: false,
             showMaterialMapSwitch: false,
+            showProgressLogo: false,
+            showShipmentHistory: {
+                open: false,
+                shipmentID: ''
+            },
+            SARrowsPerPage: 10,
+            SARpage: 0,
+            SARHistory: [],
             tree: this.props.tree,
             snackbar: {
                 autoHideDuration: 2000,
@@ -30,6 +83,59 @@ class TrackAndTraceResultsView extends Component {
                 sbColor: 'black'
             }
         };
+    };
+
+    createSARTableContent = () => {
+        let tableContent = [];
+        let createSARData = (info1, info2) => {
+            SARcounter += 1;
+            return { id: SARcounter, info1, info2 };
+        }
+        if (this.props.data.getHistoryShippingDataByShipmentIDSuccess &&
+            this.props.data.getHistoryShippingDataByShipmentIDSuccess.length >= 0) {
+            for (let i = 0; i < this.props.data.getHistoryShippingDataByShipmentIDSuccess.length; i++) {
+                if (this.props.data.getHistoryShippingDataByShipmentIDSuccess[i] !== 'string') {
+                    let tmp = this.props.data.getHistoryShippingDataByShipmentIDSuccess[i];
+                    tableContent.push(
+                        createSARData('Material ID', tmp.materialID),
+                        createSARData('Shipment ID', tmp.shipmentID),
+                        createSARData('List of Materials / Quantity', ''));
+                    if (tmp.listOfKeys) {
+                        for (let j = 0; j < tmp.listOfKeys.length; j++) {
+                            if (tmp.listOfKeys[j].materialID && tmp.listOfKeys[j].quantity) {
+                                tableContent.push(
+                                    createSARData('Material ID: ' + tmp.listOfKeys[j].materialID, 'Quantity: ' + tmp.listOfKeys[j].quantity)
+                                );
+                            } else {
+                                tableContent.push(
+                                    createSARData('No Material IDs for this record', 'No Quantity for this Material ID record')
+                                );
+                            }
+                        }
+                    }
+                    tableContent.push(
+                        createSARData('Shipment Sent', tmp.shipmentSent),
+                        createSARData('Shipment Completed', tmp.shipmentCompleted),
+                        createSARData('Manually Shipped', tmp.manuallyShipped),
+                        createSARData('Address1', tmp.address1),
+                        createSARData('Address2', tmp.address2),
+                        createSARData('City', tmp.city),
+                        createSARData('State', tmp.state),
+                        createSARData('Country', tmp.country),
+                        createSARData('Postal Code', tmp.postalCode),
+                        createSARData('IP Address' + tmp.ipAddress),
+                        createSARData('Received Shipment' + tmp.receivedShipment),
+                        createSARData('Received Order' + tmp.receivedOrder),
+                        createSARData('Delivery Order No.' + tmp.deliverOrderNo),
+                        createSARData('Production Order No.' + tmp.prdKey),
+                        createSARData('Device UUID' + tmp.deviceUUID),
+                        createSARData('Planned Ship Date' + tmp.plannedShipDate),
+                        createSARData('Actual Ship Date' + tmp.actualShipDate),
+                    );
+                }
+            }
+        }
+        return tableContent;
     };
 
     handleChange = (event) => {
@@ -75,7 +181,41 @@ class TrackAndTraceResultsView extends Component {
         this.props.viewHandler(masterMaterialData);
     };
 
+    handleShipmentHistoryClose = () => {
+        this.setState({
+            showShipmentHistory: {
+                open: false
+            }
+        })
+    };
+
+    handleChangeRowsPerPage = event => {
+        this.setState({
+            SARrowsPerPage: event.target.value
+        });
+    };
+
+    handleChangePage = (event, page) => {
+        this.setState({
+            SARPage: page
+        });
+    };
+
+    showShipmentHistory = (event) => {
+        this.setState({ showProgressLogo: true })
+        this.setState({
+            showProgressLogo: false,
+            showShipmentHistory: {
+                open: true,
+                shipmentID: this.props.shippingData[1].info2,  // GET Shipment ID from Prop
+            },
+            SARHistory: this.createSARTableContent()
+        })
+    };
+
     render() {
+
+        const { SARHistory } = this.state;
 
         const buttonThemeRed = createMuiTheme({
             palette: {
@@ -86,6 +226,11 @@ class TrackAndTraceResultsView extends Component {
         return (
             <form>
                 <div>
+                    <div>
+                        {this.state.showProgressLogo ?
+                            <div className='overlay'><img src={blocnetsLogo} className='App-logo-progress' alt='' />
+                            </div> : ''}
+                    </div>
                     <div style={{ padding: 24 }}>
                         <Grid container>
                             <Grid container item xs={12}>
@@ -173,7 +318,13 @@ class TrackAndTraceResultsView extends Component {
                                                     {this.props.shippingData.map(row => {
                                                         return (
                                                             <TableRow key={row.id}>
-                                                                <TableCell>{row.info1}</TableCell>
+                                                                <TableCell>{row.info1}{row.info1 === 'Shipment ID' ?
+                                                                    <Tooltip title='Show History'>
+                                                                        <IconButton onClick={this.showShipmentHistory}>
+                                                                            <HistoryIcon />
+                                                                        </IconButton>
+                                                                    </Tooltip> : ''}
+                                                                </TableCell>
                                                                 <TableCell>{row.info2}</TableCell>
                                                             </TableRow>
                                                         );
@@ -191,13 +342,42 @@ class TrackAndTraceResultsView extends Component {
                             <Grid container justify="flex-end">
                                 <Grid item>
                                     <i className="material-icons" style={{ "cursor": "pointer" }}
-                                       onClick={this.handleTreeClose}>close</i>
+                                        onClick={this.handleTreeClose}>close</i>
                                 </Grid>
                             </Grid>
                             <br />
                             <div>
                                 <TrackAndTraceTreeView data={this.state} />
                             </div>
+                        </Dialog>
+                        <Dialog open={this.state.showShipmentHistory.open} onClose={this.handleShipmentHistoryClose} scroll={'paper'}>
+                            <Grid container justify="flex-end">
+                                <Grid item>
+                                    <i className="material-icons" style={{ "cursor": "pointer" }}
+                                        onClick={this.handleShipmentHistoryClose}>close</i>
+                                </Grid>
+                            </Grid>
+                            <br />
+                            <DialogContent>
+                                <DialogContentText>
+                                    <Table>
+                                        <SARTableHeader
+                                            rowCount={SARHistory.length}
+                                        />
+                                        <TableBody style={{ "overflowWrap": "break-word" }}>
+                                            {SARHistory
+                                                .map(row => {
+                                                    return (
+                                                        <TableRow key={row.id}>
+                                                            <TableCell>{row.info1}</TableCell>
+                                                            <TableCell>{row.info2}</TableCell>
+                                                        </TableRow>
+                                                    );
+                                                })}
+                                        </TableBody>
+                                    </Table>
+                                </DialogContentText>
+                            </DialogContent>
                         </Dialog>
                     </div>
                     <Snackbar
@@ -230,7 +410,9 @@ const mapStateToProps = (state) => {
 
 // This way, we can call our action creator by doing this.props.fetchData(url);
 const mapDispatchToProps = (dispatch) => {
-    return {};
+    return {
+        getHistoryShippingDataByShipmentID: (url) => dispatch(getHistoryShippingDataByShipmentID(url))
+    };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrackAndTraceResultsView);
