@@ -9,7 +9,9 @@ import { connect } from 'react-redux';
 class TrackAndTraceView extends Component {
 
     handleTTSearchData = (show, open, transactionCode, blockInformation, tatData, tree, shippingData, snackbar) => {
-        if (transactionCode !== 'DRE02') {
+        if (show === 'catalogue'){
+            this.props.viewHandler(show);
+        } else if (transactionCode !== 'DRE02') {
             this.props.viewHandler(show, open, transactionCode, blockInformation, tatData, tree, shippingData, snackbar);
         }
     };

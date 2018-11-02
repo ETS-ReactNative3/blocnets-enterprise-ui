@@ -26,7 +26,6 @@ export function catalogue(chaincode, key) {
                         keys.push(element);
                     });
                     body.chainItems = keys;
-                    console.log('CAT Data: ' + chaincode + keys);
                     await axios.put(config.chaincodes.Default + config.chaincodes.CAT + chaincode, body, { headers })  // UPDATE on the existing Key with the new array of keys
                         .then(async () => {
                             return dispatch({

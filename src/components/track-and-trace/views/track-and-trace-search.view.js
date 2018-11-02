@@ -5,6 +5,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import SearchIcon from '@material-ui/icons/Search';
+import ViewListIcon from '@material-ui/icons/ViewList';
 import Popper from '@material-ui/core/Popper';
 import Grow from '@material-ui/core/Grow';
 import Paper from 'material-ui/Paper';
@@ -137,6 +138,10 @@ class TrackAndTraceSearchView extends Component {
             openSearch: false
         });
     };
+
+    showSystemCatalogue = (event) => {
+        this.props.viewHandler('catalogue');
+    }
 
     showTrackAndTraceResultsView = (event) => {
         event.preventDefault();
@@ -282,10 +287,6 @@ class TrackAndTraceSearchView extends Component {
                     }
                 });
                 this.props.viewHandler('trackandtraceresultsview', false, 'TAT02', this.state.blockInformation, this.state.tatData, this.state.tree, this.state.shippingData, this.state.snackbar);
-                this.setState({
-                    searchKey: '',
-                    searchCriteria: ''
-                });
             }
         } else {
             this.setState({
@@ -302,10 +303,6 @@ class TrackAndTraceSearchView extends Component {
                 }
             });
             this.props.viewHandler('trackandtraceresultsview', false, 'TAT02', this.state.blockInformation, this.state.tatData, this.state.tree, this.state.shippingData, this.state.snackbar);
-            this.setState({
-                searchKey: '',
-                searchCriteria: ''
-            });
         }
     };
 
@@ -374,10 +371,6 @@ class TrackAndTraceSearchView extends Component {
             });
         }
         this.props.viewHandler('trackandtraceresultsview', false, 'TAT02', this.state.blockInformation, this.state.tatData, this.state.tree, this.state.shippingData, this.state.snackbar);
-        this.setState({
-            searchKey: '',
-            searchCriteria: ''
-        });
     };
 
     handleShippingDataByMaterialID = (show, open, transactionCode, blockInformation, tatData, tree, shippingData, snackbar) => {
@@ -425,10 +418,6 @@ class TrackAndTraceSearchView extends Component {
             });
         }
         this.props.viewHandler(show, open, transactionCode, blockInformation, tatData, tree, this.state.shippingData, snackbar);
-        this.setState({
-            searchKey: '',
-            searchCriteria: ''
-        });
     };
 
     render() {
@@ -462,11 +451,19 @@ class TrackAndTraceSearchView extends Component {
                                         <SearchIcon
                                             onClick={this.showTrackAndTraceResultsView}
                                             style={{ 'cursor': 'pointer' }}
+                                        />|
+                                        <ViewListIcon
+                                            onClick={this.showSystemCatalogue}
+                                            style={{ 'cursor': 'pointer' }}
                                         />
                                     </InputAdornment> :
                                     <InputAdornment position='end'>
                                         <SearchIcon
                                             style={{ 'fill': 'black' }}
+                                        />|
+                                        <ViewListIcon
+                                            onClick={this.showSystemCatalogue}
+                                            style={{ 'cursor': 'pointer' }}
                                         />
                                     </InputAdornment>
                             }
@@ -474,7 +471,7 @@ class TrackAndTraceSearchView extends Component {
                             autoComplete='off'
                         />
                         <Popper open={this.state.openSearch} transition disablePortal
-                                style={{ 'position': 'relative' }}>
+                            style={{ 'position': 'relative' }}>
                             {({ TransitionProps, placement }) => (
                                 <Grow
                                     {...TransitionProps}
@@ -485,13 +482,13 @@ class TrackAndTraceSearchView extends Component {
                                         <ClickAwayListener onClickAway={this.handleSearchClose}>
                                             <MenuList style={{ 'textAlign': 'left' }}>
                                                 <MenuItem className='menuList'
-                                                          onClick={event => this.handleSearch(event, 'Material ID')}>Material
+                                                    onClick={event => this.handleSearch(event, 'Material ID')}>Material
                                                     ID: {this.state.searchKey}</MenuItem>
                                                 <MenuItem className='menuList'
-                                                          onClick={event => this.handleSearch(event, 'Material Name')}>Material
+                                                    onClick={event => this.handleSearch(event, 'Material Name')}>Material
                                                     Name: {this.state.searchKey}</MenuItem>
                                                 <MenuItem className='menuList'
-                                                          onClick={event => this.handleSearch(event, 'Material Description')}>Material
+                                                    onClick={event => this.handleSearch(event, 'Material Description')}>Material
                                                     Description: {this.state.searchKey}</MenuItem>
                                                 {
                                                     /* RELEASE-90: Hide Part No., Part Name and Part Description fields.
@@ -507,7 +504,7 @@ class TrackAndTraceSearchView extends Component {
                                                         */
                                                 }
                                                 <MenuItem className='menuList'
-                                                          onClick={event => this.handleSearch(event, 'Shipment ID')}>Shipment
+                                                    onClick={event => this.handleSearch(event, 'Shipment ID')}>Shipment
                                                     ID: {this.state.searchKey}</MenuItem>
                                             </MenuList>
                                         </ClickAwayListener>
@@ -521,9 +518,9 @@ class TrackAndTraceSearchView extends Component {
                         <Grid container spacing={24}>
                             <Grid container item xs={12} justify='center'>
                                 <Button type='submit' value='Submit' variant='contained'
-                                        onClick={event => this.showTrackAndTraceResultsView(event)}
-                                        disabled={!this.state.searchCriteria || !this.state.searchKey}
-                                        className='Module-Button-Search'>
+                                    onClick={event => this.showTrackAndTraceResultsView(event)}
+                                    disabled={!this.state.searchCriteria || !this.state.searchKey}
+                                    className='Module-Button-Search'>
                                     Search
                                 </Button>
                             </Grid>

@@ -22,6 +22,7 @@ import SaveDocumentView from './components/document-review-and-entry/document-sa
 import ReadDocumentView from './components/document-review-and-entry/document-read/document.read.view';
 import MapContainerView from './components/geolocation/views/google.maps.view';
 import BillOfMaterialsEdit from './components/bill-of-materials/views/bill-of-materials-edit-view';
+import CatalogueView from './components/catalogue/catalogue.view';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -104,6 +105,10 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            catalogue: {
+                open: false,
+                scroll: 'paper'
+            },
             show: this.props.showApp,
             open: this.props.open,
             transactionCode: this.props.transactionCode,
@@ -235,30 +240,54 @@ class App extends Component {
     };
 
     handleTTSearchData = (show, open, transactionCode, blockInformation, tatData, tree, shippingData, snackbar) => {
-        this.setState({
-            show: show,
-            open: open,
-            transactionCode: transactionCode,
-            blockInformation: blockInformation,
-            tatData: tatData,
-            tree: tree,
-            shippingData: shippingData,
-            snackbar: snackbar
-        });
+        if (show === 'catalogue') {
+            this.setState({
+                catalogue: {
+                    open: show === 'catalogue' ? true : false,
+                }
+            })
+        } else if (show !== 'catalogue') {
+            this.setState({
+                show: show,
+                open: open,
+                transactionCode: transactionCode,
+                blockInformation: blockInformation,
+                tatData: tatData,
+                tree: tree,
+                shippingData: shippingData,
+                snackbar: snackbar
+            });
+        }
     };
 
     handleTrackAndTraceData = (show, open, transactionCode, blockInformation, tatData, tree, shippingData, snackbar) => {
-        this.setState({
-            show: show,
-            open: open,
-            transactionCode: transactionCode,
-            blockInformation: blockInformation,
-            tatData: tatData,
-            tree: tree,
-            shippingData: shippingData,
-            snackbar: snackbar
-        });
+        if (show === 'catalogue') {
+            this.setState({
+                catalogue: {
+                    open: show === 'catalogue' ? true : false,
+                }
+            })
+        } else if (show !== 'catalogue') {
+            this.setState({
+                show: show,
+                open: open,
+                transactionCode: transactionCode,
+                blockInformation: blockInformation,
+                tatData: tatData,
+                tree: tree,
+                shippingData: shippingData,
+                snackbar: snackbar
+            });
+        }
     };
+
+    handleCatalogue = () => {
+        this.setState({
+            catalogue: {
+                open: false,
+            }
+        })
+    }
 
     handleDREData = (refreshBadgeContent) => {
         if (refreshBadgeContent === true) {
@@ -418,7 +447,7 @@ class App extends Component {
                             <Route
                                 path='/'
                                 render={(props) => <DocumentDashboardView {...props}
-                                                                          userName={this.state.userName} />}
+                                    userName={this.state.userName} />}
                             />
                         </div>
                     </Router>);
@@ -429,15 +458,15 @@ class App extends Component {
 
         const renderMobileMenu = (
             <Menu anchorEl={this.state.mobileMoreAnchorEl} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                  onClose={this.handleMobileMenuClose} open={this.state.showMobileMenu}
-                  transformOrigin={{ vertical: 'top', horizontal: 'right' }}>
+                onClose={this.handleMobileMenuClose} open={this.state.showMobileMenu}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}>
                 <MenuItem className='Mobile-MenuItem' onClick={this.showMainView}>
                     <ListItemIcon className='Mobile-ListItemIcon'>
                         <Badge badgeContent={this.state.badgeContent}
-                               classes={{
-                                   root: 'App-Bar-Badge',
-                                   badge: 'App-Bar-Badge-Color'
-                               }}>
+                            classes={{
+                                root: 'App-Bar-Badge',
+                                badge: 'App-Bar-Badge-Color'
+                            }}>
                             <MailIcon />
                         </Badge>
                     </ListItemIcon>
@@ -495,10 +524,10 @@ class App extends Component {
                                 <Tooltip title='Messages'>
                                     <IconButton onClick={this.showMainView}>
                                         <Badge badgeContent={this.state.badgeContent}
-                                               classes={{
-                                                   root: 'App-Bar-Badge',
-                                                   badge: 'App-Bar-Badge-Color'
-                                               }}>
+                                            classes={{
+                                                root: 'App-Bar-Badge',
+                                                badge: 'App-Bar-Badge-Color'
+                                            }}>
                                             <MailIcon />
                                         </Badge>
                                     </IconButton>
@@ -566,6 +595,7 @@ class App extends Component {
                         </Typography>
                     </Toolbar>
                 </Paper>
+                {this.state.catalogue.open === true ? <CatalogueView viewHandler={this.handleCatalogue}></CatalogueView> : ''}
                 {/* Page View with content loaded */}
                 {this.state.transactionCode === 'TAT01' ?
                     <Paper className='Transparent-Theme' elevation={24}>
