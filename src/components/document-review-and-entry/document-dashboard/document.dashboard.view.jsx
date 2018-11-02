@@ -14,7 +14,7 @@ import Button from '@material-ui/core/Button/Button';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 import yellow from '@material-ui/core/colors/yellow';
 import red from '@material-ui/core/colors/red';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+//import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import Snackbar from 'material-ui/Snackbar';
 import { connect } from 'react-redux';
