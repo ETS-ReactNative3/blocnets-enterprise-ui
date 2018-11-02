@@ -18,10 +18,10 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import Snackbar from 'material-ui/Snackbar';
 import { connect } from 'react-redux';
-import {
-    getEachMessageForUserID
-} from '../../../redux/actions/UMA/user.message.array.action';
+import { getEachMessageForUserID } from '../../../redux/actions/UMA/user.message.array.action';
 import { updateDocumentEntryByUniqueID } from '../../../redux/actions/document.review.entry.actions';
+import { retrieveFileByKey } from '../../../redux/actions/FILE/file.action';
+import { Document, Page } from 'react-pdf';
 
 let counter = 0;
 
@@ -40,6 +40,15 @@ function createDialogData(info1, info2) {
     dialogCounter += 1;
     return { id: dialogCounter, info1, info2 };
 }
+
+function handleDialogData(file) {
+    return file;
+}
+
+const options = {
+    cMapUrl: 'cmaps/',
+    cMapPacked: true,
+};
 
 class TableHeader extends React.Component {
     render() {
@@ -125,7 +134,11 @@ class DocumentDashboardView extends React.Component {
                 message: '',
                 open: false,
                 sbColor: 'black'
-            }
+            },
+            openFileDialog: false,
+            mimeType: '',
+            reconstructedFile: ["test"],
+            numPages: null
         }
     };
 
@@ -477,9 +490,58 @@ class DocumentDashboardView extends React.Component {
         });
     };
 
+    decodeFile = (encodedFile, contentType) => {
+        this.setState({
+            reconstructedFile: [encodedFile],
+            mimeType: contentType
+        });
+    };
+
+    handleDREValidation = () => {
+        if (this.props.data.fileReducer.retrieveFileByKeySuccess) {
+            this.setState({
+                openFileDialog: true,
+                showProgressLogoDialog: false,
+                snackbar: {
+                    autoHideDuration: 2000,
+                    message: 'File Retrieved Successfully!',
+                    open: true,
+                    sbColor: '#23CE6B'
+                }
+            });
+            this.decodeFile(this.props.data.fileReducer.retrieveFileByKeySuccess.file, this.props.data.fileReducer.retrieveFileByKeySuccess.contentType);
+        } else {
+            this.setState({
+                showProgressLogoDialog: false,
+                snackbar: {
+                    autoHideDuration: 2000,
+                    message: 'Error retrieving file! Please try again.',
+                    open: true,
+                    sbColor: 'red'
+                }
+            });
+        }
+    };
+
+    handleDialogViewFile = (event, messageFile) => {
+        this.setState({ showProgressLogoDialog: true });
+        Promise.resolve(this.props.retrieveFileByKey(messageFile))
+            .then(() => {
+                this.handleDREValidation();
+            })
+    };
+
+    onDocumentLoadSuccess = ({ numPages }) => {
+        this.setState({ numPages });
+    };
+
+    handleFileDialogClose = () => {
+        this.setState({ openFileDialog: false });
+    };
+
     render() {
 
-        const { data, selected, rowsPerPage, page } = this.state;
+        const { data, selected, rowsPerPage, page, numPages } = this.state;
 
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
@@ -488,6 +550,7 @@ class DocumentDashboardView extends React.Component {
                 primary: yellow
             },
         });
+
         const buttonThemeRed = createMuiTheme({
             palette: {
                 primary: red
@@ -502,6 +565,9 @@ class DocumentDashboardView extends React.Component {
             createDialogData('File', this.state.dialog.messageFile),
             createDialogData('Date', this.state.dialog.messageDate)
         ];
+
+        const showImageFile = handleDialogData(<img src={this.state.reconstructedFile[0]} width='100%' height='auto'
+                                                    alt='' />);
 
         return (
             <div>
@@ -571,7 +637,7 @@ class DocumentDashboardView extends React.Component {
                                                 })}
                                             {emptyRows > 0 && (
                                                 <TableRow style={{ height: 49 * emptyRows }}>
-                                                    <TableCell colSpan={6} />
+                                                    <TableCell colSpan={7} />
                                                 </TableRow>
                                             )}
                                         </TableBody>
@@ -597,21 +663,25 @@ class DocumentDashboardView extends React.Component {
                     <br />
                     <Grid container spacing={24}>
                         <Grid container item xs={12} sm={3}>
-                            <Grid>
-                                <MuiThemeProvider theme={buttonThemeYellow}>
-                                    <input
-                                        style={{ 'display': 'none' }}
-                                        type="file"
-                                    />
-                                    <label>
-                                        <Button type="submit" value="Upload" variant="contained"
-                                                color="primary" disabled={true}>
-                                            Upload
-                                            <CloudUploadIcon style={{ 'marginLeft': '12' }} />
-                                        </Button>
-                                    </label>
-                                </MuiThemeProvider>
-                            </Grid>
+                            {
+                                /*
+                                <Grid>
+                                    <MuiThemeProvider theme={buttonThemeYellow}>
+                                        <input
+                                            style={{ 'display': 'none' }}
+                                            type="file"
+                                        />
+                                        <label>
+                                            <Button type="submit" value="Upload" variant="contained"
+                                                    color="primary" disabled={true}>
+                                                Upload
+                                                <CloudUploadIcon style={{ 'marginLeft': '12' }} />
+                                            </Button>
+                                        </label>
+                                    </MuiThemeProvider>
+                                </Grid>
+                                */
+                            }
                         </Grid>
                         <Grid container item xs={12} sm={6}>
                         </Grid>
@@ -678,7 +748,7 @@ class DocumentDashboardView extends React.Component {
                                 <Grid container item xs>
                                     <MuiThemeProvider theme={buttonThemeYellow}>
                                         <Button type="submit" value="ViewFile" variant="contained" color="primary"
-                                                onClick={this.handleDialogApprove}
+                                                onClick={event => this.handleDialogViewFile(event, this.state.dialog.messageFile)}
                                                 disabled={this.state.dialog.messageFile === ''}>
                                             View File
                                         </Button>
@@ -718,6 +788,48 @@ class DocumentDashboardView extends React.Component {
                     onRequestClose={this.handleSnackbarClose}
                     bodyStyle={{ backgroundColor: this.state.snackbar.sbColor }}
                 />
+                <Dialog fullScreen open={this.state.openFileDialog} onClose={this.handleFileDialogClose}>
+                    <div style={{ padding: 24 }}>
+                        <Grid container justify="flex-end">
+                            <Grid item>
+                                <i className="material-icons" style={{ "cursor": "pointer" }}
+                                   onClick={this.handleFileDialogClose}>close</i>
+                            </Grid>
+                        </Grid>
+                        <br />
+                        <Grid container justify="center">
+                            <Grid container item xs={12}>
+                                <Paper style={{ "width": "100%" }}>
+                                    <div style={{ "overflowX": "auto" }}>
+                                        {
+                                            this.state.mimeType.indexOf('image') > -1 ? showImageFile
+                                                :
+                                                this.state.mimeType.indexOf('application/pdf') > -1 ?
+                                                    <Document
+                                                        file={this.state.reconstructedFile[0]}
+                                                        onLoadSuccess={this.onDocumentLoadSuccess}
+                                                        options={options}
+                                                    >
+                                                        {
+                                                            Array.from(
+                                                                new Array(numPages),
+                                                                (el, index) => (
+                                                                    <Page
+                                                                        key={`page_${index + 1}`}
+                                                                        pageNumber={index + 1}
+                                                                    />
+                                                                ),
+                                                            )
+                                                        }
+                                                    </Document>
+                                                    : ''
+                                        }
+                                    </div>
+                                </Paper>
+                            </Grid>
+                        </Grid>
+                    </div>
+                </Dialog>
             </div>
         );
 
@@ -739,7 +851,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getEachMessageForUserID: (user) => dispatch(getEachMessageForUserID(user)),
-        updateDocumentEntryByUniqueID: (url, body) => dispatch(updateDocumentEntryByUniqueID(url, body))
+        updateDocumentEntryByUniqueID: (url, body) => dispatch(updateDocumentEntryByUniqueID(url, body)),
+        retrieveFileByKey: (url) => dispatch(retrieveFileByKey(url))
     };
 };
 
