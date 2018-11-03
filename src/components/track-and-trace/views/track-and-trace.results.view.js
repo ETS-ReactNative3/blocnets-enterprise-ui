@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import blocnetsLogo from '../../../blocknetwhite-1.png';
 import Grid from '@material-ui/core/Grid/Grid';
 import EditIcon from '@material-ui/icons/Edit';
@@ -8,14 +7,11 @@ import Switch from '@material-ui/core/Switch/Switch';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 import red from '@material-ui/core/colors/red';
 import Table from '@material-ui/core/Table/Table';
-import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody/TableBody';
 import TableRow from '@material-ui/core/TableRow/TableRow';
 import TableCell from '@material-ui/core/TableCell/TableCell';
 import Typography from '@material-ui/core/Typography';
-import Dialog from 'material-ui/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import Dialog from '@material-ui/core/Dialog';
 import Snackbar from 'material-ui/Snackbar';
 import HistoryIcon from '@material-ui/icons/History';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -25,32 +21,6 @@ import { getHistoryShippingDataByShipmentID } from '../../../redux/actions/shipp
 import TrackAndTraceTreeView from './track-and-trace.tree.view';
 
 let SARcounter = 0;
-
-const SARrows = [
-    { id: 'SARKey', label: 'Shipment History' },
-];
-
-class SARTableHeader extends React.Component {
-    render() {
-        return (
-            <TableHead>
-                <TableRow>
-                    {SARrows.map(row => {
-                        return (
-                            <TableCell key={row.id}>
-                                {row.label}
-                            </TableCell>
-                        );
-                    })}
-                </TableRow>
-            </TableHead>
-        );
-    }
-}
-
-SARTableHeader.propTypes = {
-    rowCount: PropTypes.number.isRequired,
-};
 
 class TrackAndTraceResultsView extends Component {
 
@@ -90,12 +60,12 @@ class TrackAndTraceResultsView extends Component {
         let createSARData = (info1, info2) => {
             SARcounter += 1;
             return { id: SARcounter, info1, info2 };
-        }
-        if (this.props.data.getHistoryShippingDataByShipmentIDSuccess &&
-            this.props.data.getHistoryShippingDataByShipmentIDSuccess.length >= 0) {
-            for (let i = 0; i < this.props.data.getHistoryShippingDataByShipmentIDSuccess.length; i++) {
-                if (this.props.data.getHistoryShippingDataByShipmentIDSuccess[i] !== 'string') {
-                    let tmp = this.props.data.getHistoryShippingDataByShipmentIDSuccess[i];
+        };
+        if (this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess &&
+            this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess.length >= 0) {
+            for (let i = 0; i < this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess.length; i++) {
+                if (this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess[i] !== 'string') {
+                    let tmp = this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess[i];
                     tableContent.push(
                         createSARData('Material ID', tmp.materialID),
                         createSARData('Shipment ID', tmp.shipmentID),
@@ -108,29 +78,25 @@ class TrackAndTraceResultsView extends Component {
                                 );
                             } else {
                                 tableContent.push(
-                                    createSARData('No Material IDs for this record', 'No Quantity for this Material ID record')
+                                    createSARData('No Material ID for this record.', 'No Quantity for this Material ID record.')
                                 );
                             }
                         }
                     }
                     tableContent.push(
-                        createSARData('Shipment Sent', tmp.shipmentSent),
-                        createSARData('Shipment Completed', tmp.shipmentCompleted),
-                        createSARData('Manually Shipped', tmp.manuallyShipped),
-                        createSARData('Address1', tmp.address1),
-                        createSARData('Address2', tmp.address2),
-                        createSARData('City', tmp.city),
-                        createSARData('State', tmp.state),
-                        createSARData('Country', tmp.country),
-                        createSARData('Postal Code', tmp.postalCode),
-                        createSARData('IP Address' + tmp.ipAddress),
-                        createSARData('Received Shipment' + tmp.receivedShipment),
-                        createSARData('Received Order' + tmp.receivedOrder),
-                        createSARData('Delivery Order No.' + tmp.deliverOrderNo),
-                        createSARData('Production Order No.' + tmp.prdKey),
-                        createSARData('Device UUID' + tmp.deviceUUID),
-                        createSARData('Planned Ship Date' + tmp.plannedShipDate),
-                        createSARData('Actual Ship Date' + tmp.actualShipDate),
+                        createSARData('Planned Ship Date', tmp.plannedShipDate),
+                        createSARData('Actual Ship Date', tmp.actualShipDate),
+                        createSARData('Address', tmp.address1),
+                        createSARData('IP Address', tmp.ipAddress),
+                        createSARData('Manual Shipping', tmp.manuallyShipped === true ? 'YES' : 'NO'),
+                        createSARData('Shipment Completed', tmp.shipmentCompleted === true ? 'YES' : 'NO'),
+                        createSARData('Shipment Quantity', tmp.shipmentQuantity),
+                        createSARData('Shipment Sent', tmp.shipmentSent === true ? 'YES' : 'NO'),
+                        createSARData('Received Shipment', tmp.receivedShipment === true ? 'YES' : 'NO'),
+                        createSARData('Received Order', tmp.receivedOrder === true ? 'YES' : 'NO'),
+                        createSARData('Delivery Order No.', tmp.deliverOrderNo),
+                        createSARData('Production Order No.', tmp.prdKey),
+                        createSARData('Device UUID', tmp.deviceUUID)
                     );
                 }
             }
@@ -342,7 +308,7 @@ class TrackAndTraceResultsView extends Component {
                             <Grid container justify="flex-end">
                                 <Grid item>
                                     <i className="material-icons" style={{ "cursor": "pointer" }}
-                                        onClick={this.handleTreeClose}>close</i>
+                                       onClick={this.handleTreeClose}>close</i>
                                 </Grid>
                             </Grid>
                             <br />
@@ -350,34 +316,54 @@ class TrackAndTraceResultsView extends Component {
                                 <TrackAndTraceTreeView data={this.state} />
                             </div>
                         </Dialog>
-                        <Dialog open={this.state.showShipmentHistory.open} onClose={this.handleShipmentHistoryClose} scroll={'paper'}>
-                            <Grid container justify="flex-end">
-                                <Grid item>
-                                    <i className="material-icons" style={{ "cursor": "pointer" }}
-                                        onClick={this.handleShipmentHistoryClose}>close</i>
+                        <Dialog open={this.state.showShipmentHistory.open} onClose={this.handleShipmentHistoryClose}
+                                autoScrollBodyContent={true}>
+                            <div style={{ padding: 24 }}>
+                                <Grid container justify="flex-end">
+                                    <Grid item>
+                                        <i className="material-icons" style={{ "cursor": "pointer" }}
+                                           onClick={this.handleShipmentHistoryClose}>close</i>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                            <br />
-                            <DialogContent>
-                                <DialogContentText>
-                                    <Table>
-                                        <SARTableHeader
-                                            rowCount={SARHistory.length}
-                                        />
-                                        <TableBody style={{ "overflowWrap": "break-word" }}>
-                                            {SARHistory
-                                                .map(row => {
-                                                    return (
-                                                        <TableRow key={row.id}>
-                                                            <TableCell>{row.info1}</TableCell>
-                                                            <TableCell>{row.info2}</TableCell>
-                                                        </TableRow>
-                                                    );
-                                                })}
-                                        </TableBody>
-                                    </Table>
-                                </DialogContentText>
-                            </DialogContent>
+                                <Grid container>
+                                    <Grid container item xs={12}>
+                                        Shipment History
+                                    </Grid>
+                                </Grid>
+                                <br />
+                                <Grid container justify="center">
+                                    <Grid container item xs={12}>
+                                        <Paper style={{ "width": "100%" }}>
+                                            <div style={{ "overflowX": "auto" }}>
+                                                <Table style={{ "tableLayout": "fixed" }}>
+                                                    <TableBody style={{ "overflowWrap": "break-word" }}>
+                                                        {SARHistory
+                                                            .map(row => {
+                                                                return (
+                                                                    <TableRow key={row.id}>
+                                                                        {
+                                                                            row.info1 === 'Material ID' ?
+                                                                                <TableCell style={{"background-color": "black", "color": "white"}}>{row.info1}</TableCell>
+                                                                            :
+                                                                                <TableCell>{row.info1}</TableCell>
+                                                                        }
+                                                                        {
+                                                                            row.info1 === 'Material ID' ?
+                                                                                <TableCell style={{"background-color": "black", "color": "white"}}>{row.info2}</TableCell>
+                                                                                :
+                                                                                <TableCell>{row.info2}</TableCell>
+                                                                        }
+                                                                    </TableRow>
+
+                                                                );
+                                                            })}
+                                                    </TableBody>
+                                                </Table>
+                                            </div>
+                                        </Paper>
+                                    </Grid>
+                                </Grid>
+                            </div>
                         </Dialog>
                     </div>
                     <Snackbar
