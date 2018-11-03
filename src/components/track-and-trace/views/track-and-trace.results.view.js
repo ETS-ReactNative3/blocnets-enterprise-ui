@@ -25,8 +25,13 @@ let SARcounter = 0;
 class TrackAndTraceResultsView extends Component {
 
     componentDidMount() {
-        !this.isCancelled && this.props.shippingData[1] &&
-        Promise.resolve(this.props.getHistoryShippingDataByShipmentID(this.props.shippingData[1].info2))
+        if(this.props.blockInformation === 'Shipping Information') {
+            !this.isCancelled && this.props.tatData[1] &&
+            Promise.resolve(this.props.getHistoryShippingDataByShipmentID(this.props.tatData[1].info2))
+        } else {
+            !this.isCancelled && this.props.shippingData[1] &&
+            Promise.resolve(this.props.getHistoryShippingDataByShipmentID(this.props.shippingData[1].info2))
+        }
     }
 
     componentWillUnmount() {
@@ -170,14 +175,28 @@ class TrackAndTraceResultsView extends Component {
 
     showShipmentHistory = (event) => {
         this.setState({ showProgressLogo: true })
-        this.setState({
-            showProgressLogo: false,
-            showShipmentHistory: {
-                open: true,
-                shipmentID: this.props.shippingData[1].info2,  // GET Shipment ID from Prop
-            },
-            SARHistory: this.createSARTableContent()
-        })
+        if(this.props.blockInformation === 'Shipping Information') {
+            this.setState({
+                showProgressLogo: false,
+                showShipmentHistory: {
+                    open: true,
+                    shipmentID: this.props.tatData[1].info2,  // GET Shipment ID from Prop
+                },
+                SARHistory: this.createSARTableContent()
+            })
+        } else {
+            this.setState({
+                showProgressLogo: false,
+                showShipmentHistory: {
+                    open: true,
+                    shipmentID: this.props.shippingData[1].info2,  // GET Shipment ID from Prop
+                },
+                SARHistory: this.createSARTableContent()
+            })
+        }
+
+
+
     };
 
     render() {
@@ -227,7 +246,7 @@ class TrackAndTraceResultsView extends Component {
                                                     {this.props.tatData.map(row => {
                                                         return (
                                                             <TableRow key={row.id}>
-                                                                <TableCell>{row.info1}{row.info1 === 'Shipment ID' && this.props.shippingData[1] ?
+                                                                <TableCell>{row.info1}{row.info1 === 'Shipment ID' && this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess ?
                                                                     <Tooltip title='Show History'>
                                                                         <IconButton onClick={this.showShipmentHistory}>
                                                                             <HistoryIcon />
@@ -291,7 +310,7 @@ class TrackAndTraceResultsView extends Component {
                                                     {this.props.shippingData.map(row => {
                                                         return (
                                                             <TableRow key={row.id}>
-                                                                <TableCell>{row.info1}{row.info1 === 'Shipment ID' && this.props.shippingData[1] ?
+                                                                <TableCell>{row.info1}{row.info1 === 'Shipment ID' && this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess ?
                                                                     <Tooltip title='Show History'>
                                                                         <IconButton onClick={this.showShipmentHistory}>
                                                                             <HistoryIcon />
