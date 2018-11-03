@@ -25,7 +25,8 @@ let SARcounter = 0;
 class TrackAndTraceResultsView extends Component {
 
     componentDidMount() {
-        !this.isCancelled && Promise.resolve(this.props.getHistoryShippingDataByShipmentID(this.props.shippingData[1].info2))
+        !this.isCancelled && this.props.shippingData[1] &&
+        Promise.resolve(this.props.getHistoryShippingDataByShipmentID(this.props.shippingData[1].info2))
     }
 
     componentWillUnmount() {
@@ -226,7 +227,13 @@ class TrackAndTraceResultsView extends Component {
                                                     {this.props.tatData.map(row => {
                                                         return (
                                                             <TableRow key={row.id}>
-                                                                <TableCell>{row.info1}</TableCell>
+                                                                <TableCell>{row.info1}{row.info1 === 'Shipment ID' && this.props.shippingData[1] ?
+                                                                    <Tooltip title='Show History'>
+                                                                        <IconButton onClick={this.showShipmentHistory}>
+                                                                            <HistoryIcon />
+                                                                        </IconButton>
+                                                                    </Tooltip> : ''}
+                                                                </TableCell>
                                                                 <TableCell>{row.info2}</TableCell>
                                                             </TableRow>
                                                         );
@@ -284,7 +291,7 @@ class TrackAndTraceResultsView extends Component {
                                                     {this.props.shippingData.map(row => {
                                                         return (
                                                             <TableRow key={row.id}>
-                                                                <TableCell>{row.info1}{row.info1 === 'Shipment ID' ?
+                                                                <TableCell>{row.info1}{row.info1 === 'Shipment ID' && this.props.shippingData[1] ?
                                                                     <Tooltip title='Show History'>
                                                                         <IconButton onClick={this.showShipmentHistory}>
                                                                             <HistoryIcon />
