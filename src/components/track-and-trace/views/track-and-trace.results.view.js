@@ -315,7 +315,7 @@ class TrackAndTraceResultsView extends Component {
                             ''
                         }
                         <br />
-                        <Dialog open={this.state.showMaterialMap} onClose={this.handleTreeClose}>
+                        <Dialog fullScreen open={this.state.showMaterialMap} onClose={this.handleTreeClose}>
                             <Grid container justify="flex-end">
                                 <Grid item>
                                     <i className="material-icons" style={{ "cursor": "pointer" }}
