@@ -17,26 +17,11 @@ import HistoryIcon from '@material-ui/icons/History';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import { connect } from 'react-redux';
-import { getHistoryShippingDataByShipmentID } from '../../../redux/actions/shipping.and.receiving.actions';
 import TrackAndTraceTreeView from './track-and-trace.tree.view';
 
 let SARcounter = 0;
 
 class TrackAndTraceResultsView extends Component {
-
-    componentDidMount() {
-        if(this.props.blockInformation === 'Shipping Information') {
-            !this.isCancelled && this.props.tatData[1] &&
-            Promise.resolve(this.props.getHistoryShippingDataByShipmentID(this.props.tatData[1].info2))
-        } else {
-            !this.isCancelled && this.props.shippingData[1] &&
-            Promise.resolve(this.props.getHistoryShippingDataByShipmentID(this.props.shippingData[1].info2))
-        }
-    }
-
-    componentWillUnmount() {
-        this.isCancelled = true;
-    };
 
     constructor(props) {
         super(props);
@@ -420,11 +405,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-// This way, we can call our action creator by doing this.props.fetchData(url);
-const mapDispatchToProps = (dispatch) => {
-    return {
-        getHistoryShippingDataByShipmentID: (url) => dispatch(getHistoryShippingDataByShipmentID(url))
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(TrackAndTraceResultsView);
+export default connect(mapStateToProps)(TrackAndTraceResultsView);

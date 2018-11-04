@@ -27,6 +27,7 @@ import {
 } from '../../../redux/actions/shipping.and.receiving.actions';
 import { createConstruct } from '../../../redux/actions/tree.spawn.action';
 import { connect } from 'react-redux';
+import { getHistoryShippingDataByShipmentID } from '../../../redux/actions/shipping.and.receiving.actions';
 
 let counter = 0;
 
@@ -355,6 +356,7 @@ class TrackAndTraceSearchView extends Component {
                     sbColor: '#23CE6B'
                 }
             });
+            Promise.resolve(this.props.getHistoryShippingDataByShipmentID(shippingData.shipmentID));
         } else {
             this.setState({
                 showProgressLogo: false,
@@ -412,6 +414,7 @@ class TrackAndTraceSearchView extends Component {
                     createData('Received Order', dataReceivedOrder)
                 ]
             });
+            Promise.resolve(this.props.getHistoryShippingDataByShipmentID(shippingData.shipmentID));
         } else {
             this.setState({
                 shippingData: [],
@@ -552,7 +555,8 @@ const mapDispatchToProps = (dispatch) => {
         getBillOfMaterialsByPartDesc: (url) => dispatch(getBillOfMaterialsByPartDesc(url)),
         getShippingDataByShipmentID: (url) => dispatch(getShippingDataByShipmentID(url)),
         createConstruct: (materialID) => dispatch(createConstruct(materialID)),
-        getShippingDataByMaterialID: (url) => dispatch(getShippingDataByMaterialID(url))
+        getShippingDataByMaterialID: (url) => dispatch(getShippingDataByMaterialID(url)),
+        getHistoryShippingDataByShipmentID: (url) => dispatch(getHistoryShippingDataByShipmentID(url))
     }
 };
 
