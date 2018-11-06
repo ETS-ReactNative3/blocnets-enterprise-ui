@@ -112,6 +112,8 @@ class BillOfMaterialsEdit extends React.Component {
             maxEOQuantities: this.props.masterMaterialData.supplierOrderQuantitiesControls.maximumEconomicOrderQuantity ? this.props.masterMaterialData.supplierOrderQuantitiesControls.maximumEconomicOrderQuantity : '',
             maxEPWithdrawRate: this.props.masterMaterialData.supplierOrderQuantitiesControls.maximumEconomicProductWithdrawRate ? this.props.masterMaterialData.supplierOrderQuantitiesControls.maximumEconomicProductWithdrawRate : '',
             minOrderLeadTimes: this.props.masterMaterialData.supplierOrderQuantitiesControls.minimumOrderLeadTime ? this.props.masterMaterialData.supplierOrderQuantitiesControls.minimumOrderLeadTime : '',
+            inboundSupplierID: this.props.masterMaterialData.inbound[0].inboundSupplierID ? this.props.masterMaterialData.inbound[0].inboundSupplierID : '',
+            inboundSupplierName: this.props.masterMaterialData.inbound[0].inboundSupplierName ? this.props.masterMaterialData.inbound[0].inboundSupplierName : '',
             inboundCountry: this.props.masterMaterialData.inbound[0].inboundCountry ? this.props.masterMaterialData.inbound[0].inboundCountry : '',
             inboundAddressLine1: this.props.masterMaterialData.inbound[0].inboundAddressLine1 ? this.props.masterMaterialData.inbound[0].inboundAddressLine1 : '',
             inboundAddressLine2: this.props.masterMaterialData.inbound[0].inboundAddressLine2 ? this.props.masterMaterialData.inbound[0].inboundAddressLine2 : '',
@@ -298,6 +300,8 @@ class BillOfMaterialsEdit extends React.Component {
     handleAdditionInbound = (event) => {
         let inboundList = this.state.inboundList;
         let inboundList2 = {
+            inboundSupplierID: '',
+            inboundSupplierName: '',
             inboundCountry: '',
             inboundAddressLine1: '',
             inboundAddressLine2: '',
@@ -322,6 +326,16 @@ class BillOfMaterialsEdit extends React.Component {
 
     handleTextInbound = (index) => (event) => {
         let inboundList = [...this.state.inboundList];
+        if ([event.target.name].toString() === 'inboundSupplierIDList' && event.target.value) {
+            inboundList[index].inboundSupplierID = event.target.value;
+        } else if ([event.target.name].toString() === 'inboundSupplierIDList' && !event.target.value) {
+            inboundList[index].inboundSupplierID = '';
+        }
+        if ([event.target.name].toString() === 'inboundSupplierNameList' && event.target.value) {
+            inboundList[index].inboundSupplierName = event.target.value;
+        } else if ([event.target.name].toString() === 'inboundSupplierNameList' && !event.target.value) {
+            inboundList[index].inboundSupplierName = '';
+        }
         if ([event.target.name].toString() === 'inboundCountryList' && event.target.value) {
             inboundList[index].inboundCountry = event.target.value;
             inboundList[index].inboundStateProvince = '';
@@ -1098,6 +1112,37 @@ class BillOfMaterialsEdit extends React.Component {
                         <br /><br />
                         <Grid container spacing={24}>
                             <Grid container item xs={6} sm={3}>
+                                <TextField
+                                    type='text'
+                                    name='inboundSupplierID'
+                                    floatingLabelText='Supplier ID'
+                                    floatingLabelFixed={true}
+                                    className='BOM-TextField'
+                                    hintText=''
+                                    value={this.state.inboundSupplierID}
+                                    onChange={this.handleChange}
+                                />
+                            </Grid>
+                            <Grid container item xs={6} sm={3}>
+                                <TextField
+                                    type='text'
+                                    name='inboundSupplierName'
+                                    floatingLabelText='Supplier Name'
+                                    floatingLabelFixed={true}
+                                    className='BOM-TextField'
+                                    hintText=''
+                                    value={this.state.inboundSupplierName}
+                                    onChange={this.handleChange}
+                                />
+                            </Grid>
+                            <Grid container item xs={6} sm={3}>
+                                <IconButton onClick={this.handleAdditionInbound}>
+                                    <AddCircleIcon className='Button-AddCircleIcon' />
+                                </IconButton>
+                            </Grid>
+                        </Grid>
+                        <Grid container spacing={24}>
+                            <Grid container item xs={6} sm={3}>
                                 <FormControl fullWidth={true}>
                                     <InputLabel>Country</InputLabel>
                                     <Select value={this.state.inboundCountry} onChange={this.handleChange}
@@ -1132,11 +1177,6 @@ class BillOfMaterialsEdit extends React.Component {
                                     value={this.state.inboundAddressLine2}
                                     onChange={this.handleChange}
                                 />
-                            </Grid>
-                            <Grid container item xs={6} sm={3}>
-                                <IconButton onClick={this.handleAdditionInbound}>
-                                    <AddCircleIcon className='Button-AddCircleIcon' />
-                                </IconButton>
                             </Grid>
                         </Grid>
                         <Grid container spacing={24}>
@@ -1239,6 +1279,37 @@ class BillOfMaterialsEdit extends React.Component {
                                 <br />
                                 <Grid container spacing={24}>
                                     <Grid container item xs={6} sm={3}>
+                                        <TextField
+                                            type='text'
+                                            name='inboundSupplierIDList'
+                                            floatingLabelText='Supplier ID'
+                                            floatingLabelFixed={true}
+                                            className='BOM-TextField'
+                                            hintText=''
+                                            value={inboundList.inboundSupplierID}
+                                            onChange={this.handleTextInbound(index)}
+                                        />
+                                    </Grid>
+                                    <Grid container item xs={6} sm={3}>
+                                        <TextField
+                                            type='text'
+                                            name='inboundSupplierNameList'
+                                            floatingLabelText='Supplier Name'
+                                            floatingLabelFixed={true}
+                                            className='BOM-TextField'
+                                            hintText=''
+                                            value={inboundList.inboundSupplierName}
+                                            onChange={this.handleTextInbound(index)}
+                                        />
+                                    </Grid>
+                                    <Grid container item xs={6} sm={3}>
+                                        <IconButton onClick={this.handleDeletionInbound(index)}>
+                                            <DeleteIcon className='Button-DeleteCircleIcon' />
+                                        </IconButton>
+                                    </Grid>
+                                </Grid>
+                                <Grid container spacing={24}>
+                                    <Grid container item xs={6} sm={3}>
                                         <FormControl fullWidth={true}>
                                             <InputLabel>Country</InputLabel>
                                             <Select value={inboundList.inboundCountry}
@@ -1275,11 +1346,6 @@ class BillOfMaterialsEdit extends React.Component {
                                             value={inboundList.inboundAddressLine2}
                                             onChange={this.handleTextInbound(index)}
                                         />
-                                    </Grid>
-                                    <Grid container item xs={6} sm={3}>
-                                        <IconButton onClick={this.handleDeletionInbound(index)}>
-                                            <DeleteIcon className='Button-DeleteCircleIcon' />
-                                        </IconButton>
                                     </Grid>
                                 </Grid>
                                 <Grid container spacing={24}>

@@ -82,8 +82,9 @@ function createTableContent(bomData) {
     );
     if (bomData.inbound) {
         for (let i = 0; i < bomData.inbound.length; i++) {
-            tableContent.push(createData('Address / Supplier Payment Terms / Material ID / Quantity',
-                bomData.inbound[i].inboundAddressLine1 + ' ' + bomData.inbound[i].inboundAddressLine2 + ' '
+            tableContent.push(createData('Supplier ID / Supplier Name / Address / Supplier Payment Terms / Material ID / Quantity',
+                bomData.inbound[i].inboundSupplierID + ' / ' + bomData.inbound[i].inboundSupplierName + ' / '
+                + bomData.inbound[i].inboundAddressLine1 + ' ' + bomData.inbound[i].inboundAddressLine2 + ' '
                 + bomData.inbound[i].inboundCity + ' ' + bomData.inbound[i].inboundStateProvince + ' '
                 + bomData.inbound[i].inboundPostalCode + ' ' + bomData.inbound[i].inboundCountry + ' / '
                 + bomData.inbound[i].inboundSupplierPaymentTerms + ' / ' + bomData.inbound[i].inboundMaterialID + ' / '
