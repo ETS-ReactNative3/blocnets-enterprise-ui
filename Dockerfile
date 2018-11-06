@@ -22,5 +22,5 @@ EXPOSE 3000
 # Define the command to run app
 # Run development version
 CMD ["npm", "start"]
-# Run producction version
+# Run production version
 # CMD ["npm","run","build"]
