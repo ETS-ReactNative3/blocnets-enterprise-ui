@@ -74,18 +74,21 @@ function createTableContent(eBOMData) {
         createData('Maximum Economic Product Withdraw Rate', eBOMData.maxEPWithdrawRate),
         createData('Minimum Order Lead Times', eBOMData.minOrderLeadTimes),
         createData('Inbound Supplier(s)', ''),
-        createData('Address / Supplier Payment Terms / Material ID / Quantity', eBOMData.inboundAddressLine1 + ' '
-            + eBOMData.inboundAddressLine2 + ' ' + eBOMData.inboundCity + ' ' + eBOMData.inboundStateProvince + ' ' + eBOMData.inboundPostalCode
-            + ' ' + eBOMData.inboundCountry + ' / ' + eBOMData.inboundSupplierPaymentTerms + ' / ' + eBOMData.inboundMaterialID + ' / '
+        createData('Supplier ID / Supplier Name / Address / Supplier Payment Terms / Material ID / Quantity',
+            eBOMData.inboundSupplierID + ' / ' + eBOMData.inboundSupplierName + ' / ' + eBOMData.inboundAddressLine1
+            + ' ' + eBOMData.inboundAddressLine2 + ' ' + eBOMData.inboundCity + ' ' + eBOMData.inboundStateProvince
+            + ' ' + eBOMData.inboundPostalCode + ' ' + eBOMData.inboundCountry + ' / '
+            + eBOMData.inboundSupplierPaymentTerms + ' / ' + eBOMData.inboundMaterialID + ' / '
             + eBOMData.inboundQuantity)
     );
     for (let i = 0; i < eBOMData.inboundList.length; i++) {
-        tableContent.push(createData('Address / Supplier Payment Terms / Material ID / Quantity',
-            eBOMData.inboundList[i].inboundAddressLine1 + ' ' + eBOMData.inboundList[i].inboundAddressLine2 + ' '
+        tableContent.push(createData('Supplier ID / Supplier Name / Address / Supplier Payment Terms / Material ID / Quantity',
+            eBOMData.inboundList[i].inboundSupplierID + ' / ' + eBOMData.inboundList[i].inboundSupplierName + ' / '
+            + eBOMData.inboundList[i].inboundAddressLine1 + ' ' + eBOMData.inboundList[i].inboundAddressLine2 + ' '
             + eBOMData.inboundList[i].inboundCity + ' ' + eBOMData.inboundList[i].inboundStateProvince + ' '
             + eBOMData.inboundList[i].inboundPostalCode + ' ' + eBOMData.inboundList[i].inboundCountry + ' / '
-            + eBOMData.inboundList[i].inboundSupplierPaymentTerms + ' / ' + eBOMData.inboundList[i].inboundMaterialID + ' / '
-            + eBOMData.inboundList[i].inboundQuantity));
+            + eBOMData.inboundList[i].inboundSupplierPaymentTerms + ' / ' + eBOMData.inboundList[i].inboundMaterialID
+            + ' / ' + eBOMData.inboundList[i].inboundQuantity));
     }
     return tableContent;
 }
@@ -135,6 +138,8 @@ class BillOfMaterialsReview extends React.Component {
             })
         }
         let inbound = [{
+            inboundSupplierID: this.props.eBOMData.inboundSupplierID,
+            inboundSupplierName: this.props.eBOMData.inboundSupplierName,
             inboundCountry: this.props.eBOMData.inboundCountry,
             inboundAddressLine1: this.props.eBOMData.inboundAddressLine1,
             inboundAddressLine2: this.props.eBOMData.inboundAddressLine2,
@@ -147,6 +152,8 @@ class BillOfMaterialsReview extends React.Component {
         }];
         for (let i = 0; i < this.props.eBOMData.inboundList.length; i++) {
             inbound.push({
+                inboundSupplierID: this.props.eBOMData.inboundList[i].inboundSupplierID,
+                inboundSupplierName: this.props.eBOMData.inboundList[i].inboundSupplierName,
                 inboundCountry: this.props.eBOMData.inboundList[i].inboundCountry,
                 inboundAddressLine1: this.props.eBOMData.inboundList[i].inboundAddressLine1,
                 inboundAddressLine2: this.props.eBOMData.inboundList[i].inboundAddressLine2,
