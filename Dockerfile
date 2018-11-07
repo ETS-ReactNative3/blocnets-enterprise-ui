@@ -17,6 +17,9 @@ RUN npm install
 # Bundle app source
 COPY . .
 
+#Set ENV Variable 
+# /src/redux/config.json
+
 # Bind ports to have mapped by the docker daemon
 EXPOSE 3000
 # Define the command to run app
