@@ -668,6 +668,11 @@ body {
     color: rgba(0, 0, 0, 0.26) !important;
 }
 
+.Module-Button-Save {
+    background-color: #fce400 !important;
+    color: #000000 !important;
+}
+
 .Module-Button-Cancel {
     background-color: #e32c1c !important;
     color: #ffffff !important;
