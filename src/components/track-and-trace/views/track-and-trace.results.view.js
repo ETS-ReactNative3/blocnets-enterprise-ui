@@ -46,49 +46,77 @@ class TrackAndTraceResultsView extends Component {
         };
     };
 
-    createSARTableContent = () => {
+    createSARTableContent = (id) => {
         let tableContent = [];
         let createSARData = (info1, info2) => {
             SARcounter += 1;
             return { id: SARcounter, info1, info2 };
         };
-        if (this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess &&
-            this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess.length >= 0) {
-            for (let i = 0; i < this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess.length; i++) {
-                if (this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess[i] !== 'string') {
-                    let tmp = this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess[i];
-                    tableContent.push(
-                        createSARData('Material ID', tmp.materialID),
-                        createSARData('Shipment ID', tmp.shipmentID),
-                        createSARData('List of Materials / Quantity', ''));
-                    if (tmp.listOfKeys) {
-                        for (let j = 0; j < tmp.listOfKeys.length; j++) {
-                            if (tmp.listOfKeys[j].materialID && tmp.listOfKeys[j].quantity) {
-                                tableContent.push(
-                                    createSARData('Material ID: ' + tmp.listOfKeys[j].materialID, 'Quantity: ' + tmp.listOfKeys[j].quantity)
-                                );
-                            } else {
-                                tableContent.push(
-                                    createSARData('No Material ID for this record.', 'No Quantity for this Material ID record.')
-                                );
+        if (id === 'Material ID') {
+            if (this.props.data.sarReducer.getHistoryShippingDataByMaterialIDSuccess &&
+                this.props.data.sarReducer.getHistoryShippingDataByMaterialIDSuccess.length >= 0) {
+                for (let i = 0; i < this.props.data.sarReducer.getHistoryShippingDataByMaterialIDSuccess.length; i++) {
+                    if (this.props.data.sarReducer.getHistoryShippingDataByMaterialIDSuccess[i] !== 'string') {
+                        let tmp = this.props.data.sarReducer.getHistoryShippingDataByMaterialIDSuccess[i];
+                        tableContent.push(
+                            createSARData('Material ID', tmp.materialID),
+                            createSARData('Shipment ID', tmp.shipmentID),
+                            createSARData('Planned Ship Date', tmp.plannedShipDate),
+                            createSARData('Actual Ship Date', tmp.actualShipDate),
+                            createSARData('Address', tmp.address1),
+                            createSARData('IP Address', tmp.ipAddress),
+                            createSARData('Manual Shipping', tmp.manuallyShipped === true ? 'YES' : 'NO'),
+                            createSARData('Shipment Completed', tmp.shipmentCompleted === true ? 'YES' : 'NO'),
+                            createSARData('Shipment Quantity', tmp.shipmentQuantity),
+                            createSARData('Shipment Sent', tmp.shipmentSent === true ? 'YES' : 'NO'),
+                            createSARData('Received Shipment', tmp.receivedShipment === true ? 'YES' : 'NO'),
+                            createSARData('Received Order', tmp.receivedOrder === true ? 'YES' : 'NO'),
+                            createSARData('Delivery Order No.', tmp.deliverOrderNo),
+                            createSARData('Production Order No.', tmp.prdKey),
+                            createSARData('Device UUID', tmp.deviceUUID)
+                        );
+                    }
+                }
+            }
+        } else if (id === 'Shipment ID') {
+            if (this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess &&
+                this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess.length >= 0) {
+                for (let i = 0; i < this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess.length; i++) {
+                    if (this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess[i] !== 'string') {
+                        let tmp = this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess[i];
+                        tableContent.push(
+                            createSARData('Material ID', tmp.materialID),
+                            createSARData('Shipment ID', tmp.shipmentID),
+                            createSARData('List of Materials / Quantity', ''));
+                        if (tmp.listOfKeys) {
+                            for (let j = 0; j < tmp.listOfKeys.length; j++) {
+                                if (tmp.listOfKeys[j].materialID && tmp.listOfKeys[j].quantity) {
+                                    tableContent.push(
+                                        createSARData('Material ID: ' + tmp.listOfKeys[j].materialID, 'Quantity: ' + tmp.listOfKeys[j].quantity)
+                                    );
+                                } else {
+                                    tableContent.push(
+                                        createSARData('No Material ID for this record.', 'No Quantity for this Material ID record.')
+                                    );
+                                }
                             }
                         }
+                        tableContent.push(
+                            createSARData('Planned Ship Date', tmp.plannedShipDate),
+                            createSARData('Actual Ship Date', tmp.actualShipDate),
+                            createSARData('Address', tmp.address1),
+                            createSARData('IP Address', tmp.ipAddress),
+                            createSARData('Manual Shipping', tmp.manuallyShipped === true ? 'YES' : 'NO'),
+                            createSARData('Shipment Completed', tmp.shipmentCompleted === true ? 'YES' : 'NO'),
+                            createSARData('Shipment Quantity', tmp.shipmentQuantity),
+                            createSARData('Shipment Sent', tmp.shipmentSent === true ? 'YES' : 'NO'),
+                            createSARData('Received Shipment', tmp.receivedShipment === true ? 'YES' : 'NO'),
+                            createSARData('Received Order', tmp.receivedOrder === true ? 'YES' : 'NO'),
+                            createSARData('Delivery Order No.', tmp.deliverOrderNo),
+                            createSARData('Production Order No.', tmp.prdKey),
+                            createSARData('Device UUID', tmp.deviceUUID)
+                        );
                     }
-                    tableContent.push(
-                        createSARData('Planned Ship Date', tmp.plannedShipDate),
-                        createSARData('Actual Ship Date', tmp.actualShipDate),
-                        createSARData('Address', tmp.address1),
-                        createSARData('IP Address', tmp.ipAddress),
-                        createSARData('Manual Shipping', tmp.manuallyShipped === true ? 'YES' : 'NO'),
-                        createSARData('Shipment Completed', tmp.shipmentCompleted === true ? 'YES' : 'NO'),
-                        createSARData('Shipment Quantity', tmp.shipmentQuantity),
-                        createSARData('Shipment Sent', tmp.shipmentSent === true ? 'YES' : 'NO'),
-                        createSARData('Received Shipment', tmp.receivedShipment === true ? 'YES' : 'NO'),
-                        createSARData('Received Order', tmp.receivedOrder === true ? 'YES' : 'NO'),
-                        createSARData('Delivery Order No.', tmp.deliverOrderNo),
-                        createSARData('Production Order No.', tmp.prdKey),
-                        createSARData('Device UUID', tmp.deviceUUID)
-                    );
                 }
             }
         }
@@ -158,16 +186,16 @@ class TrackAndTraceResultsView extends Component {
         });
     };
 
-    showShipmentHistory = (event) => {
-        this.setState({ showProgressLogo: true })
-        if(this.props.blockInformation === 'Shipping Information') {
+    showShipmentHistory = (event, id) => {
+        this.setState({ showProgressLogo: true });
+        if (this.props.blockInformation === 'Shipping Information') {
             this.setState({
                 showProgressLogo: false,
                 showShipmentHistory: {
                     open: true,
                     shipmentID: this.props.tatData[1].info2,  // GET Shipment ID from Prop
                 },
-                SARHistory: this.createSARTableContent()
+                SARHistory: this.createSARTableContent(id)
             })
         } else {
             this.setState({
@@ -176,12 +204,9 @@ class TrackAndTraceResultsView extends Component {
                     open: true,
                     shipmentID: this.props.shippingData[1].info2,  // GET Shipment ID from Prop
                 },
-                SARHistory: this.createSARTableContent()
+                SARHistory: this.createSARTableContent(id)
             })
         }
-
-
-
     };
 
     render() {
@@ -231,9 +256,11 @@ class TrackAndTraceResultsView extends Component {
                                                     {this.props.tatData.map(row => {
                                                         return (
                                                             <TableRow key={row.id}>
-                                                                <TableCell>{row.info1}{row.info1 === 'Shipment ID' && this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess ?
+                                                                <TableCell>{row.info1}{(this.props.blockInformation === 'Shipping Information' && row.info1 === 'Material ID' && this.props.data.sarReducer.getHistoryShippingDataByMaterialIDSuccess)
+                                                                || (row.info1 === 'Shipment ID' && this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess) ?
                                                                     <Tooltip title='Show History'>
-                                                                        <IconButton onClick={this.showShipmentHistory}>
+                                                                        <IconButton
+                                                                            onClick={event => this.showShipmentHistory(event, row.info1)}>
                                                                             <HistoryIcon />
                                                                         </IconButton>
                                                                     </Tooltip> : ''}
@@ -295,9 +322,11 @@ class TrackAndTraceResultsView extends Component {
                                                     {this.props.shippingData.map(row => {
                                                         return (
                                                             <TableRow key={row.id}>
-                                                                <TableCell>{row.info1}{row.info1 === 'Shipment ID' && this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess ?
+                                                                <TableCell>{row.info1}{(row.info1 === 'Material ID' && this.props.data.sarReducer.getHistoryShippingDataByMaterialIDSuccess)
+                                                                || (row.info1 === 'Shipment ID' && this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess) ?
                                                                     <Tooltip title='Show History'>
-                                                                        <IconButton onClick={this.showShipmentHistory}>
+                                                                        <IconButton
+                                                                            onClick={event => this.showShipmentHistory(event, row.info1)}>
                                                                             <HistoryIcon />
                                                                         </IconButton>
                                                                     </Tooltip> : ''}
@@ -354,13 +383,19 @@ class TrackAndTraceResultsView extends Component {
                                                                     <TableRow key={row.id}>
                                                                         {
                                                                             row.info1 === 'Material ID' ?
-                                                                                <TableCell style={{"background-color": "black", "color": "white"}}>{row.info1}</TableCell>
-                                                                            :
+                                                                                <TableCell style={{
+                                                                                    "background-color": "black",
+                                                                                    "color": "white"
+                                                                                }}>{row.info1}</TableCell>
+                                                                                :
                                                                                 <TableCell>{row.info1}</TableCell>
                                                                         }
                                                                         {
                                                                             row.info1 === 'Material ID' ?
-                                                                                <TableCell style={{"background-color": "black", "color": "white"}}>{row.info2}</TableCell>
+                                                                                <TableCell style={{
+                                                                                    "background-color": "black",
+                                                                                    "color": "white"
+                                                                                }}>{row.info2}</TableCell>
                                                                                 :
                                                                                 <TableCell>{row.info2}</TableCell>
                                                                         }

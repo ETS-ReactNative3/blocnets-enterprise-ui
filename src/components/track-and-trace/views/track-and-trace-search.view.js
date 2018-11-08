@@ -27,7 +27,10 @@ import {
 } from '../../../redux/actions/shipping.and.receiving.actions';
 import { createConstruct } from '../../../redux/actions/tree.spawn.action';
 import { connect } from 'react-redux';
-import { getHistoryShippingDataByShipmentID } from '../../../redux/actions/shipping.and.receiving.actions';
+import {
+    getHistoryShippingDataByMaterialID,
+    getHistoryShippingDataByShipmentID
+} from '../../../redux/actions/shipping.and.receiving.actions';
 
 let counter = 0;
 
@@ -357,6 +360,7 @@ class TrackAndTraceSearchView extends Component {
                     sbColor: '#23CE6B'
                 }
             });
+            Promise.resolve(this.props.getHistoryShippingDataByMaterialID(shippingData.materialID));
             Promise.resolve(this.props.getHistoryShippingDataByShipmentID(shippingData.shipmentID));
         } else {
             this.setState({
@@ -415,6 +419,7 @@ class TrackAndTraceSearchView extends Component {
                     createData('Received Order', dataReceivedOrder)
                 ]
             });
+            Promise.resolve(this.props.getHistoryShippingDataByMaterialID(shippingData.materialID));
             Promise.resolve(this.props.getHistoryShippingDataByShipmentID(shippingData.shipmentID));
         } else {
             this.setState({
@@ -475,7 +480,7 @@ class TrackAndTraceSearchView extends Component {
                             autoComplete='off'
                         />
                         <Popper open={this.state.openSearch} transition disablePortal
-                            style={{ 'position': 'relative' }}>
+                                style={{ 'position': 'relative' }}>
                             {({ TransitionProps, placement }) => (
                                 <Grow
                                     {...TransitionProps}
@@ -486,13 +491,13 @@ class TrackAndTraceSearchView extends Component {
                                         <ClickAwayListener onClickAway={this.handleSearchClose}>
                                             <MenuList style={{ 'textAlign': 'left' }}>
                                                 <MenuItem className='menuList'
-                                                    onClick={event => this.handleSearch(event, 'Material ID')}>Material
+                                                          onClick={event => this.handleSearch(event, 'Material ID')}>Material
                                                     ID: {this.state.searchKey}</MenuItem>
                                                 <MenuItem className='menuList'
-                                                    onClick={event => this.handleSearch(event, 'Material Name')}>Material
+                                                          onClick={event => this.handleSearch(event, 'Material Name')}>Material
                                                     Name: {this.state.searchKey}</MenuItem>
                                                 <MenuItem className='menuList'
-                                                    onClick={event => this.handleSearch(event, 'Material Description')}>Material
+                                                          onClick={event => this.handleSearch(event, 'Material Description')}>Material
                                                     Description: {this.state.searchKey}</MenuItem>
                                                 {
                                                     /* RELEASE-90: Hide Part No., Part Name and Part Description fields.
@@ -508,7 +513,7 @@ class TrackAndTraceSearchView extends Component {
                                                         */
                                                 }
                                                 <MenuItem className='menuList'
-                                                    onClick={event => this.handleSearch(event, 'Shipment ID')}>Shipment
+                                                          onClick={event => this.handleSearch(event, 'Shipment ID')}>Shipment
                                                     ID: {this.state.searchKey}</MenuItem>
                                             </MenuList>
                                         </ClickAwayListener>
@@ -522,9 +527,9 @@ class TrackAndTraceSearchView extends Component {
                         <Grid container spacing={24}>
                             <Grid container item xs={12} justify='center'>
                                 <Button type='submit' value='Submit' variant='contained'
-                                    onClick={event => this.showTrackAndTraceResultsView(event)}
-                                    disabled={!this.state.searchCriteria || !this.state.searchKey}
-                                    className='Module-Button-Search'>
+                                        onClick={event => this.showTrackAndTraceResultsView(event)}
+                                        disabled={!this.state.searchCriteria || !this.state.searchKey}
+                                        className='Module-Button-Search'>
                                     Search
                                 </Button>
                             </Grid>
@@ -557,6 +562,7 @@ const mapDispatchToProps = (dispatch) => {
         getShippingDataByShipmentID: (url) => dispatch(getShippingDataByShipmentID(url)),
         createConstruct: (materialID) => dispatch(createConstruct(materialID)),
         getShippingDataByMaterialID: (url) => dispatch(getShippingDataByMaterialID(url)),
+        getHistoryShippingDataByMaterialID: (url) => dispatch(getHistoryShippingDataByMaterialID(url)),
         getHistoryShippingDataByShipmentID: (url) => dispatch(getHistoryShippingDataByShipmentID(url))
     }
 };
