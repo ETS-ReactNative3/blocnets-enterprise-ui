@@ -412,7 +412,7 @@ class TrackAndTraceResultsView extends Component {
                                                     {this.props.tatData.map(row => {
                                                         return (
                                                             <TableRow key={row.id}>
-                                                                {this.props.blockInformation === 'Master Material Data' ?
+                                                                {/*this.props.blockInformation === 'Master Material Data' ?
                                                                     <TableCell>
                                                                         {row.info1}
                                                                         {row.info1 === 'Material ID' && this.props.data.bomReducer.getBillOfMaterialsHistoryByMaterialIDSuccess ?
@@ -438,7 +438,20 @@ class TrackAndTraceResultsView extends Component {
                                                                             </Tooltip>
                                                                             :
                                                                             ''}
-                                                                    </TableCell>}
+                                                                    </TableCell>*/}
+                                                                <TableCell>
+                                                                    {row.info1}
+                                                                    {(this.props.blockInformation === 'Shipping Information' && row.info1 === 'Material ID' && this.props.data.sarReducer.getHistoryShippingDataByMaterialIDSuccess) ||
+                                                                    (row.info1 === 'Shipment ID' && this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess) ?
+                                                                        <Tooltip title='Show History'>
+                                                                            <IconButton
+                                                                                onClick={event => this.showShipmentHistory(event, row.info1)}>
+                                                                                <HistoryIcon />
+                                                                            </IconButton>
+                                                                        </Tooltip>
+                                                                        :
+                                                                        ''}
+                                                                </TableCell>
                                                                 <TableCell>
                                                                     {row.info2}
                                                                 </TableCell>
