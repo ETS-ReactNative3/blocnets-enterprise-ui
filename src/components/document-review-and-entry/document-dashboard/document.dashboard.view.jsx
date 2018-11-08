@@ -788,7 +788,7 @@ class DocumentDashboardView extends React.Component {
                     onRequestClose={this.handleSnackbarClose}
                     bodyStyle={{ backgroundColor: this.state.snackbar.sbColor }}
                 />
-                <Dialog fullScreen open={this.state.openFileDialog} onClose={this.handleFileDialogClose}>
+                <Dialog maxWidth='lg' fullWidth={true} open={this.state.openFileDialog} onClose={this.handleFileDialogClose}>
                     <div style={{ padding: 24 }}>
                         <Grid container justify="flex-end">
                             <Grid item>
