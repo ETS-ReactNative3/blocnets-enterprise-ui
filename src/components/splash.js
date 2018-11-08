@@ -145,7 +145,7 @@ class SplashView extends Component {
                                                         </div>
                                                         <ButtonBase focusRipple
                                                                     style={{ 'width': '100%', 'height': '100%' }}
-                                                                    onClick={event => this.handleView(event, 'eBOM01')}>
+                                                                    onClick={event => this.handleView(event, 'BOM01')}>
                                                             <h1>Enter Material Master Data</h1>
                                                             <p></p>
                                                         </ButtonBase>
