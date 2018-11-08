@@ -1,7 +1,7 @@
 # Define image to build from - Use the latest LTS
 FROM node:8
 
-# Define where to hold the application code inside the immage - Create app directory
+# Define where to hold the application code inside the image - Create app directory
 WORKDIR /usr/src/app
 
 # Use npm binary to install dependencies - Install app dependencies
