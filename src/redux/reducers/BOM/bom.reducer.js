@@ -21,6 +21,12 @@ export function bomReducer(state = {}, action) {
         case "UPDATE_BOM_DATA_BY_MATERIAL_ID_FAILED": {
             return state = { ...state, updateBillOfMaterialsByMaterialIDError: action.payload }
         }
+        case "GET_BOM_DATA_HISTORY_BY_MATERIAL_ID_SUCCESS": {
+            return state = { ...state, getBillOfMaterialsHistoryByMaterialIDSuccess: action.payload }
+        }
+        case "GET_BOM_DATA_HISTORY_BY_MATERIAL_ID_FAILED": {
+            return state = { ...state, getBillOfMaterialsHistoryByMaterialIDError: action.payload }
+        }
         case "CREATE_BOM_DATA_MATERIAL_NAME_SUCCESS": {
             return state = { ...state, createBillOfMaterialsByMaterialNameSuccess: action.payload }
         }
