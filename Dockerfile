@@ -9,6 +9,8 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY package*.json ./
 
+# Install Production Runtime and Process Manager for Node.js
+RUN npm install pm2 -g
 # Development Build
 RUN npm install
 # Production Build
@@ -18,12 +20,15 @@ RUN npm install
 COPY . .
 
 #Set ENV Variable 
-# /src/redux/config.json
+ENV node = "development"
+
+# Add ENV value to be used
+ADD . $node
 
 # Bind ports to have mapped by the docker daemon
 EXPOSE 3000
 # Define the command to run app
 # Run development version
-CMD ["npm", "start"]
+CMD ["pm2-runtime","npm", "--","start"]
 # Run production version
 # CMD ["npm","run","build"]
