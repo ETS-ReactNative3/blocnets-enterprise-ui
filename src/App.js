@@ -146,7 +146,7 @@ class App extends Component {
         this.setState({
             show: 'billofmaterials',
             open: false,
-            transactionCode: 'eBOM01'
+            transactionCode: 'BOM01'
         });
     };
 
@@ -226,7 +226,7 @@ class App extends Component {
         this.setState({
             show: 'billofmaterialsedit',
             open: false,
-            transactionCode: 'eBOM03',
+            transactionCode: 'BOM03',
             masterMaterialData: masterMaterialData
         });
     };

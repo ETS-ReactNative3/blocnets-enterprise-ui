@@ -20,14 +20,18 @@ import {
     getBillOfMaterialsByMaterialDesc,
     getBillOfMaterialsByPartNumber,
     getBillOfMaterialsByPartName,
-    getBillOfMaterialsByPartDesc
+    getBillOfMaterialsByPartDesc,
+    getBillOfMaterialsHistoryByMaterialID
 } from '../../../redux/actions/BOM/bill-of-materials.actions';
 import {
     getShippingDataByShipmentID, getShippingDataByMaterialID
 } from '../../../redux/actions/shipping.and.receiving.actions';
 import { createConstruct } from '../../../redux/actions/tree.spawn.action';
 import { connect } from 'react-redux';
-import { getHistoryShippingDataByShipmentID } from '../../../redux/actions/shipping.and.receiving.actions';
+import {
+    getHistoryShippingDataByMaterialID,
+    getHistoryShippingDataByShipmentID
+} from '../../../redux/actions/shipping.and.receiving.actions';
 
 let counter = 0;
 
@@ -40,12 +44,13 @@ function createTableContent(bomData) {
     let tableContent = [
         createData('Material ID', bomData.material.materialID),
         createData('Material Name', bomData.material.materialName),
-        createData('Material Description', bomData.material.materialDescription)
+        createData('Material Description', bomData.material.materialDescription),
         /* RELEASE-90: Hide Part No., Part Name and Part Description fields.
         createData('Part No.', eBOMData.material.partNo),
         createData('Part Name', eBOMData.material.partName),
         createData('Part Description', eBOMData.material.partDescription),
         */
+        createData('Outbound Customer Data', '')
     ];
     if (bomData.outbound) {
         for (let i = 0; i < bomData.outbound.length; i++) {
@@ -82,8 +87,9 @@ function createTableContent(bomData) {
     );
     if (bomData.inbound) {
         for (let i = 0; i < bomData.inbound.length; i++) {
-            tableContent.push(createData('Address / Supplier Payment Terms / Material ID / Quantity',
-                bomData.inbound[i].inboundAddressLine1 + ' ' + bomData.inbound[i].inboundAddressLine2 + ' '
+            tableContent.push(createData('Supplier ID / Supplier Name / Address / Supplier Payment Terms / Material ID / Quantity',
+                bomData.inbound[i].inboundSupplierID + ' / ' + bomData.inbound[i].inboundSupplierName + ' / '
+                + bomData.inbound[i].inboundAddressLine1 + ' ' + bomData.inbound[i].inboundAddressLine2 + ' '
                 + bomData.inbound[i].inboundCity + ' ' + bomData.inbound[i].inboundStateProvince + ' '
                 + bomData.inbound[i].inboundPostalCode + ' ' + bomData.inbound[i].inboundCountry + ' / '
                 + bomData.inbound[i].inboundSupplierPaymentTerms + ' / ' + bomData.inbound[i].inboundMaterialID + ' / '
@@ -234,6 +240,7 @@ class TrackAndTraceSearchView extends Component {
                 tatData: createTableContent(bomData)
             });
             if (bomData.material.materialID !== '') {
+                Promise.resolve(this.props.getBillOfMaterialsHistoryByMaterialID(bomData.material.materialID));
                 Promise.resolve(this.props.createConstruct(bomData.material.materialID))
                     .then(() => {
                         if (this.props.data.spawnConstructReducer.construct !== '' && this.props.data.spawnConstructReducer.construct !== undefined) {
@@ -356,6 +363,7 @@ class TrackAndTraceSearchView extends Component {
                     sbColor: '#23CE6B'
                 }
             });
+            Promise.resolve(this.props.getHistoryShippingDataByMaterialID(shippingData.materialID));
             Promise.resolve(this.props.getHistoryShippingDataByShipmentID(shippingData.shipmentID));
         } else {
             this.setState({
@@ -414,6 +422,7 @@ class TrackAndTraceSearchView extends Component {
                     createData('Received Order', dataReceivedOrder)
                 ]
             });
+            Promise.resolve(this.props.getHistoryShippingDataByMaterialID(shippingData.materialID));
             Promise.resolve(this.props.getHistoryShippingDataByShipmentID(shippingData.shipmentID));
         } else {
             this.setState({
@@ -474,7 +483,7 @@ class TrackAndTraceSearchView extends Component {
                             autoComplete='off'
                         />
                         <Popper open={this.state.openSearch} transition disablePortal
-                            style={{ 'position': 'relative' }}>
+                                style={{ 'position': 'relative' }}>
                             {({ TransitionProps, placement }) => (
                                 <Grow
                                     {...TransitionProps}
@@ -485,13 +494,13 @@ class TrackAndTraceSearchView extends Component {
                                         <ClickAwayListener onClickAway={this.handleSearchClose}>
                                             <MenuList style={{ 'textAlign': 'left' }}>
                                                 <MenuItem className='menuList'
-                                                    onClick={event => this.handleSearch(event, 'Material ID')}>Material
+                                                          onClick={event => this.handleSearch(event, 'Material ID')}>Material
                                                     ID: {this.state.searchKey}</MenuItem>
                                                 <MenuItem className='menuList'
-                                                    onClick={event => this.handleSearch(event, 'Material Name')}>Material
+                                                          onClick={event => this.handleSearch(event, 'Material Name')}>Material
                                                     Name: {this.state.searchKey}</MenuItem>
                                                 <MenuItem className='menuList'
-                                                    onClick={event => this.handleSearch(event, 'Material Description')}>Material
+                                                          onClick={event => this.handleSearch(event, 'Material Description')}>Material
                                                     Description: {this.state.searchKey}</MenuItem>
                                                 {
                                                     /* RELEASE-90: Hide Part No., Part Name and Part Description fields.
@@ -507,7 +516,7 @@ class TrackAndTraceSearchView extends Component {
                                                         */
                                                 }
                                                 <MenuItem className='menuList'
-                                                    onClick={event => this.handleSearch(event, 'Shipment ID')}>Shipment
+                                                          onClick={event => this.handleSearch(event, 'Shipment ID')}>Shipment
                                                     ID: {this.state.searchKey}</MenuItem>
                                             </MenuList>
                                         </ClickAwayListener>
@@ -521,9 +530,9 @@ class TrackAndTraceSearchView extends Component {
                         <Grid container spacing={24}>
                             <Grid container item xs={12} justify='center'>
                                 <Button type='submit' value='Submit' variant='contained'
-                                    onClick={event => this.showTrackAndTraceResultsView(event)}
-                                    disabled={!this.state.searchCriteria || !this.state.searchKey}
-                                    className='Module-Button-Search'>
+                                        onClick={event => this.showTrackAndTraceResultsView(event)}
+                                        disabled={!this.state.searchCriteria || !this.state.searchKey}
+                                        className='Module-Button-Search'>
                                     Search
                                 </Button>
                             </Grid>
@@ -553,9 +562,11 @@ const mapDispatchToProps = (dispatch) => {
         getBillOfMaterialsByPartNumber: (url) => dispatch(getBillOfMaterialsByPartNumber(url)),
         getBillOfMaterialsByPartName: (url) => dispatch(getBillOfMaterialsByPartName(url)),
         getBillOfMaterialsByPartDesc: (url) => dispatch(getBillOfMaterialsByPartDesc(url)),
+        getBillOfMaterialsHistoryByMaterialID: (url) => dispatch(getBillOfMaterialsHistoryByMaterialID(url)),
         getShippingDataByShipmentID: (url) => dispatch(getShippingDataByShipmentID(url)),
         createConstruct: (materialID) => dispatch(createConstruct(materialID)),
         getShippingDataByMaterialID: (url) => dispatch(getShippingDataByMaterialID(url)),
+        getHistoryShippingDataByMaterialID: (url) => dispatch(getHistoryShippingDataByMaterialID(url)),
         getHistoryShippingDataByShipmentID: (url) => dispatch(getHistoryShippingDataByShipmentID(url))
     }
 };

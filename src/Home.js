@@ -46,7 +46,7 @@ class Home extends Component {
             this.setState({
                 showApp: 'home'
             });
-        } else if (transactionCode === 'eBOM01') {
+        } else if (transactionCode === 'BOM01') {
             this.setState({
                 showApp: 'billofmaterials'
             });
