@@ -293,7 +293,7 @@ class ReadDocumentView extends React.Component {
                         </Grid>
                     </Grid>
                 </div>
-                <Dialog fullScreen open={this.state.openDialog} onClose={this.handleDialogClose}>
+                <Dialog maxWidth='lg' fullWidth={true} open={this.state.openDialog} onClose={this.handleDialogClose}>
                     <div style={{ padding: 24 }}>
                         {/* <Button onClick={event => this.handlePrint(this.state.reconstructedFile)}>Print</Button> */}
                         <Grid container justify="flex-end">
