@@ -12,6 +12,8 @@
         }
     },
     "chaincodes": {
+        "Middleware": "http://localhost:8000/",
+        "MidBOM": "bom/",
         "Default": "https://hyperledger-fabric.cfapps.us10.hana.ondemand.com/api/v1/chaincodes/",
         "BOM": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-supplychain/latest/",
         "SAR": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-sar/latest/",
