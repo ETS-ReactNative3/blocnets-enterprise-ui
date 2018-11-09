@@ -79,6 +79,31 @@ export function updateBillOfMaterialsByMaterialID(url, body) {
             });
     };
 }
+
+export function getBillOfMaterialsHistoryByMaterialID(url) {
+    return async (dispatch) => {
+        dispatch({
+            type: "LOADING_BOM_VIEW",
+            payload: true
+        });
+        const headers = tokenResolver();
+        await axios.get(config.chaincodes.Default + config.chaincodes.BOM + url +'/history', { headers })
+            .then((response) => {
+                return dispatch({
+                    type: "GET_BOM_DATA_HISTORY_BY_MATERIAL_ID_SUCCESS",
+                    payload: response.data
+                });
+            })
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "GET_BOM_DATA_HISTORY_BY_MATERIAL_ID_FAILED",
+                    payload: errorData
+                })
+            });
+    };
+}
+
 /**
  * BOM data By Material Name
  * @param {*} url 

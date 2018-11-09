@@ -20,7 +20,8 @@ import {
     getBillOfMaterialsByMaterialDesc,
     getBillOfMaterialsByPartNumber,
     getBillOfMaterialsByPartName,
-    getBillOfMaterialsByPartDesc
+    getBillOfMaterialsByPartDesc,
+    getBillOfMaterialsHistoryByMaterialID
 } from '../../../redux/actions/BOM/bill-of-materials.actions';
 import {
     getShippingDataByShipmentID, getShippingDataByMaterialID
@@ -43,12 +44,13 @@ function createTableContent(bomData) {
     let tableContent = [
         createData('Material ID', bomData.material.materialID),
         createData('Material Name', bomData.material.materialName),
-        createData('Material Description', bomData.material.materialDescription)
+        createData('Material Description', bomData.material.materialDescription),
         /* RELEASE-90: Hide Part No., Part Name and Part Description fields.
         createData('Part No.', eBOMData.material.partNo),
         createData('Part Name', eBOMData.material.partName),
         createData('Part Description', eBOMData.material.partDescription),
         */
+        createData('Outbound Customer Data', '')
     ];
     if (bomData.outbound) {
         for (let i = 0; i < bomData.outbound.length; i++) {
@@ -238,6 +240,7 @@ class TrackAndTraceSearchView extends Component {
                 tatData: createTableContent(bomData)
             });
             if (bomData.material.materialID !== '') {
+                Promise.resolve(this.props.getBillOfMaterialsHistoryByMaterialID(bomData.material.materialID));
                 Promise.resolve(this.props.createConstruct(bomData.material.materialID))
                     .then(() => {
                         if (this.props.data.spawnConstructReducer.construct !== '' && this.props.data.spawnConstructReducer.construct !== undefined) {
@@ -559,6 +562,7 @@ const mapDispatchToProps = (dispatch) => {
         getBillOfMaterialsByPartNumber: (url) => dispatch(getBillOfMaterialsByPartNumber(url)),
         getBillOfMaterialsByPartName: (url) => dispatch(getBillOfMaterialsByPartName(url)),
         getBillOfMaterialsByPartDesc: (url) => dispatch(getBillOfMaterialsByPartDesc(url)),
+        getBillOfMaterialsHistoryByMaterialID: (url) => dispatch(getBillOfMaterialsHistoryByMaterialID(url)),
         getShippingDataByShipmentID: (url) => dispatch(getShippingDataByShipmentID(url)),
         createConstruct: (materialID) => dispatch(createConstruct(materialID)),
         getShippingDataByMaterialID: (url) => dispatch(getShippingDataByMaterialID(url)),
