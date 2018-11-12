@@ -1,5 +1,11 @@
 import React from 'react';
 import blocnetsLogo from '../../../blocknetwhite-1.png';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -9,7 +15,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import TablePagination from '@material-ui/core/TablePagination';
 import Button from '@material-ui/core/Button/Button';
-import Dialog from '@material-ui/core/Dialog/Dialog';
+import Dialog from '@material-ui/core/Dialog';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { connect } from 'react-redux';
@@ -17,6 +23,32 @@ import { getEachMessageForUserID } from '../../../redux/actions/UMA/user.message
 import { updateDocumentEntryByUniqueID } from '../../../redux/actions/document.review.entry.actions';
 import { retrieveFileByKey } from '../../../redux/actions/FILE/file.action';
 import { Document, Page } from 'react-pdf';
+
+function TabContainer(props) {
+    return (
+        <Typography component='div'>
+            {props.children}
+        </Typography>
+    );
+}
+
+TabContainer.propTypes = {
+    children: PropTypes.node.isRequired
+};
+
+const styles = theme => ({
+    colorPrimary: {
+        backgroundColor: '#000000',
+        color: '#ffffff'
+    },
+    indicator: {
+        backgroundColor: '#e32c1c'
+    },
+    root: {
+        backgroundColor: theme.palette.background.paper,
+        flexGrow: 1
+    }
+});
 
 let counter = 0;
 
@@ -71,16 +103,20 @@ class DocumentDashboardView extends React.Component {
                 if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
                     this.setState({
                         showProgressLogo: false,
-                        data: this.createTableContent()
+                        data: this.createTableContent('pending'),
+                        approvedData: this.createTableContent('approved'),
+                        rejectedData: this.createTableContent('rejected')
                     });
                 } else {
                     this.setState({
                         showProgressLogo: false,
-                        data: []
+                        data: [],
+                        approvedData: [],
+                        rejectedData: []
                     });
                 }
             })
-    }
+    };
 
     componentWillUnmount() {
         this.isCancelled = true;
@@ -90,9 +126,16 @@ class DocumentDashboardView extends React.Component {
         super(props);
         this.state = {
             showProgressLogo: true,
+            value: 0,
             data: [],
+            approvedData: [],
+            rejectedData: [],
             page: 0,
+            approvedPage: 0,
+            rejectedPage: 0,
             rowsPerPage: 10,
+            approvedRowsPerPage: 10,
+            rejectedRowsPerPage: 10,
             openDialog: false,
             showProgressLogoDialog: false,
             dialog: {
@@ -117,7 +160,11 @@ class DocumentDashboardView extends React.Component {
         }
     };
 
-    createTableContent = () => {
+    handleChange = (event, value) => {
+        this.setState({ value });
+    };
+
+    createTableContent = (id) => {
         let tableContent = [];
         let createData = (messageStatus, messageType, messageDataType, messageDescription, messageFile, messageDate, messageID) => {
             counter += 1;
@@ -133,20 +180,59 @@ class DocumentDashboardView extends React.Component {
             };
         };
         if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
-            for (let i = 0; i < this.props.data.umaReducer.getEachMessageForUserIDSuccess.length; i++) {
-                tableContent.push(
-                    createData(
-                        this.props.data.umaReducer.getEachMessageForUserIDSuccess[i].status,
-                        this.props.data.umaReducer.getEachMessageForUserIDSuccess[i].type,
-                        this.props.data.umaReducer.getEachMessageForUserIDSuccess[i].desc,
-                        this.props.data.umaReducer.getEachMessageForUserIDSuccess[i].text,
-                        this.props.data.umaReducer.getEachMessageForUserIDSuccess[i].fileId,
-                        this.props.data.umaReducer.getEachMessageForUserIDSuccess[i].date,
-                        this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages[i]
-                    ));
+            if (id === 'pending') {
+                for (let i = 0; i < this.props.data.umaReducer.getEachMessageForUserIDSuccess.length; i++) {
+                    let message = this.props.data.umaReducer.getEachMessageForUserIDSuccess[i];
+                    if (message.status === 'Pending') {
+                        tableContent.push(
+                            createData(
+                                message.status,
+                                message.type,
+                                message.desc,
+                                message.text,
+                                message.fileId,
+                                message.date,
+                                this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages[i]
+                            ));
+                    }
+                }
+                return tableContent;
+            } else if (id === 'approved') {
+                for (let i = 0; i < this.props.data.umaReducer.getEachMessageForUserIDSuccess.length; i++) {
+                    let message = this.props.data.umaReducer.getEachMessageForUserIDSuccess[i];
+                    if (message.status === 'Approved') {
+                        tableContent.push(
+                            createData(
+                                message.status,
+                                message.type,
+                                message.desc,
+                                message.text,
+                                message.fileId,
+                                message.date,
+                                this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages[i]
+                            ));
+                    }
+                }
+                return tableContent;
+            } else if (id === 'rejected') {
+                for (let i = 0; i < this.props.data.umaReducer.getEachMessageForUserIDSuccess.length; i++) {
+                    let message = this.props.data.umaReducer.getEachMessageForUserIDSuccess[i];
+                    if (message.status === 'Rejected') {
+                        tableContent.push(
+                            createData(
+                                message.status,
+                                message.type,
+                                message.desc,
+                                message.text,
+                                message.fileId,
+                                message.date,
+                                this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages[i]
+                            ));
+                    }
+                }
+                return tableContent;
             }
         }
-        return tableContent;
     };
 
     handleClickMessages = (event, n) => {
@@ -168,8 +254,24 @@ class DocumentDashboardView extends React.Component {
         this.setState({ page });
     };
 
+    handleChangeApprovedPage = (event, approvedPage) => {
+        this.setState({ approvedPage });
+    };
+
+    handleChangeRejectedPage = (event, rejectedPage) => {
+        this.setState({ rejectedPage });
+    };
+
     handleChangeRowsPerPage = event => {
         this.setState({ rowsPerPage: event.target.value });
+    };
+
+    handleChangeApprovedRowsPerPage = event => {
+        this.setState({ approvedRowsPerPage: event.target.value });
+    };
+
+    handleChangeRejectedRowsPerPage = event => {
+        this.setState({ rejectedRowsPerPage: event.target.value });
     };
 
     handleDialogClose = () => {
@@ -193,9 +295,17 @@ class DocumentDashboardView extends React.Component {
                     Promise.resolve(this.props.getEachMessageForUserID(this.props.userName))
                         .then(() => {
                             if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
-                                this.setState({ data: this.createTableContent() })
+                                this.setState({
+                                    data: this.createTableContent('pending'),
+                                    approvedData: this.createTableContent('approved'),
+                                    rejectedData: this.createTableContent('rejected')
+                                })
                             } else {
-                                this.setState({ data: [] })
+                                this.setState({
+                                    data: [],
+                                    approvedData: [],
+                                    rejectedData: []
+                                })
                             }
                             this.setState({
                                 showProgressLogoDialog: false,
@@ -240,9 +350,17 @@ class DocumentDashboardView extends React.Component {
                     Promise.resolve(this.props.getEachMessageForUserID(this.props.userName))
                         .then(() => {
                             if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
-                                this.setState({ data: this.createTableContent() })
+                                this.setState({
+                                    data: this.createTableContent('pending'),
+                                    approvedData: this.createTableContent('approved'),
+                                    rejectedData: this.createTableContent('rejected')
+                                })
                             } else {
-                                this.setState({ data: [] })
+                                this.setState({
+                                    data: [],
+                                    approvedData: [],
+                                    rejectedData: []
+                                })
                             }
                             this.setState({
                                 showProgressLogoDialog: false,
@@ -332,9 +450,16 @@ class DocumentDashboardView extends React.Component {
 
     render() {
 
-        const { data, rowsPerPage, page, numPages } = this.state;
+        const { classes } = this.props;
+
+        const {
+            value, data, approvedData, rejectedData, rowsPerPage, approvedRowsPerPage, rejectedRowsPerPage,
+            page, approvedPage, rejectedPage, numPages
+        } = this.state;
 
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+        const approvedEmptyRows = approvedRowsPerPage - Math.min(approvedRowsPerPage, approvedData.length - approvedPage * approvedRowsPerPage);
+        const rejectedEmptyRows = rejectedRowsPerPage - Math.min(rejectedRowsPerPage, rejectedData.length - rejectedPage * rejectedRowsPerPage);
 
         const dialogRows = [
             createDialogData('Status', this.state.dialog.messageStatus.toUpperCase()),
@@ -359,74 +484,227 @@ class DocumentDashboardView extends React.Component {
                         :
                         ''}
                 </div>
-                <div className='Module'>
-                    <Grid container justify='center'>
-                        <Grid container item xs={12}>
-                            <Paper className='Module-Paper'>
-                                <div className='Module-Paper-Div'>
-                                    <Table>
-                                        <TableHeader />
-                                        <TableBody className='Module-TableBody'>
-                                            {data
-                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                                .map(n => {
-                                                    return (
-                                                        <TableRow hover key={n.id}>
-                                                            <TableCell className='Module-TableCell-Click'
-                                                                       onClick={event => this.handleClickMessages(event, n)}
-                                                            >
-                                                                {n.messageStatus.toUpperCase()}
-                                                            </TableCell>
-                                                            <TableCell className='Module-TableCell-Click'
-                                                                       onClick={event => this.handleClickMessages(event, n)}>
-                                                                {n.messageType}
-                                                            </TableCell>
-                                                            <TableCell className='Module-TableCell-Click'
-                                                                       onClick={event => this.handleClickMessages(event, n)}>
-                                                                {n.messageDataType}
-                                                            </TableCell>
-                                                            <TableCell className='Module-TableCell-Click'
-                                                                       onClick={event => this.handleClickMessages(event, n)}>
-                                                                {n.messageDescription}
-                                                            </TableCell>
-                                                            <TableCell className='Module-TableCell-Click'
-                                                                       onClick={event => this.handleClickMessages(event, n)}>
-                                                                {n.messageFile}
-                                                            </TableCell>
-                                                            <TableCell className='Module-TableCell-Click'
-                                                                       onClick={event => this.handleClickMessages(event, n)}>
-                                                                {n.messageDate}
-                                                            </TableCell>
+                <div className={classes.root}>
+                    <AppBar className={classes.colorPrimary} position='static'>
+                        <Tabs classes={{ indicator: classes.indicator }} onChange={this.handleChange} value={value}>
+                            <Tab label='Pending' />
+                            <Tab label='Approved' />
+                            <Tab label='Rejected' />
+                        </Tabs>
+                    </AppBar>
+                    {value === 0 && <TabContainer>
+                        <div className='Module-Inbox'>
+                            <Grid container justify='center'>
+                                <Grid container item xs={12}>
+                                    <Paper className='Module-Paper-Inbox'>
+                                        <div className='Module-Paper-Div'>
+                                            <Table>
+                                                <TableHeader />
+                                                <TableBody className='Module-TableBody'>
+                                                    {data
+                                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                                        .map(n => {
+                                                            return (
+                                                                <TableRow hover key={n.id}>
+                                                                    <TableCell className='Module-TableCell-Click'
+                                                                               onClick={event => this.handleClickMessages(event, n)}
+                                                                    >
+                                                                        {n.messageStatus.toUpperCase()}
+                                                                    </TableCell>
+                                                                    <TableCell className='Module-TableCell-Click'
+                                                                               onClick={event => this.handleClickMessages(event, n)}>
+                                                                        {n.messageType}
+                                                                    </TableCell>
+                                                                    <TableCell className='Module-TableCell-Click'
+                                                                               onClick={event => this.handleClickMessages(event, n)}>
+                                                                        {n.messageDataType}
+                                                                    </TableCell>
+                                                                    <TableCell className='Module-TableCell-Click'
+                                                                               onClick={event => this.handleClickMessages(event, n)}>
+                                                                        {n.messageDescription}
+                                                                    </TableCell>
+                                                                    <TableCell className='Module-TableCell-Click'
+                                                                               onClick={event => this.handleClickMessages(event, n)}>
+                                                                        {n.messageFile}
+                                                                    </TableCell>
+                                                                    <TableCell className='Module-TableCell-Click'
+                                                                               onClick={event => this.handleClickMessages(event, n)}>
+                                                                        {n.messageDate}
+                                                                    </TableCell>
+                                                                </TableRow>
+                                                            );
+                                                        })}
+                                                    {emptyRows > 0 && (
+                                                        <TableRow style={{ height: 49 * emptyRows }}>
+                                                            <TableCell
+                                                                colSpan={6}
+                                                            />
                                                         </TableRow>
-                                                    );
-                                                })}
-                                            {emptyRows > 0 && (
-                                                <TableRow style={{ height: 49 * emptyRows }}>
-                                                    <TableCell
-                                                        colSpan={6}
-                                                    />
-                                                </TableRow>
-                                            )}
-                                        </TableBody>
-                                    </Table>
-                                    <TablePagination
-                                        backIconButtonProps={{
-                                            'aria-label': 'Previous Page',
-                                        }}
-                                        component='div'
-                                        count={data.length}
-                                        nextIconButtonProps={{
-                                            'aria-label': 'Next Page',
-                                        }}
-                                        onChangePage={this.handleChangePage}
-                                        onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                                        page={page}
-                                        rowsPerPage={rowsPerPage}
-                                    />
-                                </div>
-                            </Paper>
-                        </Grid>
-                    </Grid>
+                                                    )}
+                                                </TableBody>
+                                            </Table>
+                                            <TablePagination
+                                                backIconButtonProps={{
+                                                    'aria-label': 'Previous Page',
+                                                }}
+                                                component='div'
+                                                count={data.length}
+                                                nextIconButtonProps={{
+                                                    'aria-label': 'Next Page',
+                                                }}
+                                                onChangePage={this.handleChangePage}
+                                                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                                page={page}
+                                                rowsPerPage={rowsPerPage}
+                                            />
+                                        </div>
+                                    </Paper>
+                                </Grid>
+                            </Grid>
+                        </div>
+                    </TabContainer>}
+                    {value === 1 && <TabContainer>
+                        <div className='Module-Inbox'>
+                            <Grid container justify='center'>
+                                <Grid container item xs={12}>
+                                    <Paper className='Module-Paper'>
+                                        <div className='Module-Paper-Div'>
+                                            <Table>
+                                                <TableHeader />
+                                                <TableBody className='Module-TableBody'>
+                                                    {approvedData
+                                                        .slice(approvedPage * approvedRowsPerPage, approvedPage * approvedRowsPerPage + approvedRowsPerPage)
+                                                        .map(n => {
+                                                            return (
+                                                                <TableRow hover key={n.id}>
+                                                                    <TableCell className='Module-TableCell-Click'
+                                                                               onClick={event => this.handleClickMessages(event, n)}
+                                                                    >
+                                                                        {n.messageStatus.toUpperCase()}
+                                                                    </TableCell>
+                                                                    <TableCell className='Module-TableCell-Click'
+                                                                               onClick={event => this.handleClickMessages(event, n)}>
+                                                                        {n.messageType}
+                                                                    </TableCell>
+                                                                    <TableCell className='Module-TableCell-Click'
+                                                                               onClick={event => this.handleClickMessages(event, n)}>
+                                                                        {n.messageDataType}
+                                                                    </TableCell>
+                                                                    <TableCell className='Module-TableCell-Click'
+                                                                               onClick={event => this.handleClickMessages(event, n)}>
+                                                                        {n.messageDescription}
+                                                                    </TableCell>
+                                                                    <TableCell className='Module-TableCell-Click'
+                                                                               onClick={event => this.handleClickMessages(event, n)}>
+                                                                        {n.messageFile}
+                                                                    </TableCell>
+                                                                    <TableCell className='Module-TableCell-Click'
+                                                                               onClick={event => this.handleClickMessages(event, n)}>
+                                                                        {n.messageDate}
+                                                                    </TableCell>
+                                                                </TableRow>
+                                                            );
+                                                        })}
+                                                    {approvedEmptyRows > 0 && (
+                                                        <TableRow style={{ height: 49 * approvedEmptyRows }}>
+                                                            <TableCell
+                                                                colSpan={6}
+                                                            />
+                                                        </TableRow>
+                                                    )}
+                                                </TableBody>
+                                            </Table>
+                                            <TablePagination
+                                                backIconButtonProps={{
+                                                    'aria-label': 'Previous Page',
+                                                }}
+                                                component='div'
+                                                count={approvedData.length}
+                                                nextIconButtonProps={{
+                                                    'aria-label': 'Next Page',
+                                                }}
+                                                onChangePage={this.handleChangeApprovedPage}
+                                                onChangeRowsPerPage={this.handleChangeApprovedRowsPerPage}
+                                                page={approvedPage}
+                                                rowsPerPage={approvedRowsPerPage}
+                                            />
+                                        </div>
+                                    </Paper>
+                                </Grid>
+                            </Grid>
+                        </div>
+                    </TabContainer>}
+                    {value === 2 && <TabContainer>
+                        <div className='Module-Inbox'>
+                            <Grid container justify='center'>
+                                <Grid container item xs={12}>
+                                    <Paper className='Module-Paper'>
+                                        <div className='Module-Paper-Div'>
+                                            <Table>
+                                                <TableHeader />
+                                                <TableBody className='Module-TableBody'>
+                                                    {rejectedData
+                                                        .slice(rejectedPage * rejectedRowsPerPage, rejectedPage * rejectedRowsPerPage + rejectedRowsPerPage)
+                                                        .map(n => {
+                                                            return (
+                                                                <TableRow hover key={n.id}>
+                                                                    <TableCell className='Module-TableCell-Click'
+                                                                               onClick={event => this.handleClickMessages(event, n)}
+                                                                    >
+                                                                        {n.messageStatus.toUpperCase()}
+                                                                    </TableCell>
+                                                                    <TableCell className='Module-TableCell-Click'
+                                                                               onClick={event => this.handleClickMessages(event, n)}>
+                                                                        {n.messageType}
+                                                                    </TableCell>
+                                                                    <TableCell className='Module-TableCell-Click'
+                                                                               onClick={event => this.handleClickMessages(event, n)}>
+                                                                        {n.messageDataType}
+                                                                    </TableCell>
+                                                                    <TableCell className='Module-TableCell-Click'
+                                                                               onClick={event => this.handleClickMessages(event, n)}>
+                                                                        {n.messageDescription}
+                                                                    </TableCell>
+                                                                    <TableCell className='Module-TableCell-Click'
+                                                                               onClick={event => this.handleClickMessages(event, n)}>
+                                                                        {n.messageFile}
+                                                                    </TableCell>
+                                                                    <TableCell className='Module-TableCell-Click'
+                                                                               onClick={event => this.handleClickMessages(event, n)}>
+                                                                        {n.messageDate}
+                                                                    </TableCell>
+                                                                </TableRow>
+                                                            );
+                                                        })}
+                                                    {rejectedEmptyRows > 0 && (
+                                                        <TableRow style={{ height: 49 * rejectedEmptyRows }}>
+                                                            <TableCell
+                                                                colSpan={6}
+                                                            />
+                                                        </TableRow>
+                                                    )}
+                                                </TableBody>
+                                            </Table>
+                                            <TablePagination
+                                                backIconButtonProps={{
+                                                    'aria-label': 'Previous Page',
+                                                }}
+                                                component='div'
+                                                count={rejectedData.length}
+                                                nextIconButtonProps={{
+                                                    'aria-label': 'Next Page',
+                                                }}
+                                                onChangePage={this.handleChangeRejectedPage}
+                                                onChangeRowsPerPage={this.handleChangeRejectedRowsPerPage}
+                                                page={rejectedPage}
+                                                rowsPerPage={rejectedRowsPerPage}
+                                            />
+                                        </div>
+                                    </Paper>
+                                </Grid>
+                            </Grid>
+                        </div>
+                    </TabContainer>}
                 </div>
                 <Dialog onClose={this.handleDialogClose} open={this.state.openDialog}>
                     <div className='Module'>
@@ -581,4 +859,8 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DocumentDashboardView);
+DocumentDashboardView.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DocumentDashboardView));
