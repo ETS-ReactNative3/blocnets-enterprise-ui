@@ -71,6 +71,16 @@ const styles = theme => ({
     },
 });
 
+function countPendingMessages(message) {
+    let badgeContent = 0;
+    for (let i = 0; i < message.length; i++) {
+        if (message[i].status === 'Pending') {
+            badgeContent++;
+        }
+    }
+    return badgeContent;
+}
+
 class App extends Component {
 
     /* Dev Note: Will automatically fire the prop actions, or http request, once component mounts */
@@ -78,7 +88,7 @@ class App extends Component {
         !this.isCancelled && Promise.resolve(this.props.getEachMessageForUserID(this.props.userName))
             .then(() => {
                 if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
-                    this.setState({ badgeContent: this.props.data.umaReducer.getEachMessageForUserIDSuccess.length })
+                    this.setState({ badgeContent: countPendingMessages(this.props.data.umaReducer.getEachMessageForUserIDSuccess) })
                 } else {
                     this.setState({ badgeContent: 0 })
                 }
@@ -90,7 +100,7 @@ class App extends Component {
             !this.isCancelled && Promise.resolve(this.props.getEachMessageForUserID(this.props.userName))
                 .then(() => {
                     if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
-                        this.setState({ badgeContent: this.props.data.umaReducer.getEachMessageForUserIDSuccess.length })
+                        this.setState({ badgeContent: countPendingMessages(this.props.data.umaReducer.getEachMessageForUserIDSuccess) })
                     } else {
                         this.setState({ badgeContent: 0 })
                     }
@@ -138,7 +148,7 @@ class App extends Component {
             open: false,
             transactionCode: 'DRE02',
             mobileMoreAnchorEl: null,
-            showMobileMenu: false,
+            showMobileMenu: false
         });
     };
 
@@ -243,7 +253,7 @@ class App extends Component {
         if (show === 'catalogue') {
             this.setState({
                 catalogue: {
-                    open: show === 'catalogue' ? true : false,
+                    open: show === 'catalogue' ? true : false
                 }
             })
         } else if (show !== 'catalogue') {
@@ -264,7 +274,7 @@ class App extends Component {
         if (show === 'catalogue') {
             this.setState({
                 catalogue: {
-                    open: show === 'catalogue' ? true : false,
+                    open: show === 'catalogue' ? true : false
                 }
             })
         } else if (show !== 'catalogue') {
@@ -284,7 +294,7 @@ class App extends Component {
     handleCatalogue = () => {
         this.setState({
             catalogue: {
-                open: false,
+                open: false
             }
         })
     }
@@ -294,7 +304,7 @@ class App extends Component {
             Promise.resolve(this.props.getEachMessageForUserID(this.props.userName))
                 .then(() => {
                     if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
-                        this.setState({ badgeContent: this.props.data.umaReducer.getEachMessageForUserIDSuccess.length })
+                        this.setState({ badgeContent: countPendingMessages(this.props.data.umaReducer.getEachMessageForUserIDSuccess) })
                     } else {
                         this.setState({ badgeContent: 0 })
                     }
@@ -325,7 +335,7 @@ class App extends Component {
     showMobileMenu = (event) => {
         this.setState({
             mobileMoreAnchorEl: event.currentTarget,
-            showMobileMenu: true,
+            showMobileMenu: true
         });
     };
 
@@ -447,7 +457,7 @@ class App extends Component {
                             <Route
                                 path='/'
                                 render={(props) => <DocumentDashboardView {...props}
-                                    userName={this.state.userName} />}
+                                                                          userName={this.state.userName} />}
                             />
                         </div>
                     </Router>);
@@ -458,15 +468,15 @@ class App extends Component {
 
         const renderMobileMenu = (
             <Menu anchorEl={this.state.mobileMoreAnchorEl} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-                onClose={this.handleMobileMenuClose} open={this.state.showMobileMenu}
-                transformOrigin={{ vertical: 'top', horizontal: 'right' }}>
+                  onClose={this.handleMobileMenuClose} open={this.state.showMobileMenu}
+                  transformOrigin={{ vertical: 'top', horizontal: 'right' }}>
                 <MenuItem className='Mobile-MenuItem' onClick={this.showMainView}>
                     <ListItemIcon className='Mobile-ListItemIcon'>
                         <Badge badgeContent={this.state.badgeContent}
-                            classes={{
-                                root: 'App-Bar-Badge',
-                                badge: 'App-Bar-Badge-Color'
-                            }}>
+                               classes={{
+                                   root: 'App-Bar-Badge',
+                                   badge: 'App-Bar-Badge-Color'
+                               }}>
                             <MailIcon />
                         </Badge>
                     </ListItemIcon>
@@ -524,10 +534,10 @@ class App extends Component {
                                 <Tooltip title='Messages'>
                                     <IconButton onClick={this.showMainView}>
                                         <Badge badgeContent={this.state.badgeContent}
-                                            classes={{
-                                                root: 'App-Bar-Badge',
-                                                badge: 'App-Bar-Badge-Color'
-                                            }}>
+                                               classes={{
+                                                   root: 'App-Bar-Badge',
+                                                   badge: 'App-Bar-Badge-Color'
+                                               }}>
                                             <MailIcon />
                                         </Badge>
                                     </IconButton>
@@ -595,7 +605,8 @@ class App extends Component {
                         </Typography>
                     </Toolbar>
                 </Paper>
-                {this.state.catalogue.open === true ? <CatalogueView viewHandler={this.handleCatalogue}></CatalogueView> : ''}
+                {this.state.catalogue.open === true ?
+                    <CatalogueView viewHandler={this.handleCatalogue}></CatalogueView> : ''}
                 {/* Page View with content loaded */}
                 {this.state.transactionCode === 'TAT01' ?
                     <Paper className='Transparent-Theme' elevation={24}>
