@@ -130,7 +130,7 @@ class SplashView extends Component {
                                                         <ButtonBase focusRipple
                                                                     style={{ 'width': '100%', 'height': '100%' }}
                                                                     onClick={event => this.handleView(event, 'DRE02')}>
-                                                            <h1>Review Pending Network Actions</h1>
+                                                            <h1>Pending Actions</h1>
                                                             <p></p>
                                                         </ButtonBase>
                                                     </span>
