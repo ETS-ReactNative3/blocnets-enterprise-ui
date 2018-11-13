@@ -653,6 +653,10 @@ body {
     padding: 24px !important;
 }
 
+.Module-Inbox {
+    padding: 0px !important;
+}
+
 .Module-TextField {
     float: left !important;
     text-align: left !important;
@@ -717,6 +721,11 @@ body {
 }
 
 .Module-Paper {
+    width: 100% !important;
+}
+
+.Module-Paper-Inbox {
+    border-radius: 0px !important;
     width: 100% !important;
 }
 
@@ -922,11 +931,15 @@ body {
 }
 
 .Button-AddCircleIcon {
-    color: #000000;
-    transform: scale(1.8);
+    color: #000000 !important;
+    transform: scale(1.8) !important;
 }
 
 .Button-DeleteCircleIcon {
-    color: #000000;
-    transform: scale(1.6);
+    color: #000000 !important;
+    transform: scale(1.6) !important;
+}
+
+.Module-TableCell-Click {
+    cursor: pointer !important;
 }
