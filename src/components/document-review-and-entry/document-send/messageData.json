@@ -14,18 +14,16 @@
     ],
     "status": "Pending",
     "messageType": [
-      "Notifications",
-      "Approval",
-      "Veto"
-    ],
-    "dataType": [
       "Purchase Order",
       "Manufacturing Bill of Materials",
       "Engineering Bill of Materials",
       "Shipping Document",
       "Requirements Document",
       "Material Manufacturing Details",
-      "Material Quality Measurements"
+      "Material Quality Measurements",
+      "Notifications",
+      "Approval",
+      "Reject"
     ]
   }
 ]
