@@ -189,7 +189,7 @@ class ShippingView extends Component {
                             showProgressLogo: false,
                             snackbar: {
                                 autoHideDuration: 2000,
-                                message: 'Master Data does not exist for ' + childMaterialID + '.',
+                                message: 'Master Data does not exist for ' + childMaterialID + '!',
                                 open: true,
                                 sbColor: 'Module-Snackbar-Error'
                             }

@@ -11,6 +11,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import HistoryIcon from '@material-ui/icons/History';
 import Typography from '@material-ui/core/Typography';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Dialog from '@material-ui/core/Dialog';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -465,15 +467,25 @@ class TrackAndTraceResultsView extends Component {
                         {this.props.tree.length !== 0 ?
                             <Grid container>
                                 <Grid container item xs={12}>
-                                    <Switch
-                                        checked={this.state.showMaterialMapSwitch}
-                                        name='showMaterialMapSwitch'
-                                        onChange={this.handleChange}
-                                    />
-                                    Show Material Map
+                                    <FormGroup row>
+                                        <FormControlLabel
+                                            control={
+                                                <Switch
+                                                    name='showMaterialMapSwitch'
+                                                    onClick={this.handleChange}
+                                                    checked={this.state.showMaterialMapSwitch}
+                                                    classes={{
+                                                        root: 'Module-Checkbox-Root',
+                                                        checked: 'Module-Checkbox-Checked'
+                                                    }}
+                                                />
+                                            }
+                                            label='Show Material Map'
+                                        />
+                                    </FormGroup>
                                 </Grid>
                             </Grid>
-                        :
+                            :
                             ''}
                         <br />
                         {this.props.shippingData.length !== 0 ?
@@ -482,7 +494,7 @@ class TrackAndTraceResultsView extends Component {
                                     Shipping Information
                                 </Grid>
                             </Grid>
-                        :
+                            :
                             ''}
                         <br />
                         {this.props.shippingData.length !== 0 ?
@@ -505,7 +517,7 @@ class TrackAndTraceResultsView extends Component {
                                                                                 <HistoryIcon />
                                                                             </IconButton>
                                                                         </Tooltip>
-                                                                    :
+                                                                        :
                                                                         ''}
                                                                 </TableCell>
                                                                 <TableCell>
@@ -526,9 +538,10 @@ class TrackAndTraceResultsView extends Component {
                         <Dialog fullWidth={true} maxWidth='lg' onClose={this.handleTreeClose}
                                 open={this.state.showMaterialMap}>
                             <div className='Module'>
-                                <Grid container justify='flex-end'>
-                                    <Grid container item xs={12}>
-                                        <i className='material-icons Module-TableCell-Click' onClick={this.handleTreeClose}>
+                                <Grid container>
+                                    <Grid container item xs={12} justify='flex-end'>
+                                        <i className='material-icons Module-TableCell-Click'
+                                           onClick={this.handleTreeClose}>
                                             close
                                         </i>
                                     </Grid>
@@ -540,10 +553,10 @@ class TrackAndTraceResultsView extends Component {
                             </div>
                         </Dialog>
                         <Dialog autoScrollBodyContent={true} onClose={this.handleShipmentHistoryClose}
-                                open={this.state.showShipmentHistory.open} >
+                                open={this.state.showShipmentHistory.open}>
                             <div className='Module'>
-                                <Grid container justify='flex-end'>
-                                    <Grid container item xs={12}>
+                                <Grid container>
+                                    <Grid container item xs={12} justify='flex-end'>
                                         <i className='material-icons Module-TableCell-Click'
                                            onClick={this.handleShipmentHistoryClose}>
                                             close
@@ -569,7 +582,7 @@ class TrackAndTraceResultsView extends Component {
                                                                         <TableCell className='Module-TableCell-Black'>
                                                                             {row.info1}
                                                                         </TableCell>
-                                                                    :
+                                                                        :
                                                                         <TableCell>
                                                                             {row.info1}
                                                                         </TableCell>
@@ -578,7 +591,7 @@ class TrackAndTraceResultsView extends Component {
                                                                         <TableCell className='Module-TableCell-Black'>
                                                                             {row.info2}
                                                                         </TableCell>
-                                                                    :
+                                                                        :
                                                                         <TableCell>
                                                                             {row.info2}
                                                                         </TableCell>
@@ -596,13 +609,13 @@ class TrackAndTraceResultsView extends Component {
                         </Dialog>
                         <Dialog autoScrollBodyContent={true} fullWidth={true} maxWidth='lg'
                                 onClose={this.handleMasterDataHistoryClose}
-                                open={this.state.showMasterDataHistory.open} >
+                                open={this.state.showMasterDataHistory.open}>
                             <div className='Module'>
-                                <Grid container justify='flex-end'>
-                                    <Grid container item xs={12}>
+                                <Grid container>
+                                    <Grid container item xs={12} justify='flex-end'>
                                         <i className='material-icons Module-TableCell-Click'
                                            onClick={this.handleMasterDataHistoryClose}>
-                                           close
+                                            close
                                         </i>
                                     </Grid>
                                 </Grid>

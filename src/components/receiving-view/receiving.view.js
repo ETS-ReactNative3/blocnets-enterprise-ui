@@ -407,8 +407,8 @@ class ReceivingView extends Component {
                 <Dialog autoScrollBodyContent={true} onClose={this.handleDialogClose}
                         open={this.state.openMaterialIDDialog}>
                     <div className='Module'>
-                        <Grid container justify='flex-end'>
-                            <Grid container item xs={12}>
+                        <Grid container>
+                            <Grid container item xs={12} justify='flex-end'>
                                 <i className='material-icons Module-TableCell-Click' onClick={this.handleDialogClose}>
                                     close
                                 </i>
@@ -464,8 +464,8 @@ class ReceivingView extends Component {
                 <Dialog autoScrollBodyContent={true} onClose={this.handleDialogClose}
                         open={this.state.openShipmentIDDialog}>
                     <div className='Module'>
-                        <Grid container justify='flex-end'>
-                            <Grid container item xs={12}>
+                        <Grid container>
+                            <Grid container item xs={12} justify='flex-end'>
                                 <i className='material-icons Module-TableCell-Click' onClick={this.handleDialogClose}>
                                     close
                                 </i>
