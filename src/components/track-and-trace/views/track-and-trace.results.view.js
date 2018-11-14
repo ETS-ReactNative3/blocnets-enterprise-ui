@@ -3,19 +3,18 @@ import blocnetsLogo from '../../../blocknetwhite-1.png';
 import Grid from '@material-ui/core/Grid/Grid';
 import EditIcon from '@material-ui/icons/Edit';
 import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table/Table';
-import TableBody from '@material-ui/core/TableBody/TableBody';
-import TableRow from '@material-ui/core/TableRow/TableRow';
-import TableCell from '@material-ui/core/TableCell/TableCell';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import HistoryIcon from '@material-ui/icons/History';
 import Typography from '@material-ui/core/Typography';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
-import red from '@material-ui/core/colors/red';
-import Switch from '@material-ui/core/Switch/Switch';
+import Switch from '@material-ui/core/Switch';
 import Dialog from '@material-ui/core/Dialog';
-import Snackbar from 'material-ui/Snackbar';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { connect } from 'react-redux';
 import TrackAndTraceTreeView from './track-and-trace.tree.view';
 
@@ -46,7 +45,7 @@ class TrackAndTraceResultsView extends Component {
                 autoHideDuration: 2000,
                 message: '',
                 open: false,
-                sbColor: 'black'
+                sbColor: ''
             }
         };
     };
@@ -243,8 +242,6 @@ class TrackAndTraceResultsView extends Component {
                             createSARData('Address', tmp.address1),
                             createSARData('IP Address', tmp.ipAddress),
                             createSARData('Manual Shipping', tmp.manuallyShipped === true ? 'YES' : 'NO'),
-                            createSARData('Shipment Completed', tmp.shipmentCompleted === true ? 'YES' : 'NO'),
-                            createSARData('Shipment Quantity', tmp.shipmentQuantity),
                             createSARData('Shipment Sent', tmp.shipmentSent === true ? 'YES' : 'NO'),
                             createSARData('Received Shipment', tmp.receivedShipment === true ? 'YES' : 'NO'),
                             createSARData('Received Order', tmp.receivedOrder === true ? 'YES' : 'NO'),
@@ -263,17 +260,18 @@ class TrackAndTraceResultsView extends Component {
                         let tmp = this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess[i];
                         tableContent.push(
                             createSARData('Material ID', tmp.materialID),
-                            createSARData('Shipment ID', tmp.shipmentID),
-                            createSARData('List of Materials / Quantity', ''));
+                            createSARData('Shipment ID', tmp.shipmentID)
+                        );
                         if (tmp.listOfKeys) {
-                            for (let j = 0; j < tmp.listOfKeys.length; j++) {
-                                if (tmp.listOfKeys[j].materialID && tmp.listOfKeys[j].quantity) {
+                            createSARData('Additional Shipping Information', '')
+                            for (let j = 1; j < tmp.listOfKeys.length; j++) {
+                                if (tmp.listOfKeys[j].materialID) {
                                     tableContent.push(
-                                        createSARData('Material ID: ' + tmp.listOfKeys[j].materialID, 'Quantity: ' + tmp.listOfKeys[j].quantity)
+                                        createSARData('Material ID (' + j + ')', tmp.listOfKeys[j].materialID)
                                     );
                                 } else {
                                     tableContent.push(
-                                        createSARData('No Material ID for this record.', 'No Quantity for this Material ID record.')
+                                        createSARData('No Material ID for this record.', '')
                                     );
                                 }
                             }
@@ -284,8 +282,6 @@ class TrackAndTraceResultsView extends Component {
                             createSARData('Address', tmp.address1),
                             createSARData('IP Address', tmp.ipAddress),
                             createSARData('Manual Shipping', tmp.manuallyShipped === true ? 'YES' : 'NO'),
-                            createSARData('Shipment Completed', tmp.shipmentCompleted === true ? 'YES' : 'NO'),
-                            createSARData('Shipment Quantity', tmp.shipmentQuantity),
                             createSARData('Shipment Sent', tmp.shipmentSent === true ? 'YES' : 'NO'),
                             createSARData('Received Shipment', tmp.receivedShipment === true ? 'YES' : 'NO'),
                             createSARData('Received Order', tmp.receivedOrder === true ? 'YES' : 'NO'),
@@ -357,7 +353,7 @@ class TrackAndTraceResultsView extends Component {
                 autoHideDuration: 2000,
                 message: '',
                 open: false,
-                sbColor: 'black'
+                sbColor: ''
             },
         });
     };
@@ -366,12 +362,6 @@ class TrackAndTraceResultsView extends Component {
 
         const { SARHistory, masterDataHistory } = this.state;
 
-        const buttonThemeRed = createMuiTheme({
-            palette: {
-                primary: red
-            },
-        });
-
         return (
 
             <form>
@@ -379,23 +369,19 @@ class TrackAndTraceResultsView extends Component {
                     <div>
                         {this.state.showProgressLogo ?
                             <div className='overlay'>
-                                <img src={blocnetsLogo} className='App-logo-progress' alt='' />
+                                <img alt='' className='App-logo-progress' src={blocnetsLogo} />
                             </div>
                             :
                             ''}
                     </div>
-                    <div style={{ padding: 24 }}>
+                    <div className='Module'>
                         <Grid container>
                             <Grid container item xs={12}>
                                 {this.props.blockInformation}
                                 {this.props.blockInformation === 'Master Material Data' ?
                                     <EditIcon
+                                        className='TT-Edit-Button'
                                         onClick={this.handleEditMasterData}
-                                        style={{
-                                            'cursor': 'pointer',
-                                            'marginTop': '-5px',
-                                            'paddingLeft': '10px'
-                                        }}
                                     />
                                     :
                                     ''}
@@ -405,10 +391,10 @@ class TrackAndTraceResultsView extends Component {
                         {this.props.tatData.length !== 0 ?
                             <Grid container justify='center'>
                                 <Grid container item xs={12}>
-                                    <Paper style={{ 'width': '100%' }}>
-                                        <div style={{ 'overflowX': 'auto' }}>
-                                            <Table style={{ 'tableLayout': 'fixed' }}>
-                                                <TableBody style={{ 'overflowWrap': 'break-word' }}>
+                                    <Paper className='Module-Paper'>
+                                        <div className='Module-Paper-Div'>
+                                            <Table className='Module-Table'>
+                                                <TableBody className='Module-TableBody'>
                                                     {this.props.tatData.map(row => {
                                                         return (
                                                             <TableRow key={row.id}>
@@ -422,10 +408,10 @@ class TrackAndTraceResultsView extends Component {
                                                                                     <HistoryIcon />
                                                                                 </IconButton>
                                                                             </Tooltip>
-                                                                            :
+                                                                        :
                                                                             ''}
                                                                     </TableCell>
-                                                                    :
+                                                                :
                                                                     <TableCell>
                                                                         {row.info1}
                                                                         {(row.info1 === 'Material ID' && this.props.data.sarReducer.getHistoryShippingDataByMaterialIDSuccess) ||
@@ -436,7 +422,7 @@ class TrackAndTraceResultsView extends Component {
                                                                                     <HistoryIcon />
                                                                                 </IconButton>
                                                                             </Tooltip>
-                                                                            :
+                                                                        :
                                                                             ''}
                                                                     </TableCell>*/}
                                                                 <TableCell>
@@ -467,8 +453,8 @@ class TrackAndTraceResultsView extends Component {
                             :
                             <Grid container justify='center'>
                                 <Grid container item xs={12}>
-                                    <Paper style={{ 'width': '100%', 'height': '50vh' }}>
-                                        <div style={{ 'overflowX': 'auto' }}>
+                                    <Paper className='TT-Paper'>
+                                        <div className='Module-Paper-Div'>
                                             <Typography align='left'>
                                             </Typography>
                                         </div>
@@ -478,18 +464,16 @@ class TrackAndTraceResultsView extends Component {
                         <br />
                         {this.props.tree.length !== 0 ?
                             <Grid container>
-                                <Grid item>
-                                    <MuiThemeProvider theme={buttonThemeRed}>
-                                        <Switch
-                                            onChange={this.handleChange}
-                                            name='showMaterialMapSwitch'
-                                            checked={this.state.showMaterialMapSwitch}
-                                        />
-                                        Show Material Map
-                                    </MuiThemeProvider>
+                                <Grid container item xs={12}>
+                                    <Switch
+                                        checked={this.state.showMaterialMapSwitch}
+                                        name='showMaterialMapSwitch'
+                                        onChange={this.handleChange}
+                                    />
+                                    Show Material Map
                                 </Grid>
                             </Grid>
-                            :
+                        :
                             ''}
                         <br />
                         {this.props.shippingData.length !== 0 ?
@@ -498,16 +482,16 @@ class TrackAndTraceResultsView extends Component {
                                     Shipping Information
                                 </Grid>
                             </Grid>
-                            :
+                        :
                             ''}
                         <br />
                         {this.props.shippingData.length !== 0 ?
                             <Grid container justify='center'>
                                 <Grid container item xs={12}>
-                                    <Paper style={{ 'width': '100%' }}>
-                                        <div style={{ 'overflowX': 'auto' }}>
-                                            <Table style={{ 'tableLayout': 'fixed' }}>
-                                                <TableBody style={{ 'overflowWrap': 'break-word' }}>
+                                    <Paper className='Module-Paper'>
+                                        <div className='Module-Paper-Div'>
+                                            <Table className='Module-Table'>
+                                                <TableBody className='Module-TableBody'>
                                                     {this.props.shippingData.map(row => {
                                                         return (
                                                             <TableRow key={row.id}>
@@ -521,7 +505,7 @@ class TrackAndTraceResultsView extends Component {
                                                                                 <HistoryIcon />
                                                                             </IconButton>
                                                                         </Tooltip>
-                                                                        :
+                                                                    :
                                                                         ''}
                                                                 </TableCell>
                                                                 <TableCell>
@@ -539,13 +523,14 @@ class TrackAndTraceResultsView extends Component {
                             :
                             ''}
                         <br />
-                        <Dialog maxWidth='lg' fullWidth={true} open={this.state.showMaterialMap}
-                                onClose={this.handleTreeClose}>
-                            <div style={{ padding: 24 }}>
+                        <Dialog fullWidth={true} maxWidth='lg' onClose={this.handleTreeClose}
+                                open={this.state.showMaterialMap}>
+                            <div className='Module'>
                                 <Grid container justify='flex-end'>
-                                    <Grid item>
-                                        <i className='material-icons' style={{ 'cursor': 'pointer' }}
-                                           onClick={this.handleTreeClose}>close</i>
+                                    <Grid container item xs={12}>
+                                        <i className='material-icons Module-TableCell-Click' onClick={this.handleTreeClose}>
+                                            close
+                                        </i>
                                     </Grid>
                                 </Grid>
                             </div>
@@ -554,13 +539,15 @@ class TrackAndTraceResultsView extends Component {
                                 <TrackAndTraceTreeView data={this.state} />
                             </div>
                         </Dialog>
-                        <Dialog open={this.state.showShipmentHistory.open} onClose={this.handleShipmentHistoryClose}
-                                autoScrollBodyContent={true}>
-                            <div style={{ padding: 24 }}>
+                        <Dialog autoScrollBodyContent={true} onClose={this.handleShipmentHistoryClose}
+                                open={this.state.showShipmentHistory.open} >
+                            <div className='Module'>
                                 <Grid container justify='flex-end'>
-                                    <Grid item>
-                                        <i className='material-icons' style={{ 'cursor': 'pointer' }}
-                                           onClick={this.handleShipmentHistoryClose}>close</i>
+                                    <Grid container item xs={12}>
+                                        <i className='material-icons Module-TableCell-Click'
+                                           onClick={this.handleShipmentHistoryClose}>
+                                            close
+                                        </i>
                                     </Grid>
                                 </Grid>
                                 <Grid container>
@@ -571,33 +558,27 @@ class TrackAndTraceResultsView extends Component {
                                 <br />
                                 <Grid container justify='center'>
                                     <Grid container item xs={12}>
-                                        <Paper style={{ 'width': '100%' }}>
-                                            <div style={{ 'overflowX': 'auto' }}>
-                                                <Table style={{ 'tableLayout': 'fixed' }}>
-                                                    <TableBody style={{ 'overflowWrap': 'break-word' }}>
+                                        <Paper className='Module-Paper'>
+                                            <div className='Module-Paper-Div'>
+                                                <Table className='Module-Table'>
+                                                    <TableBody className='Module-TableBody'>
                                                         {SARHistory.map(row => {
                                                             return (
                                                                 <TableRow key={row.id}>
                                                                     {row.info1 === 'Material ID' ?
-                                                                        <TableCell style={{
-                                                                            'backgroundColor': 'black',
-                                                                            'color': 'white'
-                                                                        }}>
+                                                                        <TableCell className='Module-TableCell-Black'>
                                                                             {row.info1}
                                                                         </TableCell>
-                                                                        :
+                                                                    :
                                                                         <TableCell>
                                                                             {row.info1}
                                                                         </TableCell>
                                                                     }
                                                                     {row.info1 === 'Material ID' ?
-                                                                        <TableCell style={{
-                                                                            'backgroundColor': 'black',
-                                                                            'color': 'white'
-                                                                        }}>
+                                                                        <TableCell className='Module-TableCell-Black'>
                                                                             {row.info2}
                                                                         </TableCell>
-                                                                        :
+                                                                    :
                                                                         <TableCell>
                                                                             {row.info2}
                                                                         </TableCell>
@@ -613,14 +594,16 @@ class TrackAndTraceResultsView extends Component {
                                 </Grid>
                             </div>
                         </Dialog>
-                        <Dialog maxWidth='lg' fullWidth={true}
-                                open={this.state.showMasterDataHistory.open} onClose={this.handleMasterDataHistoryClose}
-                                autoScrollBodyContent={true}>
-                            <div style={{ padding: 24 }}>
+                        <Dialog autoScrollBodyContent={true} fullWidth={true} maxWidth='lg'
+                                onClose={this.handleMasterDataHistoryClose}
+                                open={this.state.showMasterDataHistory.open} >
+                            <div className='Module'>
                                 <Grid container justify='flex-end'>
-                                    <Grid item>
-                                        <i className='material-icons' style={{ 'cursor': 'pointer' }}
-                                           onClick={this.handleMasterDataHistoryClose}>close</i>
+                                    <Grid container item xs={12}>
+                                        <i className='material-icons Module-TableCell-Click'
+                                           onClick={this.handleMasterDataHistoryClose}>
+                                           close
+                                        </i>
                                     </Grid>
                                 </Grid>
                                 <Grid container>
@@ -631,17 +614,14 @@ class TrackAndTraceResultsView extends Component {
                                 <br />
                                 <Grid container justify='center'>
                                     <Grid container item xs={12}>
-                                        <Paper style={{ 'width': '100%' }}>
-                                            <div style={{ 'overflowX': 'auto' }}>
-                                                <Table style={{ 'tableLayout': 'fixed' }}>
-                                                    <TableBody style={{ 'overflowWrap': 'break-word' }}>
+                                        <Paper className='Module-Paper'>
+                                            <div className='Module-Paper-Div'>
+                                                <Table className='Module-Table'>
+                                                    <TableBody className='Module-TableBody'>
                                                         {masterDataHistory.map(row => {
                                                             return (
                                                                 <TableRow key={row.id}>
-                                                                    <TableCell style={{
-                                                                        'backgroundColor': 'black',
-                                                                        'color': 'white'
-                                                                    }}>
+                                                                    <TableCell className='Module-TableCell-Black'>
                                                                         {row.info1}
                                                                     </TableCell>
                                                                     {row.info2.map(cell => {
@@ -664,20 +644,22 @@ class TrackAndTraceResultsView extends Component {
                             </div>
                         </Dialog>
                     </div>
-                    <Snackbar
-                        open={this.props.snackbar.open}
-                        message={this.props.snackbar.message}
-                        autoHideDuration={this.props.snackbar.autoHideDuration}
-                        onRequestClose={this.handleSnackbarClose}
-                        bodyStyle={{ backgroundColor: this.props.snackbar.sbColor }}
-                    />
-                    <Snackbar
-                        open={this.state.snackbar.open}
-                        message={this.state.snackbar.message}
-                        autoHideDuration={this.state.snackbar.autoHideDuration}
-                        onRequestClose={this.handleSnackbarClose}
-                        bodyStyle={{ backgroundColor: this.state.snackbar.sbColor }}
-                    />
+                    <Snackbar autoHideDuration={this.props.snackbar.autoHideDuration} onClose={this.handleSnackbarClose}
+                              open={this.props.snackbar.open}>
+                        <SnackbarContent
+                            classes={{ message: 'Module-Snackbar-Message' }}
+                            className={this.props.snackbar.sbColor}
+                            message={this.props.snackbar.message}
+                        />
+                    </Snackbar>
+                    <Snackbar autoHideDuration={this.state.snackbar.autoHideDuration} onClose={this.handleSnackbarClose}
+                              open={this.state.snackbar.open}>
+                        <SnackbarContent
+                            classes={{ message: 'Module-Snackbar-Message' }}
+                            className={this.state.snackbar.sbColor}
+                            message={this.state.snackbar.message}
+                        />
+                    </Snackbar>
                 </div>
             </form>
 

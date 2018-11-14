@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import blocnetsLogo from '../../../blocknetwhite-1.png';
-import { FormControl } from '@material-ui/core';
+import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -8,12 +8,12 @@ import SearchIcon from '@material-ui/icons/Search';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import Popper from '@material-ui/core/Popper';
 import Grow from '@material-ui/core/Grow';
-import Paper from 'material-ui/Paper';
+import Paper from '@material-ui/core/Paper';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import MenuList from '@material-ui/core/MenuList';
-import MenuItem from 'material-ui/MenuItem';
-import Grid from '@material-ui/core/Grid/Grid';
-import Button from '@material-ui/core/Button/Button';
+import MenuItem from '@material-ui/core/MenuItem';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 import {
     getBillOfMaterialsByMaterialID,
     getBillOfMaterialsByMaterialName,
@@ -118,10 +118,10 @@ class TrackAndTraceSearchView extends Component {
                 autoHideDuration: 2000,
                 message: '',
                 open: false,
-                sbColor: 'black'
+                sbColor: ''
             }
         };
-    }
+    };
 
     handleSearchKey = (event) => {
         this.setState({
@@ -252,7 +252,7 @@ class TrackAndTraceSearchView extends Component {
                                     autoHideDuration: 2000,
                                     message: 'Successfully tracked a block!',
                                     open: true,
-                                    sbColor: '#23CE6B'
+                                    sbColor: 'Module-Snackbar-Success'
                                 }
                             });
                             Promise.resolve(this.props.getShippingDataByMaterialID(bomData.material.materialID))
@@ -270,7 +270,7 @@ class TrackAndTraceSearchView extends Component {
                                     autoHideDuration: 2000,
                                     message: 'Successfully tracked a block!',
                                     open: true,
-                                    sbColor: '#23CE6B'
+                                    sbColor: 'Module-Snackbar-Success'
                                 }
                             });
                             Promise.resolve(this.props.getShippingDataByMaterialID(bomData.material.materialID))
@@ -291,7 +291,7 @@ class TrackAndTraceSearchView extends Component {
                         autoHideDuration: 2000,
                         message: 'Successfully tracked a block!',
                         open: true,
-                        sbColor: '#23CE6B'
+                        sbColor: 'Module-Snackbar-Success'
                     }
                 });
                 this.props.viewHandler('trackandtraceresultsview', false, 'TAT02', this.state.blockInformation, this.state.tatData, this.state.tree, this.state.shippingData, this.state.snackbar);
@@ -307,7 +307,7 @@ class TrackAndTraceSearchView extends Component {
                     autoHideDuration: 2000,
                     message: 'Error tracking a block!',
                     open: true,
-                    sbColor: 'red'
+                    sbColor: 'Module-Snackbar-Error'
                 }
             });
             this.props.viewHandler('trackandtraceresultsview', false, 'TAT02', this.state.blockInformation, this.state.tatData, this.state.tree, this.state.shippingData, this.state.snackbar);
@@ -318,7 +318,6 @@ class TrackAndTraceSearchView extends Component {
         let shippingDataLength = JSON.stringify(shippingData).length;
         let dataManualShipping = 'NO';
         let dataShipmentSent = 'NO';
-        let dataShipmentCompleted = 'NO';
         let dataReceivedShipment = 'NO';
         let dataReceivedOrder = 'NO';
         if (shippingDataLength > 2) {
@@ -327,9 +326,6 @@ class TrackAndTraceSearchView extends Component {
             }
             if (shippingData.shipmentSent === true) {
                 dataShipmentSent = 'YES'
-            }
-            if (shippingData.shipmentCompleted === true) {
-                dataShipmentCompleted = 'YES'
             }
             if (shippingData.receivedShipment === true) {
                 dataReceivedShipment = 'YES'
@@ -346,10 +342,8 @@ class TrackAndTraceSearchView extends Component {
                     createData('Shipment ID', shippingData.shipmentID),
                     createData('Planned Ship Date', shippingData.plannedShipDate),
                     createData('Actual Ship Date', shippingData.actualShipDate),
-                    createData('Address', shippingData.address1 + ' ' + shippingData.address2 + ' ' + shippingData.city + ' ' + shippingData.state + ' ' + shippingData.country + ' ' + shippingData.postalCode),
+                    createData('Address', shippingData.address1),
                     createData('Manual Shipping', dataManualShipping),
-                    createData('Shipment Completed', dataShipmentCompleted),
-                    createData('Shipment Quantity', shippingData.shipmentQuantity),
                     createData('Shipment Sent', dataShipmentSent),
                     createData('Received Shipment', dataReceivedShipment),
                     createData('Received Order', dataReceivedOrder)
@@ -360,7 +354,7 @@ class TrackAndTraceSearchView extends Component {
                     autoHideDuration: 2000,
                     message: 'Successfully tracked a block!',
                     open: true,
-                    sbColor: '#23CE6B'
+                    sbColor: 'Module-Snackbar-Success'
                 }
             });
             Promise.resolve(this.props.getHistoryShippingDataByMaterialID(shippingData.materialID));
@@ -376,7 +370,7 @@ class TrackAndTraceSearchView extends Component {
                     autoHideDuration: 2000,
                     message: 'Error tracking a block!',
                     open: true,
-                    sbColor: 'red'
+                    sbColor: 'Module-Snackbar-Error'
                 }
             });
         }
@@ -387,7 +381,6 @@ class TrackAndTraceSearchView extends Component {
         let shippingDataLength = JSON.stringify(shippingData).length;
         let dataManualShipping = 'NO';
         let dataShipmentSent = 'NO';
-        let dataShipmentCompleted = 'NO';
         let dataReceivedShipent = 'NO';
         let dataReceivedOrder = 'NO';
         if (shippingDataLength > 2) {
@@ -396,9 +389,6 @@ class TrackAndTraceSearchView extends Component {
             }
             if (shippingData.shipmentSent === true) {
                 dataShipmentSent = 'YES'
-            }
-            if (shippingData.shipmentCompleted === true) {
-                dataShipmentCompleted = 'YES'
             }
             if (shippingData.receivedShipment === true) {
                 dataReceivedShipent = 'YES'
@@ -413,10 +403,8 @@ class TrackAndTraceSearchView extends Component {
                     createData('Shipment ID', shippingData.shipmentID),
                     createData('Planned Ship Date', shippingData.plannedShipDate),
                     createData('Actual Ship Date', shippingData.actualShipDate),
-                    createData('Address', shippingData.address1 + ' ' + shippingData.address2 + ' ' + shippingData.city + ' ' + shippingData.state + ' ' + shippingData.country + ' ' + shippingData.postalCode),
+                    createData('Address', shippingData.address1),
                     createData('Manual Shipping', dataManualShipping),
-                    createData('Shipment Completed', dataShipmentCompleted),
-                    createData('Shipment Quantity', shippingData.shipmentQuantity),
                     createData('Shipment Sent', dataShipmentSent),
                     createData('Received Shipment', dataReceivedShipent),
                     createData('Received Order', dataReceivedOrder)
@@ -425,9 +413,7 @@ class TrackAndTraceSearchView extends Component {
             Promise.resolve(this.props.getHistoryShippingDataByMaterialID(shippingData.materialID));
             Promise.resolve(this.props.getHistoryShippingDataByShipmentID(shippingData.shipmentID));
         } else {
-            this.setState({
-                shippingData: [],
-            });
+            this.setState({ shippingData: [] });
         }
         this.props.viewHandler(show, open, transactionCode, blockInformation, tatData, tree, this.state.shippingData, snackbar);
     };
@@ -435,89 +421,99 @@ class TrackAndTraceSearchView extends Component {
     render() {
 
         return (
-
-            <div style={{ 'width': 'inherit' }}>
+            <div className='TT-Div'>
                 <div>
                     {this.state.showProgressLogo ?
-                        <div className='overlay'><img src={blocnetsLogo} className='App-logo-progress' alt='' />
-                        </div> : ''}
+                        <div className='overlay'>
+                            <img alt='' className='App-logo-progress' src={blocnetsLogo} />
+                        </div>
+                        :
+                        ''}
                 </div>
                 <div>
                     <FormControl fullWidth={true}>
-                        <InputLabel htmlFor='search-with-icon-adornment'>Search</InputLabel>
+                        <InputLabel htmlFor='search-with-icon-adornment'>
+                            Search
+                        </InputLabel>
                         <Input
-                            value={this.state.searchKey}
-                            name='searchKey'
+                            autoComplete='off'
+                            endAdornment={
+                                this.state.searchCriteria && this.state.searchKey ?
+                                    <InputAdornment position='end'>
+                                        <SearchIcon
+                                            className='Module-TableCell-Click'
+                                            onClick={this.showTrackAndTraceResultsView}
+                                        />|
+                                        <ViewListIcon
+                                            className='Module-TableCell-Click'
+                                            onClick={this.showSystemCatalogue}
+                                        />
+                                    </InputAdornment>
+                                    :
+                                    <InputAdornment position='end'>
+                                        <SearchIcon
+                                            className='TT-Search-Button'
+                                        />|
+                                        <ViewListIcon
+                                            className='Module-TableCell-Click'
+                                            onClick={this.showSystemCatalogue}
+                                        />
+                                    </InputAdornment>
+                            }
                             id='search-with-icon-adornment'
-                            type='search'
+                            name='searchKey'
+                            onChange={this.handleSearchKey}
                             startAdornment={
                                 this.state.searchCriteria ?
                                     <InputAdornment position='start'>
                                         {this.state.searchCriteria}:
                                     </InputAdornment>
-                                    : ''
+                                    :
+                                    ''
                             }
-                            endAdornment={
-                                this.state.searchCriteria && this.state.searchKey ?
-                                    <InputAdornment position='end'>
-                                        <SearchIcon
-                                            onClick={this.showTrackAndTraceResultsView}
-                                            style={{ 'cursor': 'pointer' }}
-                                        />|
-                                        <ViewListIcon
-                                            onClick={this.showSystemCatalogue}
-                                            style={{ 'cursor': 'pointer' }}
-                                        />
-                                    </InputAdornment> :
-                                    <InputAdornment position='end'>
-                                        <SearchIcon
-                                            style={{ 'fill': 'black' }}
-                                        />|
-                                        <ViewListIcon
-                                            onClick={this.showSystemCatalogue}
-                                            style={{ 'cursor': 'pointer' }}
-                                        />
-                                    </InputAdornment>
-                            }
-                            onChange={this.handleSearchKey}
-                            autoComplete='off'
+                            type='search'
+                            value={this.state.searchKey}
                         />
-                        <Popper open={this.state.openSearch} transition disablePortal
-                                style={{ 'position': 'relative' }}>
+                        <Popper className='TT-Popper' disablePortal={true} open={this.state.openSearch}
+                                transition={true}>
                             {({ TransitionProps, placement }) => (
-                                <Grow
-                                    {...TransitionProps}
-                                    id='menu-list-grow'
-                                    style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-                                >
+                                <Grow {...TransitionProps} id='menu-list-grow'
+                                      style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
                                     <Paper>
                                         <ClickAwayListener onClickAway={this.handleSearchClose}>
-                                            <MenuList style={{ 'textAlign': 'left' }}>
+                                            <MenuList className='Mobile-MenuItem'>
                                                 <MenuItem className='menuList'
-                                                          onClick={event => this.handleSearch(event, 'Material ID')}>Material
-                                                    ID: {this.state.searchKey}</MenuItem>
+                                                          onClick={event => this.handleSearch(event, 'Material ID')}>
+                                                    Material ID: {this.state.searchKey}
+                                                </MenuItem>
                                                 <MenuItem className='menuList'
-                                                          onClick={event => this.handleSearch(event, 'Material Name')}>Material
-                                                    Name: {this.state.searchKey}</MenuItem>
+                                                          onClick={event => this.handleSearch(event, 'Material Name')}>
+                                                    Material Name: {this.state.searchKey}
+                                                </MenuItem>
                                                 <MenuItem className='menuList'
-                                                          onClick={event => this.handleSearch(event, 'Material Description')}>Material
-                                                    Description: {this.state.searchKey}</MenuItem>
+                                                          onClick={event => this.handleSearch(event, 'Material Description')}>
+                                                    Material Description: {this.state.searchKey}
+                                                </MenuItem>
                                                 {
                                                     /* RELEASE-90: Hide Part No., Part Name and Part Description fields.
                                                     <MenuItem className='menuList'
-                                                              onClick={event => this.handleSearch(event, 'Part No.')}>Part
-                                                        No.: {this.state.searchKey}</MenuItem>
+                                                              onClick={event => this.handleSearch(event, 'Part No.')}>
+                                                              Part No.: {this.state.searchKey}
+                                                    </MenuItem>
                                                     <MenuItem className='menuList'
-                                                              onClick={event => this.handleSearch(event, 'Part Name')}>Part
-                                                        Name: {this.state.searchKey}</MenuItem>
+                                                              onClick={event => this.handleSearch(event, 'Part Name')}>
+                                                              Part Name: {this.state.searchKey}
+                                                    </MenuItem>
                                                     <MenuItem className='menuList'
-                                                              onClick={event => this.handleSearch(event, 'Part Description')}>Part
-                                                        Description: {this.state.searchKey}</MenuItem>
-                                                        */
+                                                              onClick={event => this.handleSearch(event, 'Part Description')}>
+                                                              Part Description: {this.state.searchKey}
+                                                    </MenuItem>
+                                                    */
                                                 }
                                                 <MenuItem className='menuList'
-                                                          onClick={event => this.handleSearch(event, 'Shipment ID')}>Shipment
-                                                    ID: {this.state.searchKey}</MenuItem>
+                                                          onClick={event => this.handleSearch(event, 'Shipment ID')}>
+                                                    Shipment ID: {this.state.searchKey}
+                                                </MenuItem>
                                             </MenuList>
                                         </ClickAwayListener>
                                     </Paper>
@@ -529,10 +525,10 @@ class TrackAndTraceSearchView extends Component {
                     {this.props.trackButtonFlag === true ?
                         <Grid container spacing={24}>
                             <Grid container item xs={12} justify='center'>
-                                <Button type='submit' value='Submit' variant='contained'
-                                        onClick={event => this.showTrackAndTraceResultsView(event)}
+                                <Button className='Module-Button-Search'
                                         disabled={!this.state.searchCriteria || !this.state.searchKey}
-                                        className='Module-Button-Search'>
+                                        onClick={event => this.showTrackAndTraceResultsView(event)}
+                                        type='submit' value='Submit' variant='contained'>
                                     Search
                                 </Button>
                             </Grid>
