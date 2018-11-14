@@ -57,7 +57,7 @@ class ReceivingView extends Component {
                 sbColor: ''
             }
         };
-    }
+    };
 
     handleIDChange = (event) => {
         this.setState({ [event.target.name]: event.target.value });
@@ -355,6 +355,7 @@ class ReceivingView extends Component {
         const formComplete = this.state.materialIDInformed || this.state.shipmentIDInformed;
 
         return (
+
             <form>
                 <div>
                     {this.state.showProgressLogo ?
@@ -527,6 +528,7 @@ class ReceivingView extends Component {
                     />
                 </Snackbar>
             </form>
+
         );
 
     }

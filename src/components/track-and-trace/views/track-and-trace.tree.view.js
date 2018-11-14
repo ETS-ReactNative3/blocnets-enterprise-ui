@@ -20,7 +20,9 @@ class TrackAndTraceTreeView extends React.Component {
     state = {};
 
     render() {
+
         return (
+
             <div className='Module'>
                 <div>
                     <div className='TT-Tree' ref={tc => (this.treeContainer = tc)}>
@@ -29,6 +31,7 @@ class TrackAndTraceTreeView extends React.Component {
                 </div>
             </div>
         )
+
     }
 
 }

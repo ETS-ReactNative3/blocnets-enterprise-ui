@@ -66,7 +66,7 @@ class ShippingView extends Component {
                 sbColor: ''
             }
         };
-    }
+    };
 
     handleMaterialIDChange = (event) => {
         if (event.target.value) {
@@ -117,11 +117,11 @@ class ShippingView extends Component {
 
     handlePlannedShipDateChange = (event, date) => {
         this.setState({ plannedShipDate: date });
-    }
+    };
 
     handleActualShipDateChange = (event, date) => {
         this.setState({ actualShipDate: date });
-    }
+    };
 
     handleChange = (event) => {
         this.setState({ [event.target.name]: event.target.value });

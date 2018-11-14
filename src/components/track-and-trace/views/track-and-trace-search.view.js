@@ -421,6 +421,7 @@ class TrackAndTraceSearchView extends Component {
     render() {
 
         return (
+
             <div className='TT-Div'>
                 <div>
                     {this.state.showProgressLogo ?
@@ -538,6 +539,7 @@ class TrackAndTraceSearchView extends Component {
                     }
                 </div>
             </div>
+
         );
 
     }

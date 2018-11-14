@@ -25,6 +25,7 @@ class TrackAndTraceView extends Component {
         });
 
         return (
+
             <form>
                 <div className='Module'>
                     <Grid container spacing={24}>
@@ -58,6 +59,7 @@ class TrackAndTraceView extends Component {
                     </MuiThemeProvider>
                 </div>
             </form>
+
         );
 
     }
