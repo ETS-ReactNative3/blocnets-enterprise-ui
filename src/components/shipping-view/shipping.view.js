@@ -244,11 +244,14 @@ class ShippingView extends Component {
             this.createData('Planned Ship Date', plannedShipDate),
             this.createData('Actual Ship Date', actualShipDate),
             this.createData('Address', this.state.address),
-            this.createData('Manual Shipping', this.state.manualShipping2),
-            this.createData('Additional Shipping Information', '')
+            this.createData('Manual Shipping', this.state.manualShipping2)
         ];
-        for (let i = 0; i < this.state.materialIDList.length; i++) {
-            tableContent.push(this.createData('Material ID', this.state.materialIDList[i].materialID));
+        if (this.state.materialIDList[0].materialID !== '') {
+            tableContent.push(this.createData('Additional Shipping Information', ''));
+            for (let i = 0; i < this.state.materialIDList.length; i++) {
+                let index = i + 1;
+                tableContent.push(this.createData('Material ID (' + index + ')', this.state.materialIDList[i].materialID));
+            }
         }
         return tableContent;
     };
