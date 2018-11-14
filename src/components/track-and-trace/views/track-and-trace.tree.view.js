@@ -1,11 +1,6 @@
 import React from 'react';
 import Tree from 'react-d3-tree';
 
-const containerStyles = {
-    width: '100%',
-    height: '100vh',
-};
-
 class TrackAndTraceTreeView extends React.Component {
 
     componentDidMount = () => {
@@ -26,10 +21,10 @@ class TrackAndTraceTreeView extends React.Component {
 
     render() {
         return (
-            <div style={{padding: 24}}>
+            <div className='Module'>
                 <div>
-                    <div style={containerStyles} ref={tc => (this.treeContainer = tc)}>
-                        <Tree data={this.props.data.tree} translate={this.state.translate} orientation={'horizontal'}/>
+                    <div className='TT-Tree' ref={tc => (this.treeContainer = tc)}>
+                        <Tree data={this.props.data.tree} orientation={'horizontal'} translate={this.state.translate} />
                     </div>
                 </div>
             </div>

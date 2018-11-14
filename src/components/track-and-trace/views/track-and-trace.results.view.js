@@ -471,13 +471,13 @@ class TrackAndTraceResultsView extends Component {
                                         <FormControlLabel
                                             control={
                                                 <Switch
-                                                    name='showMaterialMapSwitch'
-                                                    onClick={this.handleChange}
-                                                    checked={this.state.showMaterialMapSwitch}
                                                     classes={{
                                                         root: 'Module-Checkbox-Root',
                                                         checked: 'Module-Checkbox-Checked'
                                                     }}
+                                                    checked={this.state.showMaterialMapSwitch}
+                                                    name='showMaterialMapSwitch'
+                                                    onClick={this.handleChange}
                                                 />
                                             }
                                             label='Show Material Map'

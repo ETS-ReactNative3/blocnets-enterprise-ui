@@ -148,7 +148,7 @@ class TrackAndTraceSearchView extends Component {
 
     showSystemCatalogue = (event) => {
         this.props.viewHandler('catalogue');
-    }
+    };
 
     showTrackAndTraceResultsView = (event) => {
         event.preventDefault();

@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 class TrackAndTraceView extends Component {
 
     handleTTSearchData = (show, open, transactionCode, blockInformation, tatData, tree, shippingData, snackbar) => {
-        if (show === 'catalogue'){
+        if (show === 'catalogue') {
             this.props.viewHandler(show);
         } else if (transactionCode !== 'DRE02') {
             this.props.viewHandler(show, open, transactionCode, blockInformation, tatData, tree, shippingData, snackbar);
@@ -59,6 +59,7 @@ class TrackAndTraceView extends Component {
                 </div>
             </form>
         );
+
     }
 }
 

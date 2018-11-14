@@ -804,6 +804,11 @@ body {
     color: #e32c1c !important;
 }
 
+.TT-Tree {
+    height: 100vh !important;
+    width: 100% !important;
+}
+
 .Module-Title {
     background-color: transparent !important;
     box-shadow: none !important;
