@@ -18,7 +18,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
-import LocalShipping from '@material-ui/icons/LocalShipping';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import Dialog from '@material-ui/core/Dialog';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -535,7 +535,7 @@ class ShippingView extends Component {
                             <Button className='Module-Button' fullWidth={true} disabled={!formComplete}
                                     onClick={this.handleSendShipment} type='submit' value='Submit' variant='contained'>
                                 Send Shipment
-                                <LocalShipping className='Module-Button-Icon' />
+                                <LocalShippingIcon className='Module-Button-Icon' />
                             </Button>
                         </Grid>
                     </Grid>

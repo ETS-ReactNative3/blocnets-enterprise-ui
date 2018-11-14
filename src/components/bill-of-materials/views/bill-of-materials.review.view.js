@@ -7,8 +7,8 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Button from '@material-ui/core/Button';
-import Save from '@material-ui/icons/Save';
-import Cancel from '@material-ui/icons/Cancel';
+import SaveIcon from '@material-ui/icons/Save';
+import CancelIcon from '@material-ui/icons/Cancel';
 import { connect } from 'react-redux';
 import {
     createMasterDataKeys
@@ -382,7 +382,7 @@ class BillOfMaterialsReview extends React.Component {
                                 <Button type='submit' value='OK' variant='contained' className='Module-Button'
                                         onClick={this.handleSubmit}>
                                     OK
-                                    <Save className='Module-Button-Icon' />
+                                    <SaveIcon className='Module-Button-Icon' />
                                 </Button>
                             </Grid>
                             <Grid container item xs justify='flex-end'>
@@ -390,7 +390,7 @@ class BillOfMaterialsReview extends React.Component {
                                         className='Module-Button-Cancel'
                                         onClick={this.handleCancel}>
                                     Cancel
-                                    <Cancel className='Module-Button-Icon' />
+                                    <CancelIcon className='Module-Button-Icon' />
                                 </Button>
                             </Grid>
                         </Grid>
