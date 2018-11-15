@@ -16,7 +16,6 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import Select from '@material-ui/core/Select/Select';
 import Input from '@material-ui/core/Input/Input';
 import Button from '@material-ui/core/Button';
-import CheckIcon from '@material-ui/icons/Check';
 import TextField from 'material-ui/TextField';
 import SendIcon from '@material-ui/icons/Send';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -27,7 +26,6 @@ import {
     getUserMessageDataByUserID,
     updateUserMessageDataByUserID
 } from '../../../redux/actions/UMA/user.message.array.action';
-import { uploadFileByUserId } from '../../../redux/actions/FILE/file.action';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -35,7 +33,6 @@ import response from './messageData.json';
 
 let userIDMenuItems = response[0].userID;
 let messageTypeMenuItems = response[0].messageType;
-let dataTypeMenuItems = response[0].dataType;
 
 let count = 0;
 
@@ -81,7 +78,7 @@ const styles = theme => ({
     },
     paper: {
         position: 'absolute',
-        zIndex: 1,
+        zIndex: 10,
         marginTop: theme.spacing.unit,
         left: 0,
         right: 0
@@ -216,13 +213,8 @@ class SendDocumentView extends React.Component {
             errorTextRecipientUserName: 'This is a required field.',
             messageType: '',
             errorTextMessageType: 'This is a required field.',
-            fileFromSavedDocsKey: '',
             fileMenuItems: [],
-            fileFromMyComputerKey: '',
-            file: '',
-            fileMetaData: {},
-            dataType: '',
-            errorTextDataType: 'This is a required field.',
+            fileFromSavedDocsKey: '',
             message: '',
             errorTextMessage: 'This is a required field.',
             snackbar: {
@@ -233,95 +225,6 @@ class SendDocumentView extends React.Component {
             }
         };
     }
-
-    handleUploadError = (event) => {
-        switch (event.target.error.code) {
-            case event.target.error.NOT_FOUND_ERR:
-                alert('File Not Found!');
-                break;
-            case event.target.error.NOT_READABLE_ERR:
-                alert('File is unreadable!');
-                break;
-            case event.target.error.ABORT_ERR:
-                break;
-            default:
-                alert('Error occurred while reading file!');
-        }
-    };
-
-    handleProgressBar = (event) => {
-        if (event.lengthComputable) {
-            var percentLoaded = Math.round((event.loaded / event.total) * 100);
-            if (percentLoaded < 100) {
-                console.log(percentLoaded + '%');
-                //progress.style.width = percentLoaded + '%';
-                //progress.textContent = percentLoaded + '%';
-            }
-        }
-    };
-
-    handleBase64File = (fileName, event) => {
-        Promise.resolve(
-            this.setState({
-                fileFromSavedDocsKey: '',
-                fileFromMyComputerKey: fileName,
-                file: event
-            })
-        );
-    };
-
-    handleFileMetaData = (event) => {
-        Promise.resolve(
-            this.setState({
-                fileMetaData: {
-                    lastModified: event.lastModified,
-                    lastModifiedDate: event.lastModifiedDate,
-                    name: event.name,
-                    size: event.size,
-                    type: event.type
-                }
-            })
-        )
-    };
-
-    handleFileChange = (event) => {
-        //progress.style.width = '0%';
-        //progress.textContent = '0%';
-        let files = event.target.files;
-        var file = files[0];
-        let base64Result = (string) => {
-            this.handleBase64File(file.name, string);
-        };
-        var reader = new FileReader();
-        reader.onerror = this.handleUploadError;
-        reader.onprogress = this.handleProgressBar;
-        reader.onabort = function (e) {
-            alert('File read cancelled!');
-        };
-        reader.onloadstart = function (e) {
-            // TODO: Write a mechanism that begins 'loading' - icon/progress bar
-        };
-        reader.onload = function () {
-            // Binary String
-            //var binaryString = reader.result;
-            //var wrapBinaryInBase64 = btoa(binaryString);
-            //base64Result(wrapBinaryInBase64);
-            // Base 64 string
-            //var fileString = reader.result.split(',')[1]; // Remove Base 64 header - not needed for decoding later
-            //base64Result(fileString);
-            base64Result(reader.result);
-        };
-        if (file && file.size < 30000000) {
-            reader.readAsDataURL(file);
-            //reader.readAsBinaryString(file); // Binary => base64(Binary)
-            this.handleFileMetaData(file);
-        } else if (file && file.size > 30000000) {
-            Promise.resolve(this.setState({ fileFromMyComputerKey: '' }))
-            alert('File is too large. Reduce file size to less than 30mb!');
-        } else {
-            Promise.resolve(this.setState({ fileFromMyComputerKey: '' }))
-        }
-    };
 
     handleMultiChange = name => value => {
         this.setState({ [name]: value });
@@ -342,13 +245,7 @@ class SendDocumentView extends React.Component {
         if ([event.target.name].toString() === 'fileFromSavedDocsKey' && event.target.value === 'None') {
             this.setState({ fileFromSavedDocsKey: '' });
         } else if ([event.target.name].toString() === 'fileFromSavedDocsKey' && event.target.value !== 'None') {
-            this.setState({ fileFromSavedDocsKey: event.target.value, fileFromMyComputerKey: '' })
-            //this.handleIconToggle()
-        }
-        if ([event.target.name].toString() === 'dataType' && event.target.value) {
-            this.setState({ errorTextDataType: '' });
-        } else if ([event.target.name].toString() === 'dataType' && !event.target.value) {
-            this.setState({ errorTextDataType: 'This is a required field.' });
+            this.setState({ fileFromSavedDocsKey: event.target.value })
         }
         if ([event.target.name].toString() === 'message' && event.target.value) {
             this.setState({ errorTextMessage: '' });
@@ -369,61 +266,6 @@ class SendDocumentView extends React.Component {
             + this.generateUniqueID() + this.generateUniqueID();
     };
 
-    handleFileValidation = () => {
-        if (this.props.data.fileReducer.uploadFileByUserIdError
-            && this.props.data.fileReducer.uploadFileByUserIdError.status === 409) {
-            this.setState({
-                snackbar: {
-                    autoHideDuration: 2000,
-                    message: 'File already exists! Please choose a different file name.',
-                    open: true,
-                    sbColor: 'Module-Snackbar-Error'
-                }
-            })
-        } else if (this.props.data.fileReducer.uploadFileByUserIdError
-            && this.props.data.fileReducer.uploadFileByUserIdError.status !== 409) {
-            this.setState({
-                showProgressLogo: false,
-                snackbar: {
-                    autoHideDuration: 2000,
-                    message: 'Error uploading document! Please try again.',
-                    open: true,
-                    sbColor: 'Module-Snackbar-Error'
-                }
-            });
-        } else if (this.props.data.fileReducer.uploadFileByUserIdSuccess === true) {
-            this.setState({
-                snackbar: {
-                    autoHideDuration: 2000,
-                    message: 'Document Attached and Uploaded Successfully!',
-                    open: true,
-                    sbColor: 'Module-Snackbar-Success'
-                }
-            })
-        }
-    };
-
-    handleFileKeyAttached = () => {
-        if (this.state.fileFromSavedDocsKey !== '') {
-            Promise.resolve(
-                this.setState({ selectedFileKey: this.state.fileFromSavedDocsKey })
-            )
-        } else if (this.state.fileFromMyComputerKey !== '') {
-            let fileBody = {
-                file: this.state.file,
-                fileName: this.state.fileFromMyComputerKey,
-                creatorID: this.state.userName,
-                contentType: this.state.fileMetaData.type,
-                contentDisposition: '',
-                contentLength: this.state.fileMetaData.size
-            };
-            Promise.resolve(this.props.uploadFileByUserId(fileBody.fileName, fileBody))
-                .then(() => {
-                    Promise.resolve(this.handleFileValidation())
-                })
-        }
-    };
-
     handleDREValidation = (userNameLength) => {
         count++;
         if (userNameLength === count) {
@@ -438,10 +280,8 @@ class SendDocumentView extends React.Component {
                         sbColor: 'Module-Snackbar-Success'
                     },
                     recipientUserName: '',
-                    fileFromSavedDocsKey: '',
-                    fileFromMyComputerKey: '',
                     messageType: '',
-                    dataType: '',
+                    fileFromSavedDocsKey: '',
                     message: ''
                 });
             } else {
@@ -460,76 +300,63 @@ class SendDocumentView extends React.Component {
 
     handleSendDocumentForReview = (event) => {
         this.setState({ showProgressLogo: true });
-        let tmp = {
-            opt1: this.state.fileFromSavedDocsKey,
-            opt2: this.state.fileFromMyComputerKey
-        };
-        let attachfileKey = tmp.opt1 !== '' ? tmp.opt1 : tmp.opt2 !== '' ? tmp.opt2 : '';
         let userNameLength = this.state.recipientUserName.length;
         count = 0;
-        Promise.resolve(this.handleFileKeyAttached()).then(() => {
-            if ((tmp.opt1 === '' && tmp.opt2 === '' && attachfileKey === '')
-                || (tmp.opt1 !== '' && tmp.opt2 === '' && attachfileKey !== '')
-                || (tmp.opt1 === '' && tmp.opt2 !== '' && attachfileKey !== '')) {
-                let recipientUserName = '';
-                for (let j = 0; j < this.state.recipientUserName.length; j++) {
-                    recipientUserName = this.state.recipientUserName[j].value;
-                    this.props.data.dreReducer.createDocumentEntryByUniqueIDSuccess = '';
-                    this.props.data.umaReducer.getUserMessageDataByUserIDError = '';    // Clean-up: unused Validation
-                    this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess = '';
-                    let dreURL = this.guid();
-                    let dreBody = {
-                        text: this.state.message,
-                        status: 'Pending',
-                        type: this.state.messageType,
-                        desc: this.state.dataType,
-                        fileId: attachfileKey
-                    };
-                    let oldMessages = [];
-                    let allMessages = [];
-                    let umaURL = recipientUserName;
-                    let umaBody = {
-                        userfiles: ['string'],
-                        userMessages: ['string'],
-                        archivedMessages: ['string']
-                    };
-                    Promise.resolve(this.props.createDocumentEntryByUniqueID(dreURL, dreBody))
+        let recipientUserName = '';
+        for (let j = 0; j < userNameLength; j++) {
+            recipientUserName = this.state.recipientUserName[j].value;
+            this.props.data.dreReducer.createDocumentEntryByUniqueIDSuccess = '';
+            this.props.data.umaReducer.getUserMessageDataByUserIDError = '';
+            this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess = '';
+            let dreURL = this.guid();
+            let dreBody = {
+                text: this.state.message,
+                status: 'Pending',
+                type: this.state.messageType,
+                desc: '',
+                fileId: this.state.fileFromSavedDocsKey
+            };
+            let oldMessages = [];
+            let allMessages = [];
+            let umaURL = recipientUserName;
+            let umaBody = {
+                userfiles: ['string'],
+                userMessages: ['string'],
+                archivedMessages: ['string']
+            };
+            Promise.resolve(this.props.createDocumentEntryByUniqueID(dreURL, dreBody))
+                .then(() => {
+                    Promise.resolve(this.props.getUserMessageDataByUserID(umaURL))
                         .then(() => {
-                            Promise.resolve(this.props.getUserMessageDataByUserID(umaURL))
-                                .then(() => {
-                                    if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess) {
-                                        oldMessages = this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages;
-                                        allMessages = [dreURL];
-                                        for (let i = 0; i < oldMessages.length; i++) {
-                                            allMessages.push(oldMessages[i]);
-                                        }
-                                        umaBody = {
-                                            userfiles: this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles,
-                                            userMessages: allMessages,
-                                            archivedMessages: ['string']        // Change later to be dynamic
-                                        };
-                                        Promise.resolve(this.props.updateUserMessageDataByUserID(umaURL, umaBody))
-                                            .then(() => {
-                                                this.handleDREValidation(userNameLength);
-                                            })
-                                    } else {
-                                        umaBody = {
-                                            userfiles: this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles,
-                                            userMessages: [dreURL],
-                                            archivedMessages: ['string']
-                                        };
-                                        Promise.resolve(this.props.updateUserMessageDataByUserID(umaURL, umaBody))
-                                            .then(() => {
-                                                this.handleDREValidation(userNameLength);
-                                            })
-                                    }
-                                })
+                            if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess) {
+                                oldMessages = this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages;
+                                allMessages = [dreURL];
+                                for (let i = 0; i < oldMessages.length; i++) {
+                                    allMessages.push(oldMessages[i]);
+                                }
+                                umaBody = {
+                                    userfiles: this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles,
+                                    userMessages: allMessages,
+                                    archivedMessages: ['string']
+                                };
+                                Promise.resolve(this.props.updateUserMessageDataByUserID(umaURL, umaBody))
+                                    .then(() => {
+                                        this.handleDREValidation(userNameLength);
+                                    })
+                            } else {
+                                umaBody = {
+                                    userfiles: this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles,
+                                    userMessages: [dreURL],
+                                    archivedMessages: ['string']
+                                };
+                                Promise.resolve(this.props.updateUserMessageDataByUserID(umaURL, umaBody))
+                                    .then(() => {
+                                        this.handleDREValidation(userNameLength);
+                                    })
+                            }
                         })
-                }
-            } else {
-                this.setState({ showProgressLogo: false })
-            }
-        });
+                })
+        }
         event.preventDefault();
     };
 
@@ -546,10 +373,9 @@ class SendDocumentView extends React.Component {
 
     render() {
 
-        const { fileMenuItems, fileFromMyComputerKey } = this.state;
+        const { fileMenuItems } = this.state;
 
-        const formComplete = this.state.recipientUserName && this.state.messageType
-            && this.state.dataType && this.state.message;
+        const formComplete = this.state.recipientUserName && this.state.messageType && this.state.message;
 
         const { classes, theme } = this.props;
 
@@ -559,21 +385,19 @@ class SendDocumentView extends React.Component {
                 color: theme.palette.text.primary,
                 '& input': {
                     font: 'inherit',
-                },
-            }),
+                }
+            })
         };
 
         return (
             <form>
                 <div>
-                    {
-                        this.state.showProgressLogo ?
-                            <div className='overlay'>
-                                <img src={blocnetsLogo} className='App-logo-progress' alt='' />
-                            </div>
-                            :
-                            ''
-                    }
+                    {this.state.showProgressLogo ?
+                        <div className='overlay'>
+                            <img src={blocnetsLogo} className='App-logo-progress' alt='' />
+                        </div>
+                        :
+                        ''}
                 </div>
                 <div className='Module'>
                     <Grid container spacing={24}>
@@ -632,40 +456,6 @@ class SendDocumentView extends React.Component {
                                 </Select>
                             </FormControl>
                         </Grid>
-                        <Grid container item xs={6} sm={3} justify='flex-end'>
-                            <Grid>
-                                <input
-                                    accept='.png,.jpg,.jpeg,.gif,.pdf'
-                                    id='flat-button-file'
-                                    type='file'
-                                    className='Module-Button-Input'
-                                    onChange={this.handleFileChange}
-                                />
-                                <label htmlFor='flat-button-file'>
-                                    <Button type='submit' value='Upload' variant='contained' component='span'
-                                            className='Module-Button-Save'>
-                                        Attach File from My Computer
-                                        {fileFromMyComputerKey !== '' ? <CheckIcon /> : <span></span>}
-                                    </Button>
-                                </label>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                    <br />
-                    <Grid container spacing={24}>
-                        <Grid container item xs={6}>
-                            <FormControl fullWidth={true}>
-                                <InputLabel className='Module-TextField'>Data Type</InputLabel>
-                                <Select value={this.state.dataType} onChange={this.handleChange}
-                                        input={<Input name='dataType' className='Mobile-MenuItem' />}
-                                        displayEmpty>
-                                    {dataTypeMenuItems.map((menuItem, i) => {
-                                        return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
-                                    })}
-                                </Select>
-                                <FormHelperText className='TT-Font-Red'>{this.state.errorTextDataType}</FormHelperText>
-                            </FormControl>
-                        </Grid>
                     </Grid>
                     <br />
                     <Grid container spacing={24}>
@@ -716,7 +506,7 @@ class SendDocumentView extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        data: state,
+        data: state
     };
 };
 
@@ -725,8 +515,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         createDocumentEntryByUniqueID: (url, body) => dispatch(createDocumentEntryByUniqueID(url, body)),
         getUserMessageDataByUserID: (url) => dispatch(getUserMessageDataByUserID(url)),
-        updateUserMessageDataByUserID: (url, body) => dispatch(updateUserMessageDataByUserID(url, body)),
-        uploadFileByUserId: (url, body) => dispatch(uploadFileByUserId(url, body))
+        updateUserMessageDataByUserID: (url, body) => dispatch(updateUserMessageDataByUserID(url, body))
     };
 };
 

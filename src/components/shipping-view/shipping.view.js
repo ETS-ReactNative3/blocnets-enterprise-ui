@@ -1,31 +1,32 @@
 import React, { Component } from 'react';
 import blocnetsLogo from '../../blocknetwhite-1.png';
 import Grid from '@material-ui/core/Grid';
-import FormLabel from '@material-ui/core/FormLabel/FormLabel';
+import FormLabel from '@material-ui/core/FormLabel';
+import Divider from '@material-ui/core/Divider';
 import TextField from 'material-ui/TextField';
-import FormControl from '@material-ui/core/FormControl/FormControl';
-import Select from '@material-ui/core/Select/Select';
-import Input from '@material-ui/core/Input/Input';
-import MenuItem from '@material-ui/core/MenuItem/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText/FormHelperText';
+import DatePicker from 'material-ui/DatePicker';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import Input from '@material-ui/core/Input';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Divider from '@material-ui/core/Divider/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import yellow from '@material-ui/core/colors/yellow';
-import red from '@material-ui/core/colors/red';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import Dialog from '@material-ui/core/Dialog';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
-import Snackbar from 'material-ui/Snackbar';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { connect } from 'react-redux';
 import { getBillOfMaterialsByMaterialID } from '../../redux/actions/BOM/bill-of-materials.actions';
 import { syncSARDataAndBindKeys } from '../../redux/actions/shipping.and.receiving.actions';
@@ -43,23 +44,18 @@ class ShippingView extends Component {
             shipmentID: '',
             shipmentIDGenerated: '',
             shipmentIDTyped: '',
-            plannedShipDate: '',
-            actualShipDate: '',
+            plannedShipDate: null,
+            actualShipDate: null,
+            dateToday: new Date(),
             address: '',
             addressMenuItems: '',
             ipAddress: '',
             errorTextAddress: 'This is a required field.',
             manualShipping: false,
             manualShipping2: 'NO',
-            shipmentCompleted: false,
-            shipmentCompleted2: 'NO',
-            quantity: '',
-            errorTextQuantity: 'This is a required field.',
-            materialIDQuantityList: [{
-                materialID: '',
-                quantity: ''
+            materialIDList: [{
+                materialID: ''
             }],
-            openDialogQuantity: false,
             openDialogConfirmation: false,
             showProgressLogoDialog: false,
             rows: [],
@@ -67,10 +63,10 @@ class ShippingView extends Component {
                 autoHideDuration: 2000,
                 message: '',
                 open: false,
-                sbColor: 'black'
+                sbColor: ''
             }
         };
-    }
+    };
 
     handleMaterialIDChange = (event) => {
         if (event.target.value) {
@@ -98,7 +94,7 @@ class ShippingView extends Component {
                                     autoHideDuration: 2000,
                                     message: 'Address cannot be found!',
                                     open: true,
-                                    sbColor: 'red'
+                                    sbColor: 'Module-Snackbar-Error'
                                 }
                             });
                         }
@@ -111,7 +107,7 @@ class ShippingView extends Component {
                                 autoHideDuration: 2000,
                                 message: 'Address cannot be found!',
                                 open: true,
-                                sbColor: 'red'
+                                sbColor: 'Module-Snackbar-Error'
                             }
                         });
                     }
@@ -119,29 +115,31 @@ class ShippingView extends Component {
         }
     };
 
+    handlePlannedShipDateChange = (event, date) => {
+        this.setState({ plannedShipDate: date });
+    };
+
+    handleActualShipDateChange = (event, date) => {
+        this.setState({ actualShipDate: date });
+    };
+
     handleChange = (event) => {
         this.setState({ [event.target.name]: event.target.value });
         if ([event.target.name].toString() === 'materialID' && event.target.value) {
             this.setState({ errorTextMaterialID: '' });
-            let materialIDQuantityList = [...this.state.materialIDQuantityList];
-            materialIDQuantityList[0].materialID = event.target.value;
-            this.setState({ materialIDQuantityList: materialIDQuantityList });
         } else if ([event.target.name].toString() === 'materialID' && !event.target.value) {
             this.setState({
                 errorTextMaterialID: 'This is a required field.',
+                address: '',
                 addressMenuItems: '',
-                ipAddress: ''
+                ipAddress: '',
+                errorTextAddress: 'This is a required field.'
             });
         }
         if ([event.target.name].toString() === 'address' && event.target.value) {
             this.setState({ errorTextAddress: '' });
         } else if ([event.target.name].toString() === 'address' && !event.target.value) {
             this.setState({ errorTextAddress: 'This is a required field.' });
-        }
-        if ([event.target.name].toString() === 'quantity' && event.target.value) {
-            this.setState({ errorTextQuantity: '' });
-        } else if ([event.target.name].toString() === 'quantity' && !event.target.value) {
-            this.setState({ errorTextQuantity: 'This is a required field.' });
         }
     };
 
@@ -158,35 +156,23 @@ class ShippingView extends Component {
                 manualShipping2: 'NO'
             });
         }
-        if ([event.target.name].toString() === 'shipmentCompleted' && event.target.checked === true) {
-            this.setState({
-                shipmentCompleted: true,
-                shipmentCompleted2: 'YES'
-            });
-        } else if ([event.target.name].toString() === 'shipmentCompleted' && event.target.checked === false) {
-            this.setState({
-                shipmentCompleted: false,
-                shipmentCompleted2: 'NO'
-            });
-        }
     };
 
     handleAddition = (event) => {
-        let materialIDQuantityList = this.state.materialIDQuantityList;
-        let materialIDQuantityList2 = {
-            materialID: '',
-            quantity: ''
+        let materialIDList = this.state.materialIDList;
+        let materialIDList2 = {
+            materialID: ''
         };
-        let materialIDQuantityListFinal = materialIDQuantityList.concat(materialIDQuantityList2);
-        this.setState({ materialIDQuantityList: materialIDQuantityListFinal })
+        let materialIDListFinal = materialIDList.concat(materialIDList2);
+        this.setState({ materialIDList: materialIDListFinal })
     };
 
     handleDeletion = (index) => (event) => {
-        let materialIDQuantityList = this.state.materialIDQuantityList;
-        let materialIDQuantityList2 = materialIDQuantityList.slice(0, index);
-        let materialIDQuantityList3 = materialIDQuantityList.slice(index + 1);
-        let materialIDQuantityListFinal = materialIDQuantityList2.concat(materialIDQuantityList3);
-        this.setState({ materialIDQuantityList: materialIDQuantityListFinal })
+        let materialIDList = this.state.materialIDList;
+        let materialIDList2 = materialIDList.slice(0, index);
+        let materialIDList3 = materialIDList.slice(index + 1);
+        let materialIDListFinal = materialIDList2.concat(materialIDList3);
+        this.setState({ materialIDList: materialIDListFinal })
     };
 
     handleMaterialIDText = (index) => (event) => {
@@ -203,9 +189,9 @@ class ShippingView extends Component {
                             showProgressLogo: false,
                             snackbar: {
                                 autoHideDuration: 2000,
-                                message: 'Master Data does not exist for ' + childMaterialID + '.',
+                                message: 'Master Data does not exist for ' + childMaterialID + '!',
                                 open: true,
-                                sbColor: 'red'
+                                sbColor: 'Module-Snackbar-Error'
                             }
                         });
                     }
@@ -214,133 +200,19 @@ class ShippingView extends Component {
     };
 
     handleText = (index) => (event) => {
-        let materialIDQuantityList = [...this.state.materialIDQuantityList];
+        let materialIDList = [...this.state.materialIDList];
         if ([event.target.name].toString() === 'materialIDList' && event.target.value) {
-            materialIDQuantityList[index].materialID = event.target.value;
+            materialIDList[index].materialID = event.target.value;
         } else if ([event.target.name].toString() === 'materialIDList' && !event.target.value) {
-            materialIDQuantityList[index].materialID = '';
+            materialIDList[index].materialID = '';
         }
-        if ([event.target.name].toString() === 'quantityList' && event.target.value) {
-            materialIDQuantityList[index].quantity = event.target.value;
-        } else if ([event.target.name].toString() === 'quantityList' && !event.target.value) {
-            materialIDQuantityList[index].quantity = '';
-        }
-        this.setState({ materialIDQuantityList: materialIDQuantityList });
+        this.setState({ materialIDList: materialIDList });
     };
 
-    handleSendShipment = (event) => {
-        event.preventDefault();
-        if (this.state.shipmentCompleted === true) {
-            this.setState({
-                openDialogQuantity: false,
-                openDialogConfirmation: true,
-                rows: this.createTableContent()
-            });
-        } else {
-            this.setState({
-                openDialogQuantity: true,
-                openDialogConfirmation: false
-            });
-        }
-    };
-
-    handleSubmitQuantity = () => {
-        this.setState({
-            openDialogConfirmation: true,
-            rows: this.createTableContent()
-        });
-    };
-
-    handleDialogCloseQuantity = () => {
-        this.setState({
-            openDialogQuantity: false,
-            quantity: ''
-        });
-    };
-
-    handlePrint = () => {
-    };
-
-    handleSubmitConfirmation = () => {
-        this.props.data.sarReducer.createShippingDataByShipmentIDSuccess = '';
-        this.props.data.sarReducer.updateShippingDataByMaterialIDSuccess = '';
-        this.props.data.sarReducer.createShippingDataByMaterialIDSuccess = '';
-        this.setState({ showProgressLogoDialog: true });
-        let payload = {
-            materialID: this.state.materialID,
-            shipmentID: this.state.shipmentID,
-            listOfKeys: this.state.materialIDQuantityList,
-            shipmentSent: true,
-            shipmentCompleted: this.state.shipmentCompleted,
-            shipmentQuantity: this.state.quantity,
-            manuallyShipped: this.state.manualShipping,
-            address1: this.state.address,
-            address2: '',
-            city: '',
-            state: '',
-            country: '',
-            postalCode: '',
-            ipAddress: '',
-            receivedShipment: '',
-            receivedOrder: '',
-            deliverOrderNo: '',
-            prdKey: '',
-            deviceUUID: '',
-            plannedShipDate: this.state.plannedShipDate,
-            actualShipDate: this.state.actualShipDate
-        };
-        Promise.resolve(this.props.syncSARDataAndBindKeys(payload))
-            .then(() => {
-                if (this.props.data.sarReducer.syncSARDataAndBindKeysSuccess === true) {
-                    this.setState({
-                        showProgressLogoDialog: false,
-                        snackbar: {
-                            autoHideDuration: 2000,
-                            message: 'Shipping Successful!',
-                            open: true,
-                            sbColor: '#23CE6B'
-                        },
-                        openDialogQuantity: false,
-                        openDialogConfirmation: false,
-                        materialID: '',
-                        errorTextMaterialID: 'This is a required field.',
-                        shipmentID: '',
-                        shipmentIDGenerated: '',
-                        shipmentIDTyped: '',
-                        plannedShipDate: '',
-                        actualShipDate: '',
-                        address: '',
-                        addressMenuItems: '',
-                        ipAddress: '',
-                        errorTextAddress: 'This is a required field.',
-                        manualShipping: false,
-                        manualShipping2: 'NO',
-                        shipmentCompleted: false,
-                        shipmentCompleted2: 'NO',
-                        quantity: '',
-                        errorTextQuantity: 'This is a required field.',
-                        materialIDQuantityList: [{
-                            materialID: '',
-                            quantity: ''
-                        }],
-                        rows: []
-                    });
-                } else {
-                    this.setState({
-                        showProgressLogoDialog: false,
-                        snackbar: {
-                            autoHideDuration: 2000,
-                            message: 'Shipping Error! Please try again.',
-                            open: true,
-                            sbColor: 'red'
-                        }
-                    });
-                }
-            });
-    };
-
-    handleDialogCloseConfirmation = () => {
-        this.setState({ openDialogConfirmation: false });
+    generateUniqueID = () => {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
     };
 
     guid = () => {
@@ -348,12 +220,6 @@ class ShippingView extends Component {
             + this.generateUniqueID() + '-' + this.generateUniqueID();
         this.setState({ shipmentIDGenerated: shipmentID });
         return shipmentID;
-    };
-
-    generateUniqueID = () => {
-        return Math.floor((1 + Math.random()) * 0x10000)
-            .toString(16)
-            .substring(1);
     };
 
     createData = (info1, info2) => {
@@ -370,22 +236,114 @@ class ShippingView extends Component {
             shipmentID = this.state.shipmentIDTyped;
             this.setState({ shipmentID: shipmentID });
         }
+        let plannedShipDate = this.state.plannedShipDate ? this.state.plannedShipDate.toISOString().substring(0, 10) : '';
+        let actualShipDate = this.state.actualShipDate ? this.state.actualShipDate.toISOString().substring(0, 10) : '';
         let tableContent = [
             this.createData('Material ID', this.state.materialID),
             this.createData('Shipment ID', shipmentID),
-            this.createData('Planned Ship Date', this.state.plannedShipDate),
-            this.createData('Actual Ship Date', this.state.actualShipDate),
+            this.createData('Planned Ship Date', plannedShipDate),
+            this.createData('Actual Ship Date', actualShipDate),
             this.createData('Address', this.state.address),
-            this.createData('Manual Shipping', this.state.manualShipping2),
-            this.createData('Shipment Completed', this.state.shipmentCompleted2)
+            this.createData('Manual Shipping', this.state.manualShipping2)
         ];
-        for (let i = 0; i < this.state.materialIDQuantityList.length; i++) {
-            tableContent.push(this.createData('Material ID/Quantity', this.state.materialIDQuantityList[i].materialID + '/' + this.state.materialIDQuantityList[i].quantity));
-        }
-        if (this.state.shipmentCompleted === false) {
-            tableContent.push(this.createData('Quantity', this.state.quantity));
+        if (this.state.materialIDList[0].materialID !== '') {
+            tableContent.push(this.createData('Additional Shipping Information', ''));
+            for (let i = 0; i < this.state.materialIDList.length; i++) {
+                let index = i + 1;
+                tableContent.push(this.createData('Material ID (' + index + ')', this.state.materialIDList[i].materialID));
+            }
         }
         return tableContent;
+    };
+
+    handleSendShipment = (event) => {
+        event.preventDefault();
+        this.setState({
+            openDialogConfirmation: true,
+            rows: this.createTableContent()
+        });
+    };
+
+    handleSubmitConfirmation = () => {
+        this.props.data.sarReducer.createShippingDataByShipmentIDSuccess = '';
+        this.props.data.sarReducer.updateShippingDataByMaterialIDSuccess = '';
+        this.props.data.sarReducer.createShippingDataByMaterialIDSuccess = '';
+        this.setState({ showProgressLogoDialog: true });
+        let listofKeys = [{ materialID: this.state.materialID }];
+        if (this.state.materialIDList) {
+            for (let i = 0; i < this.state.materialIDList.length; i++) {
+                listofKeys.push(this.state.materialIDList[i]);
+            }
+        }
+        let payload = {
+            materialID: this.state.materialID,
+            shipmentID: this.state.shipmentID,
+            listOfKeys: listofKeys,
+            shipmentSent: true,
+            shipmentCompleted: true,
+            shipmentQuantity: '',
+            manuallyShipped: this.state.manualShipping,
+            address1: this.state.address,
+            address2: '',
+            city: '',
+            state: '',
+            country: '',
+            postalCode: '',
+            ipAddress: '',
+            receivedShipment: false,
+            receivedOrder: false,
+            deliverOrderNo: '',
+            prdKey: '',
+            deviceUUID: '',
+            plannedShipDate: this.state.plannedShipDate ? this.state.plannedShipDate.toISOString().substring(0, 10) : '',
+            actualShipDate: this.state.actualShipDate ? this.state.actualShipDate.toISOString().substring(0, 10) : ''
+        };
+        Promise.resolve(this.props.syncSARDataAndBindKeys(payload))
+            .then(() => {
+                if (this.props.data.sarReducer.syncSARDataAndBindKeysSuccess === true) {
+                    this.setState({
+                        showProgressLogoDialog: false,
+                        snackbar: {
+                            autoHideDuration: 2000,
+                            message: 'Shipping Successful!',
+                            open: true,
+                            sbColor: 'Module-Snackbar-Success'
+                        },
+                        openDialogConfirmation: false,
+                        materialID: '',
+                        errorTextMaterialID: 'This is a required field.',
+                        shipmentID: '',
+                        shipmentIDGenerated: '',
+                        shipmentIDTyped: '',
+                        plannedShipDate: '',
+                        actualShipDate: '',
+                        address: '',
+                        addressMenuItems: '',
+                        ipAddress: '',
+                        errorTextAddress: 'This is a required field.',
+                        manualShipping: false,
+                        manualShipping2: 'NO',
+                        materialIDList: [{
+                            materialID: ''
+                        }],
+                        rows: []
+                    });
+                } else {
+                    this.setState({
+                        showProgressLogoDialog: false,
+                        snackbar: {
+                            autoHideDuration: 2000,
+                            message: 'Shipping Error! Please try again.',
+                            open: true,
+                            sbColor: 'Module-Snackbar-Error'
+                        }
+                    });
+                }
+            });
+    };
+
+    handleDialogCloseConfirmation = () => {
+        this.setState({ openDialogConfirmation: false });
     };
 
     handleSnackbarClose = () => {
@@ -394,161 +352,131 @@ class ShippingView extends Component {
                 autoHideDuration: 2000,
                 message: '',
                 open: false,
-                sbColor: 'black'
+                sbColor: ''
             }
         });
     };
 
     render() {
 
-        const addCircleIconStyle = {
-            color: 'black',
-            transform: 'scale(1.8)'
-        };
-
-        const deleteIconStyle = {
-            color: 'black',
-            transform: 'scale(1.6)'
-        };
-
-        const buttonThemeYellow = createMuiTheme({
-            palette: {
-                primary: yellow
-            },
-        });
-
-        const buttonThemeRed = createMuiTheme({
-            palette: {
-                primary: red
-            },
-        });
+        const datePickerStyle = {
+            float: 'left',
+            textAlign: 'left',
+            width: '100%'
+        }
 
         const formComplete = this.state.materialID && this.state.address;
 
         return (
+
             <form>
                 <div>
                     {this.state.showProgressLogo ?
-                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt="" />
-                        </div> : ""}
+                        <div className='overlay'>
+                            <img alt='' className='App-logo-progress' src={blocnetsLogo} />
+                        </div>
+                        :
+                        ''}
                 </div>
-                <div style={{ padding: 24 }}>
+                <div className='Module'>
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
-                            <FormLabel style={{ "textAlign": "left", "fontWeight": "bold", "color": "black" }}>Create
-                                Shipping Information</FormLabel>
+                            <FormLabel className='Module-FormLabel'>
+                                Create Shipping Information
+                            </FormLabel>
                         </Grid>
                     </Grid>
                     <br />
-                    <Divider style={{ "height": "1px", "backgroundColor": "black" }} />
-                    <br /><br />
-                    <Grid container spacing={24}>
-                        <Grid container item xs={6} sm={3}>
-                            <FormLabel style={{ "textAlign": "left" }}>Material ID</FormLabel>
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <FormLabel style={{ "textAlign": "left" }}>Shipment ID</FormLabel>
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <FormLabel style={{ "textAlign": "left" }}>Planned Ship Date</FormLabel>
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <FormLabel style={{ "textAlign": "left" }}>Actual Ship Date</FormLabel>
-                        </Grid>
-                    </Grid>
+                    <Divider className='Module-Divider' />
+                    <br />
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <TextField
-                                value={this.state.materialID}
-                                onChange={this.handleChange}
-                                type="text"
-                                name="materialID"
-                                style={{ "float": "left", "textAlign": "left" }}
-                                hintText=""
+                                className='Module-TextField'
                                 errorText={this.state.errorTextMaterialID}
-                                errorStyle={{ "float": "left", "textAlign": "left" }}
+                                floatingLabelFixed={true}
+                                floatingLabelText='Material ID'
+                                hintText=''
+                                name='materialID'
                                 onBlur={this.handleMaterialIDChange}
+                                onChange={this.handleChange}
+                                type='text'
+                                value={this.state.materialID}
                             />
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <TextField
+                                className='Module-TextField'
+                                floatingLabelFixed={true}
+                                floatingLabelText='Shipment ID'
+                                hintText=''
+                                name='shipmentIDTyped'
+                                onChange={this.handleChange}
+                                type='text'
                                 value={this.state.shipmentIDTyped}
-                                onChange={this.handleChange}
-                                type="text"
-                                name="shipmentIDTyped"
-                                style={{ "float": "left", "textAlign": "left" }}
-                                hintText=""
                             />
                         </Grid>
                         <Grid container item xs={6} sm={3}>
-                            <TextField
+                            <DatePicker
+                                autoOk={true}
+                                floatingLabelFixed={true}
+                                floatingLabelText='Planned Ship Date'
+                                hintText=''
+                                id='plannedShipDate'
+                                onChange={this.handlePlannedShipDateChange}
+                                textFieldStyle={datePickerStyle}
                                 value={this.state.plannedShipDate}
-                                onChange={this.handleChange}
-                                type="date"
-                                name="plannedShipDate"
-                                style={{ "float": "left", "textAlign": "left" }}
-                                hintText=""
                             />
                         </Grid>
                         <Grid container item xs={6} sm={3}>
-                            <TextField
+                            <DatePicker
+                                autoOk={true}
+                                floatingLabelFixed={true}
+                                floatingLabelText='Actual Ship Date'
+                                hintText=''
+                                id='actualShipDate'
+                                minDate={this.state.dateToday}
+                                onChange={this.handleActualShipDateChange}
+                                textFieldStyle={datePickerStyle}
                                 value={this.state.actualShipDate}
-                                onChange={this.handleChange}
-                                type="date"
-                                name="actualShipDate"
-                                style={{ "float": "left", "textAlign": "left" }}
-                                hintText=""
                             />
                         </Grid>
                     </Grid>
                     <br /><br />
-                    <Grid container spacing={24}>
-                        <Grid container item xs={12}>
-                            <FormLabel style={{ "textAlign": "left" }}>Address</FormLabel>
-                        </Grid>
-                    </Grid>
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
                             <FormControl fullWidth={true}>
-                                <Select value={this.state.address} onChange={this.handleChange}
-                                        input={<Input name="address" style={{ "textAlign": "left" }} />}
-                                        displayEmpty>
-                                    <MenuItem
-                                        value={this.state.addressMenuItems}>{this.state.addressMenuItems}</MenuItem>
+                                <InputLabel>
+                                    Address
+                                </InputLabel>
+                                <Select displayEmpty input={<Input className='Mobile-MenuItem' name='address' />}
+                                        onChange={this.handleChange} value={this.state.address}>
+                                    <MenuItem value={this.state.addressMenuItems}>
+                                        {this.state.addressMenuItems}
+                                    </MenuItem>
                                 </Select>
                             </FormControl>
-                            <FormHelperText style={{ "color": "red" }}>{this.state.errorTextAddress}</FormHelperText>
+                            <FormHelperText className='TT-Font-Red'>
+                                {this.state.errorTextAddress}
+                            </FormHelperText>
                         </Grid>
                     </Grid>
-                    <br />
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <FormGroup row>
                                 <FormControlLabel
                                     control={
                                         <Checkbox
-                                            onChange={this.handleCheckboxChange}
-                                            name="manualShipping"
-                                            color="default"
                                             checked={this.state.manualShipping}
+                                            classes={{
+                                                root: 'Module-Checkbox-Root',
+                                                checked: 'Module-Checkbox-Checked'
+                                            }}
+                                            name='manualShipping'
+                                            onClick={this.handleCheckboxChange}
                                         />
                                     }
-                                    label="Manual Shipping"
-                                />
-                            </FormGroup>
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <FormGroup row>
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox
-                                            onChange={this.handleCheckboxChange}
-                                            name="shipmentCompleted"
-                                            color="default"
-                                            checked={this.state.shipmentCompleted}
-                                        />
-                                    }
-                                    label="Shipment Completed"
+                                    label='Manual Shipping'
                                 />
                             </FormGroup>
                         </Grid>
@@ -556,55 +484,45 @@ class ShippingView extends Component {
                     <br /><br />
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
-                            <FormLabel style={{ "textAlign": "left", "fontWeight": "bold", "color": "black" }}>Additional
-                                Shipping Information</FormLabel>
+                            <FormLabel className='Module-FormLabel'>
+                                Additional Shipping Information
+                            </FormLabel>
                         </Grid>
                     </Grid>
                     <br />
-                    <Divider style={{ "height": "1px", "backgroundColor": "black" }} />
+                    <Divider className='Module-Divider' />
                     <br /><br />
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
-                            <FormLabel style={{ "textAlign": "left" }}>Material ID</FormLabel>
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <FormLabel style={{ "textAlign": "left" }}>Quantity</FormLabel>
+                            <InputLabel>
+                                Material ID
+                            </InputLabel>
                         </Grid>
                     </Grid>
-                    {this.state.materialIDQuantityList.map((materialIDQuantityList, index) => (
+                    {this.state.materialIDList.map((materialIDList, index) => (
                         <span key={index}>
                             <Grid container spacing={24}>
                                 <Grid container item xs={6} sm={3}>
                                     <TextField
-                                        type="text"
-                                        style={{ "float": "left", "textAlign": "left" }}
-                                        name="materialIDList"
-                                        onChange={this.handleText(index)}
-                                        hintText=""
-                                        value={materialIDQuantityList.materialID}
+                                        className='Module-TextField'
+                                        hintText=''
+                                        name='materialIDList'
                                         onBlur={this.handleMaterialIDText(index)}
-                                    />
-                                </Grid>
-                                <Grid container item xs={6} sm={3}>
-                                    <TextField
-                                        type="text"
-                                        style={{ "float": "left", "textAlign": "left" }}
-                                        name="quantityList"
                                         onChange={this.handleText(index)}
-                                        hintText=""
-                                        value={materialIDQuantityList.quantity}
+                                        type='text'
+                                        value={materialIDList.materialID}
                                     />
                                 </Grid>
                                 {index === 0 ?
                                     <Grid container item xs={6} sm={3}>
                                         <IconButton onClick={this.handleAddition}>
-                                            <AddCircleIcon style={addCircleIconStyle} />
+                                            <AddCircleIcon className='Button-AddCircleIcon' />
                                         </IconButton>
                                     </Grid>
                                     :
                                     <Grid container item xs={6} sm={3}>
                                         <IconButton onClick={this.handleDeletion(index)}>
-                                            <DeleteIcon style={deleteIconStyle} />
+                                            <DeleteIcon className='Button-DeleteCircleIcon' />
                                         </IconButton>
                                     </Grid>
                                 }
@@ -614,83 +532,46 @@ class ShippingView extends Component {
                     <br /><br />
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
-                            <MuiThemeProvider theme={buttonThemeYellow}>
-                                <Button type="submit" value="Submit" variant="contained" color="primary"
-                                        fullWidth={true} disabled={!formComplete} onClick={this.handleSendShipment}>
-                                    Send Shipment
-                                </Button>
-                            </MuiThemeProvider>
+                            <Button className='Module-Button' fullWidth={true} disabled={!formComplete}
+                                    onClick={this.handleSendShipment} type='submit' value='Submit' variant='contained'>
+                                Send Shipment
+                                <LocalShippingIcon className='Module-Button-Icon' />
+                            </Button>
                         </Grid>
                     </Grid>
                 </div>
-                <Dialog open={this.state.openDialogQuantity} onClose={this.handleDialogCloseQuantity}
-                        autoScrollBodyContent={true}>
-                    <div style={{ padding: 24 }}>
-                        <Grid container spacing={24}>
-                            <Grid container item xs={12}>
-                                <TextField
-                                    value={this.state.quantity}
-                                    onChange={this.handleChange}
-                                    type="text"
-                                    name="quantity"
-                                    floatingLabelText="Quantity"
-                                    floatingLabelFixed={true}
-                                    style={{ "float": "left", "textAlign": "left" }}
-                                    hintText=""
-                                    errorText={this.state.errorTextQuantity}
-                                    errorStyle={{ "float": "left", "textAlign": "left" }}
-                                />
-                            </Grid>
-                        </Grid>
-                        <br />
-                        <Grid container spacing={24}>
-                            <Grid container item xs={4} sm={4}>
-                            </Grid>
-                            <Grid container item xs={4} sm={4}>
-                                <MuiThemeProvider theme={buttonThemeRed}>
-                                    <Button type="submit" value="OK" variant="flat" color="primary" fullWidth={true}
-                                            onClick={this.handleSubmitQuantity} disabled={!this.state.quantity}>
-                                        OK
-                                    </Button>
-                                </MuiThemeProvider>
-                            </Grid>
-                            <Grid container item xs={4} sm={4}>
-                                <MuiThemeProvider theme={buttonThemeRed}>
-                                    <Button type="submit" value="Cancel" variant="flat" color="primary" fullWidth={true}
-                                            onClick={this.handleDialogCloseQuantity}>
-                                        Cancel
-                                    </Button>
-                                </MuiThemeProvider>
-                            </Grid>
-                        </Grid>
-                    </div>
-                </Dialog>
-                <Dialog open={this.state.openDialogConfirmation} onClose={this.handleDialogCloseConfirmation}
-                        autoScrollBodyContent={true}>
-                    <div style={{ padding: 24 }}>
+                <Dialog autoScrollBodyContent={true} onClose={this.handleDialogCloseConfirmation}
+                        open={this.state.openDialogConfirmation}>
+                    <div className='Module'>
                         <Grid container>
                             <Grid container item xs={12}>
                                 Please confirm information.
                             </Grid>
                         </Grid>
                         <br />
-                        <Grid container justify="center">
+                        <Grid container justify='center'>
                             <Grid container item xs={12}>
-                                <Paper style={{ "width": "100%" }}>
+                                <Paper className='Module-Paper'>
                                     <div>
                                         {this.state.showProgressLogoDialog ?
-                                            <div className="overlay"><img src={blocnetsLogo}
-                                                                          className="App-logo-progress" alt="" />
-                                            </div> : ""}
+                                            <div className='overlay'>
+                                                <img alt='' className='App-logo-progress' src={blocnetsLogo} />
+                                            </div>
+                                            :
+                                            ''}
                                     </div>
-                                    <div style={{ "overflowX": "auto" }}>
-                                        <Table style={{ "tableLayout": "fixed" }}>
-                                            <TableBody style={{ "overflowWrap": "break-word" }}>
+                                    <div className='Module-Paper-Div'>
+                                        <Table className='Module-Table'>
+                                            <TableBody className='Module-TableBody'>
                                                 {this.state.rows.map(row => {
                                                     return (
                                                         <TableRow key={row.id}>
-                                                            <TableCell>{row.info1}</TableCell>
-                                                            <TableCell>{row.info2}</TableCell>
+                                                            <TableCell>
+                                                                {row.info1}
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                {row.info2}
+                                                            </TableCell>
                                                         </TableRow>
                                                     );
                                                 })}
@@ -702,41 +583,37 @@ class ShippingView extends Component {
                         </Grid>
                         <br />
                         <Grid container spacing={24}>
-                            <Grid container item xs={4} sm={4}>
-                                <MuiThemeProvider theme={buttonThemeRed}>
-                                    <Button type="submit" value="Print" variant="flat" color="primary" fullWidth={true}
-                                            onClick={this.handlePrint} disabled>
-                                        Print...
-                                    </Button>
-                                </MuiThemeProvider>
+                            <Grid container item xs={12} sm={6}>
                             </Grid>
-                            <Grid container item xs={4} sm={4}>
-                                <MuiThemeProvider theme={buttonThemeRed}>
-                                    <Button type="submit" value="OK" variant="flat" color="primary" fullWidth={true}
-                                            onClick={this.handleSubmitConfirmation}>
+                            <Grid container item xs={12} sm={6}>
+                                <Grid container item xs justify='flex-end'>
+                                    <Button className='Module-Button-Save'
+                                            onClick={this.handleSubmitConfirmation}
+                                            type='submit' value='OK' variant='contained'>
                                         OK
                                     </Button>
-                                </MuiThemeProvider>
-                            </Grid>
-                            <Grid container item xs={4} sm={4}>
-                                <MuiThemeProvider theme={buttonThemeRed}>
-                                    <Button type="submit" value="Cancel" variant="flat" color="primary" fullWidth={true}
-                                            onClick={this.handleDialogCloseConfirmation}>
+                                </Grid>
+                                <Grid container item xs justify='flex-end'>
+                                    <Button className='Module-Button-Cancel'
+                                            onClick={this.handleDialogCloseConfirmation}
+                                            type='submit' value='Cancel' variant='contained'>
                                         Cancel
                                     </Button>
-                                </MuiThemeProvider>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </div>
                 </Dialog>
-                <Snackbar
-                    open={this.state.snackbar.open}
-                    message={this.state.snackbar.message}
-                    autoHideDuration={this.state.snackbar.autoHideDuration}
-                    onRequestClose={this.handleSnackbarClose}
-                    bodyStyle={{ backgroundColor: this.state.snackbar.sbColor }}
-                />
+                <Snackbar autoHideDuration={this.state.snackbar.autoHideDuration} onClose={this.handleSnackbarClose}
+                          open={this.state.snackbar.open}>
+                    <SnackbarContent
+                        classes={{ message: 'Module-Snackbar-Message' }}
+                        className={this.state.snackbar.sbColor}
+                        message={this.state.snackbar.message}
+                    />
+                </Snackbar>
             </form>
+
         );
 
     }

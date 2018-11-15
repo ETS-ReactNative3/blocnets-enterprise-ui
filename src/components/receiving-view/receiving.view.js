@@ -3,15 +3,15 @@ import blocnetsLogo from '../../blocknetwhite-1.png';
 import Grid from '@material-ui/core/Grid';
 import TextField from 'material-ui/TextField';
 import Button from '@material-ui/core/Button';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import yellow from '@material-ui/core/colors/yellow';
+import DomainIcon from '@material-ui/icons/Domain';
 import Dialog from '@material-ui/core/Dialog';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
-import Snackbar from 'material-ui/Snackbar';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { connect } from 'react-redux';
 import {
     getShippingDataByMaterialID,
@@ -25,8 +25,6 @@ let dataByShipmentID = [];
 
 let dataByMaterialIDManuallyShipped = 'NO';
 let dataByShipmentIDManuallyShipped = 'NO';
-let dataByMaterialIDShipmentCompleted = 'NO';
-let dataByShipmentIDShipmentCompleted = 'NO';
 
 let materialIDRows = [];
 let shipmentIDRows = [];
@@ -56,10 +54,10 @@ class ReceivingView extends Component {
                 autoHideDuration: 2000,
                 message: '',
                 open: false,
-                sbColor: 'black'
+                sbColor: ''
             }
         };
-    }
+    };
 
     handleIDChange = (event) => {
         this.setState({ [event.target.name]: event.target.value });
@@ -94,18 +92,13 @@ class ReceivingView extends Component {
                         if (dataByMaterialID.manuallyShipped === true) {
                             dataByMaterialIDManuallyShipped = 'YES'
                         }
-                        if (dataByMaterialID.shipmentCompleted === true) {
-                            dataByMaterialIDShipmentCompleted = 'YES'
-                        }
                         materialIDRows = [
                             createData('Material ID', this.state.materialID),
                             createData('Shipment ID', dataByMaterialID.shipmentID),
                             createData('Planned Ship Date', dataByMaterialID.plannedShipDate),
                             createData('Actual Ship Date', dataByMaterialID.actualShipDate),
-                            createData('Address', dataByMaterialID.address1 + ' ' + dataByMaterialID.address2 + ' ' + dataByMaterialID.city + ' ' + dataByMaterialID.state + ' ' + dataByMaterialID.country + ' ' + dataByMaterialID.postalCode),
-                            createData('Manual Shipping', dataByMaterialIDManuallyShipped),
-                            createData('Shipment Completed', dataByMaterialIDShipmentCompleted),
-                            createData('Shipment Quantity', dataByMaterialID.shipmentQuantity)
+                            createData('Address', dataByMaterialID.address1),
+                            createData('Manual Shipping', dataByMaterialIDManuallyShipped)
                         ];
                         this.setState({
                             showProgressLogo: false,
@@ -115,13 +108,13 @@ class ReceivingView extends Component {
                     } else {
                         this.setState({
                             showProgressLogo: false,
+                            openMaterialIDDialog: false,
                             snackbar: {
                                 autoHideDuration: 2000,
                                 message: 'No shipping information!',
                                 open: true,
-                                sbColor: 'red'
-                            },
-                            openMaterialIDDialog: false
+                                sbColor: 'Module-Snackbar-Error'
+                            }
                         })
                     }
                 });
@@ -134,18 +127,13 @@ class ReceivingView extends Component {
                         if (dataByShipmentID.manuallyShipped === true) {
                             dataByShipmentIDManuallyShipped = 'YES'
                         }
-                        if (dataByShipmentID.shipmentCompleted === true) {
-                            dataByShipmentIDShipmentCompleted = 'YES'
-                        }
                         shipmentIDRows = [
                             createData('Material ID', dataByShipmentID.materialID),
                             createData('Shipment ID', this.state.shipmentID),
                             createData('Planned Ship Date', dataByShipmentID.plannedShipDate),
                             createData('Actual Ship Date', dataByShipmentID.actualShipDate),
-                            createData('Address', dataByShipmentID.address1 + ' ' + dataByShipmentID.address2 + ' ' + dataByShipmentID.city + ' ' + dataByShipmentID.state + ' ' + dataByShipmentID.country + ' ' + dataByShipmentID.postalCode),
-                            createData('Manual Shipping', dataByShipmentIDManuallyShipped),
-                            createData('Shipment Completed', dataByShipmentIDShipmentCompleted),
-                            createData('Shipment Quantity', dataByShipmentID.shipmentQuantity)
+                            createData('Address', dataByShipmentID.address1),
+                            createData('Manual Shipping', dataByShipmentIDManuallyShipped)
                         ];
                         this.setState({
                             showProgressLogo: false,
@@ -155,13 +143,13 @@ class ReceivingView extends Component {
                     } else {
                         this.setState({
                             showProgressLogo: false,
+                            openShipmentIDDialog: false,
                             snackbar: {
                                 autoHideDuration: 2000,
                                 message: 'No shipping information!',
                                 open: true,
-                                sbColor: 'red'
-                            },
-                            openShipmentIDDialog: false
+                                sbColor: 'Module-Snackbar-Error'
+                            }
                         })
                     }
                 });
@@ -237,13 +225,13 @@ class ReceivingView extends Component {
                             && this.props.data.sarReducer.updateShippingDataByShipmentIDSuccess === true) {
                             this.setState({
                                 showProgressLogoDialog: false,
+                                openMaterialIDDialog: false,
                                 snackbar: {
                                     autoHideDuration: 2000,
                                     message: 'Receive Shipment Success!',
                                     open: true,
-                                    sbColor: '#23CE6B'
+                                    sbColor: 'Module-Snackbar-Success'
                                 },
-                                openMaterialIDDialog: false,
                                 materialID: '',
                                 materialIDInformed: false,
                                 shipmentID: '',
@@ -256,7 +244,7 @@ class ReceivingView extends Component {
                                     autoHideDuration: 2000,
                                     message: 'Receive Shipment Error! Please try again.',
                                     open: true,
-                                    sbColor: 'red'
+                                    sbColor: 'Module-Snackbar-Error'
                                 }
                             })
                         }
@@ -323,14 +311,14 @@ class ReceivingView extends Component {
                         if (this.props.data.sarReducer.updateShippingDataByMaterialIDSuccess === true
                             && this.props.data.sarReducer.updateShippingDataByShipmentIDSuccess === true) {
                             this.setState({
+                                showProgressLogoDialog: false,
+                                openShipmentIDDialog: false,
                                 snackbar: {
-                                    showProgressLogoDialog: false,
                                     autoHideDuration: 2000,
                                     message: 'Receive Shipment Success!',
                                     open: true,
-                                    sbColor: '#23CE6B'
+                                    sbColor: 'Module-Snackbar-Success'
                                 },
-                                openShipmentIDDialog: false,
                                 materialID: '',
                                 materialIDInformed: false,
                                 shipmentID: '',
@@ -343,7 +331,7 @@ class ReceivingView extends Component {
                                     autoHideDuration: 2000,
                                     message: 'Receive Shipment Error! Please try again.',
                                     open: true,
-                                    sbColor: 'red'
+                                    sbColor: 'Module-Snackbar-Error'
                                 }
                             })
                         }
@@ -357,96 +345,100 @@ class ReceivingView extends Component {
                 autoHideDuration: 2000,
                 message: '',
                 open: false,
-                sbColor: 'black'
+                sbColor: ''
             }
         });
     };
 
     render() {
 
-        const buttonThemeYellow = createMuiTheme({
-            palette: {
-                primary: yellow
-            },
-        });
-
         const formComplete = this.state.materialIDInformed || this.state.shipmentIDInformed;
 
         return (
+
             <form>
                 <div>
                     {this.state.showProgressLogo ?
-                        <div className="overlay"><img src={blocnetsLogo} className="App-logo-progress" alt="" />
-                        </div> : ""}
+                        <div className='overlay'>
+                            <img src={blocnetsLogo} className='App-logo-progress' alt='' />
+                        </div>
+                        :
+                        ''}
                 </div>
-                <div style={{ padding: 24 }}>
+                <div className='Module'>
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <TextField
-                                value={this.state.materialID}
-                                onChange={this.handleIDChange}
-                                type="text"
-                                name="materialID"
-                                floatingLabelText="Material ID"
-                                floatingLabelFixed={true}
-                                style={{ "float": "left", "textAlign": "left" }}
-                                hintText=""
+                                className='Module-TextField'
                                 disabled={this.state.shipmentIDInformed}
+                                floatingLabelFixed={true}
+                                floatingLabelText='Material ID'
+                                hintText=''
+                                name='materialID'
+                                onChange={this.handleIDChange}
+                                type='text'
+                                value={this.state.materialID}
                             />
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <TextField
-                                value={this.state.shipmentID}
-                                onChange={this.handleIDChange}
-                                type="text"
-                                name="shipmentID"
-                                floatingLabelText="Shipment ID"
-                                floatingLabelFixed={true}
-                                style={{ "float": "left", "textAlign": "left" }}
-                                hintText=""
+                                className='Module-TextField'
                                 disabled={this.state.materialIDInformed}
+                                floatingLabelFixed={true}
+                                floatingLabelText='Shipment ID'
+                                hintText=''
+                                name='shipmentID'
+                                onChange={this.handleIDChange}
+                                type='text'
+                                value={this.state.shipmentID}
                             />
                         </Grid>
                     </Grid>
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
-                            <MuiThemeProvider theme={buttonThemeYellow}>
-                                <Button type="submit" value="retrieveShipment" variant="contained" color="primary"
-                                        fullWidth={true} onClick={this.handleRetrieveShipment}
-                                        disabled={!formComplete}>
-                                    Retrieve Shipment
-                                </Button>
-                            </MuiThemeProvider>
+                            <Button className='Module-Button' fullWidth={true} disabled={!formComplete}
+                                    onClick={this.handleRetrieveShipment} type='submit' value='Submit'
+                                    variant='contained'>
+                                Retrieve Shipment
+                                <DomainIcon className='Module-Button-Icon' />
+                            </Button>
                         </Grid>
                     </Grid>
                 </div>
-                <Dialog open={this.state.openMaterialIDDialog} onClose={this.handleDialogClose}
-                        autoScrollBodyContent={true}>
-                    <div style={{ padding: 24 }}>
-                        <Grid container justify="flex-end">
-                            <Grid item>
-                                <i className="material-icons" style={{ "cursor": "pointer" }}
-                                   onClick={this.handleDialogClose}>close</i>
+                <Dialog autoScrollBodyContent={true} onClose={this.handleDialogClose}
+                        open={this.state.openMaterialIDDialog}>
+                    <div className='Module'>
+                        <Grid container>
+                            <Grid container item xs={12} justify='flex-end'>
+                                <i className='material-icons Module-TableCell-Click' onClick={this.handleDialogClose}>
+                                    close
+                                </i>
                             </Grid>
                         </Grid>
                         <br />
-                        <Grid container justify="center">
-                            <Grid item xs={12}>
-                                <Paper style={{ "width": "100%" }}>
+                        <Grid container justify='center'>
+                            <Grid container item xs={12}>
+                                <Paper className='Module-Paper'>
                                     <div>
                                         {this.state.showProgressLogoDialog ?
-                                            <div className="overlay"><img src={blocnetsLogo}
-                                                                          className="App-logo-progress" alt="" />
-                                            </div> : ""}
+                                            <div className='overlay'>
+                                                <img alt='' className='App-logo-progress' src={blocnetsLogo} />
+                                            </div>
+                                            :
+                                            ''}
                                     </div>
-                                    <div style={{ "overflowX": "auto" }}>
-                                        <Table style={{ "tableLayout": "fixed" }}>
-                                            <TableBody style={{ "overflowWrap": "break-word" }}>
+                                    <div className='Module-Paper-Div'>
+                                        <Table className='Module-Table'>
+                                            <TableBody className='Module-TableBody'>
                                                 {materialIDRows.map(row => {
                                                     return (
                                                         <TableRow key={row.id}>
-                                                            <TableCell>{row.info1}</TableCell>
-                                                            <TableCell>{row.info2}</TableCell>
+                                                            <TableCell>
+                                                                {row.info1}
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                {row.info2}
+                                                            </TableCell>
                                                         </TableRow>
                                                     );
                                                 })}
@@ -457,47 +449,53 @@ class ReceivingView extends Component {
                             </Grid>
                         </Grid>
                         <br />
-                        <Grid container justify="center">
+                        <Grid container justify='center'>
                             <Grid container item xs={12}>
-                                <MuiThemeProvider theme={buttonThemeYellow}>
-                                    <Button type="submit" value="ReceiveShipmentMI" variant="contained"
-                                            color="primary" fullWidth={true}
-                                            onClick={this.handleMIDialogReceiveShipment}
-                                            disabled={this.state.receivedShipment === true}>
-                                        Receive Shipment
-                                    </Button>
-                                </MuiThemeProvider>
+                                <Button className='Module-Button' fullWidth={true}
+                                        disabled={this.state.receivedShipment === true}
+                                        onClick={this.handleMIDialogReceiveShipment} type='submit'
+                                        value='ReceiveShipmentMI' variant='contained'>
+                                    Receive Shipment
+                                    <DomainIcon className='Module-Button-Icon' />
+                                </Button>
                             </Grid>
                         </Grid>
                     </div>
                 </Dialog>
-                <Dialog open={this.state.openShipmentIDDialog} onClose={this.handleDialogClose}
-                        autoScrollBodyContent={true}>
-                    <div style={{ padding: 24 }}>
-                        <Grid container justify="flex-end">
-                            <Grid item>
-                                <i className="material-icons" style={{ "cursor": "pointer" }}
-                                   onClick={this.handleDialogClose}>close</i>
+                <Dialog autoScrollBodyContent={true} onClose={this.handleDialogClose}
+                        open={this.state.openShipmentIDDialog}>
+                    <div className='Module'>
+                        <Grid container>
+                            <Grid container item xs={12} justify='flex-end'>
+                                <i className='material-icons Module-TableCell-Click' onClick={this.handleDialogClose}>
+                                    close
+                                </i>
                             </Grid>
                         </Grid>
                         <br />
-                        <Grid container justify="center">
-                            <Grid item xs={12}>
-                                <Paper style={{ "width": "100%" }}>
+                        <Grid container justify='center'>
+                            <Grid container item xs={12}>
+                                <Paper className='Module-Paper'>
                                     <div>
                                         {this.state.showProgressLogoDialog ?
-                                            <div className="overlay"><img src={blocnetsLogo}
-                                                                          className="App-logo-progress" alt="" />
-                                            </div> : ""}
+                                            <div className='overlay'>
+                                                <img alt='' className='App-logo-progress' src={blocnetsLogo} />
+                                            </div>
+                                            :
+                                            ''}
                                     </div>
-                                    <div style={{ "overflowX": "auto" }}>
-                                        <Table>
-                                            <TableBody style={{ "overflowWrap": "break-word" }}>
+                                    <div className='Module-Paper-Div'>
+                                        <Table className='Module-Table'>
+                                            <TableBody className='Module-TableBody'>
                                                 {shipmentIDRows.map(row => {
                                                     return (
                                                         <TableRow key={row.id}>
-                                                            <TableCell>{row.info1}</TableCell>
-                                                            <TableCell>{row.info2}</TableCell>
+                                                            <TableCell>
+                                                                {row.info1}
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                {row.info2}
+                                                            </TableCell>
                                                         </TableRow>
                                                     );
                                                 })}
@@ -508,28 +506,29 @@ class ReceivingView extends Component {
                             </Grid>
                         </Grid>
                         <br />
-                        <Grid container justify="center">
+                        <Grid container justify='center'>
                             <Grid container item xs={12}>
-                                <MuiThemeProvider theme={buttonThemeYellow}>
-                                    <Button type="submit" value="ReceiveShipmentSI" variant="contained"
-                                            color="primary" fullWidth={true}
-                                            onClick={this.handleSIDialogReceiveShipment}
-                                            disabled={this.state.receivedShipment === true}>
-                                        Receive Shipment
-                                    </Button>
-                                </MuiThemeProvider>
+                                <Button className='Module-Button' fullWidth={true}
+                                        disabled={this.state.receivedShipment === true}
+                                        onClick={this.handleSIDialogReceiveShipment} type='submit'
+                                        value='ReceiveShipmentSI' variant='contained'>
+                                    Receive Shipment
+                                    <DomainIcon className='Module-Button-Icon' />
+                                </Button>
                             </Grid>
                         </Grid>
                     </div>
                 </Dialog>
-                <Snackbar
-                    open={this.state.snackbar.open}
-                    message={this.state.snackbar.message}
-                    autoHideDuration={this.state.snackbar.autoHideDuration}
-                    onRequestClose={this.handleSnackbarClose}
-                    bodyStyle={{ backgroundColor: this.state.snackbar.sbColor }}
-                />
+                <Snackbar autoHideDuration={this.state.snackbar.autoHideDuration} onClose={this.handleSnackbarClose}
+                          open={this.state.snackbar.open}>
+                    <SnackbarContent
+                        classes={{ message: 'Module-Snackbar-Message' }}
+                        className={this.state.snackbar.sbColor}
+                        message={this.state.snackbar.message}
+                    />
+                </Snackbar>
             </form>
+
         );
 
     }

@@ -10,7 +10,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import TablePagination from '@material-ui/core/TablePagination';
-import Dialog from '@material-ui/core/Dialog/Dialog';
+import Dialog from '@material-ui/core/Dialog';
 import Snackbar from 'material-ui/Snackbar';
 import { connect } from 'react-redux';
 import { retrieveFileByKey } from '../../../redux/actions/FILE/file.action';

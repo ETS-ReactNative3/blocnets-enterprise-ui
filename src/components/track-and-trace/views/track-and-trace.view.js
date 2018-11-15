@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 class TrackAndTraceView extends Component {
 
     handleTTSearchData = (show, open, transactionCode, blockInformation, tatData, tree, shippingData, snackbar) => {
-        if (show === 'catalogue'){
+        if (show === 'catalogue') {
             this.props.viewHandler(show);
         } else if (transactionCode !== 'DRE02') {
             this.props.viewHandler(show, open, transactionCode, blockInformation, tatData, tree, shippingData, snackbar);
@@ -25,6 +25,7 @@ class TrackAndTraceView extends Component {
         });
 
         return (
+
             <form>
                 <div className='Module'>
                     <Grid container spacing={24}>
@@ -58,7 +59,9 @@ class TrackAndTraceView extends Component {
                     </MuiThemeProvider>
                 </div>
             </form>
+
         );
+
     }
 }
 

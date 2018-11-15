@@ -4,16 +4,16 @@ import { connect } from 'react-redux';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListAlt from '@material-ui/icons/ListAlt';
-import LocalShipping from '@material-ui/icons/LocalShipping';
-import Domain from '@material-ui/icons/Domain';
-import PlayArrow from '@material-ui/icons/PlayArrow';
-import Stop from '@material-ui/icons/Stop';
+import ListAltIcon from '@material-ui/icons/ListAlt';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import DomainIcon from '@material-ui/icons/Domain';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import StopIcon from '@material-ui/icons/Stop';
 import SearchIcon from '@material-ui/icons/Search';
-import Send from '@material-ui/icons/Send';
+import SendIcon from '@material-ui/icons/Send';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import DescriptionIcon from '@material-ui/icons/Description';
-import LocationOn from '@material-ui/icons/LocationOn';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 
 class AppMenu extends Component {
 
@@ -64,21 +64,21 @@ class AppMenu extends Component {
             <div>
                 <MenuItem className='Mobile-MenuItem' id='showBillOfMaterialsId' onClick={this.showBillOfMaterials}>
                     <ListItemIcon className='Mobile-ListItemIcon'>
-                        <ListAlt />
+                        <ListAltIcon />
                     </ListItemIcon>
                     <ListItemText className='Mobile-ListItemText' primary='Master Material Data' />
                 </MenuItem>
                 <hr />
                 <MenuItem className='Mobile-MenuItem' id='showShippingViewId' onClick={this.showShippingView}>
                     <ListItemIcon className='Mobile-ListItemIcon'>
-                        <LocalShipping />
+                        <LocalShippingIcon />
                     </ListItemIcon>
                     <ListItemText className='Mobile-ListItemText' primary='Shipping' />
                 </MenuItem>
                 <hr />
                 <MenuItem className='Mobile-MenuItem' id='showReceivingViewId' onClick={this.showReceivingView}>
                     <ListItemIcon className='Mobile-ListItemIcon'>
-                        <Domain />
+                        <DomainIcon />
                     </ListItemIcon>
                     <ListItemText className='Mobile-ListItemText' primary='Receiving' />
                 </MenuItem>
@@ -86,7 +86,7 @@ class AppMenu extends Component {
                 <MenuItem className='Mobile-MenuItem' id='showStartProductionViewId'
                           onClick={this.showStartProductionView}>
                     <ListItemIcon className='Mobile-ListItemIcon'>
-                        <PlayArrow />
+                        <PlayArrowIcon />
                     </ListItemIcon>
                     <ListItemText className='Mobile-ListItemText' primary='Start Production Tracking' />
                 </MenuItem>
@@ -94,7 +94,7 @@ class AppMenu extends Component {
                 <MenuItem className='Mobile-MenuItem' id='showCompleteProductionViewId'
                           onClick={this.showCompleteProductionView}>
                     <ListItemIcon className='Mobile-ListItemIcon'>
-                        <Stop />
+                        <StopIcon />
                     </ListItemIcon>
                     <ListItemText className='Mobile-ListItemText' primary='Stop Production Tracking' />
                 </MenuItem>
@@ -108,7 +108,7 @@ class AppMenu extends Component {
                 <hr />
                 <MenuItem className='Mobile-MenuItem' id='showSendDocumentViewId' onClick={this.showSendDocumentView}>
                     <ListItemIcon className='Mobile-ListItemIcon'>
-                        <Send />
+                        <SendIcon />
                     </ListItemIcon>
                     <ListItemText className='Mobile-ListItemText' primary='Send a Document' />
                 </MenuItem>
@@ -129,7 +129,7 @@ class AppMenu extends Component {
                 <hr />
                 <MenuItem className='Mobile-MenuItem' id='showMapContainerViewId' onClick={this.showMapContainerView}>
                     <ListItemIcon className='Mobile-ListItemIcon'>
-                        <LocationOn />
+                        <LocationOnIcon />
                     </ListItemIcon>
                     <ListItemText className='Mobile-ListItemText' primary='Geo Mapping' />
                 </MenuItem>

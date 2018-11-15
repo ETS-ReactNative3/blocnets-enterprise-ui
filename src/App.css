@@ -653,6 +653,10 @@ body {
     padding: 24px !important;
 }
 
+.Module-Inbox {
+    padding: 0px !important;
+}
+
 .Module-TextField {
     float: left !important;
     text-align: left !important;
@@ -720,6 +724,11 @@ body {
     width: 100% !important;
 }
 
+.Module-Paper-Inbox {
+    border-radius: 0px !important;
+    width: 100% !important;
+}
+
 .Module-Paper-Div {
     overflow-x: auto !important;
 }
@@ -754,6 +763,29 @@ body {
     width: 70% !important;
 }
 
+.TT-Div {
+    width: inherit !important;
+}
+
+.TT-Search-Button {
+    fill: #000000 !important;
+}
+
+.TT-Edit-Button {
+    cursor: pointer !important;
+    margin-top: -5px !important;
+    padding-left: 10px !important;
+}
+
+.TT-Paper {
+    height: 50vh !important;
+    width: 100% !important;
+}
+
+.TT-Popper {
+    position: relative !important;
+}
+
 .TT-Logo {
     height: 150px !important;
 }
@@ -770,6 +802,11 @@ body {
 
 .TT-Font-Red {
     color: #e32c1c !important;
+}
+
+.TT-Tree {
+    height: 100vh !important;
+    width: 100% !important;
 }
 
 .Module-Title {
@@ -922,11 +959,20 @@ body {
 }
 
 .Button-AddCircleIcon {
-    color: #000000;
-    transform: scale(1.8);
+    color: #000000 !important;
+    transform: scale(1.8) !important;
 }
 
 .Button-DeleteCircleIcon {
-    color: #000000;
-    transform: scale(1.6);
+    color: #000000 !important;
+    transform: scale(1.6) !important;
+}
+
+.Module-TableCell-Click {
+    cursor: pointer !important;
+}
+
+.Module-TableCell-Black {
+    background-color: #000000 !important;
+    color: #ffffff !important;
 }
