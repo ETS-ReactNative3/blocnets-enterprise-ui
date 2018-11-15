@@ -2,7 +2,7 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Tree from 'react-d3-tree';
 import Button from '@material-ui/core/Button';
-import Cancel from '@material-ui/icons/Cancel';
+import CancelIcon from '@material-ui/icons/Cancel';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 
@@ -113,7 +113,7 @@ class BillOfMaterialsTree extends React.Component {
                                     className='Module-Button-Cancel' fullWidth={true}
                                     onClick={this.handleClose}>
                                 Close
-                                <Cancel className='Module-Button-Icon' />
+                                <CancelIcon className='Module-Button-Icon' />
                             </Button>
                         </Grid>
                     </Grid>

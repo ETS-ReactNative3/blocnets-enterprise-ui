@@ -763,6 +763,29 @@ body {
     width: 70% !important;
 }
 
+.TT-Div {
+    width: inherit !important;
+}
+
+.TT-Search-Button {
+    fill: #000000 !important;
+}
+
+.TT-Edit-Button {
+    cursor: pointer !important;
+    margin-top: -5px !important;
+    padding-left: 10px !important;
+}
+
+.TT-Paper {
+    height: 50vh !important;
+    width: 100% !important;
+}
+
+.TT-Popper {
+    position: relative !important;
+}
+
 .TT-Logo {
     height: 150px !important;
 }
@@ -779,6 +802,11 @@ body {
 
 .TT-Font-Red {
     color: #e32c1c !important;
+}
+
+.TT-Tree {
+    height: 100vh !important;
+    width: 100% !important;
 }
 
 .Module-Title {
@@ -942,4 +970,9 @@ body {
 
 .Module-TableCell-Click {
     cursor: pointer !important;
+}
+
+.Module-TableCell-Black {
+    background-color: #000000 !important;
+    color: #ffffff !important;
 }

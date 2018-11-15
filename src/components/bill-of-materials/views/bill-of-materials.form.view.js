@@ -17,7 +17,7 @@ import FormHelperText from '@material-ui/core/FormHelperText/FormHelperText';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import ListAlt from '@material-ui/icons/ListAlt';
+import ListAltIcon from '@material-ui/icons/ListAlt';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import Countries from '../countries';
@@ -1381,7 +1381,7 @@ class BillOfMaterialsForm extends React.Component {
                             <Button type='submit' value='Submit' variant='contained' className='Module-Button'
                                     fullWidth={true} disabled={!formComplete} onClick={this.handleCreateMasterData}>
                                 Create Master Data
-                                <ListAlt className='Module-Button-Icon' />
+                                <ListAltIcon className='Module-Button-Icon' />
                             </Button>
                         </Grid>
                     </Grid>
