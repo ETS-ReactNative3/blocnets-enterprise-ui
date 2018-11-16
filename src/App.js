@@ -31,6 +31,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Tooltip from '@material-ui/core/Tooltip';
 import Badge from '@material-ui/core/Badge';
 import MailIcon from '@material-ui/icons/Mail';
+import SendIcon from '@material-ui/icons/Send';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import PrintIcon from '@material-ui/icons/Print';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
@@ -71,38 +72,65 @@ const styles = theme => ({
     },
 });
 
-function countPendingMessages(message) {
+function countPendingMessages(messages, userName) {
     let badgeContent = 0;
-    for (let i = 0; i < message.length; i++) {
-        if (message[i].status === 'Pending') {
+    for (let i = 0; i < messages.length; i++) {
+        if (messages[i].header.status === 'Pending' && messages[i].header.recipient === userName) {
             badgeContent++;
         }
     }
     return badgeContent;
 }
 
+function countSentMessages(messages, userName) {
+    let badgeContentSent = 0;
+    for (let i = 0; i < messages.length; i++) {
+        if (messages[i].header.status !== 'Pending' && messages[i].header.sender === userName) {
+            badgeContentSent++;
+        }
+    }
+    return badgeContentSent;
+}
+
 class App extends Component {
 
     /* Dev Note: Will automatically fire the prop actions, or http request, once component mounts */
     componentDidMount() {
-        !this.isCancelled && Promise.resolve(this.props.getEachMessageForUserID(this.props.userName))
+        let userName = this.state.userName;
+        !this.isCancelled && Promise.resolve(this.props.getEachMessageForUserID(userName))
             .then(() => {
                 if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
-                    this.setState({ badgeContent: countPendingMessages(this.props.data.umaReducer.getEachMessageForUserIDSuccess) })
+                    let messages = this.props.data.umaReducer.getEachMessageForUserIDSuccess;
+                    this.setState({
+                        umaLoadComplete: true,
+                        badgeContent: countPendingMessages(messages, userName),
+                        badgeContentSent: countSentMessages(messages, userName)
+                    });
                 } else {
-                    this.setState({ badgeContent: 0 })
+                    this.setState({
+                        umaLoadComplete: true,
+                        badgeContent: 0,
+                        badgeContentSent: 0
+                    });
                 }
             });
         setInterval(() => {
             !this.isCancelled && this.setState({ currentDateAndTime: new Date().toUTCString() })
         }, 1000);
         setInterval(() => {
-            !this.isCancelled && Promise.resolve(this.props.getEachMessageForUserID(this.props.userName))
+            !this.isCancelled && Promise.resolve(this.props.getEachMessageForUserID(userName))
                 .then(() => {
                     if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
-                        this.setState({ badgeContent: countPendingMessages(this.props.data.umaReducer.getEachMessageForUserIDSuccess) })
+                        let messages = this.props.data.umaReducer.getEachMessageForUserIDSuccess;
+                        this.setState({
+                            badgeContent: countPendingMessages(messages, userName),
+                            badgeContentSent: countSentMessages(messages, userName)
+                        });
                     } else {
-                        this.setState({ badgeContent: 0 })
+                        this.setState({
+                            badgeContent: 0,
+                            badgeContentSent: 0
+                        });
                     }
                 })
         }, 30000);
@@ -115,6 +143,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            umaLoadComplete: false,
             catalogue: {
                 open: false,
                 scroll: 'paper'
@@ -124,6 +153,8 @@ class App extends Component {
             transactionCode: this.props.transactionCode,
             userName: this.props.userName,
             badgeContent: 0,
+            badgeContentSent: 0,
+            tabValue: 0,
             mobileMoreAnchorEl: null,
             showMobileMenu: false,
             blockInformation: '',
@@ -142,14 +173,20 @@ class App extends Component {
 
     handleToggle = () => this.setState({ open: !this.state.open });
 
-    showMainView = () => {
+    showMainView = (id) => {
+        let tabValue = 3;
+        if (id === 'inbox') {
+            tabValue = 0;
+        }
         this.setState({
             show: 'home',
             open: false,
             transactionCode: 'DRE02',
             mobileMoreAnchorEl: null,
-            showMobileMenu: false
+            showMobileMenu: false,
+            tabValue: tabValue
         });
+
     };
 
     showBillOfMaterials = () => {
@@ -297,18 +334,26 @@ class App extends Component {
                 open: false
             }
         })
-    }
+    };
 
     handleDREData = (refreshBadgeContent) => {
+        let userName = this.state.userName;
         if (refreshBadgeContent === true) {
-            Promise.resolve(this.props.getEachMessageForUserID(this.props.userName))
+            Promise.resolve(this.props.getEachMessageForUserID(userName))
                 .then(() => {
                     if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
-                        this.setState({ badgeContent: countPendingMessages(this.props.data.umaReducer.getEachMessageForUserIDSuccess) })
+                        let messages = this.props.data.umaReducer.getEachMessageForUserIDSuccess;
+                        this.setState({
+                            badgeContent: countPendingMessages(messages, userName),
+                            badgeContentSent: countSentMessages(messages, userName)
+                        });
                     } else {
-                        this.setState({ badgeContent: 0 })
+                        this.setState({
+                            badgeContent: 0,
+                            badgeContentSent: 0
+                        });
                     }
-                })
+                });
         }
     };
 
@@ -379,7 +424,7 @@ class App extends Component {
                 this.showMapContainerView();
                 break;
             default:
-                this.showMainView();
+                this.showMainView('inbox');
                 break;
         }
     };
@@ -427,6 +472,7 @@ class App extends Component {
                 break;
             case 'senddocumentview':
                 content = (<SendDocumentView
+                    userName={this.state.userName}
                     viewHandler={this.handleDREData} />);
                 contentTitle = 'SEND A DOCUMENT';
                 break;
@@ -451,17 +497,20 @@ class App extends Component {
                 contentTitle = 'EDIT MATERIAL AND SUPPLIER MASTER DATA';
                 break;
             default:
-                content = (
-                    <Router>
-                        <div>
-                            <Route
-                                path='/'
-                                render={(props) => <DocumentDashboardView {...props}
-                                                                          userName={this.state.userName} />}
-                            />
-                        </div>
-                    </Router>);
-                contentTitle = 'INBOX';
+                if(this.state.umaLoadComplete === true) {
+                    content = (
+                        <Router>
+                            <div>
+                                <Route
+                                    path='/'
+                                    render={(props) => <DocumentDashboardView {...props}
+                                                                              tabValue={this.state.tabValue}
+                                                                              userName={this.state.userName} />}
+                                />
+                            </div>
+                        </Router>);
+                    contentTitle = 'INBOX';
+                }
         }
 
         const { classes } = this.props;
@@ -470,7 +519,7 @@ class App extends Component {
             <Menu anchorEl={this.state.mobileMoreAnchorEl} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                   onClose={this.handleMobileMenuClose} open={this.state.showMobileMenu}
                   transformOrigin={{ vertical: 'top', horizontal: 'right' }}>
-                <MenuItem className='Mobile-MenuItem' onClick={this.showMainView}>
+                <MenuItem className='Mobile-MenuItem' onClick={event => this.showMainView('inbox')}>
                     <ListItemIcon className='Mobile-ListItemIcon'>
                         <Badge badgeContent={this.state.badgeContent}
                                classes={{
@@ -481,6 +530,19 @@ class App extends Component {
                         </Badge>
                     </ListItemIcon>
                     <ListItemText className='Mobile-ListItemText' primary='Messages' />
+                </MenuItem>
+                <hr />
+                <MenuItem className='Mobile-MenuItem' onClick={event => this.showMainView('sent')}>
+                    <ListItemIcon className='Mobile-ListItemIcon'>
+                        <Badge badgeContent={this.state.badgeContentSent}
+                               classes={{
+                                   root: 'App-Bar-Badge',
+                                   badge: 'App-Bar-Badge-Color2'
+                               }}>
+                            <SendIcon />
+                        </Badge>
+                    </ListItemIcon>
+                    <ListItemText className='Mobile-ListItemText' primary='Sent Messages' />
                 </MenuItem>
                 <hr />
                 <MenuItem className='Mobile-MenuItem' onClick={this.handleSplash}>
@@ -506,7 +568,7 @@ class App extends Component {
                     <ListItemText className='Mobile-ListItemText' primary='New Session' />
                 </MenuItem>
                 <hr />
-                <MenuItem className='Mobile-MenuItem' onClick={this.showMainView}>
+                <MenuItem className='Mobile-MenuItem' onClick={event => this.showMainView('inbox')}>
                     <ListItemIcon className='Mobile-ListItemIcon'>
                         <AccountCircleIcon />
                     </ListItemIcon>
@@ -532,13 +594,24 @@ class App extends Component {
                             </div>
                             <div className={classes.sectionDesktop}>
                                 <Tooltip title='Messages'>
-                                    <IconButton onClick={this.showMainView}>
+                                    <IconButton onClick={event => this.showMainView('inbox')}>
                                         <Badge badgeContent={this.state.badgeContent}
                                                classes={{
                                                    root: 'App-Bar-Badge',
                                                    badge: 'App-Bar-Badge-Color'
                                                }}>
                                             <MailIcon />
+                                        </Badge>
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title='Sent Messages'>
+                                    <IconButton onClick={event => this.showMainView('sent')}>
+                                        <Badge badgeContent={this.state.badgeContentSent}
+                                               classes={{
+                                                   root: 'App-Bar-Badge',
+                                                   badge: 'App-Bar-Badge-Color2'
+                                               }}>
+                                            <SendIcon />
                                         </Badge>
                                     </IconButton>
                                 </Tooltip>
@@ -560,7 +633,7 @@ class App extends Component {
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title='User Profile'>
-                                    <IconButton onClick={event => this.showMainView()}>
+                                    <IconButton onClick={event => this.showMainView('inbox')}>
                                         <AccountCircleIcon />
                                     </IconButton>
                                 </Tooltip>
