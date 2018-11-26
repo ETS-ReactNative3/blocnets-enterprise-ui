@@ -32,7 +32,6 @@ class CompleteProduction extends Component {
             materialID: '',
             errorTextMaterialID: 'This is a required field.',
             ipAddress: '',
-            errorTextIPAddress: 'This is a required field.',
             openDialog: false,
             showProgressLogoDialog: false,
             productionCompleted: false,
@@ -58,11 +57,6 @@ class CompleteProduction extends Component {
             this.setState({errorTextMaterialID: ''});
         } else if ([event.target.name].toString() === 'materialID' && !event.target.value) {
             this.setState({errorTextMaterialID: 'This is a required field.'});
-        }
-        if ([event.target.name].toString() === 'ipAddress' && event.target.value !== '') {
-            this.setState({errorTextIPAddress: ''});
-        } else if ([event.target.name].toString() === 'ipAddress' && !event.target.value) {
-            this.setState({errorTextIPAddress: 'This is a required field.'});
         }
         if ([event.target.name].toString() === 'quantity' && event.target.value !== '') {
             this.setState({errorTextQuantity: ''});
@@ -141,7 +135,6 @@ class CompleteProduction extends Component {
                         materialID: '',
                         errorTextMaterialID: 'This is a required field.',
                         ipAddress: '',
-                        errorTextIPAddress: 'This is a required field.',
                         productionCompleted: false,
                         quantity: ''
                     });
@@ -184,7 +177,7 @@ class CompleteProduction extends Component {
             },
         });
 
-        const formComplete = this.state.productionOrderNo && this.state.materialID && this.state.ipAddress;
+        const formComplete = this.state.productionOrderNo && this.state.materialID;
 
         const productionComplete = this.state.productionCompleted === true ||
             (this.state.productionCompleted === false && this.state.quantity);
@@ -223,20 +216,6 @@ class CompleteProduction extends Component {
                                 style={{"float": "left", "textAlign": "left"}}
                                 hintText=""
                                 errorText={this.state.errorTextMaterialID}
-                                errorStyle={{"float": "left", "textAlign": "left"}}
-                            />
-                        </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                value={this.state.ipAddress}
-                                onChange={this.handleChange}
-                                type="text"
-                                name="ipAddress"
-                                floatingLabelText="IP Address"
-                                floatingLabelFixed={true}
-                                style={{"float": "left", "textAlign": "left"}}
-                                hintText=""
-                                errorText={this.state.errorTextIPAddress}
                                 errorStyle={{"float": "left", "textAlign": "left"}}
                             />
                         </Grid>
