@@ -226,20 +226,6 @@ class CompleteProduction extends Component {
                                 errorStyle={{"float": "left", "textAlign": "left"}}
                             />
                         </Grid>
-                        <Grid container item xs={6} sm={3}>
-                            <TextField
-                                value={this.state.ipAddress}
-                                onChange={this.handleChange}
-                                type="text"
-                                name="ipAddress"
-                                floatingLabelText="IP Address"
-                                floatingLabelFixed={true}
-                                style={{"float": "left", "textAlign": "left"}}
-                                hintText=""
-                                errorText={this.state.errorTextIPAddress}
-                                errorStyle={{"float": "left", "textAlign": "left"}}
-                            />
-                        </Grid>
                     </Grid>
                     <br/><br/>
                     <Grid container spacing={24}>
