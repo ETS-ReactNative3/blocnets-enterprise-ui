@@ -245,23 +245,23 @@ class CompleteProduction extends Component {
                                 </div>
                             </Grid>
                         </Grid>
-                        <Grid container spacing={24}>
-                            <Grid container item xs={12}>
-                                <FormGroup row>
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox
-                                                onChange={this.handleCheckboxChange}
-                                                name="productionCompleted"
-                                                color="default"
-                                                checked={this.state.productionCompleted}
-                                            />
-                                        }
-                                        label="Production Completed"
-                                    />
-                                </FormGroup>
-                            </Grid>
-                        </Grid>
+                        {/*<Grid container spacing={24}>*/}
+                            {/*<Grid container item xs={12}>*/}
+                                {/*<FormGroup row>*/}
+                                    {/*<FormControlLabel*/}
+                                        {/*control={*/}
+                                            {/*<Checkbox*/}
+                                                {/*onChange={this.handleCheckboxChange}*/}
+                                                {/*name="productionCompleted"*/}
+                                                {/*color="default"*/}
+                                                {/*checked={this.state.productionCompleted}*/}
+                                            {/*/>*/}
+                                        {/*}*/}
+                                        {/*label="Production Completed"*/}
+                                    {/*/>*/}
+                                {/*</FormGroup>*/}
+                            {/*</Grid>*/}
+                        {/*</Grid>*/}
                         <Fade in={this.state.productionCompleted === false}>
                             <Grid container spacing={24}>
                                 <Grid container item xs={12}>
