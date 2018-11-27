@@ -7,6 +7,57 @@ import {tokenResolver} from '../../../services/token.resolver';
  * @param {*} url 
  * @param {*} body 
  */
+
+// check whether MaterialID exists or not
+export function checkBillOfMaterialsByMaterialID(url) {
+    return async (dispatch) => {
+        dispatch({
+            type: "LOADING_SAR_VIEW",
+            payload: true
+        });
+        const headers = tokenResolver();
+        await axios.head(config.chaincodes.Default + config.chaincodes.BOM + url, { headers })
+            .then(() => {
+                return dispatch({
+                    type: "CHECKED_BOM_DATA_BY_MATERIAL_ID_DOES_EXIST",
+                    payload: true
+                });
+            })
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "CHECKED_BOM_DATA_BY_MATERIAL_ID_DOES_NOT_EXIST",
+                    payload: errorData
+                })
+            });
+    };
+}
+
+// check whether MaterialName exists or not
+export function checkBillOfMaterialsByMaterialName(url) {
+    return async (dispatch) => {
+        dispatch({
+            type: "LOADING_SAR_VIEW",
+            payload: true
+        });
+        const headers = tokenResolver();
+        await axios.head(config.chaincodes.Default + config.chaincodes.BOM + url, { headers })
+            .then(() => {
+                return dispatch({
+                    type: "CHECKED_BOM_DATA_BY_MATERIAL_NAME_DOES_EXIST",
+                    payload: true
+                });
+            })
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "CHECKED_BOM_DATA_BY_MATERIAL_NAME_DOES_NOT_EXIST",
+                    payload: errorData
+                })
+            });
+    };
+}
+
 export function createBillOfMaterialsByMaterialID(url, body) {
     return async (dispatch) => {
         dispatch({

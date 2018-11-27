@@ -9,11 +9,8 @@ import red from '@material-ui/core/colors/red';
 import Dialog from '@material-ui/core/Dialog';
 import Snackbar from 'material-ui/Snackbar';
 import { connect } from 'react-redux';
-import {
-    getProductionOrderByProdOrderNo,
-    updateProductionOrderByProdOrderNo
-}
-    from '../../../redux/actions/production.actions';
+import { getProductionOrderByProdOrderNo, updateProductionOrderByProdOrderNo } from '../../../redux/actions/production.actions';
+import { checkBillOfMaterialsByMaterialID } from "../../../redux/actions/BOM/bill-of-materials.actions";
 
 let data = [];
 
@@ -40,6 +37,55 @@ class CompleteProduction extends Component {
             }
         };
     }
+
+    // validate Material ID
+    handleMaterialIDChange = (event) => {
+        if (event.target.value) {
+            this.props.data.bomReducer.checkedBOMDataByMaterialIDDoesExist = '';
+            this.props.data.bomReducer.checkedBOMDataByMaterialIDDoesNotExist = '';
+            this.setState({ showProgressLogo: true });
+            Promise.resolve(this.props.checkBillOfMaterialsByMaterialID(event.target.value))
+                .then(() => {
+                    if (this.props.data.bomReducer.checkedBOMDataByMaterialIDDoesExist &&
+                        this.props.data.bomReducer.checkedBOMDataByMaterialIDDoesNotExist === '') {
+                        this.setState({
+                            showProgressLogo: false,
+                            materialID: '',
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Material ID already exists!',
+                                open: true,
+                                sbColor: '#e32c1c'
+                            }
+                        });
+                    } else if (this.props.data.bomReducer.checkedBOMDataByMaterialIDDoesExist === '' &&
+                        this.props.data.bomReducer.checkedBOMDataByMaterialIDDoesNotExist) {
+                        this.setState({
+                            showProgressLogo: false,
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Material ID is valid',
+                                open: true,
+                                sbColor: '#23CE6B'
+                            }
+                        })
+                    } else {
+                        this.setState({
+                            showProgressLogo: false,
+                            materialID: '',
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Unknown Error',
+                                open: true,
+                                sbColor: '#e32c1c'
+                            }
+                        });
+                    }
+                });
+            // TODO: handle an edge case saf,l/asgm
+            // cannot put / because it understands it as directory
+        }
+    };
 
     handleChange = (event) => {
         this.setState({ [event.target.name]: event.target.value });
@@ -190,6 +236,7 @@ class CompleteProduction extends Component {
                             <TextField
                                 value={this.state.materialID}
                                 onChange={this.handleChange}
+                                onBlur={this.handleMaterialIDChange}
                                 type="text"
                                 name="materialID"
                                 floatingLabelText="Material ID"
@@ -271,7 +318,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getProductionOrderByProdOrderNo: (url) => dispatch(getProductionOrderByProdOrderNo(url)),
-        updateProductionOrderByProdOrderNo: (url, body) => dispatch(updateProductionOrderByProdOrderNo(url, body))
+        updateProductionOrderByProdOrderNo: (url, body) => dispatch(updateProductionOrderByProdOrderNo(url, body)),
+        checkBillOfMaterialsByMaterialID: (url) => dispatch(checkBillOfMaterialsByMaterialID(url))
     };
 };
 

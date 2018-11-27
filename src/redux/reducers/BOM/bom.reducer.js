@@ -3,6 +3,20 @@ export function bomReducer(state = {}, action) {
         case "LOADING_BOM_VIEW": {
             return state = { ...state, loadingBOMView: action.payload }
         }
+        // check whether material id exists or not
+        case "CHECKED_BOM_DATA_BY_MATERIAL_ID_DOES_EXIST": {
+            return state = { ...state, checkedBOMDataByMaterialIDDoesExist: action.payload }
+        }
+        case "CHECKED_BOM_DATA_BY_MATERIAL_ID_DOES_NOT_EXIST": {
+            return state = { ...state, checkedBOMDataByMaterialIDDoesNotExist: action.payload }
+        }
+        // check whether material name exists or not
+        case "CHECKED_BOM_DATA_BY_MATERIAL_NAME_DOES_EXIST": {
+            return state = { ...state, checkedBOMDataByMaterialNameDoesExist: action.payload }
+        }
+        case "CHECKED_BOM_DATA_BY_MATERIAL_NAME_DOES_NOT_EXIST": {
+            return state = { ...state, checkedBOMDataByMaterialNameDoesNotExist: action.payload }
+        }
         case "CREATE_BOM_DATA_BY_MATERIAL_ID_SUCCESS": {
             return state = { ...state, createBillOfMaterialsByMaterialIDSuccess: action.payload }
         }

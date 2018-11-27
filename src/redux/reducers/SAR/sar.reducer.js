@@ -69,6 +69,14 @@ export function sarReducer(state = { items: [], errors: [] }, action) {
         case "CHECKED_SAR_DATA_BY_MATERIAL_ID_DOES_NOT_EXIST": {
             return state = { ...state, checkedSARDataByMaterialIDDoesNotExist: action.payload }
         }
+        // checked sar data by shipment id
+        case "CHECKED_SAR_DATA_BY_SHIPMENT_ID_DOES_EXIST": {
+            return state = {...state, checkedSARDataByShipmentIDDoesExist: action.payload}
+        }
+        case "CHECKED_SAR_DATA_BY_SHIPMENT_ID_DOES_NOT_EXIST": {
+            return state = { ...state, checkedSARDataByShipmentIDDoesNotExist: action.payload }
+        }
+
         case "SYNC_SAR_DATA_AND_BIND_KEYS_SUCCESS": {
             return state = { ...state, syncSARDataAndBindKeysSuccess: action.payload }
         }
