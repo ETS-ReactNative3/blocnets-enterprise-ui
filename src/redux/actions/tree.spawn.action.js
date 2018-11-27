@@ -33,7 +33,7 @@ export function createConstruct(materialID) {
                         .then((response) => {
                             let construct = {
                                 name: key,
-                                attributes: { ipAddress: response.data.ipAddress },
+                                attributes: { MaterialID: response.data.materialID },
                                 children: [],
                             };
 
