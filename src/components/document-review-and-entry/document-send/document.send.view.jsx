@@ -284,6 +284,7 @@ class SendDocumentView extends React.Component {
                     fileFromSavedDocsKey: '',
                     message: ''
                 });
+                this.props.viewHandler(true);
             } else {
                 this.setState({
                     showProgressLogo: false,
@@ -310,11 +311,16 @@ class SendDocumentView extends React.Component {
             this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess = '';
             let dreURL = this.guid();
             let dreBody = {
+                desc: dreURL,
+                fileId: this.state.fileFromSavedDocsKey,
+                header: {
+                    status: 'Pending',
+                    sender: this.state.userName,
+                    recipient: recipientUserName
+                },
                 text: this.state.message,
-                status: 'Pending',
                 type: this.state.messageType,
-                desc: '',
-                fileId: this.state.fileFromSavedDocsKey
+                date: new Date().toISOString().substring(0, 10)
             };
             let oldMessages = [];
             let allMessages = [];
@@ -337,22 +343,28 @@ class SendDocumentView extends React.Component {
                                 umaBody = {
                                     userfiles: this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles,
                                     userMessages: allMessages,
-                                    archivedMessages: ['string']
+                                    archivedMessages: []
                                 };
                                 Promise.resolve(this.props.updateUserMessageDataByUserID(umaURL, umaBody))
                                     .then(() => {
-                                        this.handleDREValidation(userNameLength);
+                                        Promise.resolve(this.props.updateUserMessageDataByUserID(this.state.userName, umaBody))
+                                            .then(() => {
+                                                this.handleDREValidation(userNameLength);
+                                            });
                                     })
                             } else {
                                 umaBody = {
                                     userfiles: this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles,
                                     userMessages: [dreURL],
-                                    archivedMessages: ['string']
+                                    archivedMessages: []
                                 };
                                 Promise.resolve(this.props.updateUserMessageDataByUserID(umaURL, umaBody))
                                     .then(() => {
-                                        this.handleDREValidation(userNameLength);
-                                    })
+                                        Promise.resolve(this.props.updateUserMessageDataByUserID(this.state.userName, umaBody))
+                                            .then(() => {
+                                                this.handleDREValidation(userNameLength);
+                                            });
+                                    });
                             }
                         })
                 })
