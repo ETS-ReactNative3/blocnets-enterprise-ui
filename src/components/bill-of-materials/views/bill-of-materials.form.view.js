@@ -22,6 +22,11 @@ import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import Countries from '../countries';
 import USStates from '../us_states';
+import { connect } from 'react-redux';
+import {
+    checkBillOfMaterialsByMaterialID,
+    checkBillOfMaterialsByMaterialName
+} from '../../../redux/actions/BOM/bill-of-materials.actions';
 
 function createCountryMenuItems() {
     let countryMenuItems = [];
@@ -107,6 +112,110 @@ class BillOfMaterialsForm extends React.Component {
             snackbar: this.props.snackbar
         };
     }
+
+    // validate Material ID
+    handleMaterialIDChange = (event) => {
+        if (event.target.value) {
+            this.props.data.bomReducer.checkedBOMDataByMaterialIDDoesExist = '';
+            this.props.data.bomReducer.checkedBOMDataByMaterialIDDoesNotExist = '';
+            this.setState({ showProgressLogo: true });
+            Promise.resolve(this.props.checkBillOfMaterialsByMaterialID(event.target.value))
+                .then(() => {
+                    if (this.props.data.bomReducer.checkedBOMDataByMaterialIDDoesExist &&
+                        this.props.data.bomReducer.checkedBOMDataByMaterialIDDoesNotExist === '') {
+                        this.setState({
+                            showProgressLogo: false,
+                            materialID: '',
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Material ID already exists!',
+                                open: true,
+                                sbColor: 'Module-Snackbar-Error'
+                            }
+                        });
+                        this.props.viewHandler(true, false, '', this.state.snackbar);
+                    } else if (this.props.data.bomReducer.checkedBOMDataByMaterialIDDoesExist === '' &&
+                        this.props.data.bomReducer.checkedBOMDataByMaterialIDDoesNotExist) {
+                        this.setState({
+                            showProgressLogo: false,
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Material ID is valid',
+                                open: true,
+                                sbColor: 'Module-Snackbar-Success'
+                            }
+                        });
+                        this.props.viewHandler(true, false, '', this.state.snackbar);
+                    } else {
+                        this.setState({
+                            showProgressLogo: false,
+                            materialID: '',
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Unknown Error',
+                                open: true,
+                                sbColor: 'Module-Snackbar-Error'
+                            }
+                        });
+                        this.props.viewHandler(true, false, '', this.state.snackbar);
+                    }
+                });
+            // TODO: handle an edge case saf,l/asgm
+            // cannot put / because it understands it as directory
+        }
+    };
+
+    // validate Material Name
+    handleMaterialNameChange = (event) => {
+        if (event.target.value) {
+            this.props.data.bomReducer.checkedBOMDataByMaterialNameDoesExist = '';
+            this.props.data.bomReducer.checkedBOMDataByMaterialNameDoesNotExist = '';
+            this.setState({ showProgressLogo: true });
+            Promise.resolve(this.props.checkBillOfMaterialsByMaterialName(event.target.value))
+                .then(() => {
+                    if (this.props.data.bomReducer.checkedBOMDataByMaterialNameDoesExist &&
+                        this.props.data.bomReducer.checkedBOMDataByMaterialNameDoesNotExist === '') {
+                        this.setState({
+                            showProgressLogo: false,
+                            materialName: '',
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Material Name already exists!',
+                                open: true,
+                                sbColor: 'Module-Snackbar-Error'
+                            }
+                        });
+                        this.props.viewHandler(true, false, '', this.state.snackbar);
+                    } else if (this.props.data.bomReducer.checkedBOMDataByMaterialNameDoesExist === '' &&
+                        this.props.data.bomReducer.checkedBOMDataByMaterialNameDoesNotExist) {
+                        this.setState({
+                            showProgressLogo: false,
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Material Name is valid',
+                                open: true,
+                                sbColor: 'Module-Snackbar-Success'
+                            }
+                        });
+                        this.props.viewHandler(true, false, '', this.state.snackbar);
+                    } else {
+                        this.setState({
+                            showProgressLogo: false,
+                            materialName: '',
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Unknown Error',
+                                open: true,
+                                sbColor: 'Module-Snackbar-Error'
+                            }
+                        });
+                        this.props.viewHandler(true, false, '', this.state.snackbar);
+                    }
+                });
+            // TODO: handle an edge case saf,l/asgm
+            // cannot put / because it understands it as directory
+        }
+    };
 
     handleChange = (event) => {
         this.setState({ [event.target.name]: event.target.value });
@@ -388,6 +497,7 @@ class BillOfMaterialsForm extends React.Component {
                                 hintText=''
                                 value={this.state.materialID}
                                 onChange={this.handleChange}
+                                onBlur={this.handleMaterialIDChange}
                                 errorText={this.state.errorTextMaterialID}
                             />
                         </Grid>
@@ -401,6 +511,7 @@ class BillOfMaterialsForm extends React.Component {
                                 hintText=''
                                 value={this.state.materialName}
                                 onChange={this.handleChange}
+                                onBlur={this.handleMaterialNameChange}
                                 errorText={this.state.errorTextMaterialName}
                             />
                         </Grid>
@@ -1401,4 +1512,17 @@ class BillOfMaterialsForm extends React.Component {
 
 }
 
-export default BillOfMaterialsForm;
+const mapStateToProps = (state) => {
+    return {
+        data: state,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        checkBillOfMaterialsByMaterialID: (url) => dispatch(checkBillOfMaterialsByMaterialID(url)),
+        checkBillOfMaterialsByMaterialName: (url) => dispatch(checkBillOfMaterialsByMaterialName(url))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BillOfMaterialsForm);

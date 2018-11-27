@@ -21,6 +21,13 @@ export function prdReducer(state = {}, action) {
         case "UPDATE_PRD_DATA_BY_PRODUCTION_ORDER_NUMBER_FAILED": {
             return state = { ...state, updateProductionOrderByProdOrderNoError: action.payload }
         }
+        // checked prd data by production order no
+        case "CHECKED_PRD_DATA_BY_PRODUCTION_ORDER_NUMBER_DOES_EXIST": {
+            return state = {...state, checkedPRDDataByProductionOrderNoDoesExist: action.payload}
+        }
+        case "CHECKED_PRD_DATA_BY_PRODUCTION_ORDER_NUMBER_DOES_NOT_EXIST": {
+            return state = { ...state, checkedPRDDataByProductionOrderNoDoesNotExist: action.payload }
+        }
         default:
             return state;
     }

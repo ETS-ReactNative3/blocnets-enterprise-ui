@@ -4,6 +4,32 @@ import { resolver } from '../../services/callback.resolver';
 import { tokenResolver } from '../../services/token.resolver';
 import { catalogue } from './CAT/catalogue.action';
 
+// check whether ShipmentID exists or not
+export function checkShippingDataByShipmentID(url) {
+    return async (dispatch) => {
+        dispatch({
+            type: "LOADING_SAR_VIEW",
+            payload: true
+        });
+        const headers = tokenResolver();
+        await axios.head(config.chaincodes.Default + config.chaincodes.SAR + 'shipmentId=' + url, { headers })
+            .then(() => {
+                return dispatch({
+                    type: "CHECKED_SAR_DATA_BY_SHIPMENT_ID_DOES_EXIST",
+                    payload: true
+                });
+            })
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "CHECKED_SAR_DATA_BY_SHIPMENT_ID_DOES_NOT_EXIST",
+                    payload: errorData
+                })
+            });
+    };
+}
+
+
 export function createShippingDataByShipmentID(url, body) {
     return async (dispatch) => {
         dispatch({
@@ -319,7 +345,7 @@ export function syncSARDataAndBindKeys(payload) {
                         type: "CREATE_SHIPPING_DATA_BY_SHIPMENT_ID_FAILED",
                         payload: errorData
                     });
-                })
+                });
 
             for (let i = 0; i < shipKeyData.listOfKeys.length; i++) {
                 await axios.head(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + shipKeyData.listOfKeys[i].materialID, { headers })

@@ -29,7 +29,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { connect } from 'react-redux';
 import { getBillOfMaterialsByMaterialID } from '../../redux/actions/BOM/bill-of-materials.actions';
-import { syncSARDataAndBindKeys } from '../../redux/actions/shipping.and.receiving.actions';
+import { syncSARDataAndBindKeys, checkShippingDataByShipmentID } from '../../redux/actions/shipping.and.receiving.actions';
 
 let counter = 0;
 
@@ -114,6 +114,74 @@ class ShippingView extends Component {
                 });
         }
     };
+
+    // validate shipment ID field
+    handleShipmentIDChange = (event) => {
+        if (event.target.value) {
+            this.props.data.sarReducer.checkedSARDataByShipmentIDDoesExist = '';
+            this.props.data.sarReducer.checkedSARDataByShipmentIDDoesNotExist = '';
+            this.setState({ showProgressLogo: true });
+            Promise.resolve(this.props.checkShippingDataByShipmentID(event.target.value))
+                .then(() => {
+
+                    if (this.props.data.sarReducer.checkedSARDataByShipmentIDDoesExist &&
+                        this.props.data.sarReducer.checkedSARDataByShipmentIDDoesNotExist === '') {
+                        // existing key -> clear the shipmentID field
+                        this.setState({
+                            showProgressLogo: false,
+                            addressMenuItems: '',
+                            ipAddress: '',
+                            shipmentID: '',
+                            shipmentIDGenerated: '',
+                            shipmentIDTyped: '',
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Shipment ID already exists!',
+                                open: true,
+                                sbColor: 'Module-Snackbar-Error'
+                            }
+                        });
+                    } else if (this.props.data.sarReducer.checkedSARDataByShipmentIDDoesExist === '' &&
+                        this.props.data.sarReducer.checkedSARDataByShipmentIDDoesNotExist) {
+                        // non-existing key -> valid
+                        this.setState({
+                            showProgressLogo: false,
+                            addressMenuItems: '',
+                            ipAddress: '',
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Shipment ID is valid',
+                                open: true,
+                                sbColor: 'Module-Snackbar-Success'
+                            }
+                        })
+
+                    } else {
+                        // One of the cases is when the user is unauthorized but still in this page
+                        this.setState({
+                            showProgressLogo: false,
+                            addressMenuItems: '',
+                            ipAddress: '',
+                            shipmentID: '',
+                            shipmentIDGenerated: '',
+                            shipmentIDTyped: '',
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Unknown Error',
+                                open: true,
+                                sbColor: 'Module-Snackbar-Error'
+                            }
+                        });
+                    }
+
+                });
+
+            // TODO: handle an edge case saf,l/asgm
+            // cannot put / because it understands it as directory
+
+        }
+    };
+
 
     handlePlannedShipDateChange = (event, date) => {
         this.setState({ plannedShipDate: date });
@@ -363,7 +431,7 @@ class ShippingView extends Component {
             float: 'left',
             textAlign: 'left',
             width: '100%'
-        }
+        };
 
         const formComplete = this.state.materialID && this.state.address;
 
@@ -411,6 +479,7 @@ class ShippingView extends Component {
                                 floatingLabelText='Shipment ID'
                                 hintText=''
                                 name='shipmentIDTyped'
+                                onBlur={this.handleShipmentIDChange}
                                 onChange={this.handleChange}
                                 type='text'
                                 value={this.state.shipmentIDTyped}
@@ -630,6 +699,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getBillOfMaterialsByMaterialID: (url) => dispatch(getBillOfMaterialsByMaterialID(url)),
+        checkShippingDataByShipmentID: (url) => dispatch(checkShippingDataByShipmentID(url)),
         syncSARDataAndBindKeys: (payload) => dispatch(syncSARDataAndBindKeys(payload))
     };
 };

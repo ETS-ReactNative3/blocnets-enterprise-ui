@@ -25,7 +25,7 @@ export function createMasterDataKeys(data) {
                     type: "CREATE_MASTER_DATA_KEY_MATERIAL_ID_FAILED",
                     payload: errorData
                 });
-            })
+            });
 
         await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "materialName=" + data.material.materialName, data, { headers })
             .then(() => {
