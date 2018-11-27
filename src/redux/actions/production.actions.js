@@ -9,6 +9,35 @@ import { catalogue } from './CAT/catalogue.action';
  * @param {*} url Production Order Number
  * @param {*} body PRD chaincode schema data
  */
+
+// check whether Production Order No. exists or not
+export function checkProductionOrderByProductionOrderNo(url) {
+    return async (dispatch) => {
+        dispatch({
+            type: "LOADING_SAR_VIEW",
+            payload: true
+        });
+        const headers = tokenResolver();
+        await axios.head(config.chaincodes.Default + config.chaincodes.PRD + url, { headers })
+            .then(() => {
+                return dispatch({
+                    type: "CHECKED_PRD_DATA_BY_PRODUCTION_ORDER_NUMBER_DOES_EXIST",
+                    payload: true
+                });
+            })
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "CHECKED_PRD_DATA_BY_PRODUCTION_ORDER_NUMBER_DOES_NOT_EXIST",
+                    payload: errorData
+                })
+            });
+    };
+}
+
+
+
+
 export function createProductionOrderByProdOrderNo(url, body) {
     return async (dispatch) => {
         dispatch({
