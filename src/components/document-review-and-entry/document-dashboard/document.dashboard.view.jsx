@@ -161,7 +161,7 @@ class DocumentDashboardView extends React.Component {
                     sentData: []
                 });
             }
-        }, 35000);
+        }, 32000);
     };
 
     componentWillUnmount() {
@@ -318,7 +318,9 @@ class DocumentDashboardView extends React.Component {
                 messageDescription: n.messageDescription,
                 messageFile: n.messageFile,
                 messageDate: n.messageDate,
-                messageID: n.messageID
+                messageID: n.messageID,
+                messageSender: n.messageSender,
+                messageRecipient: n.messageRecipient
             }
         });
     };

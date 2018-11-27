@@ -1,5 +1,8 @@
 import React from 'react';
 import blocnetsLogo from '../../../blocknetwhite-1.png';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import Grid from '@material-ui/core/Grid';
 import NoSsr from '@material-ui/core/NoSsr';
 import ReactSelect from 'react-select';
@@ -26,36 +29,21 @@ import {
     getUserMessageDataByUserID,
     updateUserMessageDataByUserID
 } from '../../../redux/actions/UMA/user.message.array.action';
-import { emphasize } from '@material-ui/core/styles/colorManipulator';
-import { withStyles } from '@material-ui/core/styles';
-import PropTypes from 'prop-types';
 import response from './messageData.json';
 
 let userIDMenuItems = response[0].userID;
 let messageTypeMenuItems = response[0].messageType;
 
-let count = 0;
+let dreURLForSender = [];
+let sendToSelf = false;
+let countSendToSelf = 0;
 
 const suggestions = userIDMenuItems.map(suggestion => ({
-    value: suggestion,
-    label: suggestion
+    label: suggestion,
+    value: suggestion
 }));
 
 const styles = theme => ({
-    root: {
-        flexGrow: 1
-    },
-    input: {
-        display: 'flex',
-        padding: 0
-    },
-    valueContainer: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        flex: 1,
-        alignItems: 'center',
-        overflow: 'hidden'
-    },
     chip: {
         margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`
     },
@@ -65,26 +53,40 @@ const styles = theme => ({
             0.08
         )
     },
+    divider: {
+        height: theme.spacing.unit * 2
+    },
+    input: {
+        display: 'flex',
+        padding: 0
+    },
     noOptionsMessage: {
         padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`
+    },
+    paper: {
+        left: 0,
+        marginTop: theme.spacing.unit,
+        position: 'absolute',
+        right: 0,
+        zIndex: 10
+    },
+    placeholder: {
+        fontSize: 16,
+        left: 2,
+        position: 'absolute'
+    },
+    root: {
+        flexGrow: 1
     },
     singleValue: {
         fontSize: 16
     },
-    placeholder: {
-        position: 'absolute',
-        left: 2,
-        fontSize: 16
-    },
-    paper: {
-        position: 'absolute',
-        zIndex: 10,
-        marginTop: theme.spacing.unit,
-        left: 0,
-        right: 0
-    },
-    divider: {
-        height: theme.spacing.unit * 2
+    valueContainer: {
+        alignItems: 'center',
+        display: 'flex',
+        flex: 1,
+        flexWrap: 'wrap',
+        overflow: 'hidden'
     }
 });
 
@@ -99,9 +101,9 @@ function Control(props) {
             InputProps={{
                 inputComponent,
                 inputProps: {
+                    children: props.children,
                     className: props.selectProps.classes.input,
                     inputRef: props.innerRef,
-                    children: props.children,
                     ...props.innerProps,
                 }
             }}
@@ -112,7 +114,7 @@ function Control(props) {
 
 function Menu(props) {
     return (
-        <Paper square className={props.selectProps.classes.paper} {...props.innerProps}>
+        <Paper className={props.selectProps.classes.paper} {...props.innerProps} square>
             {props.children}
         </Paper>
     );
@@ -121,21 +123,20 @@ function Menu(props) {
 function MultiValue(props) {
     return (
         <Chip
-            tabIndex={-1}
-            label={props.children}
             className={ReactClassNames(props.selectProps.classes.chip, {
                 [props.selectProps.classes.chipFocused]: props.isFocused,
             })}
-            onDelete={props.removeProps.onClick}
             deleteIcon={<CancelIcon {...props.removeProps} />}
+            label={props.children}
+            onDelete={props.removeProps.onClick}
+            tabIndex={-1}
         />
     );
 }
 
 function NoOptionsMessage(props) {
     return (
-        <Typography
-            color='textSecondary' className={props.selectProps.classes.noOptionsMessage} {...props.innerProps}>
+        <Typography className={props.selectProps.classes.noOptionsMessage} {...props.innerProps} color='textSecondary'>
             {props.children}
         </Typography>
     );
@@ -143,7 +144,7 @@ function NoOptionsMessage(props) {
 
 function Option(props) {
     return (
-        <MenuItem buttonRef={props.innerRef} selected={props.isFocused} component='div'
+        <MenuItem buttonRef={props.innerRef} component='div' selected={props.isFocused}
                   style={{ fontWeight: props.isSelected ? 500 : 400 }} {...props.innerProps}>
             {props.children}
         </MenuItem>
@@ -152,7 +153,7 @@ function Option(props) {
 
 function Placeholder(props) {
     return (
-        <Typography color='textSecondary' className={props.selectProps.classes.placeholder} {...props.innerProps} >
+        <Typography className={props.selectProps.classes.placeholder} {...props.innerProps} color='textSecondary'>
             {props.children}
         </Typography>
     );
@@ -266,43 +267,80 @@ class SendDocumentView extends React.Component {
             + this.generateUniqueID() + this.generateUniqueID();
     };
 
-    handleDREValidation = (userNameLength) => {
-        count++;
-        if (userNameLength === count) {
-            if (this.props.data.dreReducer.createDocumentEntryByUniqueIDSuccess === true
-                && this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess === true) {
-                this.setState({
-                    showProgressLogo: false,
-                    snackbar: {
-                        autoHideDuration: 2000,
-                        message: 'Document Sent Successfully!',
-                        open: true,
-                        sbColor: 'Module-Snackbar-Success'
-                    },
-                    recipientUserName: '',
-                    messageType: '',
-                    fileFromSavedDocsKey: '',
-                    message: ''
-                });
-                this.props.viewHandler(true);
-            } else {
-                this.setState({
-                    showProgressLogo: false,
-                    snackbar: {
-                        autoHideDuration: 2000,
-                        message: 'Error sending document! Please try again.',
-                        open: true,
-                        sbColor: 'Module-Snackbar-Error'
-                    }
-                })
+    handleDREValidation = () => {
+        if (this.props.data.dreReducer.createDocumentEntryByUniqueIDSuccess === true
+            && this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess === true) {
+            this.setState({
+                showProgressLogo: false,
+                snackbar: {
+                    autoHideDuration: 2000,
+                    message: 'Document Sent Successfully!',
+                    open: true,
+                    sbColor: 'Module-Snackbar-Success'
+                },
+                recipientUserName: null,
+                errorTextRecipientUserName: 'This is a required field.',
+                messageType: '',
+                errorTextMessageType: 'This is a required field.',
+                fileFromSavedDocsKey: '',
+                message: '',
+                errorTextMessage: 'This is a required field.',
+            });
+            this.props.viewHandler(true);
+        } else {
+            this.setState({
+                showProgressLogo: false,
+                snackbar: {
+                    autoHideDuration: 2000,
+                    message: 'Error sending document! Please try again.',
+                    open: true,
+                    sbColor: 'Module-Snackbar-Error'
+                }
+            })
+        }
+    };
+
+    handleSendDocumentToSender = (dreURL, umaURL, userNameLength) => {
+        if (umaURL !== this.state.userName) {
+            dreURLForSender.push(dreURL);
+        }
+        if (umaURL === this.state.userName && countSendToSelf === 0) {
+            sendToSelf = true;
+            countSendToSelf++;
+        }
+        if ((sendToSelf === false && dreURLForSender.length === userNameLength) || (sendToSelf === true && dreURLForSender.length === userNameLength - 1)) {
+            let oldMessages = [];
+            let allMessages = [];
+            let umaBody = {
+                userfiles: ['string'],
+                userMessages: ['string'],
+                archivedMessages: ['string']
+            };
+            if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess) {
+                oldMessages = this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages;
+                allMessages = dreURLForSender;
+                for (let i = 0; i < oldMessages.length; i++) {
+                    allMessages.push(oldMessages[i]);
+                }
+                umaBody = {
+                    userfiles: this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles,
+                    userMessages: allMessages,
+                    archivedMessages: this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.archivedMessages
+                };
+                Promise.resolve(this.props.updateUserMessageDataByUserID(this.state.userName, umaBody))
+                    .then(() => {
+                        this.handleDREValidation();
+                    });
             }
         }
     };
 
     handleSendDocumentForReview = (event) => {
+        dreURLForSender = [];
+        sendToSelf = false;
+        countSendToSelf = 0;
         this.setState({ showProgressLogo: true });
         let userNameLength = this.state.recipientUserName.length;
-        count = 0;
         let recipientUserName = '';
         for (let j = 0; j < userNameLength; j++) {
             recipientUserName = this.state.recipientUserName[j].value;
@@ -343,26 +381,26 @@ class SendDocumentView extends React.Component {
                                 umaBody = {
                                     userfiles: this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles,
                                     userMessages: allMessages,
-                                    archivedMessages: []
+                                    archivedMessages: this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.archivedMessages
                                 };
                                 Promise.resolve(this.props.updateUserMessageDataByUserID(umaURL, umaBody))
                                     .then(() => {
-                                        Promise.resolve(this.props.updateUserMessageDataByUserID(this.state.userName, umaBody))
+                                        Promise.resolve(this.props.getUserMessageDataByUserID(this.state.userName))
                                             .then(() => {
-                                                this.handleDREValidation(userNameLength);
+                                                this.handleSendDocumentToSender(dreURL, umaURL, userNameLength);
                                             });
-                                    })
+                                    });
                             } else {
                                 umaBody = {
                                     userfiles: this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles,
                                     userMessages: [dreURL],
-                                    archivedMessages: []
+                                    archivedMessages: this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.archivedMessages
                                 };
                                 Promise.resolve(this.props.updateUserMessageDataByUserID(umaURL, umaBody))
                                     .then(() => {
-                                        Promise.resolve(this.props.updateUserMessageDataByUserID(this.state.userName, umaBody))
+                                        Promise.resolve(this.props.getUserMessageDataByUserID(this.state.userName))
                                             .then(() => {
-                                                this.handleDREValidation(userNameLength);
+                                                this.handleSendDocumentToSender(dreURL, umaURL, userNameLength);
                                             });
                                     });
                             }
@@ -406,7 +444,7 @@ class SendDocumentView extends React.Component {
                 <div>
                     {this.state.showProgressLogo ?
                         <div className='overlay'>
-                            <img src={blocnetsLogo} className='App-logo-progress' alt='' />
+                            <img alt='' className='App-logo-progress' src={blocnetsLogo} />
                         </div>
                         :
                         ''}
@@ -418,6 +456,11 @@ class SendDocumentView extends React.Component {
                                 <NoSsr>
                                     <ReactSelect
                                         classes={classes}
+                                        components={components}
+                                        isMulti
+                                        onChange={this.handleMultiChange('recipientUserName')}
+                                        options={suggestions}
+                                        placeholder='Select Multiple Recipients'
                                         styles={selectStyles}
                                         textFieldProps={{
                                             label: 'Recipient User Name',
@@ -425,12 +468,7 @@ class SendDocumentView extends React.Component {
                                                 shrink: true,
                                             }
                                         }}
-                                        options={suggestions}
-                                        components={components}
                                         value={this.state.recipientUserName}
-                                        onChange={this.handleMultiChange('recipientUserName')}
-                                        placeholder='Select Multiple Recipients'
-                                        isMulti
                                     />
                                     <FormHelperText className='TT-Font-Red'>
                                         {this.state.errorTextRecipientUserName}
@@ -443,12 +481,16 @@ class SendDocumentView extends React.Component {
                     <Grid container spacing={24}>
                         <Grid container item xs={6} sm={3}>
                             <FormControl fullWidth={true}>
-                                <InputLabel className='Module-TextField'>Message Type</InputLabel>
-                                <Select value={this.state.messageType} onChange={this.handleChange}
-                                        input={<Input name='messageType' className='Mobile-MenuItem' />}
-                                        displayEmpty>
+                                <InputLabel className='Module-TextField'>
+                                    Message Type
+                                </InputLabel>
+                                <Select displayEmpty input={<Input className='Mobile-MenuItem' name='messageType' />}
+                                        onChange={this.handleChange} value={this.state.messageType}>
                                     {messageTypeMenuItems.map((menuItem, i) => {
-                                        return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
+                                        return (
+                                            <MenuItem key={i} value={menuItem}>
+                                                {menuItem}
+                                            </MenuItem>)
                                     })}
                                 </Select>
                                 <FormHelperText className='TT-Font-Red'>
@@ -458,12 +500,17 @@ class SendDocumentView extends React.Component {
                         </Grid>
                         <Grid container item xs={6} sm={3}>
                             <FormControl fullWidth={true}>
-                                <InputLabel className='Module-TextField'>Attach File from Saved Documents</InputLabel>
-                                <Select value={this.state.fileFromSavedDocsKey} onChange={this.handleChange}
+                                <InputLabel className='Module-TextField'>
+                                    Attach File from Saved Documents
+                                </InputLabel>
+                                <Select displayEmpty
                                         input={<Input name='fileFromSavedDocsKey' className='Mobile-MenuItem' />}
-                                        displayEmpty>
+                                        onChange={this.handleChange} value={this.state.fileFromSavedDocsKey}>
                                     {fileMenuItems.map((menuItem, i) => {
-                                        return (<MenuItem value={menuItem} key={i}>{menuItem}</MenuItem>)
+                                        return (
+                                            <MenuItem key={i} value={menuItem}>
+                                                {menuItem}
+                                            </MenuItem>)
                                     })}
                                 </Select>
                             </FormControl>
@@ -473,40 +520,40 @@ class SendDocumentView extends React.Component {
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
                             <TextField
-                                value={this.state.message}
-                                onChange={this.handleChange}
-                                type='text'
-                                name='message'
-                                floatingLabelText='Message'
-                                floatingLabelFixed={true}
                                 className='Module-TextField'
+                                errorText={this.state.errorTextMessage}
+                                floatingLabelFixed={true}
+                                floatingLabelText='Message'
+                                fullWidth={true}
                                 hintText=''
                                 multiLine={true}
+                                name='message'
+                                onChange={this.handleChange}
                                 rows={2}
                                 rowsMax={4}
-                                fullWidth={true}
-                                errorText={this.state.errorTextMessage}
+                                type='text'
+                                value={this.state.message}
                             />
                         </Grid>
                     </Grid>
                     <br /><br />
                     <Grid container spacing={24}>
                         <Grid container item xs={12}>
-                            <Button type='submit' value='Submit' variant='contained' className='Module-Button'
-                                    fullWidth={true} disabled={!formComplete}
-                                    onClick={this.handleSendDocumentForReview}>
+                            <Button className='Module-Button' disabled={!formComplete} fullWidth={true}
+                                    onClick={this.handleSendDocumentForReview} type='submit' value='Submit'
+                                    variant='contained'>
                                 Send Document for Review
                                 <SendIcon className='Module-Button-Icon' />
                             </Button>
                         </Grid>
                     </Grid>
                 </div>
-                <Snackbar open={this.state.snackbar.open} autoHideDuration={this.state.snackbar.autoHideDuration}
-                          onClose={this.handleSnackbarClose}>
+                <Snackbar autoHideDuration={this.state.snackbar.autoHideDuration} onClose={this.handleSnackbarClose}
+                          open={this.state.snackbar.open}>
                     <SnackbarContent
-                        message={this.state.snackbar.message}
-                        className={this.state.snackbar.sbColor}
                         classes={{ message: 'Module-Snackbar-Message' }}
+                        className={this.state.snackbar.sbColor}
+                        message={this.state.snackbar.message}
                     />
                 </Snackbar>
             </form>

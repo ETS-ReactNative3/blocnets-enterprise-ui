@@ -49,7 +49,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { getEachMessageForUserID } from './redux/actions/UMA/user.message.array.action';
+import { getEachMessageForUserID, getUserMessageDataByUserID} from './redux/actions/UMA/user.message.array.action';
 
 const theme = createMuiTheme({
     palette: {
@@ -357,6 +357,13 @@ class App extends Component {
         }
     };
 
+    handleDRESavedData = (refreshSavedDocument) => {
+        let userName = this.state.userName;
+        if (refreshSavedDocument === true) {
+            Promise.resolve(this.props.getUserMessageDataByUserID(userName));
+        }
+    };
+
     handleSplash = () => {
         this.props.viewHandler('splash', false, '', this.props.userName);
     };
@@ -471,14 +478,17 @@ class App extends Component {
                 contentTitle = '';
                 break;
             case 'senddocumentview':
-                content = (<SendDocumentView
-                    userName={this.state.userName}
-                    viewHandler={this.handleDREData} />);
-                contentTitle = 'SEND A DOCUMENT';
+                if (this.state.umaLoadComplete === true) {
+                    content = (<SendDocumentView
+                        userName={this.state.userName}
+                        viewHandler={this.handleDREData} />);
+                    contentTitle = 'SEND A DOCUMENT';
+                }
                 break;
             case 'savedocumentview':
                 content = (<SaveDocumentView
-                    userName={this.state.userName} />);
+                    userName={this.state.userName}
+                    viewHandler={this.handleDRESavedData} />);
                 contentTitle = 'SAVE A DOCUMENT';
                 break;
             case 'readdocumentview':
@@ -740,7 +750,8 @@ const mapStateToProps = (state) => {
 // This way, we can call our action creator by doing this.props.authenticate();
 const mapDispatchToProps = (dispatch) => {
     return {
-        getEachMessageForUserID: (user) => dispatch(getEachMessageForUserID(user))
+        getEachMessageForUserID: (user) => dispatch(getEachMessageForUserID(user)),
+        getUserMessageDataByUserID: (user) => dispatch(getUserMessageDataByUserID(user))
     };
 };
 
