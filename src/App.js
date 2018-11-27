@@ -497,7 +497,7 @@ class App extends Component {
                 contentTitle = 'EDIT MATERIAL AND SUPPLIER MASTER DATA';
                 break;
             default:
-                if(this.state.umaLoadComplete === true) {
+                if (this.state.umaLoadComplete === true) {
                     content = (
                         <Router>
                             <div>

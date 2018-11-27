@@ -1,11 +1,11 @@
 import React from 'react';
 import blocnetsLogo from '../../../blocknetwhite-1.png';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -14,27 +14,19 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
 import TablePagination from '@material-ui/core/TablePagination';
-import Button from '@material-ui/core/Button/Button';
 import Dialog from '@material-ui/core/Dialog';
+import Button from '@material-ui/core/Button/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { connect } from 'react-redux';
-import { getEachMessageForUserID } from '../../../redux/actions/UMA/user.message.array.action';
-import { updateDocumentEntryByUniqueID } from '../../../redux/actions/document.review.entry.actions';
+import {
+    getEachMessageForUserID,
+    getUserMessageDataByUserID,
+    updateUserMessageDataByUserID
+} from '../../../redux/actions/UMA/user.message.array.action';
 import { retrieveFileByKey } from '../../../redux/actions/FILE/file.action';
 import { Document, Page } from 'react-pdf';
-
-function TabContainer(props) {
-    return (
-        <Typography component='div'>
-            {props.children}
-        </Typography>
-    );
-}
-
-TabContainer.propTypes = {
-    children: PropTypes.node.isRequired
-};
+import { updateDocumentEntryByUniqueID } from '../../../redux/actions/document.review.entry.actions';
 
 const styles = theme => ({
     colorPrimary: {
@@ -49,6 +41,18 @@ const styles = theme => ({
         flexGrow: 1
     }
 });
+
+function TabContainer(props) {
+    return (
+        <Typography component='div'>
+            {props.children}
+        </Typography>
+    );
+}
+
+TabContainer.propTypes = {
+    children: PropTypes.node.isRequired
+};
 
 let counter = 0;
 
@@ -82,7 +86,7 @@ function handleDialogData(file) {
 
 const options = {
     cMapUrl: 'cmaps/',
-    cMapPacked: true,
+    cMapPacked: true
 };
 
 class TableHeader extends React.Component {
@@ -140,7 +144,7 @@ class DocumentDashboardView extends React.Component {
                 rejectedData: [],
                 sentData: []
             });
-                }
+        }
         setInterval(() => {
             if (!this.isCancelled && this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
                 this.setState({
@@ -157,7 +161,7 @@ class DocumentDashboardView extends React.Component {
                     sentData: []
                 });
             }
-        }, 30000);
+        }, 35000);
     };
 
     componentWillUnmount() {
@@ -194,16 +198,16 @@ class DocumentDashboardView extends React.Component {
                 messageSender: '',
                 messageRecipient: ''
             },
+            openFileDialog: false,
+            mimeType: '',
+            reconstructedFile: ['test'],
+            numPages: null,
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
                 open: false,
                 sbColor: ''
-            },
-            openFileDialog: false,
-            mimeType: '',
-            reconstructedFile: ['test'],
-            numPages: null
+            }
         }
     };
 
@@ -314,9 +318,7 @@ class DocumentDashboardView extends React.Component {
                 messageDescription: n.messageDescription,
                 messageFile: n.messageFile,
                 messageDate: n.messageDate,
-                messageID: n.messageID,
-                messageSender: n.messageSender,
-                messageRecipient: n.messageRecipient
+                messageID: n.messageID
             }
         });
     };
@@ -355,6 +357,55 @@ class DocumentDashboardView extends React.Component {
 
     handleDialogClose = () => {
         this.setState({ openDialog: false });
+    };
+
+    handleFileDialogClose = () => {
+        this.setState({ openFileDialog: false });
+    };
+
+    decodeFile = (encodedFile, contentType) => {
+        this.setState({
+            mimeType: contentType,
+            reconstructedFile: [encodedFile]
+        });
+    };
+
+    handleDREValidation = () => {
+        if (this.props.data.fileReducer.retrieveFileByKeySuccess) {
+            this.setState({
+                openFileDialog: true,
+                showProgressLogoDialog: false,
+                snackbar: {
+                    autoHideDuration: 2000,
+                    message: 'File Retrieved Successfully!',
+                    open: true,
+                    sbColor: 'Module-Snackbar-Success'
+                }
+            });
+            this.decodeFile(this.props.data.fileReducer.retrieveFileByKeySuccess.file, this.props.data.fileReducer.retrieveFileByKeySuccess.contentType);
+        } else {
+            this.setState({
+                showProgressLogoDialog: false,
+                snackbar: {
+                    autoHideDuration: 2000,
+                    message: 'Error retrieving file! Please try again.',
+                    open: true,
+                    sbColor: 'Module-Snackbar-Error'
+                }
+            });
+        }
+    };
+
+    handleDialogViewFile = (event, messageFile) => {
+        this.setState({ showProgressLogoDialog: true });
+        Promise.resolve(this.props.retrieveFileByKey(messageFile))
+            .then(() => {
+                this.handleDREValidation();
+            })
+    };
+
+    onDocumentLoadSuccess = ({ numPages }) => {
+        this.setState({ numPages });
     };
 
     handleDialogApprove = (event) => {
@@ -483,63 +534,76 @@ class DocumentDashboardView extends React.Component {
 
     handleDialogArchiveMessage = (event) => {
         event.preventDefault();
-        /*this.setState({ showProgressLogoDialog: true });
-
-
-        let url = this.state.dialog.messageID;
-        let body = {
-            desc: '',
-            fileId: this.state.dialog.messageFile,
-            header: {
-                status: 'Rejected',
-                sender: this.state.dialog.messageSender,
-                recipient: this.state.dialog.messageRecipient
-            },
-            text: this.state.dialog.messageDescription,
-            type: this.state.dialog.messageType
-        };
-        Promise.resolve(this.props.updateDocumentEntryByUniqueID(url, body))
+        this.setState({ showProgressLogoDialog: true });
+        Promise.resolve(this.props.getUserMessageDataByUserID(this.state.userName))
             .then(() => {
-                if (this.props.data.dreReducer.updateDocumentEntryByUniqueIDSuccess) {
-                    Promise.resolve(this.props.getEachMessageForUserID(this.state.userName))
-                        .then(() => {
-                            if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
-                                this.setState({
-                                    data: this.createTableContent('pending'),
-                                    approvedData: this.createTableContent('approved'),
-                                    rejectedData: this.createTableContent('rejected')
+                let userMessagesList = this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userMessages;
+                let messageID = this.state.dialog.messageID;
+                let indexDelete = null;
+                let userMessagesListFinal;
+                let archivedMessagesList = this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.archivedMessages;
+                let archivedMessagesFinal;
+                let userFilesListFinal = this.props.data.umaReducer.getUserMessageDataByUserIDSuccess.userFiles;
+                for (let i = 0; i < userMessagesList.length; i++) {
+                    if (userMessagesList[i] === messageID) {
+                        indexDelete = i;
+                    }
+                }
+                let userMessagesList2 = userMessagesList.slice(0, indexDelete);
+                let userMessagesList3 = userMessagesList.slice(indexDelete + 1);
+                userMessagesListFinal = userMessagesList2.concat(userMessagesList3);
+                archivedMessagesFinal = archivedMessagesList.concat(messageID);
+                let url = this.state.userName;
+                let body = {
+                    userMessages: userMessagesListFinal,
+                    archivedMessages: archivedMessagesFinal,
+                    userFiles: userFilesListFinal
+                };
+                Promise.resolve(this.props.updateUserMessageDataByUserID(url, body))
+                    .then(() => {
+                        if (this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess) {
+                            Promise.resolve(this.props.getEachMessageForUserID(this.state.userName))
+                                .then(() => {
+                                    if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
+                                        this.setState({
+                                            data: this.createTableContent('pending'),
+                                            approvedData: this.createTableContent('approved'),
+                                            rejectedData: this.createTableContent('rejected'),
+                                            sentData: this.createTableContent('sent')
+                                        })
+                                    } else {
+                                        this.setState({
+                                            data: [],
+                                            approvedData: [],
+                                            rejectedData: [],
+                                            sentData: []
+                                        })
+                                    }
+                                    this.setState({
+                                        showProgressLogoDialog: false,
+                                        snackbar: {
+                                            autoHideDuration: 2000,
+                                            message: 'Document Archived Successfully!',
+                                            open: true,
+                                            sbColor: 'Module-Snackbar-Success'
+                                        },
+                                        openDialog: false
+                                    })
                                 })
-                            } else {
-                                this.setState({
-                                    data: [],
-                                    approvedData: [],
-                                    rejectedData: []
-                                })
-                            }
+                        } else {
                             this.setState({
                                 showProgressLogoDialog: false,
                                 snackbar: {
                                     autoHideDuration: 2000,
-                                    message: 'Document Rejected Successfully!',
+                                    message: 'Error archiving document! Please try again.',
                                     open: true,
-                                    sbColor: 'Module-Snackbar-Success'
+                                    sbColor: 'Module-Snackbar-Error'
                                 },
                                 openDialog: false
                             })
-                        })
-                } else {
-                    this.setState({
-                        showProgressLogoDialog: false,
-                        snackbar: {
-                            autoHideDuration: 2000,
-                            message: 'Error rejecting document! Please try again.',
-                            open: true,
-                            sbColor: 'Module-Snackbar-Error'
-                        },
-                        openDialog: false
-                    })
-                }
-            });*/
+                        }
+                    });
+            });
     };
 
     handleSnackbarClose = () => {
@@ -551,55 +615,6 @@ class DocumentDashboardView extends React.Component {
                 sbColor: ''
             },
         });
-    };
-
-    decodeFile = (encodedFile, contentType) => {
-        this.setState({
-            mimeType: contentType,
-            reconstructedFile: [encodedFile]
-        });
-    };
-
-    handleDREValidation = () => {
-        if (this.props.data.fileReducer.retrieveFileByKeySuccess) {
-            this.setState({
-                openFileDialog: true,
-                showProgressLogoDialog: false,
-                snackbar: {
-                    autoHideDuration: 2000,
-                    message: 'File Retrieved Successfully!',
-                    open: true,
-                    sbColor: 'Module-Snackbar-Success'
-                }
-            });
-            this.decodeFile(this.props.data.fileReducer.retrieveFileByKeySuccess.file, this.props.data.fileReducer.retrieveFileByKeySuccess.contentType);
-        } else {
-            this.setState({
-                showProgressLogoDialog: false,
-                snackbar: {
-                    autoHideDuration: 2000,
-                    message: 'Error retrieving file! Please try again.',
-                    open: true,
-                    sbColor: 'Module-Snackbar-Error'
-                }
-            });
-        }
-    };
-
-    handleDialogViewFile = (event, messageFile) => {
-        this.setState({ showProgressLogoDialog: true });
-        Promise.resolve(this.props.retrieveFileByKey(messageFile))
-            .then(() => {
-                this.handleDREValidation();
-            })
-    };
-
-    onDocumentLoadSuccess = ({ numPages }) => {
-        this.setState({ numPages });
-    };
-
-    handleFileDialogClose = () => {
-        this.setState({ openFileDialog: false });
     };
 
     render() {
@@ -1101,7 +1116,7 @@ class DocumentDashboardView extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        data: state,
+        data: state
     };
 };
 
@@ -1109,8 +1124,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getEachMessageForUserID: (user) => dispatch(getEachMessageForUserID(user)),
-        updateDocumentEntryByUniqueID: (url, body) => dispatch(updateDocumentEntryByUniqueID(url, body)),
-        retrieveFileByKey: (url) => dispatch(retrieveFileByKey(url))
+        getUserMessageDataByUserID: (user) => dispatch(getUserMessageDataByUserID(user)),
+        updateUserMessageDataByUserID: (url, body) => dispatch(updateUserMessageDataByUserID(url, body)),
+        retrieveFileByKey: (url) => dispatch(retrieveFileByKey(url)),
+        updateDocumentEntryByUniqueID: (url, body) => dispatch(updateDocumentEntryByUniqueID(url, body))
     };
 };
 

@@ -284,6 +284,7 @@ class SendDocumentView extends React.Component {
                     fileFromSavedDocsKey: '',
                     message: ''
                 });
+                this.props.viewHandler(true);
             } else {
                 this.setState({
                     showProgressLogo: false,
