@@ -137,6 +137,7 @@ class SaveDocumentView extends React.Component {
                 base64File: '',
                 fileMetaData: ''
             });
+            this.props.viewHandler(true);
         } else {
             this.props.data.umaReducer.updateUserMessageDataByUserIDSuccess = '';
             this.props.data.umaReducer.getUserMessageDataByUserIDSuccess = '';
