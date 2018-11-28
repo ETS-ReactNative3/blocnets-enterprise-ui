@@ -31,6 +31,15 @@ export function spawnConstructReducer(state = {}, action) {
         case "GET_SHIPPING_DATA_FOR_CONSTRUCT_FAILED": {
             return state = { ...state, failedToSpawn: action.payload }
         }
+        case "LOADING_PRD_CONSTRUCT": {
+            return state = { ...state, loadingPRDConstruct: action.payload }
+        }
+        case "GET_PRD_DATA_FOR_PRD_CONSTRUCT_SUCCESS": {
+            return state = { ...state, prdConstruct: action.payload }
+        }
+        case "GET_PRD_DATA_FOR_PRD_CONSTRUCT_FAILED": {
+            return state = { ...state, prdConstructError: action.payload }
+        }
         default:
             return state;
     }

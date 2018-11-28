@@ -981,3 +981,7 @@ body {
     background-color: #000000 !important;
     color: #ffffff !important;
 }
+
+.TT-DeviceHubIcon {
+    transform: rotate(270deg) !important;
+}
