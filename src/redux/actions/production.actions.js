@@ -18,7 +18,7 @@ export function checkProductionOrderByProductionOrderNo(url) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.head(config.chaincodes.Default + config.chaincodes.PRD + url, { headers })
+        await axios.head(config.middleware.serviceUrl + config.chaincodes.PRD + url, { headers })
             .then(() => {
                 return dispatch({
                     type: "CHECKED_PRD_DATA_BY_PRODUCTION_ORDER_NUMBER_DOES_EXIST",
@@ -46,7 +46,7 @@ export function createProductionOrderByProdOrderNo(url, body) {
         });
         const headers = tokenResolver();
         const archive = catalogue('PRD', url);
-        await axios.post(config.chaincodes.Default + config.chaincodes.PRD + url, body, { headers })
+        await axios.post(config.middleware.serviceUrl + config.chaincodes.PRD + url, body, { headers })
             .then(() => {
                 return archive + dispatch({
                     type: "CREATE_PRD_DATA_BY_PRODUCTION_ORDER_NUMBER_SUCCESS",
@@ -70,7 +70,7 @@ export function getProductionOrderByProdOrderNo(url) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.get(config.chaincodes.Default + config.chaincodes.PRD + url, { headers })
+        await axios.get(config.middleware.serviceUrl + config.chaincodes.PRD + url, { headers })
             .then((response) => {
                 return dispatch({
                     type: "GET_PRD_DATA_BY_PRODUCTION_ORDER_NUMBER_SUCCESS",
@@ -94,7 +94,7 @@ export function updateProductionOrderByProdOrderNo(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.put(config.chaincodes.Default + config.chaincodes.PRD + url, body, { headers })
+        await axios.put(config.middleware.serviceUrl + config.chaincodes.PRD + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_PRD_DATA_BY_PRODUCTION_ORDER_NUMBER_SUCCESS",

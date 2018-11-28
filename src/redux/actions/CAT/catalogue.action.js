@@ -8,13 +8,13 @@ export function catalogue(chaincode, key) {
         chainItems: [key]
     }
     const headers = tokenResolver();
-    axios.head(config.chaincodes.Default + config.chaincodes.CAT + chaincode, { headers })   // Check if chaincode Key exists
+    axios.head(config.middleware.serviceUrl + config.chaincodes.CAT + chaincode, { headers })   // Check if chaincode Key exists
         .then(async () => {         // If chaincode Key does exist.. continue
             let dispatch = () => ({
                 type: "CHECKED_CAT_KEY_DOES_EXIST",
                 payload: true
             });
-            await axios.get(config.chaincodes.Default + config.chaincodes.CAT + chaincode, { headers }) // GET existing data by chaincode key
+            await axios.get(config.middleware.serviceUrl + config.chaincodes.CAT + chaincode, { headers }) // GET existing data by chaincode key
                 .then(async (response) => {
                     let dispatch = () => ({
                         type: "GET_CAT_KEY_DATA_SUCCESS",
@@ -26,7 +26,7 @@ export function catalogue(chaincode, key) {
                         keys.push(element);
                     });
                     body.chainItems = keys;
-                    await axios.put(config.chaincodes.Default + config.chaincodes.CAT + chaincode, body, { headers })  // UPDATE on the existing Key with the new array of keys
+                    await axios.put(config.middleware.serviceUrl + config.chaincodes.CAT + chaincode, body, { headers })  // UPDATE on the existing Key with the new array of keys
                         .then(async () => {
                             return dispatch({
                                 type: "UPDATE_CAT_KEY_DATA_SUCCESS",
@@ -55,7 +55,7 @@ export function catalogue(chaincode, key) {
                 type: "CHECKED_CAT_KEY_DOES_NOT_EXIST",
                 payload: errorData
             });
-            await axios.post(config.chaincodes.Default + config.chaincodes.CAT + chaincode, body, { headers }) // POST data and new chaincode key
+            await axios.post(config.middleware.serviceUrl + config.chaincodes.CAT + chaincode, body, { headers }) // POST data and new chaincode key
                 .then(() => {
                     return dispatch({
                         type: "CREATE_CAT_DATA_BY_CHAINCODE_KEY_SUCCESS",
@@ -83,7 +83,7 @@ export function createCatalogueDataByChaincodeKey(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.post(config.chaincodes.Default + config.chaincodes.CAT + url, body, { headers })
+        await axios.post(config.middleware.serviceUrl + config.chaincodes.CAT + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_CAT_DATA_BY_CHAINCODE_KEY_SUCCESS",
@@ -107,7 +107,7 @@ export function getCatalogueDataByChaincodeKey(url) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.get(config.chaincodes.Default + config.chaincodes.CAT + url, { headers })
+        await axios.get(config.middleware.serviceUrl + config.chaincodes.CAT + url, { headers })
             .then((response) => {
                 return dispatch({
                     type: "GET_CAT_DATA_BY_CHAINCODE_KEY_SUCCESS",
@@ -132,7 +132,7 @@ export function updateCatalogueDataByChaincodeKey(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.put(config.chaincodes.Default + config.chaincodes.CAT + url, body, { headers })
+        await axios.put(config.middleware.serviceUrl + config.chaincodes.CAT + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_CAT_DATA_BY_CHAINCODE_KEY_SUCCESS",

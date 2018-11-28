@@ -24,12 +24,12 @@ export function createConstruct(materialID) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + materialID, { headers })
+        await axios.get(config.middleware.serviceUrl + config.chaincodes.SAR + 'materialId=' + materialID, { headers })
             .then(async (response) => {
                 let obj = response.data;
                 let key = obj.prdKey;
                 if (key) {
-                    await axios.get(config.chaincodes.Default + config.chaincodes.PRD + key, { headers })
+                    await axios.get(config.middleware.serviceUrl + config.chaincodes.PRD + key, { headers })
                         .then((response) => {
                             let construct = {
                                 name: key,

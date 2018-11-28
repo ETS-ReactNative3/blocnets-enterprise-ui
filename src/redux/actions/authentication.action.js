@@ -5,9 +5,8 @@ import { resolver } from '../../services/callback.resolver';
 export function authenticate(creds) {
     return async (dispatch) => {
         dispatch(loadingView(true))
-        await axios.post(config.middleware.oAuth.url, creds,  {
+        await axios.post(config.middleware.oAuth.url, creds, {
             headers: {
-                /* 'Authorization': 'Basic ' + user + btoa(":" +pass), */
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Accept': 'application/json'
             }
