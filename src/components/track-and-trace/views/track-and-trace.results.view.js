@@ -430,7 +430,7 @@ class TrackAndTraceResultsView extends Component {
                                                                 <TableCell>
                                                                     {row.info1}
                                                                     {(this.props.blockInformation === 'Shipping Information' && row.info1 === 'Material ID' && this.props.data.sarReducer.getHistoryShippingDataByMaterialIDSuccess) ||
-                                                                    (row.info1 === 'Shipment ID' && this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess) ?
+                                                                        (row.info1 === 'Shipment ID' && this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess) ?
                                                                         <Tooltip title='Show History'>
                                                                             <IconButton
                                                                                 onClick={event => this.showShipmentHistory(event, row.info1)}>
@@ -510,7 +510,7 @@ class TrackAndTraceResultsView extends Component {
                                                                 <TableCell>
                                                                     {row.info1}
                                                                     {(row.info1 === 'Material ID' && this.props.data.sarReducer.getHistoryShippingDataByMaterialIDSuccess) ||
-                                                                    (row.info1 === 'Shipment ID' && this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess) ?
+                                                                        (row.info1 === 'Shipment ID' && this.props.data.sarReducer.getHistoryShippingDataByShipmentIDSuccess) ?
                                                                         <Tooltip title='Show History'>
                                                                             <IconButton
                                                                                 onClick={event => this.showShipmentHistory(event, row.info1)}>
@@ -536,12 +536,12 @@ class TrackAndTraceResultsView extends Component {
                             ''}
                         <br />
                         <Dialog fullWidth={true} maxWidth='lg' onClose={this.handleTreeClose}
-                                open={this.state.showMaterialMap}>
+                            open={this.state.showMaterialMap}>
                             <div className='Module'>
                                 <Grid container>
                                     <Grid container item xs={12} justify='flex-end'>
                                         <i className='material-icons Module-TableCell-Click'
-                                           onClick={this.handleTreeClose}>
+                                            onClick={this.handleTreeClose}>
                                             close
                                         </i>
                                     </Grid>
@@ -553,12 +553,12 @@ class TrackAndTraceResultsView extends Component {
                             </div>
                         </Dialog>
                         <Dialog autoScrollBodyContent={true} onClose={this.handleShipmentHistoryClose}
-                                open={this.state.showShipmentHistory.open}>
+                            open={this.state.showShipmentHistory.open}>
                             <div className='Module'>
                                 <Grid container>
                                     <Grid container item xs={12} justify='flex-end'>
                                         <i className='material-icons Module-TableCell-Click'
-                                           onClick={this.handleShipmentHistoryClose}>
+                                            onClick={this.handleShipmentHistoryClose}>
                                             close
                                         </i>
                                     </Grid>
@@ -608,13 +608,13 @@ class TrackAndTraceResultsView extends Component {
                             </div>
                         </Dialog>
                         <Dialog autoScrollBodyContent={true} fullWidth={true} maxWidth='lg'
-                                onClose={this.handleMasterDataHistoryClose}
-                                open={this.state.showMasterDataHistory.open}>
+                            onClose={this.handleMasterDataHistoryClose}
+                            open={this.state.showMasterDataHistory.open}>
                             <div className='Module'>
                                 <Grid container>
                                     <Grid container item xs={12} justify='flex-end'>
                                         <i className='material-icons Module-TableCell-Click'
-                                           onClick={this.handleMasterDataHistoryClose}>
+                                            onClick={this.handleMasterDataHistoryClose}>
                                             close
                                         </i>
                                     </Grid>
@@ -658,7 +658,7 @@ class TrackAndTraceResultsView extends Component {
                         </Dialog>
                     </div>
                     <Snackbar autoHideDuration={this.props.snackbar.autoHideDuration} onClose={this.handleSnackbarClose}
-                              open={this.props.snackbar.open}>
+                        open={this.props.snackbar.open}>
                         <SnackbarContent
                             classes={{ message: 'Module-Snackbar-Message' }}
                             className={this.props.snackbar.sbColor}
@@ -666,7 +666,7 @@ class TrackAndTraceResultsView extends Component {
                         />
                     </Snackbar>
                     <Snackbar autoHideDuration={this.state.snackbar.autoHideDuration} onClose={this.handleSnackbarClose}
-                              open={this.state.snackbar.open}>
+                        open={this.state.snackbar.open}>
                         <SnackbarContent
                             classes={{ message: 'Module-Snackbar-Message' }}
                             className={this.state.snackbar.sbColor}
