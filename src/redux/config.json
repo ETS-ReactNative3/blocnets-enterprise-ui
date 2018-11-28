@@ -1,28 +1,19 @@
 {
-    "serviceKey": {
-        "type": "hyperledger-fabric",
-        "channelId": "dev4f374fb9-1164-4c22-876e-8fe13ab5def6channel1",
-        "serviceUrl": "https://hyperledger-fabric.cfapps.us10.hana.ondemand.com/api/v1",
-        "documentationUrl": "https://api.sap.com/shell/discover/contentpackage/SCPBlockchainTechnologies/api/hyperledger_fabric",
+    "middleware": {
+        "type": "blocnets-client",
+        "serviceUrl": "http://localhost:8000/",
+        "documentationUrl": "http://localhost:8000/help",
         "oAuth": {
-            "clientId": "sb-8577def2-36d0-48c9-8e83-d836e677b190!b947|na-3a01f1e2-bc33-4e12-86a2-ffffaea79918!b33",
-            "clientSecret": "lUloVt0Yqx/H2sIyGfc6rdTbUyM=",
-            "url": "https://development.authentication.us10.hana.ondemand.com",
-            "identityZone": "development"
+            "url": "http://localhost:8000/login"
         }
     },
     "chaincodes": {
-        "Middleware": "http://localhost:8000/",
-        "MidBOM": "bom/",
-        "MidUMA": "uma/",
-        "MidDRE": "dre/",
-        "Default": "https://hyperledger-fabric.cfapps.us10.hana.ondemand.com/api/v1/chaincodes/",
-        "BOM": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-supplychain/latest/",
-        "SAR": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-sar/latest/",
-        "PRD": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-prd/latest/",
-        "DRE": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-dre/latest/",
-        "FILE": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-file/latest/",
-        "UMA": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-uma/latest/",
-        "CAT": "4f374fb9-1164-4c22-876e-8fe13ab5def6-com-sap-blocnets-cat/latest/"
+        "BOM": "bom/",
+        "UMA": "uma/",
+        "DRE": "dre/",
+        "SAR": "sar/",
+        "PRD": "prd/",
+        "FILE": "file/",
+        "CAT": "cat/"
     }
 }

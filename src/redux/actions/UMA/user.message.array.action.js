@@ -34,7 +34,7 @@ export function getUserMessageDataByUserID(url) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.get(config.chaincodes.Middleware + config.chaincodes.MidUMA + url, { headers })
+        await axios.get(config.middleware.serviceUrl + config.chaincodes.UMA + url, { headers })
             .then((response) => {
                 return dispatch({
                     type: "GET_UMA_DATA_BY_USER_ID_SUCCESS",
