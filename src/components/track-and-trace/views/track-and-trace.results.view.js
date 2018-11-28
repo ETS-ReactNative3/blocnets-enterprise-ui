@@ -596,6 +596,16 @@ class TrackAndTraceResultsView extends Component {
                                                                             {row.info2}
                                                                         </TableCell>
                                                                     }
+                                                                    {row.info1 === 'Production Order No.' && row.info2 !== '' ?
+                                                                        <Tooltip title='Show History'>
+                                                                            <IconButton
+                                                                                onClick={event => this.showShipmentHistory(event, row.info1)}>
+                                                                                <HistoryIcon />
+                                                                            </IconButton>
+                                                                        </Tooltip>
+                                                                        :
+                                                                        ''
+                                                                    }
                                                                 </TableRow>
                                                             );
                                                         })}
