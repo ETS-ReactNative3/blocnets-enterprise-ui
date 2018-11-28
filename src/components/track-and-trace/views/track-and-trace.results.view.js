@@ -549,7 +549,8 @@ class TrackAndTraceResultsView extends Component {
                             </div>
                             <br />
                             <div>
-                                <TrackAndTraceTreeView data={this.state} />
+                                {/*TODO: state tree needs to be updated every time the tree unmounts*/}
+                                <TrackAndTraceTreeView data={this.props} />
                             </div>
                         </Dialog>
                         <Dialog autoScrollBodyContent={true} onClose={this.handleShipmentHistoryClose}
