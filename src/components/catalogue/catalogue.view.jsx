@@ -232,6 +232,30 @@ class CatalogueView extends React.Component {
         this.props.viewHandler();
     };
 
+    handleChangeBOMPage = (event, BOMpage) => {
+        this.setState({ BOMpage });
+    };
+
+    handleChangeSARPage = (event, SARpage) => {
+        this.setState({ SARpage });
+    };
+
+    handleChangePRDPage = (event, PRDpage) => {
+        this.setState({ PRDpage });
+    };
+
+    handleChangeBOMRowsPerPage = event => {
+        this.setState({ BOMrowsPerPage: event.target.value });
+    };
+
+    handleChangeSARRowsPerPage = event => {
+        this.setState({ SARrowsPerPage: event.target.value });
+    };
+
+    handleChangePRDRowsPerPage = event => {
+        this.setState({ PRDrowsPerPage: event.target.value });
+    };
+
     render() {
 
         const { value,
@@ -296,8 +320,8 @@ class CatalogueView extends React.Component {
                                     nextIconButtonProps={{
                                         'aria-label': 'Next Page',
                                     }}
-                                    onChangePage={this.handleChangePage}
-                                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                    onChangePage={this.handleChangeBOMPage}
+                                    onChangeRowsPerPage={this.handleChangeBOMRowsPerPage}
                                 />
                             </div>}
                         {value === 1 &&
@@ -337,8 +361,8 @@ class CatalogueView extends React.Component {
                                     nextIconButtonProps={{
                                         'aria-label': 'Next Page',
                                     }}
-                                    onChangePage={this.handleChangePage}
-                                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                    onChangePage={this.handleChangeSARPage}
+                                    onChangeRowsPerPage={this.handleChangeSARRowsPerPage}
                                 />
                             </div>}
                         {value === 2 &&
@@ -378,8 +402,8 @@ class CatalogueView extends React.Component {
                                     nextIconButtonProps={{
                                         'aria-label': 'Next Page',
                                     }}
-                                    onChangePage={this.handleChangePage}
-                                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                    onChangePage={this.handleChangePRDPage}
+                                    onChangeRowsPerPage={this.handleChangePRDRowsPerPage}
                                 />
                             </div>}
                     </DialogContentText>
