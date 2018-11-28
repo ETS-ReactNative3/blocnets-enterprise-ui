@@ -433,6 +433,7 @@ export function syncSARDataAndBindKeys(payload) {
                             type: "CHECKED_SAR_DATA_BY_MATERIAL_ID_DOES_NOT_EXIST",
                             payload: errorData
                         });
+                        materialKeyData.materialID = shipKeyData.listOfKeys[i].materialID;
                         axios.post(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + shipKeyData.listOfKeys[i].materialID, materialKeyData, { headers })
                             .then(() => {
                                 return dispatch({
