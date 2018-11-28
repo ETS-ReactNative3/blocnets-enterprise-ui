@@ -129,8 +129,6 @@ class ShippingView extends Component {
                         // existing key -> clear the shipmentID field
                         this.setState({
                             showProgressLogo: false,
-                            addressMenuItems: '',
-                            ipAddress: '',
                             shipmentID: '',
                             shipmentIDGenerated: '',
                             shipmentIDTyped: '',
@@ -146,11 +144,9 @@ class ShippingView extends Component {
                         // non-existing key -> valid
                         this.setState({
                             showProgressLogo: false,
-                            addressMenuItems: '',
-                            ipAddress: '',
                             snackbar: {
                                 autoHideDuration: 2000,
-                                message: 'Shipment ID is valid',
+                                message: 'Shipment ID is valid.',
                                 open: true,
                                 sbColor: 'Module-Snackbar-Success'
                             }
