@@ -74,3 +74,42 @@ export function createConstruct(materialID) {
             });
     };
 }
+
+export function createPRDConstruct(productionOrderNo) {
+    return async (dispatch) => {
+        dispatch({
+            type: "LOADING_PRD_CONSTRUCT",
+            payload: true
+        });
+        const headers = tokenResolver();
+        await axios.get(config.chaincodes.Default + config.chaincodes.PRD + productionOrderNo, { headers })
+            .then((response) => {
+                let construct = {
+                    name: productionOrderNo,
+                    attributes: { MaterialID: response.data.materialID },
+                    children: []
+                };
+                for (let i = 0; i < response.data.oldMaterialID.length; i++) {
+                    let nestedObj = {
+                        name: response.data.oldMaterialID[i].materialID,
+                        attributes: {
+                            parent: response.data.oldMaterialID[i].parent
+                        },
+                        children: response.data.oldMaterialID[i].children
+                    }
+                    construct.children.push(nestedObj);
+                }
+                return dispatch({
+                    type: "GET_PRD_DATA_FOR_PRD_CONSTRUCT_SUCCESS",
+                    payload: construct
+                });
+            })
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "GET_PRD_DATA_FOR_PRD_CONSTRUCT_FAILED",
+                    payload: errorData
+                })
+            });
+    };
+}
