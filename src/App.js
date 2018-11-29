@@ -157,8 +157,10 @@ class App extends Component {
             tabValue: 0,
             mobileMoreAnchorEl: null,
             userProfileAnchorEl: null,
+            mobileUserProfileAnchorEl: null,
             showMobileMenu: false,
             showUserProfileMenu: false,
+            showMobileUserProfile: false;
             blockInformation: '',
             tatData: [],
             tree: [],
@@ -405,6 +407,20 @@ class App extends Component {
         });
     };
 
+    showMobileUserProfileMenu = (event) => {
+        this.setState({
+            mobileUserProfileAnchorEl: event.currentTarget,
+            showMobileUserProfile: true
+        });
+    };
+
+    handleMobileUserProfileMenuClose = () => {
+        this.setState({
+            mobileUserProfileAnchorEl: null,
+            showMobileUserProfile: false
+        });
+    };
+
     showMobileMenu = (event) => {
         this.setState({
             mobileMoreAnchorEl: event.currentTarget,
@@ -601,19 +617,19 @@ class App extends Component {
                 <hr />
                 <MenuItem className='Mobile-MenuItem'
                           id="user-profile-menu"
-                          anchorEl={this.state.userProfileAnchorEl}
-                          onClick={this.showUserProfileMenu}>
+                          anchorEl={this.state.mobileUserProfileAnchorEl}
+                          onClick={this.showMobileUserProfileMenu}>
                     <ListItemIcon className='Mobile-ListItemIcon'>
                         <AccountCircleIcon />
                     </ListItemIcon>
                     <ListItemText className='Mobile-ListItemText' primary='User Profile' />
                     <Menu
                         id="user-profile-menu"
-                        anchorEl={this.state.userProfileAnchorEl}
-                        open={this.showUserProfileMenu}
-                        onClose={this.handleUserProfileMenuClose}
+                        anchorEl={this.state.mobileUserProfileAnchorEl}
+                        open={this.showMobileUserProfileMenu}
+                        onClose={this.handleMobileUserProfileMenuClose}
                     >
-                        <MenuItem open={Boolean(this.state.userProfileAnchorEl)} onClick={this.handleRefresh} onClose={this.handleUserProfileMenuClose}>
+                        <MenuItem open={Boolean(this.state.mobileUserProfileAnchorEl)} onClick={this.handleRefresh} onClose={this.handleMobileUserProfileMenuClose}>
                             Logout
                         </MenuItem>
                     </Menu>
