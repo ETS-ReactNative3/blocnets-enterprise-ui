@@ -389,12 +389,6 @@ class App extends Component {
     // if you click user profile and log out, then refresh the page
     handleRefresh = () => {
         window.location.reload();
-        this.setState({
-            mobileMoreAnchorEl: null,
-            showMobileMenu: false,
-            userProfileAnchorEl: null,
-            showUserProfileMenu: false
-        });
     };
 
     showUserProfileMenu = (event) => {
@@ -404,13 +398,12 @@ class App extends Component {
         });
     };
 
-    handleMobileMenuClose = () => {
+    handleUserProfileMenuClose = () => {
         this.setState({
             userProfileAnchorEl: null,
             showUserProfileMenu: false
         });
     };
-
 
     showMobileMenu = (event) => {
         this.setState({
@@ -552,7 +545,6 @@ class App extends Component {
         }
 
         const { classes } = this.props;
-        const { userProfileAnchorEl } = this.state;
 
         const renderMobileMenu = (
             <Menu anchorEl={this.state.mobileMoreAnchorEl} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -609,9 +601,7 @@ class App extends Component {
                 <hr />
                 <MenuItem className='Mobile-MenuItem'
                           id="user-profile-menu"
-                          anchorEl={userProfileAnchorEl}
-                          open={Boolean(userProfileAnchorEl)}
-                          onClose={this.handleUserProfileMenuClose}
+                          anchorEl={this.state.userProfileAnchorEl}
                           onClick={this.showUserProfileMenu}>
                     <ListItemIcon className='Mobile-ListItemIcon'>
                         <AccountCircleIcon />
@@ -619,12 +609,12 @@ class App extends Component {
                     <ListItemText className='Mobile-ListItemText' primary='User Profile' />
                     <Menu
                         id="user-profile-menu"
-                        anchorEl={userProfileAnchorEl}
-                        open={Boolean(userProfileAnchorEl)}
+                        anchorEl={this.state.userProfileAnchorEl}
+                        open={Boolean(this.state.userProfileAnchorEl)}
                         onClose={this.handleUserProfileMenuClose}
                         onClick={this.handleUserProfileMenuClose}
                     >
-                        <MenuItem onClick={this.handleRefresh}>
+                        <MenuItem open={Boolean(this.state.userProfileAnchorEl)} onClick={this.handleRefresh} onClose={this.handleUserProfileMenuClose}>
                             Logout
                         </MenuItem>
                     </Menu>
@@ -688,26 +678,21 @@ class App extends Component {
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title='User Profile'>
-                                    <div>
                                         <IconButton
-                                            aria-owns={userProfileAnchorEl ? "user-profile-menu" : null}
-                                            aria-haspopup="true"
                                             onClick={this.showUserProfileMenu}>
                                             <AccountCircleIcon />
                                         </IconButton>
-                                        <Menu
-                                            id="user-profile-menu"
-                                            anchorEl={userProfileAnchorEl}
-                                            open={Boolean(userProfileAnchorEl)}
-                                            onClose={this.handleUserProfileMenuClose}
-                                            onClick={this.handleUserProfileMenuClose}
-                                        >
-                                            <MenuItem onClick={this.handleRefresh}>
-                                                Logout
-                                            </MenuItem>
-                                        </Menu>
-                                    </div>
                                 </Tooltip>
+
+                                <Menu
+                                    anchorEl={this.state.userProfileAnchorEl}
+                                    open={this.state.showUserProfileMenu}
+                                    onClose={this.handleUserProfileMenuClose}
+                                >
+                                    <MenuItem open={Boolean(this.state.userProfileAnchorEl)} onClick={this.handleRefresh} onClose={this.handleUserProfileMenuClose}>
+                                        Logout
+                                    </MenuItem>
+                                </Menu>
                                 <Typography className='App-Bar-Title'>
                                     {this.state.userName ? this.state.userName : 'Guest'}
                                 </Typography>
