@@ -17,14 +17,9 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Snackbar from 'material-ui/Snackbar';
 import {connect} from 'react-redux';
-import {
-    getAndUpdateSARListByMaterialID
-}
-    from '../../../redux/actions/shipping.and.receiving.actions';
-import {
-    createProductionOrderByProdOrderNo
-}
-    from '../../../redux/actions/production.actions';
+import { getAndUpdateSARListByMaterialID } from '../../../redux/actions/shipping.and.receiving.actions';
+import { createProductionOrderByProdOrderNo, checkProductionOrderByProductionOrderNo} from '../../../redux/actions/production.actions';
+
 
 const addCircleIconStyle = {
     color: 'black',
@@ -63,6 +58,63 @@ class StartProduction extends Component {
             }
         };
     }
+
+    // validate shipment ID field
+    handleProductionOrderNoChange = (event) => {
+        if (event.target.value) {
+            this.props.data.prdReducer.checkedPRDDataByProductionOrderNoDoesExist = '';
+            this.props.data.prdReducer.checkedPRDDataByProductionOrderNoDoesNotExist = '';
+            this.setState({ showProgressLogo: true });
+            Promise.resolve(this.props.checkProductionOrderByProductionOrderNo(event.target.value))
+                .then(() => {
+
+                    if (this.props.data.prdReducer.checkedPRDDataByProductionOrderNoDoesExist &&
+                        this.props.data.prdReducer.checkedPRDDataByProductionOrderNoDoesNotExist === '') {
+                        // existing key -> clear the Production Order No. field
+                        this.setState({
+                            showProgressLogo: false,
+                            productionOrderNo: '',
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Production Order No. already exists!',
+                                open: true,
+                                sbColor: '#e32c1c'
+                            }
+                        });
+                    } else if (this.props.data.prdReducer.checkedPRDDataByProductionOrderNoDoesExist === '' &&
+                        this.props.data.prdReducer.checkedPRDDataByProductionOrderNoDoesNotExist) {
+                        // non-existing key -> valid
+                        this.setState({
+                            showProgressLogo: false,
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Production Order No. is valid',
+                                open: true,
+                                sbColor: '#23CE6B'
+                            }
+                        })
+
+                    } else {
+                        // One of the cases is when the user is unauthorized but still in this page
+                        this.setState({
+                            showProgressLogo: false,
+                            productionOrderNo: '',
+                            snackbar: {
+                                autoHideDuration: 2000,
+                                message: 'Unknown Error',
+                                open: true,
+                                sbColor: '#e32c1c'
+                            }
+                        });
+                    }
+
+                });
+
+            // TODO: handle an edge case saf,l/asgm
+            // cannot put / because it understands it as directory
+
+        }
+    };
 
     handleChange = (event) => {
         this.setState({[event.target.name]: event.target.value});
@@ -230,6 +282,7 @@ class StartProduction extends Component {
                             <TextField
                                 value={this.state.productionOrderNo}
                                 onChange={this.handleChange}
+                                onBlur={this.handleProductionOrderNoChange}
                                 type="text"
                                 name="productionOrderNo"
                                 floatingLabelText="Production Order No."
@@ -373,7 +426,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getAndUpdateSARListByMaterialID: (array, key) => dispatch(getAndUpdateSARListByMaterialID(array, key)),
-        createProductionOrderByProdOrderNo: (url, body) => dispatch(createProductionOrderByProdOrderNo(url, body))
+        createProductionOrderByProdOrderNo: (url, body) => dispatch(createProductionOrderByProdOrderNo(url, body)),
+        checkProductionOrderByProductionOrderNo: (url) => dispatch(checkProductionOrderByProductionOrderNo(url))
     };
 };
 

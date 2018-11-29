@@ -10,6 +10,7 @@ import TableCell from '@material-ui/core/TableCell';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import HistoryIcon from '@material-ui/icons/History';
+import DeviceHubIcon from '@material-ui/icons/DeviceHub';
 import Typography from '@material-ui/core/Typography';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -18,6 +19,7 @@ import Dialog from '@material-ui/core/Dialog';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import { connect } from 'react-redux';
+import { createPRDConstruct } from '../../../redux/actions/tree.spawn.action';
 import TrackAndTraceTreeView from './track-and-trace.tree.view';
 
 let masterDataCounter = 0;
@@ -33,7 +35,7 @@ class TrackAndTraceResultsView extends Component {
         this.state = {
             showMaterialMap: false,
             showMaterialMapSwitch: false,
-            showProgressLogo: false,
+            showProgressLogoDialog: false,
             showMasterDataHistory: {
                 open: false
             },
@@ -42,7 +44,8 @@ class TrackAndTraceResultsView extends Component {
                 open: false
             },
             SARHistory: [],
-            tree: this.props.tree,
+            showPRDMaterialMap: false,
+            tree: [],
             snackbar: {
                 autoHideDuration: 2000,
                 message: '',
@@ -299,10 +302,8 @@ class TrackAndTraceResultsView extends Component {
     };
 
     showShipmentHistory = (event, id) => {
-        this.setState({ showProgressLogo: true });
         if (this.props.blockInformation === 'Shipping Information') {
             this.setState({
-                showProgressLogo: false,
                 showShipmentHistory: {
                     open: true
                 },
@@ -310,7 +311,6 @@ class TrackAndTraceResultsView extends Component {
             });
         } else {
             this.setState({
-                showProgressLogo: false,
                 showShipmentHistory: {
                     open: true
                 },
@@ -348,6 +348,26 @@ class TrackAndTraceResultsView extends Component {
         });
     };
 
+    showPRDMaterialMap = (event, productionOrderNo) => {
+        this.setState({ showProgressLogoDialog: true });
+        let tree = [];
+        Promise.resolve(this.props.createPRDConstruct(productionOrderNo))
+            .then(() => {
+                if (this.props.data.spawnConstructReducer.prdConstruct !== '' && this.props.data.spawnConstructReducer.prdConstruct !== undefined) {
+                    tree.push(this.props.data.spawnConstructReducer.prdConstruct);
+                    this.setState({
+                        showProgressLogoDialog: false,
+                        tree: tree,
+                        showPRDMaterialMap: true
+                    });
+                }
+            })
+    };
+
+    handlePRDTreeClose = () => {
+        this.setState({ showPRDMaterialMap: false });
+    };
+
     handleSnackbarClose = () => {
         this.props.snackbar.open = false;
         this.setState({
@@ -368,14 +388,6 @@ class TrackAndTraceResultsView extends Component {
 
             <form>
                 <div>
-                    <div>
-                        {this.state.showProgressLogo ?
-                            <div className='overlay'>
-                                <img alt='' className='App-logo-progress' src={blocnetsLogo} />
-                            </div>
-                            :
-                            ''}
-                    </div>
                     <div className='Module'>
                         <Grid container>
                             <Grid container item xs={12}>
@@ -549,7 +561,8 @@ class TrackAndTraceResultsView extends Component {
                             </div>
                             <br />
                             <div>
-                                <TrackAndTraceTreeView data={this.state} />
+                                {/*TODO: state tree needs to be updated every time the tree unmounts*/}
+                                <TrackAndTraceTreeView data={this.props} />
                             </div>
                         </Dialog>
                         <Dialog autoScrollBodyContent={true} onClose={this.handleShipmentHistoryClose}
@@ -572,6 +585,14 @@ class TrackAndTraceResultsView extends Component {
                                 <Grid container justify='center'>
                                     <Grid container item xs={12}>
                                         <Paper className='Module-Paper'>
+                                            <div>
+                                                {this.state.showProgressLogoDialog ?
+                                                    <div className='overlay'>
+                                                        <img alt='' className='App-logo-progress' src={blocnetsLogo} />
+                                                    </div>
+                                                    :
+                                                    ''}
+                                            </div>
                                             <div className='Module-Paper-Div'>
                                                 <Table className='Module-Table'>
                                                     <TableBody className='Module-TableBody'>
@@ -585,6 +606,16 @@ class TrackAndTraceResultsView extends Component {
                                                                         :
                                                                         <TableCell>
                                                                             {row.info1}
+                                                                            {row.info1 === 'Production Order No.' && row.info2 !== '' ?
+                                                                                <Tooltip title='Show Material Map'>
+                                                                                    <IconButton
+                                                                                        onClick={event => this.showPRDMaterialMap(event, row.info2)}>
+                                                                                        <DeviceHubIcon className='TT-DeviceHubIcon'/>
+                                                                                    </IconButton>
+                                                                                </Tooltip>
+                                                                                :
+                                                                                ''
+                                                                            }
                                                                         </TableCell>
                                                                     }
                                                                     {row.info1 === 'Material ID' ?
@@ -605,6 +636,23 @@ class TrackAndTraceResultsView extends Component {
                                         </Paper>
                                     </Grid>
                                 </Grid>
+                            </div>
+                        </Dialog>
+                        <Dialog fullWidth={true} maxWidth='lg' onClose={this.handlePRDTreeClose}
+                                open={this.state.showPRDMaterialMap}>
+                            <div className='Module'>
+                                <Grid container>
+                                    <Grid container item xs={12} justify='flex-end'>
+                                        <i className='material-icons Module-TableCell-Click'
+                                           onClick={this.handlePRDTreeClose}>
+                                            close
+                                        </i>
+                                    </Grid>
+                                </Grid>
+                            </div>
+                            <br />
+                            <div>
+                                <TrackAndTraceTreeView data={this.state} />
                             </div>
                         </Dialog>
                         <Dialog autoScrollBodyContent={true} fullWidth={true} maxWidth='lg'
@@ -688,4 +736,10 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(TrackAndTraceResultsView);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        createPRDConstruct: (productionOrderNo) => dispatch(createPRDConstruct(productionOrderNo))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TrackAndTraceResultsView);

@@ -13,7 +13,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import SendIcon from '@material-ui/icons/Send';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import DescriptionIcon from '@material-ui/icons/Description';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
+/* import LocationOnIcon from '@material-ui/icons/LocationOn'; */
 
 class AppMenu extends Component {
 
@@ -127,12 +127,12 @@ class AppMenu extends Component {
                     <ListItemText className='Mobile-ListItemText' primary='View a Document' />
                 </MenuItem>
                 <hr />
-                <MenuItem className='Mobile-MenuItem' id='showMapContainerViewId' onClick={this.showMapContainerView}>
+                {/* <MenuItem className='Mobile-MenuItem' id='showMapContainerViewId' onClick={this.showMapContainerView}>
                     <ListItemIcon className='Mobile-ListItemIcon'>
                         <LocationOnIcon />
                     </ListItemIcon>
                     <ListItemText className='Mobile-ListItemText' primary='Geo Mapping' />
-                </MenuItem>
+                </MenuItem> */}
             </div>
 
         );

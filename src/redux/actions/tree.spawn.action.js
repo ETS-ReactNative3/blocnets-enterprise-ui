@@ -24,16 +24,16 @@ export function createConstruct(materialID) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + materialID, { headers })
+        await axios.get(config.middleware.serviceUrl + config.chaincodes.SAR + 'materialId=' + materialID, { headers })
             .then(async (response) => {
                 let obj = response.data;
                 let key = obj.prdKey;
                 if (key) {
-                    await axios.get(config.chaincodes.Default + config.chaincodes.PRD + key, { headers })
+                    await axios.get(config.middleware.serviceUrl + config.chaincodes.PRD + key, { headers })
                         .then((response) => {
                             let construct = {
                                 name: key,
-                                attributes: { ipAddress: response.data.ipAddress },
+                                attributes: { MaterialID: response.data.materialID },
                                 children: [],
                             };
 
@@ -69,6 +69,45 @@ export function createConstruct(materialID) {
                 let errorData = resolver(error);
                 dispatch({
                     type: "GET_SHIPPING_DATA_FOR_CONSTRUCT_FAILED",
+                    payload: errorData
+                })
+            });
+    };
+}
+
+export function createPRDConstruct(productionOrderNo) {
+    return async (dispatch) => {
+        dispatch({
+            type: "LOADING_PRD_CONSTRUCT",
+            payload: true
+        });
+        const headers = tokenResolver();
+        await axios.get(config.middleware.serviceUrl + config.chaincodes.PRD + productionOrderNo, { headers })
+            .then((response) => {
+                let construct = {
+                    name: productionOrderNo,
+                    attributes: { MaterialID: response.data.materialID },
+                    children: []
+                };
+                for (let i = 0; i < response.data.oldMaterialID.length; i++) {
+                    let nestedObj = {
+                        name: response.data.oldMaterialID[i].materialID,
+                        attributes: {
+                            parent: response.data.oldMaterialID[i].parent
+                        },
+                        children: response.data.oldMaterialID[i].children
+                    }
+                    construct.children.push(nestedObj);
+                }
+                return dispatch({
+                    type: "GET_PRD_DATA_FOR_PRD_CONSTRUCT_SUCCESS",
+                    payload: construct
+                });
+            })
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "GET_PRD_DATA_FOR_PRD_CONSTRUCT_FAILED",
                     payload: errorData
                 })
             });

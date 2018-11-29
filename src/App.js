@@ -20,7 +20,7 @@ import TrackAndTraceView from './components/track-and-trace/views/track-and-trac
 import SendDocumentView from './components/document-review-and-entry/document-send/document.send.view';
 import SaveDocumentView from './components/document-review-and-entry/document-save/document.save.view';
 import ReadDocumentView from './components/document-review-and-entry/document-read/document.read.view';
-import MapContainerView from './components/geolocation/views/google.maps.view';
+/* import MapContainerView from './components/geolocation/views/google.maps.view'; */
 import BillOfMaterialsEdit from './components/bill-of-materials/views/bill-of-materials-edit-view';
 import CatalogueView from './components/catalogue/catalogue.view';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -31,6 +31,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Tooltip from '@material-ui/core/Tooltip';
 import Badge from '@material-ui/core/Badge';
 import MailIcon from '@material-ui/icons/Mail';
+import SendIcon from '@material-ui/icons/Send';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import PrintIcon from '@material-ui/icons/Print';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
@@ -48,7 +49,11 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { getEachMessageForUserID } from './redux/actions/UMA/user.message.array.action';
+import Popper from '@material-ui/core/Popper';
+import Grow from '@material-ui/core/Grow';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import MenuList from '@material-ui/core/MenuList';
+import { getEachMessageForUserID, getUserMessageDataByUserID } from './redux/actions/UMA/user.message.array.action';
 
 const theme = createMuiTheme({
     palette: {
@@ -71,38 +76,65 @@ const styles = theme => ({
     },
 });
 
-function countPendingMessages(message) {
+function countPendingMessages(messages, userName) {
     let badgeContent = 0;
-    for (let i = 0; i < message.length; i++) {
-        if (message[i].status === 'Pending') {
+    for (let i = 0; i < messages.length; i++) {
+        if (messages[i].header.status === 'Pending' && messages[i].header.recipient === userName) {
             badgeContent++;
         }
     }
     return badgeContent;
 }
 
+function countSentMessages(messages, userName) {
+    let badgeContentSent = 0;
+    for (let i = 0; i < messages.length; i++) {
+        if (messages[i].header.status !== 'Pending' && messages[i].header.sender === userName) {
+            badgeContentSent++;
+        }
+    }
+    return badgeContentSent;
+}
+
 class App extends Component {
 
     /* Dev Note: Will automatically fire the prop actions, or http request, once component mounts */
     componentDidMount() {
-        !this.isCancelled && Promise.resolve(this.props.getEachMessageForUserID(this.props.userName))
+        let userName = this.state.userName;
+        !this.isCancelled && Promise.resolve(this.props.getEachMessageForUserID(userName))
             .then(() => {
                 if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
-                    this.setState({ badgeContent: countPendingMessages(this.props.data.umaReducer.getEachMessageForUserIDSuccess) })
+                    let messages = this.props.data.umaReducer.getEachMessageForUserIDSuccess;
+                    this.setState({
+                        umaLoadComplete: true,
+                        badgeContent: countPendingMessages(messages, userName),
+                        badgeContentSent: countSentMessages(messages, userName)
+                    });
                 } else {
-                    this.setState({ badgeContent: 0 })
+                    this.setState({
+                        umaLoadComplete: true,
+                        badgeContent: 0,
+                        badgeContentSent: 0
+                    });
                 }
             });
         setInterval(() => {
             !this.isCancelled && this.setState({ currentDateAndTime: new Date().toUTCString() })
         }, 1000);
         setInterval(() => {
-            !this.isCancelled && Promise.resolve(this.props.getEachMessageForUserID(this.props.userName))
+            !this.isCancelled && Promise.resolve(this.props.getEachMessageForUserID(userName))
                 .then(() => {
                     if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
-                        this.setState({ badgeContent: countPendingMessages(this.props.data.umaReducer.getEachMessageForUserIDSuccess) })
+                        let messages = this.props.data.umaReducer.getEachMessageForUserIDSuccess;
+                        this.setState({
+                            badgeContent: countPendingMessages(messages, userName),
+                            badgeContentSent: countSentMessages(messages, userName)
+                        });
                     } else {
-                        this.setState({ badgeContent: 0 })
+                        this.setState({
+                            badgeContent: 0,
+                            badgeContentSent: 0
+                        });
                     }
                 })
         }, 30000);
@@ -115,6 +147,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            umaLoadComplete: false,
             catalogue: {
                 open: false,
                 scroll: 'paper'
@@ -124,8 +157,14 @@ class App extends Component {
             transactionCode: this.props.transactionCode,
             userName: this.props.userName,
             badgeContent: 0,
+            badgeContentSent: 0,
+            tabValue: 0,
             mobileMoreAnchorEl: null,
+            userProfileAnchorEl: null,
+            mobileUserProfileAnchorEl: null,
             showMobileMenu: false,
+            showUserProfileMenu: false,
+            showMobileUserProfile: false,
             blockInformation: '',
             tatData: [],
             tree: [],
@@ -142,14 +181,20 @@ class App extends Component {
 
     handleToggle = () => this.setState({ open: !this.state.open });
 
-    showMainView = () => {
+    showMainView = (id) => {
+        let tabValue = 3;
+        if (id === 'inbox') {
+            tabValue = 0;
+        }
         this.setState({
             show: 'home',
             open: false,
             transactionCode: 'DRE02',
             mobileMoreAnchorEl: null,
-            showMobileMenu: false
+            showMobileMenu: false,
+            tabValue: tabValue
         });
+
     };
 
     showBillOfMaterials = () => {
@@ -297,18 +342,33 @@ class App extends Component {
                 open: false
             }
         })
-    }
+    };
 
     handleDREData = (refreshBadgeContent) => {
+        let userName = this.state.userName;
         if (refreshBadgeContent === true) {
-            Promise.resolve(this.props.getEachMessageForUserID(this.props.userName))
+            Promise.resolve(this.props.getEachMessageForUserID(userName))
                 .then(() => {
                     if (this.props.data.umaReducer.getEachMessageForUserIDSuccess) {
-                        this.setState({ badgeContent: countPendingMessages(this.props.data.umaReducer.getEachMessageForUserIDSuccess) })
+                        let messages = this.props.data.umaReducer.getEachMessageForUserIDSuccess;
+                        this.setState({
+                            badgeContent: countPendingMessages(messages, userName),
+                            badgeContentSent: countSentMessages(messages, userName)
+                        });
                     } else {
-                        this.setState({ badgeContent: 0 })
+                        this.setState({
+                            badgeContent: 0,
+                            badgeContentSent: 0
+                        });
                     }
-                })
+                });
+        }
+    };
+
+    handleDRESavedData = (refreshSavedDocument) => {
+        let userName = this.state.userName;
+        if (refreshSavedDocument === true) {
+            Promise.resolve(this.props.getUserMessageDataByUserID(userName));
         }
     };
 
@@ -329,6 +389,39 @@ class App extends Component {
         this.setState({
             mobileMoreAnchorEl: null,
             showMobileMenu: false
+        });
+    };
+
+    // if you click user profile and log out, then refresh the page
+    handleRefresh = () => {
+        window.location.reload();
+    };
+
+    showUserProfileMenu = (event) => {
+        this.setState({
+            userProfileAnchorEl: event.currentTarget,
+            showUserProfileMenu: true
+        });
+    };
+
+    handleUserProfileMenuClose = () => {
+        this.setState({
+            userProfileAnchorEl: null,
+            showUserProfileMenu: false
+        });
+    };
+
+    showMobileUserProfileMenu = (event) => {
+        this.setState({
+            mobileUserProfileAnchorEl: event.currentTarget,
+            showMobileUserProfile: true
+        });
+    };
+
+    handleMobileUserProfileMenuClose = () => {
+        this.setState({
+            mobileUserProfileAnchorEl: null,
+            showMobileUserProfile: false
         });
     };
 
@@ -379,7 +472,7 @@ class App extends Component {
                 this.showMapContainerView();
                 break;
             default:
-                this.showMainView();
+                this.showMainView('inbox');
                 break;
         }
     };
@@ -426,13 +519,17 @@ class App extends Component {
                 contentTitle = '';
                 break;
             case 'senddocumentview':
-                content = (<SendDocumentView
-                    viewHandler={this.handleDREData} />);
-                contentTitle = 'SEND A DOCUMENT';
+                if (this.state.umaLoadComplete === true) {
+                    content = (<SendDocumentView
+                        userName={this.state.userName}
+                        viewHandler={this.handleDREData} />);
+                    contentTitle = 'SEND A DOCUMENT';
+                }
                 break;
             case 'savedocumentview':
                 content = (<SaveDocumentView
-                    userName={this.state.userName} />);
+                    userName={this.state.userName}
+                    viewHandler={this.handleDRESavedData} />);
                 contentTitle = 'SAVE A DOCUMENT';
                 break;
             case 'readdocumentview':
@@ -440,10 +537,10 @@ class App extends Component {
                     userName={this.state.userName} />);
                 contentTitle = 'VIEW A DOCUMENT';
                 break;
-            case 'mapcontainerview':
+            /* case 'mapcontainerview':
                 content = (<MapContainerView />);
                 contentTitle = 'GEO MAPPING';
-                break;
+                break; */
             case 'billofmaterialsedit':
                 content = (<BillOfMaterialsEdit
                     masterMaterialData={this.state.masterMaterialData}
@@ -451,17 +548,20 @@ class App extends Component {
                 contentTitle = 'EDIT MATERIAL AND SUPPLIER MASTER DATA';
                 break;
             default:
-                content = (
-                    <Router>
-                        <div>
-                            <Route
-                                path='/'
-                                render={(props) => <DocumentDashboardView {...props}
-                                                                          userName={this.state.userName} />}
-                            />
-                        </div>
-                    </Router>);
-                contentTitle = 'INBOX';
+                if (this.state.umaLoadComplete === true) {
+                    content = (
+                        <Router>
+                            <div>
+                                <Route
+                                    path='/'
+                                    render={(props) => <DocumentDashboardView {...props}
+                                                                              tabValue={this.state.tabValue}
+                                                                              userName={this.state.userName} />}
+                                />
+                            </div>
+                        </Router>);
+                    contentTitle = 'INBOX';
+                }
         }
 
         const { classes } = this.props;
@@ -470,7 +570,7 @@ class App extends Component {
             <Menu anchorEl={this.state.mobileMoreAnchorEl} anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                   onClose={this.handleMobileMenuClose} open={this.state.showMobileMenu}
                   transformOrigin={{ vertical: 'top', horizontal: 'right' }}>
-                <MenuItem className='Mobile-MenuItem' onClick={this.showMainView}>
+                <MenuItem className='Mobile-MenuItem' onClick={event => this.showMainView('inbox')}>
                     <ListItemIcon className='Mobile-ListItemIcon'>
                         <Badge badgeContent={this.state.badgeContent}
                                classes={{
@@ -481,6 +581,19 @@ class App extends Component {
                         </Badge>
                     </ListItemIcon>
                     <ListItemText className='Mobile-ListItemText' primary='Messages' />
+                </MenuItem>
+                <hr />
+                <MenuItem className='Mobile-MenuItem' onClick={event => this.showMainView('sent')}>
+                    <ListItemIcon className='Mobile-ListItemIcon'>
+                        <Badge badgeContent={this.state.badgeContentSent}
+                               classes={{
+                                   root: 'App-Bar-Badge',
+                                   badge: 'App-Bar-Badge-Color2'
+                               }}>
+                            <SendIcon />
+                        </Badge>
+                    </ListItemIcon>
+                    <ListItemText className='Mobile-ListItemText' primary='Sent Messages' />
                 </MenuItem>
                 <hr />
                 <MenuItem className='Mobile-MenuItem' onClick={this.handleSplash}>
@@ -506,12 +619,30 @@ class App extends Component {
                     <ListItemText className='Mobile-ListItemText' primary='New Session' />
                 </MenuItem>
                 <hr />
-                <MenuItem className='Mobile-MenuItem' onClick={this.showMainView}>
+                <MenuItem className='Mobile-MenuItem' onClick={this.showMobileUserProfileMenu}>
                     <ListItemIcon className='Mobile-ListItemIcon'>
                         <AccountCircleIcon />
                     </ListItemIcon>
                     <ListItemText className='Mobile-ListItemText' primary='User Profile' />
                 </MenuItem>
+                <Popper anchorEl={this.state.mobileUserProfileAnchorEl} disablePortal
+                        open={this.state.showMobileUserProfile} transition>
+                    {({ TransitionProps, placement }) => (
+                        <Grow
+                            {...TransitionProps}
+                            style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
+                            <Paper>
+                                <ClickAwayListener onClickAway={this.handleMobileUserProfileMenuClose}>
+                                    <MenuList>
+                                        <MenuItem onClick={this.handleRefresh}>
+                                            Logout
+                                        </MenuItem>
+                                    </MenuList>
+                                </ClickAwayListener>
+                            </Paper>
+                        </Grow>
+                    )}
+                </Popper>
             </Menu>
         );
 
@@ -532,13 +663,24 @@ class App extends Component {
                             </div>
                             <div className={classes.sectionDesktop}>
                                 <Tooltip title='Messages'>
-                                    <IconButton onClick={this.showMainView}>
+                                    <IconButton onClick={event => this.showMainView('inbox')}>
                                         <Badge badgeContent={this.state.badgeContent}
                                                classes={{
                                                    root: 'App-Bar-Badge',
                                                    badge: 'App-Bar-Badge-Color'
                                                }}>
                                             <MailIcon />
+                                        </Badge>
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title='Sent Messages'>
+                                    <IconButton onClick={event => this.showMainView('sent')}>
+                                        <Badge badgeContent={this.state.badgeContentSent}
+                                               classes={{
+                                                   root: 'App-Bar-Badge',
+                                                   badge: 'App-Bar-Badge-Color2'
+                                               }}>
+                                            <SendIcon />
                                         </Badge>
                                     </IconButton>
                                 </Tooltip>
@@ -560,10 +702,28 @@ class App extends Component {
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title='User Profile'>
-                                    <IconButton onClick={event => this.showMainView()}>
+                                    <IconButton onClick={this.showUserProfileMenu}>
                                         <AccountCircleIcon />
                                     </IconButton>
                                 </Tooltip>
+                                <Popper anchorEl={this.state.userProfileAnchorEl} disablePortal
+                                        open={this.state.showUserProfileMenu} transition>
+                                    {({ TransitionProps, placement }) => (
+                                        <Grow
+                                            {...TransitionProps}
+                                            style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
+                                            <Paper>
+                                                <ClickAwayListener onClickAway={this.handleUserProfileMenuClose}>
+                                                    <MenuList>
+                                                        <MenuItem onClick={this.handleRefresh}>
+                                                            Logout
+                                                        </MenuItem>
+                                                    </MenuList>
+                                                </ClickAwayListener>
+                                            </Paper>
+                                        </Grow>
+                                    )}
+                                </Popper>
                                 <Typography className='App-Bar-Title'>
                                     {this.state.userName ? this.state.userName : 'Guest'}
                                 </Typography>
@@ -667,7 +827,8 @@ const mapStateToProps = (state) => {
 // This way, we can call our action creator by doing this.props.authenticate();
 const mapDispatchToProps = (dispatch) => {
     return {
-        getEachMessageForUserID: (user) => dispatch(getEachMessageForUserID(user))
+        getEachMessageForUserID: (user) => dispatch(getEachMessageForUserID(user)),
+        getUserMessageDataByUserID: (user) => dispatch(getUserMessageDataByUserID(user))
     };
 };
 
