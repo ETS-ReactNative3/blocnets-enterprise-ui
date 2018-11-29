@@ -6,11 +6,11 @@ export function resolver(error) {
                 switch (error.response.status) {
                     case undefined: {
                         error.response.status = 401
-                        alert("Error 401: Unauthorized. Please sign into your SAP Hyperledger Fabric Dashboard");
+                        alert("Error 401: Unauthorized. Your logged in session has expired.");
                         return error.response;
                     }
                     case 401: {
-                        alert("Error 401: Unauthorized. Please sign into your SAP Hyperledger Fabric Dashboard");
+                        alert("Error 401: Unauthorized. Your logged in session has expired.");
                         return error.response;
                     }
                     case 404: {
@@ -22,6 +22,19 @@ export function resolver(error) {
                             return error.response;
                         } else if (error.response.config.method === 'put') {
                             //alert("Error 404: Unable to UPDATE path: " + error.response.config.url);
+                            return error.response;
+                        }
+                        break;
+                    }
+                    case 405: {
+                        if (error.response.config.method === 'head') {
+                            //alert("Validated ID: Method Not allowed: " + error.response.config.url);
+                            return error.response;
+                        } else if (error.response.config.method === 'get') {
+                            //alert("Error 405: Method Not allowed: " + error.response.config.url);
+                            return error.response;
+                        } else if (error.response.config.method === 'put') {
+                            //alert("Error 405: Method Not allowed: " + error.response.config.url);
                             return error.response;
                         }
                         break;

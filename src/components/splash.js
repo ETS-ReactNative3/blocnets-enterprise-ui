@@ -35,9 +35,9 @@ class SplashView extends Component {
             , 6000);
         setInterval(() => {
             !this.isCancelled &&
-            this.setState({ currentDateAndTime: new Date().toUTCString() })
+                this.setState({ currentDateAndTime: new Date().toUTCString() })
         }, 1000);
-    }
+    };
 
     componentWillUnmount() {
         this.isCancelled = true;
@@ -81,7 +81,7 @@ class SplashView extends Component {
                                 <div style={{ padding: 24 }}>
                                     <Grid container spacing={24}>
                                         <Grid container item xs={12} justify='center'>
-                                            <img src={animatedLogo} alt='' height='314px'/>
+                                            <img src={animatedLogo} alt='' height='314px' />
                                         </Grid>
                                     </Grid>
                                 </div>
@@ -123,13 +123,13 @@ class SplashView extends Component {
                                             <li className='hex'>
                                                 <div className='hexIn'>
                                                     <span className='hex-container'>
-                                                        <div className='hexagon-red'>
+                                                        <div className='hexagon-yellow'>
                                                             <span><i className='material-icons'
-                                                                     id='hex-icon'>notification_important</i></span>
+                                                                id='hex-icon'>notification_important</i></span>
                                                         </div>
                                                         <ButtonBase focusRipple
-                                                                    style={{ 'width': '100%', 'height': '100%' }}
-                                                                    onClick={event => this.handleView(event, 'DRE02')}>
+                                                            style={{ 'width': '100%', 'height': '100%' }}
+                                                            onClick={event => this.handleView(event, 'DRE02')}>
                                                             <h1>Pending Actions</h1>
                                                             <p></p>
                                                         </ButtonBase>
@@ -139,107 +139,13 @@ class SplashView extends Component {
                                             <li className='hex'>
                                                 <div className='hexIn'>
                                                     <span className='hex-container'>
-                                                        <div className='hexagon-red'>
+                                                        <div className='hexagon-yellow'>
                                                             <span><i className='material-icons'
-                                                                     id='hex-icon'>list_alt</i></span>
+                                                                id='hex-icon'>center_focus_strong</i></span>
                                                         </div>
                                                         <ButtonBase focusRipple
-                                                                    style={{ 'width': '100%', 'height': '100%' }}
-                                                                    onClick={event => this.handleView(event, 'BOM01')}>
-                                                            <h1>Enter Material Master Data</h1>
-                                                            <p></p>
-                                                        </ButtonBase>
-                                                    </span>
-                                                </div>
-                                            </li>
-                                            <li className='hex'>
-                                                <div className='hexIn'>
-                                                    <span className='hex-container'>
-                                                        <div className='hexagon-green'>
-                                                            <span><i className='material-icons'
-                                                                     id='hex-icon'>local_shipping</i></span>
-                                                        </div>
-                                                        <ButtonBase focusRipple
-                                                                    style={{ 'width': '100%', 'height': '100%' }}
-                                                                    onClick={event => this.handleView(event, 'SAR01')}>
-                                                            <h1>Ship To Customer</h1>
-                                                            <p></p>
-                                                        </ButtonBase>
-                                                    </span>
-                                                </div>
-                                            </li>
-                                            <li className='hex'>
-                                                <div className='hexIn'>
-                                                    <span className='hex-container'>
-                                                        <div className='hexagon-red'>
-                                                            <span><i className='material-icons' id='hex-icon'>search</i></span>
-                                                        </div>
-                                                        <ButtonBase focusRipple
-                                                                    style={{ 'width': '100%', 'height': '100%' }}
-                                                                    onClick={event => this.handleView(event, 'TAT01')}>
-                                                            <h1>Search for Material</h1>
-                                                            <p></p>
-                                                        </ButtonBase>
-                                                    </span>
-                                                </div>
-                                            </li>
-                                            <li className='hex'>
-                                                <div className='hexIn'>
-                                                    <span className='hex-container'>
-                                                        <div className='hexagon-red'>
-                                                            <span><i className='material-icons'
-                                                                     id='hex-icon'>av_timer</i></span>
-                                                        </div>
-                                                        <ButtonBase focusRipple
-                                                                    style={{ 'width': '100%', 'height': '100%' }}
-                                                                    onClick={event => this.handleView(event, 'TAT01')}>
-                                                            <h1>View Material History</h1>
-                                                            <p></p>
-                                                        </ButtonBase>
-                                                    </span>
-                                                </div>
-                                            </li>
-                                            <li className='hex'>
-                                                <div className='hexIn'>
-                                                    <span className='hex-container'>
-                                                        <div className='hexagon-green'>
-                                                            <span><i className='material-icons'
-                                                                     id='hex-icon'>stop</i></span>
-                                                        </div>
-                                                        <ButtonBase focusRipple
-                                                                    style={{ 'width': '100%', 'height': '100%' }}
-                                                                    onClick={event => this.handleView(event, 'PRD02')}>
-                                                            <h1>End Production Tracking</h1>
-                                                            <p></p>
-                                                        </ButtonBase>
-                                                    </span>
-                                                </div>
-                                            </li>
-                                            <li className='hex'>
-                                                <div className='hexIn'>
-                                                    <span className='hex-container'>
-                                                        <div className='hexagon-green'>
-                                                            <span><i className='material-icons' id='hex-icon'>domain</i></span>
-                                                        </div>
-                                                        <ButtonBase focusRipple
-                                                                    style={{ 'width': '100%', 'height': '100%' }}
-                                                                    onClick={event => this.handleView(event, 'SAR02')}>
-                                                            <h1>Receive Shipment</h1>
-                                                            <p></p>
-                                                        </ButtonBase>
-                                                    </span>
-                                                </div>
-                                            </li>
-                                            <li className='hex'>
-                                                <div className='hexIn'>
-                                                    <span className='hex-container'>
-                                                        <div className='hexagon-green'>
-                                                            <span><i className='material-icons'
-                                                                     id='hex-icon'>center_focus_strong</i></span>
-                                                        </div>
-                                                        <ButtonBase focusRipple
-                                                                    style={{ 'width': '100%', 'height': '100%' }}
-                                                                    onClick={event => this.handleView(event, 'TAT01')}>
+                                                            style={{ 'width': '100%', 'height': '100%' }}
+                                                            onClick={event => this.handleView(event, 'TAT01')}>
                                                             <h1>Track a Shipment</h1>
                                                             <p></p>
                                                         </ButtonBase>
@@ -249,14 +155,51 @@ class SplashView extends Component {
                                             <li className='hex'>
                                                 <div className='hexIn'>
                                                     <span className='hex-container'>
-                                                        <div className='hexagon-green'>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                            {/* <li className='hex'>
+                                                <div className='hexIn'>
+                                                    <span className='hex-container'>
+                                                        <div className='hexagon-black'>
                                                             <span><i className='material-icons'
-                                                                     id='hex-icon'>play_arrow</i></span>
+                                                                     id='hex-icon'>location_on</i></span>
                                                         </div>
                                                         <ButtonBase focusRipple
                                                                     style={{ 'width': '100%', 'height': '100%' }}
-                                                                    onClick={event => this.handleView(event, 'PRD01')}>
-                                                            <h1>Start Production Tracking</h1>
+                                                                    onClick={event => this.handleView(event, 'GEO01')}>
+                                                            <h1>Geo Mapping</h1>
+                                                            <p></p>
+                                                        </ButtonBase>
+                                                    </span>
+                                                </div>
+                                            </li> */}
+                                            <li className='hex'>
+                                                <div className='hexIn'>
+                                                    <span className='hex-container'>
+                                                        <div className='hexagon-yellow'>
+                                                            <span><i className='material-icons' id='hex-icon'>search</i></span>
+                                                        </div>
+                                                        <ButtonBase focusRipple
+                                                            style={{ 'width': '100%', 'height': '100%' }}
+                                                            onClick={event => this.handleView(event, 'TAT01')}>
+                                                            <h1>Search for Material</h1>
+                                                            <p></p>
+                                                        </ButtonBase>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                            <li className='hex'>
+                                                <div className='hexIn'>
+                                                    <span className='hex-container'>
+                                                        <div className='hexagon-yellow'>
+                                                            <span><i className='material-icons'
+                                                                id='hex-icon'>av_timer</i></span>
+                                                        </div>
+                                                        <ButtonBase focusRipple
+                                                            style={{ 'width': '100%', 'height': '100%' }}
+                                                            onClick={event => this.handleView(event, 'TAT01')}>
+                                                            <h1>View Material History</h1>
                                                             <p></p>
                                                         </ButtonBase>
                                                     </span>
@@ -267,11 +210,11 @@ class SplashView extends Component {
                                                     <span className='hex-container'>
                                                         <div className='hexagon-black'>
                                                             <span><i className='material-icons'
-                                                                     id='hex-icon'>folder_shared</i></span>
+                                                                id='hex-icon'>folder_shared</i></span>
                                                         </div>
                                                         <ButtonBase focusRipple
-                                                                    style={{ 'width': '100%', 'height': '100%' }}
-                                                                    onClick={event => this.handleView(event, 'DRE01')}>
+                                                            style={{ 'width': '100%', 'height': '100%' }}
+                                                            onClick={event => this.handleView(event, 'DRE01')}>
                                                             <h1>Save Production Data</h1>
                                                             <p></p>
                                                         </ButtonBase>
@@ -283,11 +226,11 @@ class SplashView extends Component {
                                                     <span className='hex-container'>
                                                         <div className='hexagon-black'>
                                                             <span><i className='material-icons'
-                                                                     id='hex-icon'>cloud_upload</i></span>
+                                                                id='hex-icon'>cloud_upload</i></span>
                                                         </div>
                                                         <ButtonBase focusRipple
-                                                                    style={{ 'width': '100%', 'height': '100%' }}
-                                                                    onClick={event => this.handleView(event, 'DRE03')}>
+                                                            style={{ 'width': '100%', 'height': '100%' }}
+                                                            onClick={event => this.handleView(event, 'DRE03')}>
                                                             <h1>Save a Document</h1>
                                                             <p></p>
                                                         </ButtonBase>
@@ -299,11 +242,11 @@ class SplashView extends Component {
                                                     <span className='hex-container'>
                                                         <div className='hexagon-black'>
                                                             <span><i className='material-icons'
-                                                                     id='hex-icon'>description</i></span>
+                                                                id='hex-icon'>description</i></span>
                                                         </div>
                                                         <ButtonBase focusRipple
-                                                                    style={{ 'width': '100%', 'height': '100%' }}
-                                                                    onClick={event => this.handleView(event, 'DRE04')}>
+                                                            style={{ 'width': '100%', 'height': '100%' }}
+                                                            onClick={event => this.handleView(event, 'DRE04')}>
                                                             <h1>View a Document</h1>
                                                             <p></p>
                                                         </ButtonBase>
@@ -315,11 +258,11 @@ class SplashView extends Component {
                                                     <span className='hex-container'>
                                                         <div className='hexagon-black'>
                                                             <span><i className='material-icons'
-                                                                     id='hex-icon'>send</i></span>
+                                                                id='hex-icon'>send</i></span>
                                                         </div>
                                                         <ButtonBase focusRipple
-                                                                    style={{ 'width': '100%', 'height': '100%' }}
-                                                                    onClick={event => this.handleView(event, 'DRE01')}>
+                                                            style={{ 'width': '100%', 'height': '100%' }}
+                                                            onClick={event => this.handleView(event, 'DRE01')}>
                                                             <h1>Send a Document</h1>
                                                             <p></p>
                                                         </ButtonBase>
@@ -329,14 +272,77 @@ class SplashView extends Component {
                                             <li className='hex'>
                                                 <div className='hexIn'>
                                                     <span className='hex-container'>
-                                                        <div className='hexagon-black'>
+                                                        <div className='hexagon-red'>
                                                             <span><i className='material-icons'
-                                                                     id='hex-icon'>location_on</i></span>
+                                                                id='hex-icon'>list_alt</i></span>
                                                         </div>
                                                         <ButtonBase focusRipple
-                                                                    style={{ 'width': '100%', 'height': '100%' }}
-                                                                    onClick={event => this.handleView(event, 'GEO01')}>
-                                                            <h1>Geo Mapping</h1>
+                                                            style={{ 'width': '100%', 'height': '100%' }}
+                                                            onClick={event => this.handleView(event, 'BOM01')}>
+                                                            <h1>Enter Material Master Data</h1>
+                                                            <p></p>
+                                                        </ButtonBase>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                            <li className='hex'>
+                                                <div className='hexIn'>
+                                                    <span className='hex-container'>
+                                                        <div className='hexagon-red'>
+                                                            <span><i className='material-icons'
+                                                                id='hex-icon'>local_shipping</i></span>
+                                                        </div>
+                                                        <ButtonBase focusRipple
+                                                            style={{ 'width': '100%', 'height': '100%' }}
+                                                            onClick={event => this.handleView(event, 'SAR01')}>
+                                                            <h1>Ship To Customer</h1>
+                                                            <p></p>
+                                                        </ButtonBase>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                            <li className='hex'>
+                                                <div className='hexIn'>
+                                                    <span className='hex-container'>
+                                                        <div className='hexagon-red'>
+                                                            <span><i className='material-icons' id='hex-icon'>domain</i></span>
+                                                        </div>
+                                                        <ButtonBase focusRipple
+                                                            style={{ 'width': '100%', 'height': '100%' }}
+                                                            onClick={event => this.handleView(event, 'SAR02')}>
+                                                            <h1>Receive Shipment</h1>
+                                                            <p></p>
+                                                        </ButtonBase>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                            <li className='hex'>
+                                                <div className='hexIn'>
+                                                    <span className='hex-container'>
+                                                        <div className='hexagon-red'>
+                                                            <span><i className='material-icons'
+                                                                id='hex-icon'>play_arrow</i></span>
+                                                        </div>
+                                                        <ButtonBase focusRipple
+                                                            style={{ 'width': '100%', 'height': '100%' }}
+                                                            onClick={event => this.handleView(event, 'PRD01')}>
+                                                            <h1>Start Production Tracking</h1>
+                                                            <p></p>
+                                                        </ButtonBase>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                            <li className='hex'>
+                                                <div className='hexIn'>
+                                                    <span className='hex-container'>
+                                                        <div className='hexagon-red'>
+                                                            <span><i className='material-icons'
+                                                                id='hex-icon'>stop</i></span>
+                                                        </div>
+                                                        <ButtonBase focusRipple
+                                                            style={{ 'width': '100%', 'height': '100%' }}
+                                                            onClick={event => this.handleView(event, 'PRD02')}>
+                                                            <h1>End Production Tracking</h1>
                                                             <p></p>
                                                         </ButtonBase>
                                                     </span>

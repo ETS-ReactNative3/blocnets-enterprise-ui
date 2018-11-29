@@ -2,7 +2,6 @@ import axios from 'axios';
 import config from '../config.json';
 import { resolver } from '../../services/callback.resolver';
 import { tokenResolver } from '../../services/token.resolver';
-import { catalogue } from './CAT/catalogue.action';
 
 // check whether ShipmentID exists or not
 export function checkShippingDataByShipmentID(url) {
@@ -12,7 +11,7 @@ export function checkShippingDataByShipmentID(url) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.head(config.chaincodes.Default + config.chaincodes.SAR + 'shipmentId=' + url, { headers })
+        await axios.head(config.middleware.serviceUrl + config.chaincodes.SAR + 'shipmentId=' + url, { headers })
             .then(() => {
                 return dispatch({
                     type: "CHECKED_SAR_DATA_BY_SHIPMENT_ID_DOES_EXIST",
@@ -37,10 +36,9 @@ export function createShippingDataByShipmentID(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        const archive = catalogue('SAR', url);
-        await axios.post(config.chaincodes.Default + config.chaincodes.SAR + 'shipmentId=' + url, body, { headers })
+        await axios.post(config.middleware.serviceUrl + config.chaincodes.SAR + 'shipmentId=' + url, body, { headers })
             .then(() => {
-                return archive + dispatch({
+                return dispatch({
                     type: "CREATE_SHIPPING_DATA_BY_SHIPMENT_ID_SUCCESS",
                     payload: true
                 });
@@ -62,7 +60,7 @@ export function getShippingDataByShipmentID(url) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'shipmentId=' + url, { headers })
+        await axios.get(config.middleware.serviceUrl + config.chaincodes.SAR + 'shipmentId=' + url, { headers })
             .then((response) => {
                 return dispatch({
                     type: "GET_SHIPPING_DATA_BY_SHIPMENT_ID_SUCCESS",
@@ -86,7 +84,7 @@ export function updateShippingDataByShipmentID(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.put(config.chaincodes.Default + config.chaincodes.SAR + 'shipmentId=' + url, body, { headers })
+        await axios.put(config.middleware.serviceUrl + config.chaincodes.SAR + 'shipmentId=' + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_SHIPPING_DATA_BY_SHIPMENT_ID_SUCCESS",
@@ -110,7 +108,7 @@ export function getHistoryShippingDataByShipmentID(url) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'shipmentId=' + url +'/history', { headers })
+        await axios.get(config.middleware.serviceUrl + config.chaincodes.SAR + 'shipmentId=' + url +'/history', { headers })
             .then((response) => {
                 return dispatch({
                     type: "GET_HISTORY_SHIPPING_DATA_BY_SHIPMENT_ID_SUCCESS",
@@ -134,7 +132,7 @@ export function createShippingDataByMaterialID(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.post(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + url, body, { headers })
+        await axios.post(config.middleware.serviceUrl + config.chaincodes.SAR + 'materialId=' + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
@@ -158,7 +156,7 @@ export function getShippingDataByMaterialID(url) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + url, { headers })
+        await axios.get(config.middleware.serviceUrl + config.chaincodes.SAR + 'materialId=' + url, { headers })
             .then((response) => {
                 return dispatch({
                     type: "GET_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
@@ -182,7 +180,7 @@ export function updateShippingDataByMaterialID(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.put(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + url, body, { headers })
+        await axios.put(config.middleware.serviceUrl + config.chaincodes.SAR + 'materialId=' + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
@@ -206,7 +204,7 @@ export function getHistoryShippingDataByMaterialID(url) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + url +'/history', { headers })
+        await axios.get(config.middleware.serviceUrl + config.chaincodes.SAR + 'materialId=' + url +'/history', { headers })
             .then((response) => {
                 return dispatch({
                     type: "GET_HISTORY_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
@@ -238,13 +236,13 @@ export function getAndUpdateSARListByMaterialID(ListOfMaterialIDs, prdKey) {
         });
         const headers = tokenResolver();
         for (let i = 0; i < ListOfMaterialIDs.length; i++) {
-            await axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + ListOfMaterialIDs[i], { headers })
+            await axios.get(config.middleware.serviceUrl + config.chaincodes.SAR + 'materialId=' + ListOfMaterialIDs[i], { headers })
                 .then(async (response) => {
 
                     let obj = response.data;
                     obj.receivedOrder = true;
                     obj.prdKey = prdKey;
-                    await axios.put(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + ListOfMaterialIDs[i], obj, { headers })
+                    await axios.put(config.middleware.serviceUrl + config.chaincodes.SAR + 'materialId=' + ListOfMaterialIDs[i], obj, { headers })
                         .then(() => {
                             return dispatch({
                                 type: "UPDATE_SAR_DATA_LIST_BY_MATERIAL_ID_SUCCESS",
@@ -331,9 +329,8 @@ export function syncSARDataAndBindKeys(payload) {
                 actualShipDate: payload.actualShipDate,
             };
 
-            await axios.post(config.chaincodes.Default + config.chaincodes.SAR + 'shipmentId=' + payload.shipmentID, payload, { headers })
-                .then(async () => {
-                    await catalogue('SAR', payload.shipmentID);
+            await axios.post(config.middleware.serviceUrl + config.chaincodes.SAR + 'shipmentId=' + payload.shipmentID, payload, { headers })
+                .then(() => {
                     dispatch({
                         type: "CREATE_SHIPPING_DATA_BY_SHIPMENT_ID_SUCCESS",
                         payload: true
@@ -348,13 +345,13 @@ export function syncSARDataAndBindKeys(payload) {
                 });
 
             for (let i = 0; i < shipKeyData.listOfKeys.length; i++) {
-                await axios.head(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + shipKeyData.listOfKeys[i].materialID, { headers })
+                await axios.head(config.middleware.serviceUrl + config.chaincodes.SAR + 'materialId=' + shipKeyData.listOfKeys[i].materialID, { headers })
                     .then(async () => {
                         dispatch({
                             type: "CHECKED_SAR_DATA_BY_MATERIAL_ID_DOES_EXIST",
                             payload: true
                         });
-                        await axios.get(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + shipKeyData.listOfKeys[i].materialID, { headers })
+                        await axios.get(config.middleware.serviceUrl + config.chaincodes.SAR + 'materialId=' + shipKeyData.listOfKeys[i].materialID, { headers })
                             .then(async (response) => {
                                 dispatch({
                                     type: "GET_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
@@ -400,7 +397,7 @@ export function syncSARDataAndBindKeys(payload) {
                                             };
                                             updatedObj.listOfKeys.push(obj);
                                         }
-                                        await axios.put(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + updatedObj.materialID, updatedObj, { headers })
+                                        await axios.put(config.middleware.serviceUrl + config.chaincodes.SAR + 'materialId=' + updatedObj.materialID, updatedObj, { headers })
                                             .then(() => {
                                                 return dispatch({
                                                     type: "UPDATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",
@@ -434,7 +431,7 @@ export function syncSARDataAndBindKeys(payload) {
                             payload: errorData
                         });
                         materialKeyData.materialID = shipKeyData.listOfKeys[i].materialID;
-                        axios.post(config.chaincodes.Default + config.chaincodes.SAR + 'materialId=' + shipKeyData.listOfKeys[i].materialID, materialKeyData, { headers })
+                        axios.post(config.middleware.serviceUrl + config.chaincodes.SAR + 'materialId=' + shipKeyData.listOfKeys[i].materialID, materialKeyData, { headers })
                             .then(() => {
                                 return dispatch({
                                     type: "CREATE_SHIPPING_DATA_BY_MATERIAL_ID_SUCCESS",

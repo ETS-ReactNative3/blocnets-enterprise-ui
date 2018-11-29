@@ -2,18 +2,17 @@ import axios from 'axios';
 import config from '../config.json';
 import { resolver } from '../../services/callback.resolver';
 
-export function authenticate() {
+export function authenticate(creds) {
     return async (dispatch) => {
         dispatch(loadingView(true))
-        await axios.get(config.serviceKey.oAuth.url + '/oauth/token?grant_type=client_credentials', {
+        await axios.post(config.middleware.oAuth.url, creds, {
             headers: {
-                'Authorization': 'Basic ' + btoa(config.serviceKey.oAuth.clientId + ":" + config.serviceKey.oAuth.clientSecret),
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Accept': 'application/json'
             }
         })
             .then((response) => {
-                localStorage.setItem('Token', response.data.access_token);
+                localStorage.setItem('Token', response.data.token);
                 dispatch(checkAuthorization(true))
             })
             .catch((error) => {

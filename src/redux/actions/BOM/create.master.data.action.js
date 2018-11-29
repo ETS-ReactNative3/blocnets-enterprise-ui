@@ -2,7 +2,6 @@ import axios from 'axios';
 import config from '../../config.json';
 import { resolver } from '../../../services/callback.resolver';
 import { tokenResolver } from '../../../services/token.resolver';
-import { catalogue } from '../CAT/catalogue.action';
 
 export function createMasterDataKeys(data) {
     return async (dispatch) => {
@@ -11,10 +10,9 @@ export function createMasterDataKeys(data) {
             payload: true
         });
         const headers = tokenResolver();
-        const archive = catalogue('BOM', data.material.materialID);
-        await axios.post(config.chaincodes.Default + config.chaincodes.BOM + data.material.materialID, data, { headers })
+        await axios.post(config.middleware.serviceUrl + config.chaincodes.BOM + data.material.materialID, data, { headers })
             .then(() => {
-                return archive + dispatch({
+                return dispatch({
                     type: "CREATE_MASTER_DATA_KEY_MATERIAL_ID_SUCCESS",
                     payload: true
                 });
@@ -27,7 +25,7 @@ export function createMasterDataKeys(data) {
                 });
             });
 
-        await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "materialName=" + data.material.materialName, data, { headers })
+        await axios.post(config.middleware.serviceUrl + config.chaincodes.BOM + "materialName=" + data.material.materialName, data, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_MASTER_DATA_KEY_MATERIAL_NAME_SUCCESS",
@@ -43,7 +41,7 @@ export function createMasterDataKeys(data) {
             })
 
         if (data.material.materialDescription) {
-            await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "materialDesc=" + data.material.materialDescription, data, { headers })
+            await axios.post(config.middleware.serviceUrl + config.chaincodes.BOM + "materialDesc=" + data.material.materialDescription, data, { headers })
                 .then(() => {
                     return dispatch({
                         type: "CREATE_MASTER_DATA_KEY_MATERIAL_DESC_SUCCESS",
@@ -60,7 +58,7 @@ export function createMasterDataKeys(data) {
         }
 
         if (data.material.partNo) {
-            await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "partNumber=" + data.material.partNo, data, { headers })
+            await axios.post(config.middleware.serviceUrl + config.chaincodes.BOM + "partNumber=" + data.material.partNo, data, { headers })
                 .then(() => {
                     return dispatch({
                         type: "CREATE_MASTER_DATA_KEY_PART_NO_SUCCESS",
@@ -78,7 +76,7 @@ export function createMasterDataKeys(data) {
         }
 
         if (data.material.partName) {
-            await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "partName=" + data.material.partName, data, { headers })
+            await axios.post(config.middleware.serviceUrl + config.chaincodes.BOM + "partName=" + data.material.partName, data, { headers })
                 .then(() => {
                     return dispatch({
                         type: "CREATE_MASTER_DATA_KEY_PART_NAME_SUCCESS",
@@ -95,7 +93,7 @@ export function createMasterDataKeys(data) {
         }
 
         if (data.material.partDescription) {
-            await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "partDesc=" + data.material.partDescription, data, { headers })
+            await axios.post(config.middleware.serviceUrl + config.chaincodes.BOM + "partDesc=" + data.material.partDescription, data, { headers })
                 .then(() => {
                     return dispatch({
                         type: "CREATE_MASTER_DATA_KEY_PART_DESC_SUCCESS",
