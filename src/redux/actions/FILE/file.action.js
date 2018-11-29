@@ -12,9 +12,8 @@ export function uploadFileByUserId(url, body) {
         })
         const headers = tokenResolver();
         if (body.file) {
-            await axios.post(config.chaincodes.Default + config.chaincodes.FILE + url, body, { headers })
-                .then(async () => {
-                    await catalogue('FILE', url);
+            await axios.post(config.middleware.serviceUrl + config.chaincodes.FILE + url, body, { headers })
+                .then(() => {
                     dispatch({
                         type: "UPLOAD_NEW_FILE_BY_USER_ID_SUCCESS",
                         payload: true
@@ -38,7 +37,7 @@ export function retrieveFileByKey(url) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.get(config.chaincodes.Default + config.chaincodes.FILE + url, { headers })
+        await axios.get(config.middleware.serviceUrl + config.chaincodes.FILE + url, { headers })
             .then((response) => {
                 dispatch({
                     type: "RETRIEVE_FILE_BY_KEY_SUCCESS",
