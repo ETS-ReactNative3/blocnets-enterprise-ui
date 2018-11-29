@@ -2,7 +2,6 @@ import axios from 'axios';
 import config from '../../config.json';
 import { resolver } from '../../../services/callback.resolver';
 import {tokenResolver} from '../../../services/token.resolver';
-import { catalogue } from '../CAT/catalogue.action';
 
 export function uploadFileByUserId(url, body) {
     return async (dispatch) => {
@@ -13,8 +12,7 @@ export function uploadFileByUserId(url, body) {
         const headers = tokenResolver();
         if (body.file) {
             await axios.post(config.chaincodes.Default + config.chaincodes.FILE + url, body, { headers })
-                .then(async () => {
-                    await catalogue('FILE', url);
+                .then(() => {
                     dispatch({
                         type: "UPLOAD_NEW_FILE_BY_USER_ID_SUCCESS",
                         payload: true

@@ -10,7 +10,7 @@ export function createDocumentEntryByUniqueID(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.post(config.chaincodes.Middleware + config.chaincodes.MidDRE + url, body, { headers })
+        await axios.post(config.middleware.serviceUrl + config.chaincodes.DRE + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_DRE_DATA_BY_UNIQUE_ID_SUCCESS",
@@ -34,7 +34,7 @@ export function getDocumentEntryByUniqueID(url) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.get(config.chaincodes.Middleware + config.chaincodes.MidDRE + url, { headers })
+        await axios.get(config.middleware.serviceUrl + config.chaincodes.DRE + url, { headers })
             .then((response) => {
                 return dispatch({
                     type: "GET_DRE_DATA_BY_UNIQUE_ID_SUCCESS",
@@ -58,7 +58,7 @@ export function updateDocumentEntryByUniqueID(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.put(config.chaincodes.Middleware + config.chaincodes.MidDRE + url, body, { headers })
+        await axios.put(config.middleware.serviceUrl + config.chaincodes.DRE + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_DRE_DATA_BY_UNIQUE_ID_SUCCESS",
