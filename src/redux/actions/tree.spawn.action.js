@@ -82,7 +82,7 @@ export function createPRDConstruct(productionOrderNo) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.get(config.chaincodes.Default + config.chaincodes.PRD + productionOrderNo, { headers })
+        await axios.get(config.middleware.serviceUrl + config.chaincodes.PRD + productionOrderNo, { headers })
             .then((response) => {
                 let construct = {
                     name: productionOrderNo,
