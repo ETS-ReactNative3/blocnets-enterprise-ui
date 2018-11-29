@@ -156,7 +156,11 @@ class App extends Component {
             badgeContentSent: 0,
             tabValue: 0,
             mobileMoreAnchorEl: null,
+            userProfileAnchorEl: null,
+            mobileUserProfileAnchorEl: null,
             showMobileMenu: false,
+            showUserProfileMenu: false,
+            showMobileUserProfile: false;
             blockInformation: '',
             tatData: [],
             tree: [],
@@ -384,6 +388,39 @@ class App extends Component {
         });
     };
 
+    // if you click user profile and log out, then refresh the page
+    handleRefresh = () => {
+        window.location.reload();
+    };
+
+    showUserProfileMenu = (event) => {
+        this.setState({
+            userProfileAnchorEl: event.currentTarget,
+            showUserProfileMenu: true
+        });
+    };
+
+    handleUserProfileMenuClose = () => {
+        this.setState({
+            userProfileAnchorEl: null,
+            showUserProfileMenu: false
+        });
+    };
+
+    showMobileUserProfileMenu = (event) => {
+        this.setState({
+            mobileUserProfileAnchorEl: event.currentTarget,
+            showMobileUserProfile: true
+        });
+    };
+
+    handleMobileUserProfileMenuClose = () => {
+        this.setState({
+            mobileUserProfileAnchorEl: null,
+            showMobileUserProfile: false
+        });
+    };
+
     showMobileMenu = (event) => {
         this.setState({
             mobileMoreAnchorEl: event.currentTarget,
@@ -578,11 +615,24 @@ class App extends Component {
                     <ListItemText className='Mobile-ListItemText' primary='New Session' />
                 </MenuItem>
                 <hr />
-                <MenuItem className='Mobile-MenuItem' onClick={event => this.showMainView('inbox')}>
+                <MenuItem className='Mobile-MenuItem'
+                          id="user-profile-menu"
+                          anchorEl={this.state.mobileUserProfileAnchorEl}
+                          onClick={this.showMobileUserProfileMenu}>
                     <ListItemIcon className='Mobile-ListItemIcon'>
                         <AccountCircleIcon />
                     </ListItemIcon>
                     <ListItemText className='Mobile-ListItemText' primary='User Profile' />
+                    <Menu
+                        id="user-profile-menu"
+                        anchorEl={this.state.mobileUserProfileAnchorEl}
+                        open={this.showMobileUserProfileMenu}
+                        onClose={this.handleMobileUserProfileMenuClose}
+                    >
+                        <MenuItem open={Boolean(this.state.mobileUserProfileAnchorEl)} onClick={this.handleRefresh} onClose={this.handleMobileUserProfileMenuClose}>
+                            Logout
+                        </MenuItem>
+                    </Menu>
                 </MenuItem>
             </Menu>
         );
@@ -643,10 +693,21 @@ class App extends Component {
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title='User Profile'>
-                                    <IconButton onClick={event => this.showMainView('inbox')}>
-                                        <AccountCircleIcon />
-                                    </IconButton>
+                                        <IconButton
+                                            onClick={this.showUserProfileMenu}>
+                                            <AccountCircleIcon />
+                                        </IconButton>
                                 </Tooltip>
+
+                                <Menu
+                                    anchorEl={this.state.userProfileAnchorEl}
+                                    open={this.state.showUserProfileMenu}
+                                    onClose={this.handleUserProfileMenuClose}
+                                >
+                                    <MenuItem open={Boolean(this.state.userProfileAnchorEl)} onClick={this.handleRefresh} onClose={this.handleUserProfileMenuClose}>
+                                        Logout
+                                    </MenuItem>
+                                </Menu>
                                 <Typography className='App-Bar-Title'>
                                     {this.state.userName ? this.state.userName : 'Guest'}
                                 </Typography>
