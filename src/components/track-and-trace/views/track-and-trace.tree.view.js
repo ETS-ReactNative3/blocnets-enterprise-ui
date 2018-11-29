@@ -17,7 +17,15 @@ class TrackAndTraceTreeView extends React.Component {
         this.isCancelled = true;
     };
 
-    state = {};
+    constructor(props) {
+        super(props);
+        this.state = {
+            translate: {
+                x: 0,
+                y: 0
+            }
+        }
+    };
 
     render() {
 

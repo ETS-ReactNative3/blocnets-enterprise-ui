@@ -7,6 +7,57 @@ import {tokenResolver} from '../../../services/token.resolver';
  * @param {*} url 
  * @param {*} body 
  */
+
+// check whether MaterialID exists or not
+export function checkBillOfMaterialsByMaterialID(url) {
+    return async (dispatch) => {
+        dispatch({
+            type: "LOADING_SAR_VIEW",
+            payload: true
+        });
+        const headers = tokenResolver();
+        await axios.head(config.middleware.serviceUrl + config.chaincodes.BOM + url, { headers })
+            .then(() => {
+                return dispatch({
+                    type: "CHECKED_BOM_DATA_BY_MATERIAL_ID_DOES_EXIST",
+                    payload: true
+                });
+            })
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "CHECKED_BOM_DATA_BY_MATERIAL_ID_DOES_NOT_EXIST",
+                    payload: errorData
+                })
+            });
+    };
+}
+
+// check whether MaterialName exists or not
+export function checkBillOfMaterialsByMaterialName(url) {
+    return async (dispatch) => {
+        dispatch({
+            type: "LOADING_SAR_VIEW",
+            payload: true
+        });
+        const headers = tokenResolver();
+        await axios.head(config.middleware.serviceUrl + config.chaincodes.BOM + url, { headers })
+            .then(() => {
+                return dispatch({
+                    type: "CHECKED_BOM_DATA_BY_MATERIAL_NAME_DOES_EXIST",
+                    payload: true
+                });
+            })
+            .catch((error) => {
+                let errorData = resolver(error);
+                dispatch({
+                    type: "CHECKED_BOM_DATA_BY_MATERIAL_NAME_DOES_NOT_EXIST",
+                    payload: errorData
+                })
+            });
+    };
+}
+
 export function createBillOfMaterialsByMaterialID(url, body) {
     return async (dispatch) => {
         dispatch({
@@ -14,7 +65,7 @@ export function createBillOfMaterialsByMaterialID(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.post(config.chaincodes.Default + config.chaincodes.BOM + url, body, { headers })
+        await axios.post(config.middleware.serviceUrl + config.chaincodes.BOM + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_BOM_DATA_BY_MATERIAL_ID_SUCCESS",
@@ -38,7 +89,7 @@ export function getBillOfMaterialsByMaterialID(url) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.get(config.chaincodes.Default + config.chaincodes.BOM + url, { headers })
+        await axios.get(config.middleware.serviceUrl + config.chaincodes.BOM + url, { headers })
             .then((response) => {
                 return dispatch({
                     type: "GET_BOM_DATA_BY_MATERIAL_ID_SUCCESS",
@@ -63,7 +114,7 @@ export function updateBillOfMaterialsByMaterialID(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.put(config.chaincodes.Default + config.chaincodes.BOM + url, body, { headers })
+        await axios.put(config.middleware.serviceUrl + config.chaincodes.BOM + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_BOM_DATA_BY_MATERIAL_ID_SUCCESS",
@@ -87,7 +138,7 @@ export function getBillOfMaterialsHistoryByMaterialID(url) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.get(config.chaincodes.Default + config.chaincodes.BOM + url +'/history', { headers })
+        await axios.get(config.middleware.serviceUrl + config.chaincodes.BOM + url +'/history', { headers })
             .then((response) => {
                 return dispatch({
                     type: "GET_BOM_DATA_HISTORY_BY_MATERIAL_ID_SUCCESS",
@@ -116,7 +167,7 @@ export function createBillOfMaterialsByMaterialName(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "materialName=" + url, body, { headers })
+        await axios.post(config.middleware.serviceUrl + config.chaincodes.BOM + "materialName=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_BOM_DATA_MATERIAL_NAME_SUCCESS",
@@ -140,7 +191,7 @@ export function getBillOfMaterialsByMaterialName(url) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.get(config.chaincodes.Default + config.chaincodes.BOM + "materialName=" + url, { headers })
+        await axios.get(config.middleware.serviceUrl + config.chaincodes.BOM + "materialName=" + url, { headers })
             .then((response) => {
                 return dispatch({
                     type: "GET_BOM_DATA_BY_MATERIAL_NAME_SUCCESS",
@@ -164,7 +215,7 @@ export function updateBillOfMaterialsByMaterialName(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.put(config.chaincodes.Default + config.chaincodes.BOM + "materialName=" + url, body, { headers })
+        await axios.put(config.middleware.serviceUrl + config.chaincodes.BOM + "materialName=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_BOM_DATA_BY_MATERIAL_NAME_SUCCESS",
@@ -190,7 +241,7 @@ export function createBillOfMaterialsByMaterialDesc(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "materialDesc=" + url, body, { headers })
+        await axios.post(config.middleware.serviceUrl + config.chaincodes.BOM + "materialDesc=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_BOM_DATA_BY_MATERIAL_DESC_SUCCESS",
@@ -214,7 +265,7 @@ export function getBillOfMaterialsByMaterialDesc(url) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.get(config.chaincodes.Default + config.chaincodes.BOM + "materialDesc=" + url, { headers })
+        await axios.get(config.middleware.serviceUrl + config.chaincodes.BOM + "materialDesc=" + url, { headers })
             .then((response) => {
                 return dispatch({
                     type: "GET_BOM_DATA_BY_MATERIAL_DESC_SUCCESS",
@@ -238,7 +289,7 @@ export function updateBillOfMaterialsByMaterialDesc(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.put(config.chaincodes.Default + config.chaincodes.BOM + "materialDesc=" + url, body, { headers })
+        await axios.put(config.middleware.serviceUrl + config.chaincodes.BOM + "materialDesc=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_BOM_DATA_BY_MATERIAL_DESC_SUCCESS",
@@ -266,7 +317,7 @@ export function createBillOfMaterialsByPartNumber(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "partNumber=" + url, body, { headers })
+        await axios.post(config.middleware.serviceUrl + config.chaincodes.BOM + "partNumber=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_BOM_DATA_BY_PART_NUMBER_SUCCESS",
@@ -290,7 +341,7 @@ export function getBillOfMaterialsByPartNumber(url) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.get(config.chaincodes.Default + config.chaincodes.BOM + "partNumber=" + url, { headers })
+        await axios.get(config.middleware.serviceUrl + config.chaincodes.BOM + "partNumber=" + url, { headers })
             .then((response) => {
                 return dispatch({
                     type: "GET_BOM_DATA_BY_PART_NUMBER_SUCCESS",
@@ -314,7 +365,7 @@ export function updateBillOfMaterialsByPartNumber(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.put(config.chaincodes.Default + config.chaincodes.BOM + "partNumber=" + url, body, { headers })
+        await axios.put(config.middleware.serviceUrl + config.chaincodes.BOM + "partNumber=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_BOM_DATA_BY_PART_NUMBER_SUCCESS",
@@ -342,7 +393,7 @@ export function createBillOfMaterialsByPartName(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "partName=" + url, body, { headers })
+        await axios.post(config.middleware.serviceUrl + config.chaincodes.BOM + "partName=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_BOM_DATA_BY_PART_NAME_SUCCESS",
@@ -366,7 +417,7 @@ export function getBillOfMaterialsByPartName(url) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.get(config.chaincodes.Default + config.chaincodes.BOM + "partName=" + url, { headers })
+        await axios.get(config.middleware.serviceUrl + config.chaincodes.BOM + "partName=" + url, { headers })
             .then((response) => {
                 return dispatch({
                     type: "GET_BOM_DATA_BY_PART_NAME_SUCCESS",
@@ -390,7 +441,7 @@ export function updateBillOfMaterialsByPartName(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.put(config.chaincodes.Default + config.chaincodes.BOM + "partName=" + url, body, { headers })
+        await axios.put(config.middleware.serviceUrl + config.chaincodes.BOM + "partName=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_BOM_DATA_BY_PART_NAME_SUCCESS",
@@ -418,7 +469,7 @@ export function createBillOfMaterialsByPartDesc(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.post(config.chaincodes.Default + config.chaincodes.BOM + "partDesc=" + url, body, { headers })
+        await axios.post(config.middleware.serviceUrl + config.chaincodes.BOM + "partDesc=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "CREATE_BOM_DATA_BY_PART_DESC_SUCCESS",
@@ -442,7 +493,7 @@ export function getBillOfMaterialsByPartDesc(url) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.get(config.chaincodes.Default + config.chaincodes.BOM + "partDesc=" + url, { headers })
+        await axios.get(config.middleware.serviceUrl + config.chaincodes.BOM + "partDesc=" + url, { headers })
             .then((response) => {
                 return dispatch({
                     type: "GET_BOM_DATA_BY_PART_DESC_SUCCESS",
@@ -466,7 +517,7 @@ export function updateBillOfMaterialsByPartDesc(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        await axios.put(config.chaincodes.Default + config.chaincodes.BOM + "partDesc=" + url, body, { headers })
+        await axios.put(config.middleware.serviceUrl + config.chaincodes.BOM + "partDesc=" + url, body, { headers })
             .then(() => {
                 return dispatch({
                     type: "UPDATE_BOM_DATA_BY_PART_DESC_SUCCESS",

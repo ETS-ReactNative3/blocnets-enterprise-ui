@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Snackbar from 'material-ui/Snackbar';
 import { connect } from 'react-redux';
+import { authenticate } from '../redux/actions/authentication.action';
 import { getUserMessageDataByUserID } from '../redux/actions/UMA/user.message.array.action';
 
 const paperStyle = {
@@ -35,7 +36,7 @@ class LoginView extends Component {
     componentDidMount() {
         setInterval(() => {
             !this.isCancelled &&
-            this.setState({ currentDateAndTime: new Date().toUTCString() })
+                this.setState({ currentDateAndTime: new Date().toUTCString() })
         }, 1000);
     }
 
@@ -79,27 +80,34 @@ class LoginView extends Component {
 
     handleView = (event) => {
         this.setState({ showProgressLogo: true });
-        Promise.resolve(this.props.getUserMessageDataByUserID(this.state.userName))
+        let creds = {
+            username: this.state.userName,
+            password: btoa(this.state.password)
+        }
+        Promise.resolve(this.props.authenticate(creds))
             .then(() => {
-                if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess) {
-                    this.setState({ showProgressLogoDialog: false });
-                    this.props.viewHandler('app', false, this.state.transactionCode, this.state.userName);
-                } else {
-                    this.setState({
-                        showProgressLogo: false,
-                        userName: '',
-                        password: '',
-                    });
-                    this.setState({
-                        snackbar: {
-                            autoHideDuration: 2000,
-                            message: 'User Name is not valid!',
-                            open: true,
-                            sbColor: 'red'
+                Promise.resolve(this.props.getUserMessageDataByUserID(this.state.userName))
+                    .then(() => {
+                        if (this.props.data.umaReducer.getUserMessageDataByUserIDSuccess) {
+                            this.setState({ showProgressLogoDialog: false });
+                            this.props.viewHandler('app', false, this.state.transactionCode, this.state.userName);
+                        } else {
+                            this.setState({
+                                showProgressLogo: false,
+                                userName: '',
+                                password: '',
+                            });
+                            this.setState({
+                                snackbar: {
+                                    autoHideDuration: 2000,
+                                    message: 'User Name is not valid!',
+                                    open: true,
+                                    sbColor: 'red'
+                                }
+                            })
                         }
-                    })
-                }
-            });
+                    });
+            })
     };
 
     handleSnackbarClose = () => {
@@ -170,8 +178,8 @@ class LoginView extends Component {
                                     <Grid container spacing={24}>
                                         <Grid container item xs={12} justify="center">
                                             <Button type="submit" value="submit" variant="contained"
-                                                    onClick={event => this.handleView(event)}
-                                                    style={{ "backgroundColor": "#fce400" }}>
+                                                onClick={event => this.handleView(event)}
+                                                style={{ "backgroundColor": "#fce400" }}>
                                                 Log In
                                             </Button>
                                         </Grid>
@@ -180,8 +188,8 @@ class LoginView extends Component {
                                     <Grid container spacing={24}>
                                         <Grid container item xs={12} justify="center">
                                             <Button type="submit" value="submit" variant="contained"
-                                                    disabled
-                                                    style={{ "backgroundColor": "#e0e0e0" }}>
+                                                disabled
+                                                style={{ "backgroundColor": "#e0e0e0" }}>
                                                 Log In
                                             </Button>
                                         </Grid>
@@ -232,6 +240,7 @@ const mapStateToProps = (state) => {
 // This way, we can call our action creator by doing this.props.fetchData(url);
 const mapDispatchToProps = (dispatch) => {
     return {
+        authenticate: (user, pass) => dispatch(authenticate(user, pass)),
         getUserMessageDataByUserID: (user) => dispatch(getUserMessageDataByUserID(user))
     };
 };
