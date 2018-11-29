@@ -12,7 +12,6 @@ export function authenticate(creds) {
             }
         })
             .then((response) => {
-                console.log(response.data)
                 localStorage.setItem('Token', response.data.token);
                 dispatch(checkAuthorization(true))
             })

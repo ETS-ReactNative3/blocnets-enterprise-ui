@@ -2,7 +2,6 @@ import axios from 'axios';
 import config from '../config.json';
 import { resolver } from '../../services/callback.resolver';
 import { tokenResolver } from '../../services/token.resolver';
-import { catalogue } from './CAT/catalogue.action';
 
 // check whether ShipmentID exists or not
 export function checkShippingDataByShipmentID(url) {
@@ -37,10 +36,9 @@ export function createShippingDataByShipmentID(url, body) {
             payload: true
         });
         const headers = tokenResolver();
-        const archive = catalogue('SAR', url);
         await axios.post(config.middleware.serviceUrl + config.chaincodes.SAR + 'shipmentId=' + url, body, { headers })
             .then(() => {
-                return archive + dispatch({
+                return dispatch({
                     type: "CREATE_SHIPPING_DATA_BY_SHIPMENT_ID_SUCCESS",
                     payload: true
                 });
@@ -332,8 +330,7 @@ export function syncSARDataAndBindKeys(payload) {
             };
 
             await axios.post(config.middleware.serviceUrl + config.chaincodes.SAR + 'shipmentId=' + payload.shipmentID, payload, { headers })
-                .then(async () => {
-                    await catalogue('SAR', payload.shipmentID);
+                .then(() => {
                     dispatch({
                         type: "CREATE_SHIPPING_DATA_BY_SHIPMENT_ID_SUCCESS",
                         payload: true

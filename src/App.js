@@ -20,7 +20,7 @@ import TrackAndTraceView from './components/track-and-trace/views/track-and-trac
 import SendDocumentView from './components/document-review-and-entry/document-send/document.send.view';
 import SaveDocumentView from './components/document-review-and-entry/document-save/document.save.view';
 import ReadDocumentView from './components/document-review-and-entry/document-read/document.read.view';
-import MapContainerView from './components/geolocation/views/google.maps.view';
+/* import MapContainerView from './components/geolocation/views/google.maps.view'; */
 import BillOfMaterialsEdit from './components/bill-of-materials/views/bill-of-materials-edit-view';
 import CatalogueView from './components/catalogue/catalogue.view';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -496,10 +496,10 @@ class App extends Component {
                     userName={this.state.userName} />);
                 contentTitle = 'VIEW A DOCUMENT';
                 break;
-            case 'mapcontainerview':
+            /* case 'mapcontainerview':
                 content = (<MapContainerView />);
                 contentTitle = 'GEO MAPPING';
-                break;
+                break; */
             case 'billofmaterialsedit':
                 content = (<BillOfMaterialsEdit
                     masterMaterialData={this.state.masterMaterialData}
