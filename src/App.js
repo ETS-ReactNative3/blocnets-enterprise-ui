@@ -610,9 +610,8 @@ class App extends Component {
                     <Menu
                         id="user-profile-menu"
                         anchorEl={this.state.userProfileAnchorEl}
-                        open={Boolean(this.state.userProfileAnchorEl)}
+                        open={this.showUserProfileMenu}
                         onClose={this.handleUserProfileMenuClose}
-                        onClick={this.handleUserProfileMenuClose}
                     >
                         <MenuItem open={Boolean(this.state.userProfileAnchorEl)} onClick={this.handleRefresh} onClose={this.handleUserProfileMenuClose}>
                             Logout
