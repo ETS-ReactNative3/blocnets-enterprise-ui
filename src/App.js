@@ -49,7 +49,11 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { getEachMessageForUserID, getUserMessageDataByUserID} from './redux/actions/UMA/user.message.array.action';
+import Popper from '@material-ui/core/Popper';
+import Grow from '@material-ui/core/Grow';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import MenuList from '@material-ui/core/MenuList';
+import { getEachMessageForUserID, getUserMessageDataByUserID } from './redux/actions/UMA/user.message.array.action';
 
 const theme = createMuiTheme({
     palette: {
@@ -160,7 +164,7 @@ class App extends Component {
             mobileUserProfileAnchorEl: null,
             showMobileMenu: false,
             showUserProfileMenu: false,
-            showMobileUserProfile: false;
+            showMobileUserProfile: false,
             blockInformation: '',
             tatData: [],
             tree: [],
@@ -615,25 +619,30 @@ class App extends Component {
                     <ListItemText className='Mobile-ListItemText' primary='New Session' />
                 </MenuItem>
                 <hr />
-                <MenuItem className='Mobile-MenuItem'
-                          id="user-profile-menu"
-                          anchorEl={this.state.mobileUserProfileAnchorEl}
-                          onClick={this.showMobileUserProfileMenu}>
+                <MenuItem className='Mobile-MenuItem' onClick={this.showMobileUserProfileMenu}>
                     <ListItemIcon className='Mobile-ListItemIcon'>
                         <AccountCircleIcon />
                     </ListItemIcon>
                     <ListItemText className='Mobile-ListItemText' primary='User Profile' />
-                    <Menu
-                        id="user-profile-menu"
-                        anchorEl={this.state.mobileUserProfileAnchorEl}
-                        open={this.showMobileUserProfileMenu}
-                        onClose={this.handleMobileUserProfileMenuClose}
-                    >
-                        <MenuItem open={Boolean(this.state.mobileUserProfileAnchorEl)} onClick={this.handleRefresh} onClose={this.handleMobileUserProfileMenuClose}>
-                            Logout
-                        </MenuItem>
-                    </Menu>
                 </MenuItem>
+                <Popper anchorEl={this.state.mobileUserProfileAnchorEl} disablePortal
+                        open={this.state.showMobileUserProfile} transition>
+                    {({ TransitionProps, placement }) => (
+                        <Grow
+                            {...TransitionProps}
+                            style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
+                            <Paper>
+                                <ClickAwayListener onClickAway={this.handleMobileUserProfileMenuClose}>
+                                    <MenuList>
+                                        <MenuItem onClick={this.handleRefresh}>
+                                            Logout
+                                        </MenuItem>
+                                    </MenuList>
+                                </ClickAwayListener>
+                            </Paper>
+                        </Grow>
+                    )}
+                </Popper>
             </Menu>
         );
 
@@ -693,21 +702,28 @@ class App extends Component {
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title='User Profile'>
-                                        <IconButton
-                                            onClick={this.showUserProfileMenu}>
-                                            <AccountCircleIcon />
-                                        </IconButton>
+                                    <IconButton onClick={this.showUserProfileMenu}>
+                                        <AccountCircleIcon />
+                                    </IconButton>
                                 </Tooltip>
-
-                                <Menu
-                                    anchorEl={this.state.userProfileAnchorEl}
-                                    open={this.state.showUserProfileMenu}
-                                    onClose={this.handleUserProfileMenuClose}
-                                >
-                                    <MenuItem open={Boolean(this.state.userProfileAnchorEl)} onClick={this.handleRefresh} onClose={this.handleUserProfileMenuClose}>
-                                        Logout
-                                    </MenuItem>
-                                </Menu>
+                                <Popper anchorEl={this.state.userProfileAnchorEl} disablePortal
+                                        open={this.state.showUserProfileMenu} transition>
+                                    {({ TransitionProps, placement }) => (
+                                        <Grow
+                                            {...TransitionProps}
+                                            style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
+                                            <Paper>
+                                                <ClickAwayListener onClickAway={this.handleUserProfileMenuClose}>
+                                                    <MenuList>
+                                                        <MenuItem onClick={this.handleRefresh}>
+                                                            Logout
+                                                        </MenuItem>
+                                                    </MenuList>
+                                                </ClickAwayListener>
+                                            </Paper>
+                                        </Grow>
+                                    )}
+                                </Popper>
                                 <Typography className='App-Bar-Title'>
                                     {this.state.userName ? this.state.userName : 'Guest'}
                                 </Typography>
